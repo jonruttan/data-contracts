@@ -72,99 +72,36 @@ contracts:
       path: "/__export__path.normalize_slashes"
       params:
       - path
-      doc:
+      docs:
+      - id: path.normalize_slashes.doc.1
         summary: Contract export for `path.normalize_slashes`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.trim_dot
       from: assert.function
       path: "/__export__path.trim_dot"
       params:
       - path
-      doc:
+      docs:
+      - id: path.trim_dot.doc.1
         summary: Contract export for `path.trim_dot`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.dirname
       from: assert.function
       path: "/__export__path.dirname"
       params:
       - path
-      doc:
+      docs:
+      - id: path.dirname.doc.1
         summary: Contract export for `path.dirname`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.has_extension
       from: assert.function
@@ -172,38 +109,12 @@ contracts:
       params:
       - path
       - ext
-      doc:
+      docs:
+      - id: path.has_extension.doc.1
         summary: Contract export for `path.has_extension`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: ext
-          type: any
-          required: true
-          description: Input parameter `ext`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            ext: "<ext>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  ext: \"<ext>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.is_under
       from: assert.function
@@ -211,38 +122,12 @@ contracts:
       params:
       - path
       - prefix
-      doc:
+      docs:
+      - id: path.is_under.doc.1
         summary: Contract export for `path.is_under`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: prefix
-          type: any
-          required: true
-          description: Input parameter `prefix`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            prefix: "<prefix>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  prefix: \"<prefix>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.matches
       from: assert.function
@@ -250,38 +135,12 @@ contracts:
       params:
       - path
       - pattern
-      doc:
+      docs:
+      - id: path.matches.doc.1
         summary: Contract export for `path.matches`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: path.path.core
@@ -290,14 +149,15 @@ contracts:
     owner: data-contracts
     tags:
     - path
-  doc:
+  docs:
+  - id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES.doc.1
     summary: Case `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-PATH-001-002-PATH-SEGMENTS
   type: contract.export
   clauses:
@@ -369,99 +229,36 @@ contracts:
       path: "/__export__path.segments"
       params:
       - path
-      doc:
+      docs:
+      - id: path.segments.doc.1
         summary: Contract export for `path.segments`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.trim_dot
       from: assert.function
       path: "/__export__path.trim_dot"
       params:
       - path
-      doc:
+      docs:
+      - id: path.trim_dot.doc.1
         summary: Contract export for `path.trim_dot`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.dirname
       from: assert.function
       path: "/__export__path.dirname"
       params:
       - path
-      doc:
+      docs:
+      - id: path.dirname.doc.1
         summary: Contract export for `path.dirname`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.has_extension
       from: assert.function
@@ -469,38 +266,12 @@ contracts:
       params:
       - path
       - ext
-      doc:
+      docs:
+      - id: path.has_extension.doc.1
         summary: Contract export for `path.has_extension`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: ext
-          type: any
-          required: true
-          description: Input parameter `ext`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            ext: "<ext>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  ext: \"<ext>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.is_under
       from: assert.function
@@ -508,38 +279,12 @@ contracts:
       params:
       - path
       - prefix
-      doc:
+      docs:
+      - id: path.is_under.doc.1
         summary: Contract export for `path.is_under`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: prefix
-          type: any
-          required: true
-          description: Input parameter `prefix`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            prefix: "<prefix>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  prefix: \"<prefix>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.matches
       from: assert.function
@@ -547,38 +292,12 @@ contracts:
       params:
       - path
       - pattern
-      doc:
+      docs:
+      - id: path.matches.doc.1
         summary: Contract export for `path.matches`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: path.path.core
@@ -587,14 +306,15 @@ contracts:
     owner: data-contracts
     tags:
     - path
-  doc:
+  docs:
+  - id: LIB-PATH-001-002-PATH-SEGMENTS.doc.1
     summary: Case `LIB-PATH-001-002-PATH-SEGMENTS` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-PATH-001-003-PATH-BASENAME
   type: contract.export
   clauses:
@@ -678,99 +398,36 @@ contracts:
       path: "/__export__path.basename"
       params:
       - path
-      doc:
+      docs:
+      - id: path.basename.doc.1
         summary: Contract export for `path.basename`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.trim_dot
       from: assert.function
       path: "/__export__path.trim_dot"
       params:
       - path
-      doc:
+      docs:
+      - id: path.trim_dot.doc.1
         summary: Contract export for `path.trim_dot`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.dirname
       from: assert.function
       path: "/__export__path.dirname"
       params:
       - path
-      doc:
+      docs:
+      - id: path.dirname.doc.1
         summary: Contract export for `path.dirname`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.has_extension
       from: assert.function
@@ -778,38 +435,12 @@ contracts:
       params:
       - path
       - ext
-      doc:
+      docs:
+      - id: path.has_extension.doc.1
         summary: Contract export for `path.has_extension`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: ext
-          type: any
-          required: true
-          description: Input parameter `ext`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            ext: "<ext>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  ext: \"<ext>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.is_under
       from: assert.function
@@ -817,38 +448,12 @@ contracts:
       params:
       - path
       - prefix
-      doc:
+      docs:
+      - id: path.is_under.doc.1
         summary: Contract export for `path.is_under`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: prefix
-          type: any
-          required: true
-          description: Input parameter `prefix`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            prefix: "<prefix>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  prefix: \"<prefix>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.matches
       from: assert.function
@@ -856,38 +461,12 @@ contracts:
       params:
       - path
       - pattern
-      doc:
+      docs:
+      - id: path.matches.doc.1
         summary: Contract export for `path.matches`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: path.path.core
@@ -896,14 +475,15 @@ contracts:
     owner: data-contracts
     tags:
     - path
-  doc:
+  docs:
+  - id: LIB-PATH-001-003-PATH-BASENAME.doc.1
     summary: Case `LIB-PATH-001-003-PATH-BASENAME` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-PATH-001-004-PATH-EXTENSION
   type: contract.export
   clauses:
@@ -995,99 +575,36 @@ contracts:
       path: "/__export__path.extension"
       params:
       - path
-      doc:
+      docs:
+      - id: path.extension.doc.1
         summary: Contract export for `path.extension`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.trim_dot
       from: assert.function
       path: "/__export__path.trim_dot"
       params:
       - path
-      doc:
+      docs:
+      - id: path.trim_dot.doc.1
         summary: Contract export for `path.trim_dot`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.dirname
       from: assert.function
       path: "/__export__path.dirname"
       params:
       - path
-      doc:
+      docs:
+      - id: path.dirname.doc.1
         summary: Contract export for `path.dirname`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.has_extension
       from: assert.function
@@ -1095,38 +612,12 @@ contracts:
       params:
       - path
       - ext
-      doc:
+      docs:
+      - id: path.has_extension.doc.1
         summary: Contract export for `path.has_extension`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: ext
-          type: any
-          required: true
-          description: Input parameter `ext`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            ext: "<ext>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  ext: \"<ext>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.is_under
       from: assert.function
@@ -1134,38 +625,12 @@ contracts:
       params:
       - path
       - prefix
-      doc:
+      docs:
+      - id: path.is_under.doc.1
         summary: Contract export for `path.is_under`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: prefix
-          type: any
-          required: true
-          description: Input parameter `prefix`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            prefix: "<prefix>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  prefix: \"<prefix>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: path.matches
       from: assert.function
@@ -1173,38 +638,12 @@ contracts:
       params:
       - path
       - pattern
-      doc:
+      docs:
+      - id: path.matches.doc.1
         summary: Contract export for `path.matches`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: path.path.core
@@ -1213,14 +652,15 @@ contracts:
     owner: data-contracts
     tags:
     - path
-  doc:
+  docs:
+  - id: LIB-PATH-001-004-PATH-EXTENSION.doc.1
     summary: Case `LIB-PATH-001-004-PATH-EXTENSION` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-PATH-001-900-PATH-SMOKE
   type: contract.check
   harness:

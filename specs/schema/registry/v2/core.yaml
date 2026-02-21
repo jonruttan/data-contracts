@@ -43,9 +43,107 @@ fields:
     type: mapping
     required: false
     since: v2
-  artifact.imports[].doc:
-    type: mapping
+  artifact.imports[].docs:
+    type: list
     required: false
+    since: v2
+  artifact.imports[].docs[].id:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].summary:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].audience:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].status:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - draft
+      - active
+      - deprecated
+      - retired
+  artifact.imports[].docs[].description:
+    type: string
+    required: false
+    since: v2
+  artifact.imports[].docs[].type:
+    type: string
+    required: false
+    since: v2
+    enum:
+      - overview
+      - reference
+      - howto
+      - policy
+      - contract
+      - changelog
+  artifact.imports[].docs[].since:
+    type: string
+    required: false
+    since: v2
+  artifact.imports[].docs[].updated_at:
+    type: string
+    required: false
+    since: v2
+  artifact.imports[].docs[].tags:
+    type: list
+    required: false
+    since: v2
+  artifact.imports[].docs[].owners:
+    type: list
+    required: false
+    since: v2
+  artifact.imports[].docs[].owners[].id:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].owners[].role:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - owner
+      - reviewer
+      - approver
+  artifact.imports[].docs[].links:
+    type: list
+    required: false
+    since: v2
+  artifact.imports[].docs[].links[].rel:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - see_also
+      - depends_on
+      - implements
+      - supersedes
+      - replaced_by
+  artifact.imports[].docs[].links[].ref:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].links[].title:
+    type: string
+    required: false
+    since: v2
+  artifact.imports[].docs[].examples:
+    type: list
+    required: false
+    since: v2
+  artifact.imports[].docs[].examples[].title:
+    type: string
+    required: true
+    since: v2
+  artifact.imports[].docs[].examples[].ref:
+    type: string
+    required: true
     since: v2
   artifact.exports:
     type: list
@@ -68,9 +166,107 @@ fields:
     type: mapping
     required: false
     since: v2
-  artifact.exports[].doc:
-    type: mapping
+  artifact.exports[].docs:
+    type: list
     required: false
+    since: v2
+  artifact.exports[].docs[].id:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].summary:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].audience:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].status:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - draft
+      - active
+      - deprecated
+      - retired
+  artifact.exports[].docs[].description:
+    type: string
+    required: false
+    since: v2
+  artifact.exports[].docs[].type:
+    type: string
+    required: false
+    since: v2
+    enum:
+      - overview
+      - reference
+      - howto
+      - policy
+      - contract
+      - changelog
+  artifact.exports[].docs[].since:
+    type: string
+    required: false
+    since: v2
+  artifact.exports[].docs[].updated_at:
+    type: string
+    required: false
+    since: v2
+  artifact.exports[].docs[].tags:
+    type: list
+    required: false
+    since: v2
+  artifact.exports[].docs[].owners:
+    type: list
+    required: false
+    since: v2
+  artifact.exports[].docs[].owners[].id:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].owners[].role:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - owner
+      - reviewer
+      - approver
+  artifact.exports[].docs[].links:
+    type: list
+    required: false
+    since: v2
+  artifact.exports[].docs[].links[].rel:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - see_also
+      - depends_on
+      - implements
+      - supersedes
+      - replaced_by
+  artifact.exports[].docs[].links[].ref:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].links[].title:
+    type: string
+    required: false
+    since: v2
+  artifact.exports[].docs[].examples:
+    type: list
+    required: false
+    since: v2
+  artifact.exports[].docs[].examples[].title:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].docs[].examples[].ref:
+    type: string
+    required: true
     since: v2
   exports:
     type: list
@@ -103,9 +299,107 @@ fields:
     required: false
     since: v2
     description: Optional function export requirement flag.
-  exports[].doc:
-    type: mapping
+  exports[].docs:
+    type: list
     required: false
+    since: v2
+  exports[].docs[].id:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].summary:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].audience:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].status:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - draft
+      - active
+      - deprecated
+      - retired
+  exports[].docs[].description:
+    type: string
+    required: false
+    since: v2
+  exports[].docs[].type:
+    type: string
+    required: false
+    since: v2
+    enum:
+      - overview
+      - reference
+      - howto
+      - policy
+      - contract
+      - changelog
+  exports[].docs[].since:
+    type: string
+    required: false
+    since: v2
+  exports[].docs[].updated_at:
+    type: string
+    required: false
+    since: v2
+  exports[].docs[].tags:
+    type: list
+    required: false
+    since: v2
+  exports[].docs[].owners:
+    type: list
+    required: false
+    since: v2
+  exports[].docs[].owners[].id:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].owners[].role:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - owner
+      - reviewer
+      - approver
+  exports[].docs[].links:
+    type: list
+    required: false
+    since: v2
+  exports[].docs[].links[].rel:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - see_also
+      - depends_on
+      - implements
+      - supersedes
+      - replaced_by
+  exports[].docs[].links[].ref:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].links[].title:
+    type: string
+    required: false
+    since: v2
+  exports[].docs[].examples:
+    type: list
+    required: false
+    since: v2
+  exports[].docs[].examples[].title:
+    type: string
+    required: true
+    since: v2
+  exports[].docs[].examples[].ref:
+    type: string
+    required: true
     since: v2
   contracts:
     type: list
@@ -127,33 +421,107 @@ fields:
     type: string
     required: false
     since: v2
-  doc:
-    type: mapping
-    required: false
-    since: v2
-  doc.summary:
-    type: string
-    required: false
-    since: v2
-  doc.description:
-    type: string
-    required: false
-    since: v2
-  doc.audience:
-    type: string
-    required: false
-    since: v2
-  doc.since:
-    type: string
-    required: false
-    since: v2
-  doc.tags:
+  docs:
     type: list
     required: false
     since: v2
-  doc.see_also:
+  docs[].id:
+    type: string
+    required: true
+    since: v2
+  docs[].summary:
+    type: string
+    required: true
+    since: v2
+  docs[].audience:
+    type: string
+    required: true
+    since: v2
+  docs[].status:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - draft
+      - active
+      - deprecated
+      - retired
+  docs[].description:
+    type: string
+    required: false
+    since: v2
+  docs[].type:
+    type: string
+    required: false
+    since: v2
+    enum:
+      - overview
+      - reference
+      - howto
+      - policy
+      - contract
+      - changelog
+  docs[].since:
+    type: string
+    required: false
+    since: v2
+  docs[].updated_at:
+    type: string
+    required: false
+    since: v2
+  docs[].tags:
     type: list
     required: false
+    since: v2
+  docs[].owners:
+    type: list
+    required: false
+    since: v2
+  docs[].owners[].id:
+    type: string
+    required: true
+    since: v2
+  docs[].owners[].role:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - owner
+      - reviewer
+      - approver
+  docs[].links:
+    type: list
+    required: false
+    since: v2
+  docs[].links[].rel:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - see_also
+      - depends_on
+      - implements
+      - supersedes
+      - replaced_by
+  docs[].links[].ref:
+    type: string
+    required: true
+    since: v2
+  docs[].links[].title:
+    type: string
+    required: false
+    since: v2
+  docs[].examples:
+    type: list
+    required: false
+    since: v2
+  docs[].examples[].title:
+    type: string
+    required: true
+    since: v2
+  docs[].examples[].ref:
+    type: string
+    required: true
     since: v2
   domain:
     type: string
@@ -170,6 +538,108 @@ fields:
   contracts[].domain:
     type: string
     required: false
+    since: v2
+  contracts[].docs:
+    type: list
+    required: false
+    since: v2
+  contracts[].docs[].id:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].summary:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].audience:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].status:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - draft
+      - active
+      - deprecated
+      - retired
+  contracts[].docs[].description:
+    type: string
+    required: false
+    since: v2
+  contracts[].docs[].type:
+    type: string
+    required: false
+    since: v2
+    enum:
+      - overview
+      - reference
+      - howto
+      - policy
+      - contract
+      - changelog
+  contracts[].docs[].since:
+    type: string
+    required: false
+    since: v2
+  contracts[].docs[].updated_at:
+    type: string
+    required: false
+    since: v2
+  contracts[].docs[].tags:
+    type: list
+    required: false
+    since: v2
+  contracts[].docs[].owners:
+    type: list
+    required: false
+    since: v2
+  contracts[].docs[].owners[].id:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].owners[].role:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - owner
+      - reviewer
+      - approver
+  contracts[].docs[].links:
+    type: list
+    required: false
+    since: v2
+  contracts[].docs[].links[].rel:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - see_also
+      - depends_on
+      - implements
+      - supersedes
+      - replaced_by
+  contracts[].docs[].links[].ref:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].links[].title:
+    type: string
+    required: false
+    since: v2
+  contracts[].docs[].examples:
+    type: list
+    required: false
+    since: v2
+  contracts[].docs[].examples[].title:
+    type: string
+    required: true
+    since: v2
+  contracts[].docs[].examples[].ref:
+    type: string
+    required: true
     since: v2
   contracts[].when:
     type: mapping

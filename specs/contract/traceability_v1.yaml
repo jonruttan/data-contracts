@@ -319,7 +319,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - dc-runner-python
-  notes: Governance enforces conformance case doc readability/style constraints.
+  notes: Governance enforces conformance case docs[] readability/style constraints.
 - rule_id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
   policy_ref: specs/contract/policy_v1.yaml#CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
   contract_refs:
@@ -824,7 +824,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - dc-runner-python
-  notes: Invalid doc examples fail unless an explicit opt-out marker with reason is
+  notes: Invalid docs[] examples fail unless an explicit opt-out marker with reason is
     present.
 - rule_id: DOCS_CLI_FLAGS_DOCUMENTED
   policy_ref: specs/contract/policy_v1.yaml#DOCS_CLI_FLAGS_DOCUMENTED
@@ -876,7 +876,7 @@ links:
   - dc-runner-python
   - dc-runner-python
   - specs/governance/cases/core/project_docs/docs_meta_schema_valid.spec.md
-  notes: Reference chapter doc-meta blocks are schema-validated.
+  notes: Reference chapter docs metadata blocks are schema-validated.
 - rule_id: DOCS_REFERENCE_MANIFEST_SYNC
   policy_ref: specs/contract/policy_v1.yaml#DOCS_REFERENCE_MANIFEST_SYNC
   contract_refs:
@@ -911,7 +911,7 @@ links:
   - dc-runner-python
   - dc-runner-python
   - specs/governance/cases/core/project_docs/docs_token_ownership_unique.spec.md
-  notes: Canonical doc tokens must have exactly one owner page.
+  notes: Canonical docs tokens must have exactly one owner page.
 - rule_id: DOCS_TOKEN_DEPENDENCY_RESOLVED
   policy_ref: specs/contract/policy_v1.yaml#DOCS_TOKEN_DEPENDENCY_RESOLVED
   contract_refs:

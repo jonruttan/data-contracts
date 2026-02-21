@@ -25,38 +25,12 @@ contracts:
       - meta
       - case_id
       required: true
-      doc:
+      docs:
+      - id: domain.meta.case_id_eq.doc.1
         summary: Contract export for `domain.meta.case_id_eq`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: meta
-          type: any
-          required: true
-          description: Input parameter `meta`.
-        - name: case_id
-          type: any
-          required: true
-          description: Input parameter `case_id`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            meta: "<meta>"
-            case_id: "<case_id>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  meta: \"<meta>\"\n  case_id: \"<case_id>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: meta\n  type: any\n  required: true\n  description: Input parameter `meta`.\n- name: case_id\n  type: any\n  required: true\n  description: Input parameter `case_id`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.meta.core
@@ -65,14 +39,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ.doc.1
     summary: Case `LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET
   clauses:
     predicates:
@@ -94,38 +69,12 @@ contracts:
       - meta
       - target_name
       required: true
-      doc:
+      docs:
+      - id: domain.meta.has_artifact_target.doc.1
         summary: Contract export for `domain.meta.has_artifact_target`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: meta
-          type: any
-          required: true
-          description: Input parameter `meta`.
-        - name: target_name
-          type: any
-          required: true
-          description: Input parameter `target_name`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            meta: "<meta>"
-            target_name: "<target_name>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  meta: \"<meta>\"\n  target_name: \"<target_name>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: meta\n  type: any\n  required: true\n  description: Input parameter `meta`.\n- name: target_name\n  type: any\n  required: true\n  description: Input parameter `target_name`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.meta.core
@@ -134,13 +83,14 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET.doc.1
     summary: Case `LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```
 

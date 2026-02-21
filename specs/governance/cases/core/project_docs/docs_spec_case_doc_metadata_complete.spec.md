@@ -5,8 +5,8 @@ defaults:
   type: contract.check
 contracts:
 - id: DCGOV-DOCS-SPECCASE-001
-  title: spec case root doc metadata is complete
-  purpose: Ensures contract.export cases declare required root doc metadata fields.
+  title: spec case root docs metadata is complete
+  purpose: Ensures contract.export cases declare required root docs[] metadata entry fields.
   harness:
     root: "."
     check:

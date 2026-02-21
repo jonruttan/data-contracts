@@ -18,38 +18,12 @@ contracts:
       params:
       - scan_path
       - pattern
-      doc:
+      docs:
+      - id: domain.job.scan_bundle_has_result.doc.1
         summary: Contract export for `domain.job.scan_bundle_has_result`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: scan_path
-          type: any
-          required: true
-          description: Input parameter `scan_path`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            scan_path: "<scan_path>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  scan_path: \"<scan_path>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: scan_path\n  type: any\n  required: true\n  description: Input parameter `scan_path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   clauses:
     imports:
@@ -69,7 +43,7 @@ contracts:
                 patterns:
                 - var: pattern
           - scanned_files
-        -
+        - 
   library:
     id: domain.job.core
     module: domain
@@ -77,13 +51,14 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT.doc.1
     summary: Case `LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```
 

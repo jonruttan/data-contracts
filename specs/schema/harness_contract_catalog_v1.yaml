@@ -25,7 +25,7 @@ harnesses:
     required_top_level:
       - harness
       - clauses
-      - doc
+      - docs
     required_clauses:
       - profile
       - config
@@ -36,7 +36,7 @@ harnesses:
       - imports
       - predicates
     required_companions:
-      - doc
+      - docs
       - library
     allowed_export_modes:
       - function

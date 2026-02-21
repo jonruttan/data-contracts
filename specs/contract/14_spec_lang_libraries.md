@@ -24,6 +24,8 @@ Suite-level external references:
   suite-root `exports[]` function declarations.
 - `artifact.imports[].ref` / `artifact.exports[].ref` support moustache
   (`{{...}}`) template expressions resolved from suite context only.
+- documentation metadata for suite/function/artifact surfaces uses `docs[]`
+  entries; singular `doc` is non-canonical in v2.
 
 Governance policy reuse:
 

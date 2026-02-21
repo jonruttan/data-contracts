@@ -9,15 +9,21 @@ artifact:
     type: application/yaml
     inputs: {}
     options: {}
-    doc:
+    docs:
+    - id: schema_ref_doc.doc.1
       summary: schema reference import
+      audience: spec-authors
+      status: active
   exports:
   - id: schema_ref_export
     ref: "{{schema_ref}}"
     type: application/json
     options: {}
-    doc:
+    docs:
+    - id: schema_ref_export.doc.1
       summary: schema reference export
+      audience: spec-authors
+      status: active
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -89,14 +95,15 @@ contracts:
     module: schema
     stability: alpha
     owner: data-contracts
-  doc:
+  docs:
+  - id: DCCONF-SCHEMA-CASE-003.doc.1
     summary: schema export validation case
-    description: Valid contract.export shape without deprecated top-level imports.
     audience: spec-authors
+    status: active
+    description: Valid contract.export shape without deprecated top-level imports.
     since: v2
     tags:
     - contract.export
-    see_also: []
 - id: DCCONF-SCHEMA-CASE-004
   title: contract export top-level imports are rejected as schema
   expect:
@@ -116,14 +123,15 @@ contracts:
     module: schema
     stability: alpha
     owner: data-contracts
-  doc:
+  docs:
+  - id: DCCONF-SCHEMA-CASE-004.doc.1
     summary: schema export invalid imports case
-    description: Deprecated contract.export top-level imports must hard-fail in v2.
     audience: spec-authors
+    status: active
+    description: Deprecated contract.export top-level imports must hard-fail in v2.
     since: v2
     tags:
     - contract.export
-    see_also: []
 - id: DCCONF-SCHEMA-CASE-005
   title: missing harness is rejected as schema
   expect:
@@ -300,6 +308,93 @@ contracts:
     imports:
     - id: unresolved_template
       ref: "{{unknown_suite_var}}"
+  harness: check
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-017
+  title: legacy singular doc is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  doc:
+    summary: legacy singular doc
+  harness: check
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-018
+  title: docs entry missing required status is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  docs:
+  - id: missing-status
+    summary: missing status
+    audience: spec-authors
+  harness: check
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-019
+  title: docs entry invalid type enum is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  docs:
+  - id: invalid-type
+    summary: invalid docs type
+    audience: spec-authors
+    status: active
+    type: narrative
+  harness: check
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-020
+  title: docs entry duplicate ids are rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  docs:
+  - id: duplicate-id
+    summary: docs entry one
+    audience: spec-authors
+    status: active
+  - id: duplicate-id
+    summary: docs entry two
+    audience: spec-authors
+    status: active
+  harness: check
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-021
+  title: docs entry unknown key is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  docs:
+  - id: unknown-key
+    summary: docs entry with unknown key
+    audience: spec-authors
+    status: active
+    unknown_field: true
   harness: check
   clauses:
     predicates:

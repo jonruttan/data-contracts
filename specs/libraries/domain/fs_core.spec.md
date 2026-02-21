@@ -26,33 +26,12 @@ contracts:
       params:
       - path
       required: true
-      doc:
+      docs:
+      - id: domain.fs.is_docs_spec_file.doc.1
         summary: Contract export for `domain.fs.is_docs_spec_file`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: path
-          type: any
-          required: true
-          description: Input parameter `path`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            path: "<path>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: \"<path>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -61,14 +40,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE.doc.1
     summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
   clauses:
     predicates:
@@ -86,33 +66,12 @@ contracts:
       params:
       - paths
       required: true
-      doc:
+      docs:
+      - id: domain.fs.sort_spec_files.doc.1
         summary: Contract export for `domain.fs.sort_spec_files`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: paths
-          type: any
-          required: true
-          description: Input parameter `paths`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            paths: "<paths>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: \"<paths>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -121,14 +80,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES.doc.1
     summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
   clauses:
     predicates:
@@ -149,43 +109,12 @@ contracts:
       - path_segments
       - fallback
       required: true
-      doc:
+      docs:
+      - id: domain.fs.json_get_or_text.doc.1
         summary: Contract export for `domain.fs.json_get_or_text`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: json_text
-          type: any
-          required: true
-          description: Input parameter `json_text`.
-        - name: path_segments
-          type: any
-          required: true
-          description: Input parameter `path_segments`.
-        - name: fallback
-          type: any
-          required: true
-          description: Input parameter `fallback`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            json_text: "<json_text>"
-            path_segments: "<path_segments>"
-            fallback: "<fallback>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: \"<json_text>\"\n  path_segments: \"<path_segments>\"\n  fallback: \"<fallback>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- name: fallback\n  type: any\n  required: true\n  description: Input parameter `fallback`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -194,14 +123,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT.doc.1
     summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
   clauses:
     predicates:
@@ -220,38 +150,12 @@ contracts:
       - json_text
       - path_segments
       required: true
-      doc:
+      docs:
+      - id: domain.fs.json_has_path_text.doc.1
         summary: Contract export for `domain.fs.json_has_path_text`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: json_text
-          type: any
-          required: true
-          description: Input parameter `json_text`.
-        - name: path_segments
-          type: any
-          required: true
-          description: Input parameter `path_segments`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            json_text: "<json_text>"
-            path_segments: "<path_segments>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: \"<json_text>\"\n  path_segments: \"<path_segments>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -260,14 +164,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT.doc.1
     summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
   clauses:
     predicates:
@@ -284,33 +189,12 @@ contracts:
       params:
       - paths
       required: true
-      doc:
+      docs:
+      - id: domain.fs.glob_any_spec_files.doc.1
         summary: Contract export for `domain.fs.glob_any_spec_files`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: paths
-          type: any
-          required: true
-          description: Input parameter `paths`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            paths: "<paths>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: \"<paths>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -319,14 +203,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES.doc.1
     summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
   clauses:
     predicates:
@@ -345,38 +230,12 @@ contracts:
       - meta
       - ext
       required: true
-      doc:
+      docs:
+      - id: domain.fs.file_ext_eq.doc.1
         summary: Contract export for `domain.fs.file_ext_eq`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: meta
-          type: any
-          required: true
-          description: Input parameter `meta`.
-        - name: ext
-          type: any
-          required: true
-          description: Input parameter `ext`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            meta: "<meta>"
-            ext: "<ext>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  meta: \"<meta>\"\n  ext: \"<ext>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: meta\n  type: any\n  required: true\n  description: Input parameter `meta`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -385,14 +244,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ.doc.1
     summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
   clauses:
     predicates:
@@ -411,38 +271,12 @@ contracts:
       - json_text
       - path_segments
       required: true
-      doc:
+      docs:
+      - id: domain.fs.json_get_text.doc.1
         summary: Contract export for `domain.fs.json_get_text`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: json_text
-          type: any
-          required: true
-          description: Input parameter `json_text`.
-        - name: path_segments
-          type: any
-          required: true
-          description: Input parameter `path_segments`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            json_text: "<json_text>"
-            path_segments: "<path_segments>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: \"<json_text>\"\n  path_segments: \"<path_segments>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -451,14 +285,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT.doc.1
     summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
   clauses:
     predicates:
@@ -469,7 +304,7 @@ contracts:
           - var: domain.fs.json_get_or_text
           - var: json_text
           - var: path_segments
-          -
+          - 
         - var: expected
   harness:
     exports:
@@ -481,43 +316,12 @@ contracts:
       - path_segments
       - expected
       required: true
-      doc:
+      docs:
+      - id: domain.fs.json_path_eq_text.doc.1
         summary: Contract export for `domain.fs.json_path_eq_text`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: json_text
-          type: any
-          required: true
-          description: Input parameter `json_text`.
-        - name: path_segments
-          type: any
-          required: true
-          description: Input parameter `path_segments`.
-        - name: expected
-          type: any
-          required: true
-          description: Input parameter `expected`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            json_text: "<json_text>"
-            path_segments: "<path_segments>"
-            expected: "<expected>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: \"<json_text>\"\n  path_segments: \"<path_segments>\"\n  expected: \"<expected>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- name: expected\n  type: any\n  required: true\n  description: Input parameter `expected`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -526,14 +330,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT.doc.1
     summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
   clauses:
     predicates:
@@ -551,38 +356,12 @@ contracts:
       - paths
       - pattern
       required: true
-      doc:
+      docs:
+      - id: domain.fs.glob_filter.doc.1
         summary: Contract export for `domain.fs.glob_filter`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: paths
-          type: any
-          required: true
-          description: Input parameter `paths`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            paths: "<paths>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: \"<paths>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -591,14 +370,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER.doc.1
     summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
   clauses:
     predicates:
@@ -616,38 +396,12 @@ contracts:
       - paths
       - pattern
       required: true
-      doc:
+      docs:
+      - id: domain.fs.glob_all.doc.1
         summary: Contract export for `domain.fs.glob_all`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: paths
-          type: any
-          required: true
-          description: Input parameter `paths`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            paths: "<paths>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: \"<paths>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.fs.core
@@ -656,14 +410,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL.doc.1
     summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```
 
 

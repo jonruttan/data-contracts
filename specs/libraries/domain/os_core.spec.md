@@ -23,38 +23,12 @@ contracts:
       - command
       - timeout_ms
       required: true
-      doc:
+      docs:
+      - id: domain.os.exec_ok.doc.1
         summary: Contract export for `domain.os.exec_ok`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: command
-          type: any
-          required: true
-          description: Input parameter `command`.
-        - name: timeout_ms
-          type: any
-          required: true
-          description: Input parameter `timeout_ms`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            command: "<command>"
-            timeout_ms: "<timeout_ms>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  command: \"<command>\"\n  timeout_ms: \"<timeout_ms>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: command\n  type: any\n  required: true\n  description: Input parameter `command`.\n- name: timeout_ms\n  type: any\n  required: true\n  description: Input parameter `timeout_ms`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.os.core
@@ -63,14 +37,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK.doc.1
     summary: Case `LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE
   clauses:
     predicates:
@@ -93,43 +68,12 @@ contracts:
       - timeout_ms
       - expected_code
       required: true
-      doc:
+      docs:
+      - id: domain.os.exec_capture_code.doc.1
         summary: Contract export for `domain.os.exec_capture_code`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: command
-          type: any
-          required: true
-          description: Input parameter `command`.
-        - name: timeout_ms
-          type: any
-          required: true
-          description: Input parameter `timeout_ms`.
-        - name: expected_code
-          type: any
-          required: true
-          description: Input parameter `expected_code`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            command: "<command>"
-            timeout_ms: "<timeout_ms>"
-            expected_code: "<expected_code>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  command: \"<command>\"\n  timeout_ms: \"<timeout_ms>\"\n  expected_code: \"<expected_code>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: command\n  type: any\n  required: true\n  description: Input parameter `command`.\n- name: timeout_ms\n  type: any\n  required: true\n  description: Input parameter `timeout_ms`.\n- name: expected_code\n  type: any\n  required: true\n  description: Input parameter `expected_code`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.os.core
@@ -138,14 +82,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE.doc.1
     summary: Case `LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS
   clauses:
     predicates:
@@ -161,33 +106,12 @@ contracts:
       params:
       - key
       required: true
-      doc:
+      docs:
+      - id: domain.os.env_has.doc.1
         summary: Contract export for `domain.os.env_has`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: key
-          type: any
-          required: true
-          description: Input parameter `key`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            key: "<key>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  key: \"<key>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: key\n  type: any\n  required: true\n  description: Input parameter `key`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.os.core
@@ -196,14 +120,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS.doc.1
     summary: Case `LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```
 
 

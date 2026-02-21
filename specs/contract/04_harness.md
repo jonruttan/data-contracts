@@ -16,6 +16,8 @@ Suite-root external references:
 - root `exports[]` is reserved for function symbol exports only.
 - `artifact.imports[].ref` / `artifact.exports[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
+- documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
+  contract, artifact import/export, and root function export surfaces.
 
 ## Entrypoint
 

@@ -887,7 +887,7 @@ rules:
   applies_to: docs.reference.doc_meta
   norm: MUST
   requirement: canonical_reference_docs_include_valid_doc_meta
-  description: 'Canonical reference docs must include machine-checkable doc metadata
+  description: 'Canonical reference docs must include machine-checkable docs metadata
     that validates against docs metadata schema requirements.
 
     '
@@ -919,7 +919,7 @@ rules:
   applies_to: docs.reference.tokens
   norm: MUST
   requirement: canonical_token_ownership_is_unique
-  description: 'Canonical documentation tokens must have exactly one owner doc in
+  description: 'Canonical documentation tokens must have exactly one owner docs entry in
     the reference surface metadata.
 
     '
@@ -934,8 +934,8 @@ rules:
   applies_to: docs.reference.token_dependencies
   norm: MUST
   requirement: required_tokens_resolve_to_owner_docs_and_owner_text
-  description: 'Each docs metadata requires_tokens entry must map to an owner doc
-    token and be present in owner doc content.
+  description: 'Each docs metadata requires_tokens entry must map to an owner docs
+    token and be present in owner docs content.
 
     '
   rationale: Maintains integrity of cross-doc vocabulary references.
@@ -950,7 +950,7 @@ rules:
   norm: MUST
   requirement: instruction_docs_include_required_operational_sections
   description: 'Instruction/reference docs must include required operational sections
-    declared in doc metadata.
+    declared in docs metadata.
 
     '
   rationale: Ensures docs remain operationally useful beyond examples.
@@ -3545,7 +3545,7 @@ rules:
   applies_to: docs.generator.outputs.quality
   norm: MUST
   requirement: generated_docs_quality_score_must_meet_threshold
-  description: 'Generated doc surfaces must meet minimum quality score thresholds
+  description: 'Generated docs surfaces must meet minimum quality score thresholds
     defined by governance.
 
     '

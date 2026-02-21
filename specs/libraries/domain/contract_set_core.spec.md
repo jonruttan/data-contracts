@@ -36,33 +36,12 @@ contracts:
       params:
       - manifest
       required: true
-      doc:
+      docs:
+      - id: domain.contract_set.id.doc.1
         summary: Contract export for `domain.contract_set.id`.
-        description: Returns manifest `contract_set_id`.
-        params:
-        - name: manifest
-          type: any
-          required: true
-          description: Contract-set manifest object projection.
-        returns:
-          type: string
-          description: Manifest contract-set identifier.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Manifest does not contain the required field.
-          category: schema
-        examples:
-        - title: Read id
-          input:
-            manifest:
-              contract_set_id: python_runner_contract_set
-          expected: python_runner_contract_set
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Portable stdlib projection.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Returns manifest `contract_set_id`.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Read id\ninput:\n  manifest:\n    contract_set_id: python_runner_contract_set\nexpected: python_runner_contract_set\n- params: - name: manifest\n  type: any\n  required: true\n  description: Contract-set manifest object projection.\n- returns: type: string\ndescription: Manifest contract-set identifier.\n- errors: - code: SCHEMA_ERROR\n  when: Manifest does not contain the required field.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Portable stdlib projection."
         since: v1
     - as: domain.contract_set.depends_on
       from: assert.function
@@ -70,35 +49,12 @@ contracts:
       params:
       - manifest
       required: true
-      doc:
+      docs:
+      - id: domain.contract_set.depends_on.doc.1
         summary: Contract export for `domain.contract_set.depends_on`.
-        description: Returns declared dependency list from manifest.
-        params:
-        - name: manifest
-          type: any
-          required: true
-          description: Contract-set manifest object projection.
-        returns:
-          type: list
-          description: Manifest dependency contract set ids.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Manifest does not contain the required field.
-          category: schema
-        examples:
-        - title: Read dependencies
-          input:
-            manifest:
-              depends_on:
-              - shared_makefile_help_contract_set
-          expected:
-          - shared_makefile_help_contract_set
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Portable stdlib projection.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Returns declared dependency list from manifest.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Read dependencies\ninput:\n  manifest:\n    depends_on:\n    - shared_makefile_help_contract_set\nexpected:\n- shared_makefile_help_contract_set\n- params: - name: manifest\n  type: any\n  required: true\n  description: Contract-set manifest object projection.\n- returns: type: list\ndescription: Manifest dependency contract set ids.\n- errors: - code: SCHEMA_ERROR\n  when: Manifest does not contain the required field.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Portable stdlib projection."
         since: v1
     - as: domain.contract_set.include_paths
       from: assert.function
@@ -106,35 +62,12 @@ contracts:
       params:
       - manifest
       required: true
-      doc:
+      docs:
+      - id: domain.contract_set.include_paths.doc.1
         summary: Contract export for `domain.contract_set.include_paths`.
-        description: Returns include path/glob list from manifest.
-        params:
-        - name: manifest
-          type: any
-          required: true
-          description: Contract-set manifest object projection.
-        returns:
-          type: list
-          description: Include path/glob list.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Manifest does not contain the required field.
-          category: schema
-        examples:
-        - title: Read include paths
-          input:
-            manifest:
-              include_paths:
-              - specs/impl/python/**
-          expected:
-          - specs/impl/python/**
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Portable stdlib projection.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Returns include path/glob list from manifest.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Read include paths\ninput:\n  manifest:\n    include_paths:\n    - specs/impl/python/**\nexpected:\n- specs/impl/python/**\n- params: - name: manifest\n  type: any\n  required: true\n  description: Contract-set manifest object projection.\n- returns: type: list\ndescription: Include path/glob list.\n- errors: - code: SCHEMA_ERROR\n  when: Manifest does not contain the required field.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Portable stdlib projection."
         since: v1
     - as: domain.contract_set.applies_to_runners
       from: assert.function
@@ -142,37 +75,12 @@ contracts:
       params:
       - manifest
       required: true
-      doc:
+      docs:
+      - id: domain.contract_set.applies_to_runners.doc.1
         summary: Contract export for `domain.contract_set.applies_to_runners`.
-        description: Returns optional runner applicability list.
-        params:
-        - name: manifest
-          type: any
-          required: true
-          description: Contract-set manifest object projection.
-        returns:
-          type: list
-          description: Runner ids list or null/empty list per manifest authoring.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Manifest does not contain expected structure.
-          category: schema
-        examples:
-        - title: Read runner filter
-          input:
-            manifest:
-              applies_to_runners:
-              - python
-              - php
-          expected:
-          - python
-          - php
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Portable stdlib projection.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Returns optional runner applicability list.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Read runner filter\ninput:\n  manifest:\n    applies_to_runners:\n    - python\n    - php\nexpected:\n- python\n- php\n- params: - name: manifest\n  type: any\n  required: true\n  description: Contract-set manifest object projection.\n- returns: type: list\ndescription: Runner ids list or null/empty list per manifest authoring.\n- errors: - code: SCHEMA_ERROR\n  when: Manifest does not contain expected structure.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Portable stdlib projection."
         since: v1
   library:
     id: domain.contract_set.core
@@ -181,12 +89,13 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-CONTRACT-SET-001.doc.1
     summary: Case `LIB-DOMAIN-CONTRACT-SET-001` for `contract.export`.
-    description: Contract-set manifest projection exports for resolver policy and validation checks.
     audience: spec-authors
+    status: active
+    description: Contract-set manifest projection exports for resolver policy and validation checks.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```

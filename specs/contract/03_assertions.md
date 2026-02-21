@@ -33,6 +33,8 @@ Scope separation:
   `clauses.predicates[].imports`.
 - suite-root `artifact.imports[]` / `artifact.exports[]` are external
   reference declarations and do not implicitly bind assertion symbols.
+- suite/contract/artifact/function documentation metadata is declared through
+  `docs[]` entries and is not part of assertion symbol binding.
 
 Import binding shape:
 

@@ -72,16 +72,16 @@ Spec-lang lint code contract:
 - `SLINT035` `library` required scalar metadata field is empty
 - `SLINT036` `harness: export` suites must declare non-empty root `exports[]`
   function entries
-- `SLINT039` `exports[].doc` missing or wrong shape for function exports
-- `SLINT049` `doc.params` names/order mismatch exported params
-- `SLINT052` `doc.examples` missing/empty
-- `SLINT054` `doc.portability.<runtime>` must be boolean
-- `SLINT055` `contract.export` case missing root `doc` metadata
-- `SLINT056` root `doc` must be mapping
-- `SLINT057` unsupported key in root `doc`
-- `SLINT058` missing required root `doc` field for `contract.export`
-- `SLINT059` invalid `doc.tags` shape
-- `SLINT060` invalid `doc.see_also` shape
+- `SLINT039` `exports[].docs[]` missing or wrong shape for function exports
+- `SLINT049` `docs[].id` values must be unique within each docs array scope
+- `SLINT052` `docs[].examples` entries must include `title` and `ref`
+- `SLINT054` invalid docs enum value (`status|type|owners[].role|links[].rel`)
+- `SLINT055` `contract.export` case missing root `docs[]` metadata
+- `SLINT056` root `docs` must be list
+- `SLINT057` unsupported key in `docs[]` entry (closed shape)
+- `SLINT058` missing required `docs[]` fields (`id|summary|audience|status`)
+- `SLINT059` invalid `docs[].tags` shape
+- `SLINT060` legacy singular `doc` is invalid in v2
 
 Rationale:
 

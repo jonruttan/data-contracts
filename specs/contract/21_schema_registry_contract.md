@@ -22,6 +22,8 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   `artifact.imports[]`/`artifact.exports[]`.
 - Root `exports[]` MUST be function-only declarations using
   `as` + `from: assert.function` + `path`.
+- Documentation metadata surfaces MUST use `docs[]` entry arrays with required
+  `id|summary|audience|status`; singular `doc` is invalid in v2.
 - Suite defaults and clause defaults are optional compression surfaces; empty
   defaults mappings are non-canonical.
 

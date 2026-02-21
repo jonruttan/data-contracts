@@ -50,31 +50,30 @@ Related docs/reference schemas:
     - `type` (string, optional): expected MIME type for resolved `ref`
     - `inputs` (mapping, optional)
     - `options` (mapping, optional)
-    - `doc` (mapping, optional)
+    - `docs` (list, optional): documentation metadata entries
   - `artifact.exports` (list, optional): artifact export declarations
     - `id` (string, required)
     - `ref` (string, required): supports moustache template expressions (`{{...}}`)
       resolved from suite context
     - `type` (string, optional): expected MIME type for resolved `ref`
     - `options` (mapping, optional)
-    - `doc` (mapping, optional)
+    - `docs` (list, optional): documentation metadata entries
 - `exports` (list, optional): function export declarations only
   - `exports[].as` (string, required): exported function symbol name
   - `exports[].from` (string, required): must be `assert.function`
   - `exports[].path` (string, required): producer function body path
   - `exports[].params` (list, optional): ordered parameter names
   - `exports[].required` (bool, optional): export requirement flag
-  - `exports[].doc` (mapping, optional): function documentation metadata
+  - `exports[].docs` (list, optional): function documentation metadata entries
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
-- `doc` (mapping, optional): suite-level documentation metadata
-  - `doc.summary` (string, optional)
-  - `doc.description` (string, optional)
-  - `doc.audience` (string, optional)
-  - `doc.since` (string, optional)
-  - `doc.tags` (list, optional)
-  - `doc.see_also` (list, optional)
+- `docs` (list, optional): suite-level documentation metadata entries
+  - required entry keys: `id`, `summary`, `audience`, `status`
+  - optional entry keys: `description`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`, `examples`
+  - `docs[].type` enum: `overview|reference|howto|policy|contract|changelog`
+  - unknown entry keys are invalid in v2
+  - `docs[].id` MUST be unique within each containing `docs[]` array scope
 
 Bundle/package management is not part of `contract-spec` suite shape in v2.
 Bundle taxonomy, lock, and package semantics are defined at package-contract
@@ -131,6 +130,7 @@ Parser behavior:
   - `exports[].mode` is invalid
   - `exports[].id` is invalid
   - `exports[].ref` is invalid
+- singular `doc` surfaces are invalid in v2; use `docs[]`
 - unknown harness names MUST hard-fail during schema validation
 - legacy `type` on contract items is invalid in v2
 
@@ -680,65 +680,170 @@ Job ref grammar:
 
 This section is generated from `specs/schema/registry/v2/*.yaml`.
 
-- profile_count: 7
-- top_level_fields: 43
+- profile_count: 4
+- top_level_fields: 149
 - harness_catalog: `/specs/schema/harness_contract_catalog_v1.yaml`
 
 ### Top-Level Keys
 
 | key | type | required | since |
 |---|---|---|---|
-| `clauses` | `mapping` | `true` | `v2` |
-| `clauses.config` | `mapping` | `false` | `v2` |
-| `clauses.profile` | `string` | `false` | `v2` |
-| `doc` | `mapping` | `false` | `v1` |
-| `doc.audience` | `string` | `false` | `v1` |
-| `doc.description` | `string` | `false` | `v1` |
-| `doc.see_also` | `list` | `false` | `v1` |
-| `doc.since` | `string` | `false` | `v1` |
-| `doc.summary` | `string` | `false` | `v1` |
-| `doc.tags` | `list` | `false` | `v1` |
-| `domain` | `string` | `false` | `v1` |
-| `expect` | `mapping` | `false` | `v1` |
+| `spec_version` | `int` | `true` | `v2` |
+| `schema_ref` | `string` | `true` | `v2` |
+| `defaults` | `mapping` | `false` | `v2` |
 | `artifact` | `mapping` | `false` | `v2` |
 | `artifact.imports` | `list` | `false` | `v2` |
-| `artifact.imports[].doc` | `mapping` | `false` | `v2` |
 | `artifact.imports[].id` | `string` | `true` | `v2` |
-| `artifact.imports[].inputs` | `mapping` | `false` | `v2` |
-| `artifact.imports[].options` | `mapping` | `false` | `v2` |
 | `artifact.imports[].ref` | `string` | `true` | `v2` |
 | `artifact.imports[].type` | `string` | `false` | `v2` |
+| `artifact.imports[].inputs` | `mapping` | `false` | `v2` |
+| `artifact.imports[].options` | `mapping` | `false` | `v2` |
+| `artifact.imports[].docs` | `list` | `false` | `v2` |
+| `artifact.imports[].docs[].id` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].summary` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].audience` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].status` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].description` | `string` | `false` | `v2` |
+| `artifact.imports[].docs[].type` | `string` | `false` | `v2` |
+| `artifact.imports[].docs[].since` | `string` | `false` | `v2` |
+| `artifact.imports[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifact.imports[].docs[].tags` | `list` | `false` | `v2` |
+| `artifact.imports[].docs[].owners` | `list` | `false` | `v2` |
+| `artifact.imports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].links` | `list` | `false` | `v2` |
+| `artifact.imports[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifact.imports[].docs[].examples` | `list` | `false` | `v2` |
+| `artifact.imports[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `artifact.exports` | `list` | `false` | `v2` |
-| `artifact.exports[].doc` | `mapping` | `false` | `v2` |
 | `artifact.exports[].id` | `string` | `true` | `v2` |
-| `artifact.exports[].options` | `mapping` | `false` | `v2` |
 | `artifact.exports[].ref` | `string` | `true` | `v2` |
 | `artifact.exports[].type` | `string` | `false` | `v2` |
+| `artifact.exports[].options` | `mapping` | `false` | `v2` |
+| `artifact.exports[].docs` | `list` | `false` | `v2` |
+| `artifact.exports[].docs[].id` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].summary` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].audience` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].status` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].description` | `string` | `false` | `v2` |
+| `artifact.exports[].docs[].type` | `string` | `false` | `v2` |
+| `artifact.exports[].docs[].since` | `string` | `false` | `v2` |
+| `artifact.exports[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifact.exports[].docs[].tags` | `list` | `false` | `v2` |
+| `artifact.exports[].docs[].owners` | `list` | `false` | `v2` |
+| `artifact.exports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].links` | `list` | `false` | `v2` |
+| `artifact.exports[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifact.exports[].docs[].examples` | `list` | `false` | `v2` |
+| `artifact.exports[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `exports` | `list` | `false` | `v2` |
 | `exports[].as` | `string` | `true` | `v2` |
-| `exports[].doc` | `mapping` | `false` | `v2` |
 | `exports[].from` | `string` | `true` | `v2` |
 | `exports[].path` | `string` | `true` | `v2` |
 | `exports[].params` | `list` | `false` | `v2` |
 | `exports[].required` | `bool` | `false` | `v2` |
-| `harness` | `string` | `true` | `v2` |
-| `id` | `string` | `true` | `v1` |
-| `path` | `string` | `false` | `v1` |
-| `purpose` | `string` | `false` | `v1` |
-| `requires` | `mapping` | `false` | `v1` |
-| `title` | `string` | `false` | `v1` |
-| `when` | `mapping` | `false` | `v1` |
-| `when.complete` | `list` | `false` | `v1` |
-| `when.fail` | `list` | `false` | `v1` |
-| `when.optional` | `list` | `false` | `v1` |
-| `when.required` | `list` | `false` | `v1` |
+| `exports[].docs` | `list` | `false` | `v2` |
+| `exports[].docs[].id` | `string` | `true` | `v2` |
+| `exports[].docs[].summary` | `string` | `true` | `v2` |
+| `exports[].docs[].audience` | `string` | `true` | `v2` |
+| `exports[].docs[].status` | `string` | `true` | `v2` |
+| `exports[].docs[].description` | `string` | `false` | `v2` |
+| `exports[].docs[].type` | `string` | `false` | `v2` |
+| `exports[].docs[].since` | `string` | `false` | `v2` |
+| `exports[].docs[].updated_at` | `string` | `false` | `v2` |
+| `exports[].docs[].tags` | `list` | `false` | `v2` |
+| `exports[].docs[].owners` | `list` | `false` | `v2` |
+| `exports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `exports[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `exports[].docs[].links` | `list` | `false` | `v2` |
+| `exports[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `exports[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `exports[].docs[].links[].title` | `string` | `false` | `v2` |
+| `exports[].docs[].examples` | `list` | `false` | `v2` |
+| `exports[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts` | `list` | `true` | `v2` |
+| `contracts[].id` | `string` | `true` | `v2` |
+| `contracts[].harness` | `string` | `true` | `v2` |
+| `title` | `string` | `false` | `v2` |
+| `purpose` | `string` | `false` | `v2` |
+| `docs` | `list` | `false` | `v2` |
+| `docs[].id` | `string` | `true` | `v2` |
+| `docs[].summary` | `string` | `true` | `v2` |
+| `docs[].audience` | `string` | `true` | `v2` |
+| `docs[].status` | `string` | `true` | `v2` |
+| `docs[].description` | `string` | `false` | `v2` |
+| `docs[].type` | `string` | `false` | `v2` |
+| `docs[].since` | `string` | `false` | `v2` |
+| `docs[].updated_at` | `string` | `false` | `v2` |
+| `docs[].tags` | `list` | `false` | `v2` |
+| `docs[].owners` | `list` | `false` | `v2` |
+| `docs[].owners[].id` | `string` | `true` | `v2` |
+| `docs[].owners[].role` | `string` | `true` | `v2` |
+| `docs[].links` | `list` | `false` | `v2` |
+| `docs[].links[].rel` | `string` | `true` | `v2` |
+| `docs[].links[].ref` | `string` | `true` | `v2` |
+| `docs[].links[].title` | `string` | `false` | `v2` |
+| `docs[].examples` | `list` | `false` | `v2` |
+| `docs[].examples[].title` | `string` | `true` | `v2` |
+| `docs[].examples[].ref` | `string` | `true` | `v2` |
+| `domain` | `string` | `false` | `v2` |
+| `contracts[].title` | `string` | `false` | `v2` |
+| `contracts[].purpose` | `string` | `false` | `v2` |
+| `contracts[].domain` | `string` | `false` | `v2` |
+| `contracts[].docs` | `list` | `false` | `v2` |
+| `contracts[].docs[].id` | `string` | `true` | `v2` |
+| `contracts[].docs[].summary` | `string` | `true` | `v2` |
+| `contracts[].docs[].audience` | `string` | `true` | `v2` |
+| `contracts[].docs[].status` | `string` | `true` | `v2` |
+| `contracts[].docs[].description` | `string` | `false` | `v2` |
+| `contracts[].docs[].type` | `string` | `false` | `v2` |
+| `contracts[].docs[].since` | `string` | `false` | `v2` |
+| `contracts[].docs[].updated_at` | `string` | `false` | `v2` |
+| `contracts[].docs[].tags` | `list` | `false` | `v2` |
+| `contracts[].docs[].owners` | `list` | `false` | `v2` |
+| `contracts[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `contracts[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `contracts[].docs[].links` | `list` | `false` | `v2` |
+| `contracts[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `contracts[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `contracts[].docs[].links[].title` | `string` | `false` | `v2` |
+| `contracts[].docs[].examples` | `list` | `false` | `v2` |
+| `contracts[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `contracts[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts[].when` | `mapping` | `false` | `v2` |
+| `contracts[].when.required` | `list` | `false` | `v2` |
+| `contracts[].when.optional` | `list` | `false` | `v2` |
+| `contracts[].when.fail` | `list` | `false` | `v2` |
+| `contracts[].when.complete` | `list` | `false` | `v2` |
+| `contracts[].clauses` | `mapping` | `true` | `v2` |
+| `contracts[].clauses.profile` | `string` | `false` | `v2` |
+| `contracts[].clauses.config` | `mapping` | `false` | `v2` |
+| `contracts[].expect` | `mapping` | `false` | `v2` |
+| `contracts[].expect.portable` | `mapping` | `false` | `v2` |
+| `contracts[].expect.portable.status` | `string` | `false` | `v2` |
+| `contracts[].expect.portable.category` | `string` | `false` | `v2` |
+| `contracts[].expect.portable.message_tokens` | `list` | `false` | `v2` |
+| `contracts[].expect.overrides` | `list` | `false` | `v2` |
+| `contracts[].expect.overrides[].runner` | `string` | `true` | `v2` |
+| `contracts[].expect.overrides[].status` | `string` | `false` | `v2` |
+| `contracts[].expect.overrides[].category` | `string` | `false` | `v2` |
+| `contracts[].expect.overrides[].message_tokens` | `list` | `false` | `v2` |
+| `contracts[].requires` | `mapping` | `false` | `v2` |
 
 ### Harness Catalog
 
 | harness | required keys | required clause keys |
 |---|---|---|
 | `check` | `harness`, `clauses` | `profile`, `config` |
-| `export` | `harness`, `clauses`, `library`, `doc` | `profile`, `config` |
+| `export` | `harness`, `clauses`, `docs` | `profile`, `config` |
 | `job` | `harness`, `clauses` | `profile`, `config` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
@@ -746,7 +851,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 43
+- top_level_field_count: 149
 - harness_count: 3
 - deprecated_type_overlays: 3
 
@@ -754,56 +859,161 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 | key | type | required | since |
 |---|---|---|---|
-| `clauses` | `mapping` | true | `v2` |
-| `clauses.config` | `mapping` | false | `v2` |
-| `clauses.profile` | `string` | false | `v2` |
-| `doc` | `mapping` | false | `v1` |
-| `doc.audience` | `string` | false | `v1` |
-| `doc.description` | `string` | false | `v1` |
-| `doc.see_also` | `list` | false | `v1` |
-| `doc.since` | `string` | false | `v1` |
-| `doc.summary` | `string` | false | `v1` |
-| `doc.tags` | `list` | false | `v1` |
-| `domain` | `string` | false | `v1` |
-| `expect` | `mapping` | false | `v1` |
+| `spec_version` | `int` | true | `v2` |
+| `schema_ref` | `string` | true | `v2` |
+| `defaults` | `mapping` | false | `v2` |
 | `artifact` | `mapping` | false | `v2` |
 | `artifact.imports` | `list` | false | `v2` |
-| `artifact.imports[].doc` | `mapping` | false | `v2` |
 | `artifact.imports[].id` | `string` | true | `v2` |
-| `artifact.imports[].inputs` | `mapping` | false | `v2` |
-| `artifact.imports[].options` | `mapping` | false | `v2` |
 | `artifact.imports[].ref` | `string` | true | `v2` |
 | `artifact.imports[].type` | `string` | false | `v2` |
+| `artifact.imports[].inputs` | `mapping` | false | `v2` |
+| `artifact.imports[].options` | `mapping` | false | `v2` |
+| `artifact.imports[].docs` | `list` | false | `v2` |
+| `artifact.imports[].docs[].id` | `string` | true | `v2` |
+| `artifact.imports[].docs[].summary` | `string` | true | `v2` |
+| `artifact.imports[].docs[].audience` | `string` | true | `v2` |
+| `artifact.imports[].docs[].status` | `string` | true | `v2` |
+| `artifact.imports[].docs[].description` | `string` | false | `v2` |
+| `artifact.imports[].docs[].type` | `string` | false | `v2` |
+| `artifact.imports[].docs[].since` | `string` | false | `v2` |
+| `artifact.imports[].docs[].updated_at` | `string` | false | `v2` |
+| `artifact.imports[].docs[].tags` | `list` | false | `v2` |
+| `artifact.imports[].docs[].owners` | `list` | false | `v2` |
+| `artifact.imports[].docs[].owners[].id` | `string` | true | `v2` |
+| `artifact.imports[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifact.imports[].docs[].links` | `list` | false | `v2` |
+| `artifact.imports[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifact.imports[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifact.imports[].docs[].links[].title` | `string` | false | `v2` |
+| `artifact.imports[].docs[].examples` | `list` | false | `v2` |
+| `artifact.imports[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifact.imports[].docs[].examples[].ref` | `string` | true | `v2` |
 | `artifact.exports` | `list` | false | `v2` |
-| `artifact.exports[].doc` | `mapping` | false | `v2` |
 | `artifact.exports[].id` | `string` | true | `v2` |
-| `artifact.exports[].options` | `mapping` | false | `v2` |
 | `artifact.exports[].ref` | `string` | true | `v2` |
 | `artifact.exports[].type` | `string` | false | `v2` |
+| `artifact.exports[].options` | `mapping` | false | `v2` |
+| `artifact.exports[].docs` | `list` | false | `v2` |
+| `artifact.exports[].docs[].id` | `string` | true | `v2` |
+| `artifact.exports[].docs[].summary` | `string` | true | `v2` |
+| `artifact.exports[].docs[].audience` | `string` | true | `v2` |
+| `artifact.exports[].docs[].status` | `string` | true | `v2` |
+| `artifact.exports[].docs[].description` | `string` | false | `v2` |
+| `artifact.exports[].docs[].type` | `string` | false | `v2` |
+| `artifact.exports[].docs[].since` | `string` | false | `v2` |
+| `artifact.exports[].docs[].updated_at` | `string` | false | `v2` |
+| `artifact.exports[].docs[].tags` | `list` | false | `v2` |
+| `artifact.exports[].docs[].owners` | `list` | false | `v2` |
+| `artifact.exports[].docs[].owners[].id` | `string` | true | `v2` |
+| `artifact.exports[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifact.exports[].docs[].links` | `list` | false | `v2` |
+| `artifact.exports[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifact.exports[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifact.exports[].docs[].links[].title` | `string` | false | `v2` |
+| `artifact.exports[].docs[].examples` | `list` | false | `v2` |
+| `artifact.exports[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifact.exports[].docs[].examples[].ref` | `string` | true | `v2` |
 | `exports` | `list` | false | `v2` |
 | `exports[].as` | `string` | true | `v2` |
-| `exports[].doc` | `mapping` | false | `v2` |
 | `exports[].from` | `string` | true | `v2` |
 | `exports[].path` | `string` | true | `v2` |
 | `exports[].params` | `list` | false | `v2` |
 | `exports[].required` | `bool` | false | `v2` |
-| `harness` | `string` | true | `v2` |
-| `id` | `string` | true | `v1` |
-| `path` | `string` | false | `v1` |
-| `purpose` | `string` | false | `v1` |
-| `requires` | `mapping` | false | `v1` |
-| `title` | `string` | false | `v1` |
-| `when` | `mapping` | false | `v1` |
-| `when.complete` | `list` | false | `v1` |
-| `when.fail` | `list` | false | `v1` |
-| `when.optional` | `list` | false | `v1` |
-| `when.required` | `list` | false | `v1` |
+| `exports[].docs` | `list` | false | `v2` |
+| `exports[].docs[].id` | `string` | true | `v2` |
+| `exports[].docs[].summary` | `string` | true | `v2` |
+| `exports[].docs[].audience` | `string` | true | `v2` |
+| `exports[].docs[].status` | `string` | true | `v2` |
+| `exports[].docs[].description` | `string` | false | `v2` |
+| `exports[].docs[].type` | `string` | false | `v2` |
+| `exports[].docs[].since` | `string` | false | `v2` |
+| `exports[].docs[].updated_at` | `string` | false | `v2` |
+| `exports[].docs[].tags` | `list` | false | `v2` |
+| `exports[].docs[].owners` | `list` | false | `v2` |
+| `exports[].docs[].owners[].id` | `string` | true | `v2` |
+| `exports[].docs[].owners[].role` | `string` | true | `v2` |
+| `exports[].docs[].links` | `list` | false | `v2` |
+| `exports[].docs[].links[].rel` | `string` | true | `v2` |
+| `exports[].docs[].links[].ref` | `string` | true | `v2` |
+| `exports[].docs[].links[].title` | `string` | false | `v2` |
+| `exports[].docs[].examples` | `list` | false | `v2` |
+| `exports[].docs[].examples[].title` | `string` | true | `v2` |
+| `exports[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts` | `list` | true | `v2` |
+| `contracts[].id` | `string` | true | `v2` |
+| `contracts[].harness` | `string` | true | `v2` |
+| `title` | `string` | false | `v2` |
+| `purpose` | `string` | false | `v2` |
+| `docs` | `list` | false | `v2` |
+| `docs[].id` | `string` | true | `v2` |
+| `docs[].summary` | `string` | true | `v2` |
+| `docs[].audience` | `string` | true | `v2` |
+| `docs[].status` | `string` | true | `v2` |
+| `docs[].description` | `string` | false | `v2` |
+| `docs[].type` | `string` | false | `v2` |
+| `docs[].since` | `string` | false | `v2` |
+| `docs[].updated_at` | `string` | false | `v2` |
+| `docs[].tags` | `list` | false | `v2` |
+| `docs[].owners` | `list` | false | `v2` |
+| `docs[].owners[].id` | `string` | true | `v2` |
+| `docs[].owners[].role` | `string` | true | `v2` |
+| `docs[].links` | `list` | false | `v2` |
+| `docs[].links[].rel` | `string` | true | `v2` |
+| `docs[].links[].ref` | `string` | true | `v2` |
+| `docs[].links[].title` | `string` | false | `v2` |
+| `docs[].examples` | `list` | false | `v2` |
+| `docs[].examples[].title` | `string` | true | `v2` |
+| `docs[].examples[].ref` | `string` | true | `v2` |
+| `domain` | `string` | false | `v2` |
+| `contracts[].title` | `string` | false | `v2` |
+| `contracts[].purpose` | `string` | false | `v2` |
+| `contracts[].domain` | `string` | false | `v2` |
+| `contracts[].docs` | `list` | false | `v2` |
+| `contracts[].docs[].id` | `string` | true | `v2` |
+| `contracts[].docs[].summary` | `string` | true | `v2` |
+| `contracts[].docs[].audience` | `string` | true | `v2` |
+| `contracts[].docs[].status` | `string` | true | `v2` |
+| `contracts[].docs[].description` | `string` | false | `v2` |
+| `contracts[].docs[].type` | `string` | false | `v2` |
+| `contracts[].docs[].since` | `string` | false | `v2` |
+| `contracts[].docs[].updated_at` | `string` | false | `v2` |
+| `contracts[].docs[].tags` | `list` | false | `v2` |
+| `contracts[].docs[].owners` | `list` | false | `v2` |
+| `contracts[].docs[].owners[].id` | `string` | true | `v2` |
+| `contracts[].docs[].owners[].role` | `string` | true | `v2` |
+| `contracts[].docs[].links` | `list` | false | `v2` |
+| `contracts[].docs[].links[].rel` | `string` | true | `v2` |
+| `contracts[].docs[].links[].ref` | `string` | true | `v2` |
+| `contracts[].docs[].links[].title` | `string` | false | `v2` |
+| `contracts[].docs[].examples` | `list` | false | `v2` |
+| `contracts[].docs[].examples[].title` | `string` | true | `v2` |
+| `contracts[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts[].when` | `mapping` | false | `v2` |
+| `contracts[].when.required` | `list` | false | `v2` |
+| `contracts[].when.optional` | `list` | false | `v2` |
+| `contracts[].when.fail` | `list` | false | `v2` |
+| `contracts[].when.complete` | `list` | false | `v2` |
+| `contracts[].clauses` | `mapping` | true | `v2` |
+| `contracts[].clauses.profile` | `string` | false | `v2` |
+| `contracts[].clauses.config` | `mapping` | false | `v2` |
+| `contracts[].expect` | `mapping` | false | `v2` |
+| `contracts[].expect.portable` | `mapping` | false | `v2` |
+| `contracts[].expect.portable.status` | `string` | false | `v2` |
+| `contracts[].expect.portable.category` | `string` | false | `v2` |
+| `contracts[].expect.portable.message_tokens` | `list` | false | `v2` |
+| `contracts[].expect.overrides` | `list` | false | `v2` |
+| `contracts[].expect.overrides[].runner` | `string` | true | `v2` |
+| `contracts[].expect.overrides[].status` | `string` | false | `v2` |
+| `contracts[].expect.overrides[].category` | `string` | false | `v2` |
+| `contracts[].expect.overrides[].message_tokens` | `list` | false | `v2` |
+| `contracts[].requires` | `mapping` | false | `v2` |
 
 ### Harness Contract Matrix
 
 | harness | required_top_level | required_clauses | allowed_export_modes |
 |---|---|---|---|
 | `check` | `harness`, `clauses` | `profile`, `config` | `function` |
-| `export` | `harness`, `clauses`, `library`, `doc` | `profile`, `config` | `function` |
+| `export` | `harness`, `clauses`, `docs` | `profile`, `config` | `function` |
 | `job` | `harness`, `clauses` | `profile`, `config` | `function` |
 <!-- GENERATED:END spec_schema_field_catalog -->

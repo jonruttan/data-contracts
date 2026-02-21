@@ -42,38 +42,12 @@ contracts:
       - subject
       - token
       required: true
-      doc:
+      docs:
+      - id: conf.pass_when_text_contains.doc.1
         summary: Contract export for `conf.pass_when_text_contains`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: subject
-          type: any
-          required: true
-          description: Input parameter `subject`.
-        - name: token
-          type: any
-          required: true
-          description: Input parameter `token`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            subject: "<subject>"
-            token: "<token>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: \"<subject>\"\n  token: \"<token>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: token\n  type: any\n  required: true\n  description: Input parameter `token`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: conf.pass_when_text_regex
       from: assert.function
@@ -82,38 +56,12 @@ contracts:
       - subject
       - pattern
       required: true
-      doc:
+      docs:
+      - id: conf.pass_when_text_regex.doc.1
         summary: Contract export for `conf.pass_when_text_regex`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: subject
-          type: any
-          required: true
-          description: Input parameter `subject`.
-        - name: pattern
-          type: any
-          required: true
-          description: Input parameter `pattern`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            subject: "<subject>"
-            pattern: "<pattern>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: \"<subject>\"\n  pattern: \"<pattern>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: conf.eq
       from: assert.function
@@ -122,38 +70,12 @@ contracts:
       - subject
       - value
       required: true
-      doc:
+      docs:
+      - id: conf.eq.doc.1
         summary: Contract export for `conf.eq`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: subject
-          type: any
-          required: true
-          description: Input parameter `subject`.
-        - name: value
-          type: any
-          required: true
-          description: Input parameter `value`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            subject: "<subject>"
-            value: "<value>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: \"<subject>\"\n  value: \"<value>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: value\n  type: any\n  required: true\n  description: Input parameter `value`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: conf.has_error_category
       from: assert.function
@@ -162,38 +84,12 @@ contracts:
       - subject
       - category
       required: true
-      doc:
+      docs:
+      - id: conf.has_error_category.doc.1
         summary: Contract export for `conf.has_error_category`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: subject
-          type: any
-          required: true
-          description: Input parameter `subject`.
-        - name: category
-          type: any
-          required: true
-          description: Input parameter `category`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            subject: "<subject>"
-            category: "<category>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: \"<subject>\"\n  category: \"<category>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: category\n  type: any\n  required: true\n  description: Input parameter `category`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
     - as: conf.json_type_is
       from: assert.function
@@ -202,38 +98,12 @@ contracts:
       - subject
       - type_name
       required: true
-      doc:
+      docs:
+      - id: conf.json_type_is.doc.1
         summary: Contract export for `conf.json_type_is`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: subject
-          type: any
-          required: true
-          description: Input parameter `subject`.
-        - name: type_name
-          type: any
-          required: true
-          description: Input parameter `type_name`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            subject: "<subject>"
-            type_name: "<type_name>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: \"<subject>\"\n  type_name: \"<type_name>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: type_name\n  type: any\n  required: true\n  description: Input parameter `type_name`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: conformance.assertion.core
@@ -242,12 +112,13 @@ contracts:
     owner: data-contracts
     tags:
     - conformance
-  doc:
+  docs:
+  - id: LIB-CONF-ASSERT-001.doc.1
     summary: Case `LIB-CONF-ASSERT-001` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```

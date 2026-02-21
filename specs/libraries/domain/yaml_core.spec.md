@@ -24,43 +24,12 @@ contracts:
       - path_segments
       - fallback
       required: true
-      doc:
+      docs:
+      - id: domain.yaml.parse_get_or.doc.1
         summary: Contract export for `domain.yaml.parse_get_or`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: yaml_text
-          type: any
-          required: true
-          description: Input parameter `yaml_text`.
-        - name: path_segments
-          type: any
-          required: true
-          description: Input parameter `path_segments`.
-        - name: fallback
-          type: any
-          required: true
-          description: Input parameter `fallback`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            yaml_text: "<yaml_text>"
-            path_segments: "<path_segments>"
-            fallback: "<fallback>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  yaml_text: \"<yaml_text>\"\n  path_segments: \"<path_segments>\"\n  fallback: \"<fallback>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: yaml_text\n  type: any\n  required: true\n  description: Input parameter `yaml_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- name: fallback\n  type: any\n  required: true\n  description: Input parameter `fallback`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.yaml.core
@@ -69,14 +38,15 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR.doc.1
     summary: Case `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 - id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
   clauses:
     predicates:
@@ -92,33 +62,12 @@ contracts:
       params:
       - value
       required: true
-      doc:
+      docs:
+      - id: domain.yaml.stringify.doc.1
         summary: Contract export for `domain.yaml.stringify`.
-        description: Auto-generated metadata stub. Replace with authored reference text.
-        params:
-        - name: value
-          type: any
-          required: true
-          description: Input parameter `value`.
-        returns:
-          type: any
-          description: Result payload for this symbol.
-        errors:
-        - code: SCHEMA_ERROR
-          when: Input payload does not satisfy contract shape requirements.
-          category: schema
-        examples:
-        - title: Basic usage
-          input:
-            value: "<value>"
-          expected: "<result>"
-          notes: Replace with a concrete scenario.
-        portability:
-          python: true
-          php: true
-          rust: true
-          notes: Confirm per-runtime behavior and caveats.
-        see_also: []
+        audience: spec-authors
+        status: active
+        description: "Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  value: \"<value>\"\nexpected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name: value\n  type: any\n  required: true\n  description: Input parameter `value`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
   library:
     id: domain.yaml.core
@@ -127,13 +76,14 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  doc:
+  docs:
+  - id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY.doc.1
     summary: Case `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` for `contract.export`.
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-    see_also: []
 ```
 
