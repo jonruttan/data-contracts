@@ -7,6 +7,8 @@ unsetopt XTRACE VERBOSE 2>/dev/null || true
 set +x +v
 
 ROOT_DIR="$(cd "$(dirname "${0}")/.." && pwd)"
+DEFAULT_SOURCE_REPO="https://github.com/jonruttan/data-contracts-bundles.git"
+DEFAULT_SOURCE_REF="main"
 BUNDLE_LOCK_FILENAME="resolved_bundle_lock_v1.yaml"
 FILES_MANIFEST_FILENAME="resolved_files.sha256"
 
@@ -15,9 +17,11 @@ source "${ROOT_DIR}/scripts/lib/yaml_to_json.sh"
 usage() {
   cat <<USAGE
 Usage:
-  scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir> [--repo-root <dir>] [--source-repo <value>] [--source-ref <value>] [--source-commit <sha>]
-  scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir> [--repo-root <dir>] [--source-repo <value>] [--source-ref <value>] [--source-commit <sha>]
+  scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir> [--source-repo <url>] [--source-ref <ref>] [--repo-root <dir>] [--source-commit <sha>]
+  scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir> [--source-repo <url>] [--source-ref <ref>] [--repo-root <dir>] [--source-commit <sha>]
   scripts/bundle package-check --package <path> --sha256 <path>
+  scripts/bundle install --project-lock <bundles.lock.yaml> --out <workspace>
+  scripts/bundle install-check --project-lock <bundles.lock.yaml> --out <workspace>
 USAGE
 }
 
@@ -41,6 +45,30 @@ array_contains() {
   jq -e --arg v "$value" 'index($v) != null' <<<"$json_array" >/dev/null 2>&1
 }
 
+prepare_repo_root() {
+  local source_repo="$1"
+  local source_ref="$2"
+  local repo_root_override="$3"
+  local tmp_repo_out="$4"
+
+  if [[ -n "$repo_root_override" ]]; then
+    local rr
+    rr="$(cd "$repo_root_override" && pwd)"
+    [[ -d "$rr/specs/bundles" ]] || err "manifest root not found: ${rr}/specs/bundles"
+    printf '%s\n' "$rr"
+    return
+  fi
+
+  command -v git >/dev/null 2>&1 || err "git is required"
+  local tmp_repo
+  tmp_repo="$(mktemp -d)"
+  eval "$tmp_repo_out='$tmp_repo'"
+  git clone --quiet "$source_repo" "$tmp_repo" >/dev/null 2>&1 || err "failed to clone source repo: ${source_repo}"
+  git -C "$tmp_repo" checkout --quiet "$source_ref" >/dev/null 2>&1 || err "failed to checkout source ref '${source_ref}'"
+  [[ -d "$tmp_repo/specs/bundles" ]] || err "manifest root not found in source repo: specs/bundles"
+  printf '%s\n' "$tmp_repo"
+}
+
 resolve_impl() {
   command -v jq >/dev/null 2>&1 || err "jq is required"
   command -v php >/dev/null 2>&1 || err "php is required"
@@ -48,17 +76,18 @@ resolve_impl() {
   local runner="$1"
   local root_bundle="$2"
   local out_dir="$3"
-  local repo_root="$4"
-  local source_repo="$5"
-  local source_ref="$6"
-  local source_commit="$7"
+  local source_repo="$4"
+  local source_ref="$5"
+  local repo_root_override="$6"
+  local source_commit_override="$7"
 
   [[ "$runner" == "python" || "$runner" == "php" || "$runner" == "rust" ]] || err "--runner must be one of: python|php|rust"
   [[ -n "$root_bundle" ]] || err "--root is required"
   [[ -n "$out_dir" ]] || err "--out is required"
 
-  repo_root="$(cd "$repo_root" && pwd)"
-  [[ -d "${repo_root}/specs/bundles" ]] || err "manifest root not found: ${repo_root}/specs/bundles"
+  local tmp_repo=""
+  local repo_root
+  repo_root="$(prepare_repo_root "$source_repo" "$source_ref" "$repo_root_override" tmp_repo)"
 
   local tmp_dir
   tmp_dir="$(mktemp -d)"
@@ -278,8 +307,10 @@ resolve_impl() {
   local manifests_hash
   manifests_hash="$(sha256_file "$manifests_index")"
 
-  [[ -n "$source_repo" ]] || source_repo="$repo_root"
-  if [[ -z "$source_commit" ]]; then
+  local source_commit
+  if [[ -n "$source_commit_override" ]]; then
+    source_commit="$source_commit_override"
+  else
     source_commit="$(git -C "$repo_root" rev-parse HEAD 2>/dev/null || true)"
     [[ -n "$source_commit" ]] || source_commit="unknown"
   fi
@@ -304,15 +335,156 @@ resolve_impl() {
   } > "$lock_path"
 
   rm -rf "$tmp_dir"
+  [[ -n "$tmp_repo" ]] && rm -rf "$tmp_repo"
+}
+
+verify_resolved_files_manifest() {
+  local install_root="$1"
+  local manifest_path="${install_root}/${FILES_MANIFEST_FILENAME}"
+  [[ -f "$manifest_path" ]] || err "missing ${FILES_MANIFEST_FILENAME} in ${install_root}"
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    local expected rel actual target
+    expected="$(awk '{print $1}' <<<"$line")"
+    rel="$(awk '{print $2}' <<<"$line")"
+    [[ -n "$expected" && -n "$rel" ]] || err "invalid manifest line in ${manifest_path}: ${line}"
+    target="${install_root}/${rel}"
+    [[ -f "$target" ]] || err "manifest file missing: ${rel}"
+    actual="$(sha256_file "$target")"
+    [[ "$actual" == "$expected" ]] || err "manifest checksum mismatch for ${rel}; expected ${expected}, got ${actual}"
+  done < "$manifest_path"
+}
+
+validate_project_lock_json() {
+  local json="$1"
+  jq -e '
+    .version == 1 and
+    (.project_id | type == "string" and length > 0) and
+    (.bundles | type == "array" and length > 0) and
+    all(.bundles[];
+      (.bundle_id | type == "string" and length > 0) and
+      (.bundle_version | type == "string" and length > 0) and
+      (.install_dir | type == "string" and length > 0) and
+      (.source | type == "object") and
+      (.source.repo | type == "string" and length > 0) and
+      (.source.release_tag | type == "string" and length > 0) and
+      (.source.asset_url | type == "string" and length > 0) and
+      (.source.sha256 | type == "string" and length > 0)
+    )
+  ' >/dev/null <<<"$json"
+}
+
+normalize_install_dir() {
+  local p="$1"
+  p="${p#./}"
+  p="${p#/}"
+  while [[ "$p" == *"//"* ]]; do p="${p//\/\//\/}"; done
+  p="${p%/}"
+  [[ -n "$p" ]] || err "install_dir cannot be empty"
+  [[ "$p" != *".."* ]] || err "install_dir must not contain '..': ${p}"
+  [[ "$p" != .* ]] || true
+  printf '%s\n' "$p"
+}
+
+install_impl() {
+  command -v jq >/dev/null 2>&1 || err "jq is required"
+  command -v php >/dev/null 2>&1 || err "php is required"
+  command -v curl >/dev/null 2>&1 || err "curl is required"
+  command -v tar >/dev/null 2>&1 || err "tar is required"
+
+  local project_lock="$1"
+  local out_dir="$2"
+  local check_only="$3"
+
+  [[ -f "$project_lock" ]] || err "missing bundles lock: ${project_lock}"
+  mkdir -p "$out_dir"
+
+  local json
+  json="$(parse_yaml_file_to_json "$project_lock")" || err "failed parsing bundles lock: ${project_lock}"
+  validate_project_lock_json "$json" || err "invalid project bundle lock shape in ${project_lock}"
+
+  local tmp_dl
+  tmp_dl="$(mktemp -d)"
+  typeset -A SEEN
+  local dirs_file="${tmp_dl}/dirs.txt"
+  : > "$dirs_file"
+
+  local entries_file="${tmp_dl}/entries.jsonl"
+  : > "$entries_file"
+  local idx=0
+  while true; do
+    local entry
+    entry="$(jq -c ".bundles[$idx] // empty" <<<"$json")"
+    [[ -n "$entry" ]] || break
+
+    local bundle_id bundle_version key install_dir
+    bundle_id="$(jq -r '.bundle_id' <<<"$entry")"
+    bundle_version="$(jq -r '.bundle_version' <<<"$entry")"
+    install_dir="$(jq -r '.install_dir' <<<"$entry")"
+    install_dir="$(normalize_install_dir "$install_dir")"
+    key="${bundle_id}@${bundle_version}|${install_dir}"
+    [[ -z "${SEEN[$key]-}" ]] || err "duplicate bundle entry: ${key}"
+    SEEN[$key]=1
+
+    jq -c --arg install_dir "$install_dir" '. + {install_dir:$install_dir}' <<<"$entry" >> "$entries_file"
+    echo "$install_dir" >> "$dirs_file"
+    idx=$((idx + 1))
+  done
+
+  # no-overlap policy: enforce before any download/unpack work
+  local sorted_dirs="${tmp_dl}/sorted_dirs.txt"
+  LC_ALL=C sort -u "$dirs_file" > "$sorted_dirs"
+  local prev=""
+  while IFS= read -r cur; do
+    [[ -z "$cur" ]] && continue
+    if [[ -n "$prev" ]]; then
+      if [[ "$cur" == "$prev" || "$cur" == "$prev"/* || "$prev" == "$cur"/* ]]; then
+        err "overlapping install_dir entries are forbidden: '${prev}' and '${cur}'"
+      fi
+    fi
+    prev="$cur"
+  done < "$sorted_dirs"
+
+  while IFS= read -r entry; do
+    [[ -n "$entry" ]] || continue
+    local bundle_id bundle_version install_dir asset_url expected_sha install_abs
+    bundle_id="$(jq -r '.bundle_id' <<<"$entry")"
+    bundle_version="$(jq -r '.bundle_version' <<<"$entry")"
+    install_dir="$(jq -r '.install_dir' <<<"$entry")"
+    asset_url="$(jq -r '.source.asset_url' <<<"$entry")"
+    expected_sha="$(jq -r '.source.sha256' <<<"$entry")"
+
+    local pkg_path
+    pkg_path="${tmp_dl}/${bundle_id}-${bundle_version}.tar.gz"
+    curl --fail --location --silent --show-error "$asset_url" --output "$pkg_path" || err "download failure for ${bundle_id}@${bundle_version} from ${asset_url}"
+
+    local actual_sha
+    actual_sha="$(sha256_file "$pkg_path")"
+    [[ "$actual_sha" == "$expected_sha" ]] || err "checksum mismatch for ${bundle_id}@${bundle_version}; expected ${expected_sha}, got ${actual_sha}"
+
+    install_abs="${out_dir}/${install_dir}"
+    if [[ "$check_only" == "0" ]]; then
+      rm -rf "$install_abs"
+      mkdir -p "$install_abs"
+      tar -C "$install_abs" -xzf "$pkg_path" || err "failed to unpack bundle ${bundle_id}@${bundle_version}"
+    fi
+
+    [[ -d "$install_abs" ]] || err "install directory missing for ${bundle_id}@${bundle_version}: ${install_abs}"
+    [[ -f "${install_abs}/${BUNDLE_LOCK_FILENAME}" ]] || err "missing ${BUNDLE_LOCK_FILENAME} for ${bundle_id}@${bundle_version}"
+    verify_resolved_files_manifest "$install_abs"
+  done < "$entries_file"
+
+  rm -rf "$tmp_dl"
 }
 
 resolve_cmd() {
   local runner=""
   local root_bundle=""
   local out_dir=""
-  local repo_root="."
-  local source_repo=""
-  local source_ref="HEAD"
+  local source_repo="$DEFAULT_SOURCE_REPO"
+  local source_ref="$DEFAULT_SOURCE_REF"
+  local repo_root=""
   local source_commit=""
 
   while [[ $# -gt 0 ]]; do
@@ -320,15 +492,15 @@ resolve_cmd() {
       --runner) runner="$2"; shift 2 ;;
       --root) root_bundle="$2"; shift 2 ;;
       --out) out_dir="$2"; shift 2 ;;
-      --repo-root) repo_root="$2"; shift 2 ;;
       --source-repo) source_repo="$2"; shift 2 ;;
       --source-ref) source_ref="$2"; shift 2 ;;
+      --repo-root) repo_root="$2"; shift 2 ;;
       --source-commit) source_commit="$2"; shift 2 ;;
       *) err "unknown arg: $1" ;;
     esac
   done
 
-  resolve_impl "$runner" "$root_bundle" "$out_dir" "$repo_root" "$source_repo" "$source_ref" "$source_commit"
+  resolve_impl "$runner" "$root_bundle" "$out_dir" "$source_repo" "$source_ref" "$repo_root" "$source_commit"
 }
 
 package_cmd() {
@@ -339,9 +511,9 @@ package_cmd() {
   local root_bundle=""
   local bundle_version=""
   local out_dir=""
-  local repo_root="."
-  local source_repo=""
-  local source_ref="HEAD"
+  local source_repo="$DEFAULT_SOURCE_REPO"
+  local source_ref="$DEFAULT_SOURCE_REF"
+  local repo_root=""
   local source_commit=""
 
   while [[ $# -gt 0 ]]; do
@@ -350,9 +522,9 @@ package_cmd() {
       --root) root_bundle="$2"; shift 2 ;;
       --version) bundle_version="$2"; shift 2 ;;
       --out) out_dir="$2"; shift 2 ;;
-      --repo-root) repo_root="$2"; shift 2 ;;
       --source-repo) source_repo="$2"; shift 2 ;;
       --source-ref) source_ref="$2"; shift 2 ;;
+      --repo-root) repo_root="$2"; shift 2 ;;
       --source-commit) source_commit="$2"; shift 2 ;;
       *) err "unknown arg: $1" ;;
     esac
@@ -364,7 +536,7 @@ package_cmd() {
   local tmp_resolved
   tmp_resolved="$(mktemp -d)"
 
-  resolve_impl "$runner" "$root_bundle" "$tmp_resolved" "$repo_root" "$source_repo" "$source_ref" "$source_commit"
+  resolve_impl "$runner" "$root_bundle" "$tmp_resolved" "$source_repo" "$source_ref" "$repo_root" "$source_commit"
 
   local package_name package_path sha_path intoto_path package_sha generated_at
   package_name="data-contract-bundle-${root_bundle}-v${bundle_version}.tar.gz"
@@ -427,10 +599,42 @@ package_check_cmd() {
   echo "OK: package checksum verified for ${package_path}"
 }
 
+install_cmd() {
+  local project_lock=""
+  local out_dir=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --project-lock) project_lock="$2"; shift 2 ;;
+      --out) out_dir="$2"; shift 2 ;;
+      *) err "unknown arg: $1" ;;
+    esac
+  done
+  [[ -n "$project_lock" ]] || err "--project-lock is required"
+  [[ -n "$out_dir" ]] || err "--out is required"
+  install_impl "$project_lock" "$out_dir" 0
+}
+
+install_check_cmd() {
+  local project_lock=""
+  local out_dir=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --project-lock) project_lock="$2"; shift 2 ;;
+      --out) out_dir="$2"; shift 2 ;;
+      *) err "unknown arg: $1" ;;
+    esac
+  done
+  [[ -n "$project_lock" ]] || err "--project-lock is required"
+  [[ -n "$out_dir" ]] || err "--out is required"
+  install_impl "$project_lock" "$out_dir" 1
+}
+
 [[ $# -gt 0 ]] || { usage >&2; exit 2; }
 case "$1" in
   resolve) shift; resolve_cmd "$@" ;;
   package) shift; package_cmd "$@" ;;
   package-check) shift; package_check_cmd "$@" ;;
+  install) shift; install_cmd "$@" ;;
+  install-check) shift; install_check_cmd "$@" ;;
   *) usage >&2; exit 2 ;;
 esac

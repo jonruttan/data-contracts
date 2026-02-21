@@ -4,14 +4,14 @@ schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-RUNTIME-BUNDLE-002
-    title: project bundle lock schema is indexed
-    purpose: Ensures schema index includes project bundle lock schema for multi-bundle installs.
+  - id: DCCONF-BTOOL-007
+    title: bundle tooling exposes install command surface
+    purpose: Bundle CLI must expose install and install-check commands for multi-bundle project workflows.
     harness:
       check:
         profile: text.file
         config:
-          path: /specs/schema/index.md
+          path: /scripts/bundle
     clauses:
       defaults: {}
       imports:
@@ -22,15 +22,10 @@ contracts:
           assert:
             std.string.contains:
               - {var: text}
-              - /specs/schema/bundle_manifest_v1.yaml
+              - scripts/bundle install --project-lock
         - id: assert_2
           assert:
             std.string.contains:
               - {var: text}
-              - /specs/schema/resolved_bundle_lock_v1.yaml
-        - id: assert_3
-          assert:
-            std.string.contains:
-              - {var: text}
-              - /specs/schema/project_bundle_lock_v1.yaml
+              - scripts/bundle install-check --project-lock
 ```

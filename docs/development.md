@@ -40,9 +40,11 @@ Canonical local gate for this repository:
 Canonical bundle package operations:
 
 ```sh
-./scripts/bundle resolve --runner rust --root runner_contract_bundle --out .artifacts/bundles/runner_contract_bundle
-./scripts/bundle package --runner rust --root runner_contract_bundle --version 1.0.0 --out .artifacts/bundles
+./scripts/bundle resolve --runner rust --root runner_contract_bundle --out .artifacts/bundles/runner_contract_bundle --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main
+./scripts/bundle package --runner rust --root runner_contract_bundle --version 1.0.0 --out .artifacts/bundles --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main
 ./scripts/bundle package-check --package .artifacts/bundles/data-contract-bundle-runner_contract_bundle-v1.0.0.tar.gz --sha256 .artifacts/bundles/data-contract-bundle-runner_contract_bundle-v1.0.0.tar.gz.sha256
+./scripts/bundle install --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
+./scripts/bundle install-check --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
 ```
 
 Canonical runner-ingestible pack manifests:

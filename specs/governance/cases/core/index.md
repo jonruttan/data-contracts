@@ -126,6 +126,7 @@ Canonical domain index for executable specs in this subtree.
 - /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_contract_defined.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_pack_complete.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_schema_defined.spec.md
+- /specs/governance/cases/core/runner_contract/runtime_bundle_librarian_repo_documented.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_bundle_lock_schema_defined.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_bundle_package_contract_defined.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_status_matrix_schema_valid.spec.md

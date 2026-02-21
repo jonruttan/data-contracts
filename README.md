@@ -65,12 +65,16 @@ This repository does not execute runtime lanes.
 
 ## Bundle Resolver and Package Tooling
 
-- Resolve: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir>`
-- Package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir>`
+- Canonical librarian repo: [`jonruttan/data-contracts-bundles`](https://github.com/jonruttan/data-contracts-bundles)
+- Resolve: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir> --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main`
+- Package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir> --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main`
 - Verify package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package-check --package <path> --sha256 <path>`
+- Install bundles: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install --project-lock bundles.lock.yaml --out <workspace>`
+- Verify install: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install-check --project-lock bundles.lock.yaml --out <workspace>`
 - Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/bundle_manifest_v1.yaml`
 - Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_bundle_lock_v1.yaml`
-- Runner lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_bundle_lock_v1.yaml`
+- Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/project_bundle_lock_v1.yaml`
+- Legacy runner lock schema (deprecated): `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_bundle_lock_v1.yaml`
 
 Legacy alias:
 

@@ -38,6 +38,8 @@ Runner repositories MAY provide:
   materialize resolved lock + file manifest metadata locally.
 - `bundle-sync-check`: validate local materialization and lock/manifests against
   pinned bundle package checksum and lock metadata.
+- `bundle-sync` and `bundle-sync-check` SHOULD consume root
+  `bundles.lock.yaml` (project multi-bundle lock) when available.
 - `compat-check`: verify runner compatibility surface against pinned upstream contracts.
 
 For MAY tasks, behavior MUST match task-id intent and MUST NOT weaken MUST task

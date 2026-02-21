@@ -26,6 +26,7 @@ Related docs/reference schemas:
 - `specs/schema/bundle_manifest_v1.yaml`
 - `specs/schema/resolved_bundle_lock_v1.yaml`
 - `specs/schema/runner_bundle_lock_v1.yaml`
+- `specs/schema/project_bundle_lock_v1.yaml`
 - `specs/schema/registry/v2/*.yaml`
 - `specs/contract/19_spec_lang_stdlib_profile_v2.md`
 - `specs/contract/20_subject_profiles_v2.md`
@@ -73,6 +74,9 @@ Bundle terminology policy:
 - Canonical metadata names are `bundle_version` and `maintainers`.
 - `version` and `author` are migration aliases in prose only and are not canonical
   schema keys.
+- canonical project-level bundle installs are pinned in root `bundles.lock.yaml`
+  using `/specs/schema/project_bundle_lock_v1.yaml`.
+- `/specs/schema/runner_bundle_lock_v1.yaml` is deprecated for new integrations.
 
 Each `contracts[]` item:
 

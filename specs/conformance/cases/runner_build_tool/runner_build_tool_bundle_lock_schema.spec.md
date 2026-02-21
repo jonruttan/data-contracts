@@ -4,14 +4,14 @@ schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
-  - id: DCCONF-BTOOL-005
-    title: runner bundle lock schema defines canonical lock fields
-    purpose: Runner bundle lock schema must define source asset URL, sha256, and resolved lock hash fields.
+  - id: DCCONF-BTOOL-008
+    title: project bundle lock schema defines canonical multi-bundle fields
+    purpose: Project bundle lock schema must define bundles array, install directories, and source checksums.
     harness:
       check:
         profile: text.file
         config:
-          path: /specs/schema/runner_bundle_lock_v1.yaml
+          path: /specs/schema/project_bundle_lock_v1.yaml
     clauses:
       defaults: {}
       imports:
@@ -22,7 +22,7 @@ contracts:
           assert:
             std.string.contains:
               - {var: text}
-              - root_bundle_id
+              - bundles
         - id: assert_2
           assert:
             std.string.contains:
@@ -37,5 +37,5 @@ contracts:
           assert:
             std.string.contains:
               - {var: text}
-              - resolved_bundle_lock_sha256
+              - install_dir
 ```

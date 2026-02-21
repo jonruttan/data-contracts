@@ -15,7 +15,7 @@ contracts:
           - /specs/contract/30_build_tool_command_set.md
           - /specs/contract/33_bundle_package_management.md
           - /specs/schema/runner_build_tool_contract_v1.yaml
-          - /specs/schema/runner_bundle_lock_v1.yaml
+          - /specs/schema/project_bundle_lock_v1.yaml
           - /specs/schema/bundle_manifest_v1.yaml
           - /specs/schema/resolved_bundle_lock_v1.yaml
           - /specs/conformance/cases/runner_build_tool/runner_build_tool_required_core.spec.md

@@ -55,6 +55,11 @@ Bundle package management surface is defined by:
 - `/specs/schema/bundle_manifest_v1.yaml`
 - `/specs/schema/resolved_bundle_lock_v1.yaml`
 - `/specs/schema/runner_bundle_lock_v1.yaml`
+- `/specs/schema/project_bundle_lock_v1.yaml`
+
+Canonical bundle manifest and package librarian repository:
+
+- `https://github.com/jonruttan/data-contracts-bundles`
 
 ## Policy Semantics
 

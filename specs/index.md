@@ -12,7 +12,8 @@ Canonical specification root for `data-contracts`.
 - Governance checks: `/specs/governance/index.md`
 - Reusable libraries: `/specs/libraries/index.md`
 - Runner-ingestible packs: `/specs/packs/index.md`
-- Bundle manifests: `/specs/bundles/index.md`
+- Bundle contracts/schemas: `/specs/contract/33_bundle_package_management.md`,
+  `/specs/schema/bundle_manifest_v1.yaml`
 
 ## Subdomains
 
@@ -21,5 +22,7 @@ Canonical specification root for `data-contracts`.
 ## Ownership Model
 
 - `specs/**` is canonical.
+- canonical bundle manifests/packages are sourced from
+  `https://github.com/jonruttan/data-contracts-bundles`.
 - `docs/book/**` is reader-facing and includes generated references.
 - `docs/history/**` is archival and non-canonical.
