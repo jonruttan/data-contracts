@@ -1,80 +1,75 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
+schema_ref: "/specs/schema/schema_v2.md"
 contracts:
-  - id: DCCONF-SCHEMA-STDLIB-003
-    title: json parsing and type predicates stay deterministic
-    purpose: Ensures parsed JSON shapes can be validated with deterministic type predicates.
-    expect:
-      portable:
-        status: pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - text
-      predicates:
-      - id: assert_1
-        assert:
-        - std.logic.eq:
-          - std.type.json_type:
+- id: DCCONF-SCHEMA-STDLIB-003
+  title: json parsing and type predicates stay deterministic
+  purpose: Ensures parsed JSON shapes can be validated with deterministic type predicates.
+  expect:
+    portable:
+      status: pass
+  clauses:
+    defaults: {}
+    imports:
+    - from: artifact
+      names:
+      - text
+    predicates:
+    - id: assert_1
+      assert:
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
+            - '{"id":1,"tags":["alpha","beta"]}'
+          - dict
+        - true
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.object.get:
             - std.json.parse:
               - '{"id":1,"tags":["alpha","beta"]}'
-            - dict
-          - true
+            - tags
+          - list
+        - true
+    profile: text.file
+    config:
+      path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
+  harness: check
+- id: DCCONF-SCHEMA-STDLIB-004
+  title: parsed payload predicates support deterministic error-shape checks
+  purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value checks.
+  expect:
+    portable:
+      status: pass
+  clauses:
+    defaults: {}
+    imports:
+    - from: artifact
+      names:
+      - text
+    predicates:
+    - id: assert_1
+      assert:
+        std.logic.and:
         - std.logic.eq:
           - std.type.json_type:
             - std.object.get:
               - std.json.parse:
-                - '{"id":1,"tags":["alpha","beta"]}'
-              - tags
-            - list
+                - '{"id":"x"}'
+              - id
+            - string
           - true
-    harness:
-      check:
-        profile: text.file
-        config:
-          path: /specs/conformance/cases/core/spec_lang_schema.spec.md
-  - id: DCCONF-SCHEMA-STDLIB-004
-    title: parsed payload predicates support deterministic error-shape checks
-    purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value
-      checks.
-    expect:
-      portable:
-        status: pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - text
-      predicates:
-      - id: assert_1
-        assert:
-          std.logic.and:
+        - std.logic.not:
           - std.logic.eq:
-            - std.type.json_type:
-              - std.object.get:
-                - std.json.parse:
-                  - '{"id":"x"}'
-                - id
-              - string
-            - true
-          - std.logic.not:
-            - std.logic.eq:
-              - std.object.get:
-                - std.json.parse:
-                  - '{"id":"x"}'
-                - id
-              - 1
-    harness:
-      check:
-        profile: text.file
-        config:
-          path: /specs/conformance/cases/core/spec_lang_schema.spec.md
+            - std.object.get:
+              - std.json.parse:
+                - '{"id":"x"}'
+              - id
+            - 1
+    profile: text.file
+    config:
+      path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
+  harness: check
 ```
 
 

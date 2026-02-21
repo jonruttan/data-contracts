@@ -2,7 +2,7 @@
 
 ## Dispatch
 
-- Runner dispatches by case `type`.
+- Runner dispatches by case `harness` string.
 - Harness receives parsed case and execution context.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
@@ -10,19 +10,19 @@
 
 Suite-root external references:
 
-- executable suites MAY declare top-level `imports[]` and `exports[]` to model
-  references external to per-contract harness/assertion blocks.
-- these suite-root declarations do not replace `harness.exports`,
-  `harness.chain.imports`, or `clauses.imports`.
-- `imports[].ref` / `exports[].ref` template expressions use moustache
-  (`{{...}}`) syntax and resolve from suite context only.
+- executable suites MAY declare `artifact.imports[]` and `artifact.exports[]`
+  to model artifact references external to per-contract harness/assertion
+  blocks.
+- root `exports[]` is reserved for function symbol exports only.
+- `artifact.imports[].ref` / `artifact.exports[].ref` template expressions use
+  moustache (`{{...}}`) syntax and resolve from suite context only.
 
 ## Entrypoint
 
-For `type: cli.run`:
+For `harness: check` with `clauses.profile: cli.run`:
 
-- `harness.entrypoint` MUST be provided by the spec.
-- Portable conformance fixtures MUST provide `harness.entrypoint` explicitly.
+- `clauses.config.entrypoint` MUST be provided by the spec.
+- Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).
 - Implementations SHOULD support a process-env allowlist control for `cli.run`
@@ -106,7 +106,8 @@ Cross-spec chaining profile:
   - `severity` (int, optional, default `1`, must be `>=1`)
   - `purpose` (string, optional, non-empty when provided)
   - `ref` string in format `[path][#case_id]`
-- producer symbol declarations are canonical at `harness.exports`.
+- producer symbol declarations are canonical at suite-root `exports[]` using
+  `from: assert.function`.
 - `harness.chain.steps[*].imports` and `harness.chain.steps[*].exports` are
   forbidden non-canonical locations.
 - `allow_continue` is optional and defaults to `false`.
@@ -174,7 +175,7 @@ Subject profile envelope contract:
 
 ## Spec-Lang Reuse
 
-- `harness.spec_lang.includes` MAY provide ordered library docs/files
+- `clauses.config.spec_lang.includes` MAY provide ordered library docs/files
   containing `type: spec_lang.export` reusable function definitions.
 - this include surface is for library authoring/composition; executable case
   symbol loading is chain-first.
@@ -191,11 +192,11 @@ Subject profile envelope contract:
   - `fail` runs once on first failure
   - `complete` runs after all steps and hooks pass
   - hook failures are runtime-fatal
-- for `type: contract.job`, harness stores job metadata at `harness.jobs[]`:
-  - `harness.jobs[].id` (required, unique)
-  - `harness.jobs[].helper` (required)
-  - `harness.jobs[].mode` (optional)
-  - `harness.jobs[].inputs` / `outputs` (optional mappings)
+- for `harness: job`, metadata is stored at `clauses.config.jobs[]`:
+  - `clauses.config.jobs[].id` (required, unique)
+  - `clauses.config.jobs[].helper` (required)
+  - `clauses.config.jobs[].mode` (optional)
+  - `clauses.config.jobs[].inputs` / `outputs` (optional mappings)
 - Rust job spec pattern standardizes lifecycle diagnostics with hook jobs:
   - job id `on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
   - job id `on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
@@ -205,7 +206,7 @@ Subject profile envelope contract:
 
 ## Orchestration Tooling
 
-- `type: orchestration.run` uses `harness.orchestration` for runner tool
+- orchestration dispatch uses `clauses.config.orchestration` for runner tool
   dispatch contracts.
 - tool definitions are registry-backed per implementation:
   - `specs/governance/tools/python/tools_v1.yaml`
@@ -218,7 +219,7 @@ Subject profile envelope contract:
 
 ## Docs Generation Harness
 
-- `type: docs.generate` uses `harness.docs_generate` for spec-driven docs
+- docs generation uses `clauses.config.docs_generate` for spec-driven docs
   generation surfaces.
 - `surface_id` MUST resolve to a declared docs generator surface in
   `specs/schema/docs_generator_registry_v1.yaml`.

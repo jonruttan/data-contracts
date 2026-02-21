@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
+schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-EXPR-001
   title: evaluate simple predicate passes
@@ -13,16 +11,8 @@ contracts:
   expect:
     portable:
       status: pass
-      category: null
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: /specs/libraries/conformance/assertion_core.spec.md
-      as: lib_assertion_core_spec
-      symbols:
-      - conf.pass_when_text_contains
+      category:
+  harness: check
   clauses:
     defaults: {}
     imports:
@@ -37,6 +27,13 @@ contracts:
           - var: conf.pass_when_text_contains
           - var: text
           - 'version: 1'
+    profile: text.file
+    config:
+      use:
+      - ref: "/specs/libraries/conformance/assertion_core.spec.md"
+        as: lib_assertion_core_spec
+        symbols:
+        - conf.pass_when_text_contains
 - id: DCCONF-EXPR-002
   title: evaluate composed boolean passes
   purpose: Verifies composed boolean expressions evaluate correctly across both runner implementations.
@@ -46,16 +43,8 @@ contracts:
   expect:
     portable:
       status: pass
-      category: null
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: /specs/libraries/conformance/assertion_core.spec.md
-      as: lib_assertion_core_spec
-      symbols:
-      - conf.pass_when_text_contains
+      category:
+  harness: check
   clauses:
     defaults: {}
     imports:
@@ -72,7 +61,14 @@ contracts:
           - version
         - std.string.starts_with:
           - var: text
-          - '#'
+          - "#"
+    profile: text.file
+    config:
+      use:
+      - ref: "/specs/libraries/conformance/assertion_core.spec.md"
+        as: lib_assertion_core_spec
+        symbols:
+        - conf.pass_when_text_contains
 - id: DCCONF-EXPR-003
   title: evaluate tail recursion is stack safe
   purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically under mapping AST hard-cut rules.
@@ -99,17 +95,17 @@ contracts:
           - lit:
             - - loop
               - fn:
-                - - n
+                - - "n"
                   - acc
                 - if:
                   - eq:
-                    - var: n
+                    - var: "n"
                     - 0
                   - var: acc
                   - call:
                     - var: loop
                     - sub:
-                      - var: n
+                      - var: "n"
                       - 1
                     - add:
                       - var: acc
@@ -120,10 +116,9 @@ contracts:
               - 1500
               - 0
             - 1500
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-004
   title: evaluate false predicate fails assertion
   purpose: Verifies evaluate false result is categorized as assertion failure.
@@ -148,10 +143,9 @@ contracts:
         std.string.starts_with:
         - var: text
         - NOPE_PREFIX
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-005
   title: evaluate malformed form fails schema
   purpose: Verifies malformed evaluate forms fail with schema classification.
@@ -175,10 +169,9 @@ contracts:
       assert:
         lit:
           bad: shape
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-006
   title: evaluate unknown symbol fails schema
   purpose: Verifies unknown symbols are rejected as schema violations.
@@ -203,10 +196,9 @@ contracts:
         lit:
           unknown_symbol:
           - 1
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-007
   title: evaluate recursive literal-expression shape fails schema
   purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically as schema.
@@ -219,12 +211,7 @@ contracts:
       category: schema
       message_tokens:
       - spec_lang let binding must be [name, expr]
-  harness:
-    spec_lang:
-      max_steps: 20
-    check:
-      profile: text.file
-      config: {}
+  harness: check
   clauses:
     defaults: {}
     imports:
@@ -239,20 +226,24 @@ contracts:
           - lit:
             - - loop
               - fn:
-                - - n
+                - - "n"
                 - if:
                   - eq:
-                    - var: n
+                    - var: "n"
                     - 0
                   - true
                   - call:
                     - var: loop
                     - sub:
-                      - var: n
+                      - var: "n"
                       - 1
           - call:
             - var: loop
             - 1000
+    profile: text.file
+    config:
+      spec_lang:
+        max_steps: 20
 - id: DCCONF-EXPR-008
   title: evaluate contains supports explicit subject form
   purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same target subject.
@@ -262,16 +253,8 @@ contracts:
   expect:
     portable:
       status: pass
-      category: null
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: /specs/libraries/conformance/assertion_core.spec.md
-      as: lib_assertion_core_spec
-      symbols:
-      - conf.pass_when_text_contains
+      category:
+  harness: check
   clauses:
     defaults: {}
     imports:
@@ -291,6 +274,13 @@ contracts:
           - var: conf.pass_when_text_contains
           - var: text
           - 'version: 1'
+    profile: text.file
+    config:
+      use:
+      - ref: "/specs/libraries/conformance/assertion_core.spec.md"
+        as: lib_assertion_core_spec
+        symbols:
+        - conf.pass_when_text_contains
 - id: DCCONF-EXPR-009
   title: evaluate set intersection supports deep structural equality
   purpose: Verifies intersection deduplicates and compares nested values structurally with stable left-first output.
@@ -301,11 +291,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -323,10 +313,9 @@ contracts:
             - '[{"k":2},{"k":4},{"k":1}]'
         - std.json.parse:
           - '[{"k":1},{"k":2}]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-010
   title: evaluate set union keeps stable left-first unique ordering
   purpose: Verifies union preserves first-seen ordering while removing deep-equal duplicates.
@@ -337,11 +326,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -359,10 +348,9 @@ contracts:
             - '[{"k":2},{"k":4},{"k":1}]'
         - std.json.parse:
           - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-011
   title: evaluate difference and symmetric_difference are deterministic
   purpose: Verifies set difference semantics and deterministic ordering for symmetric_difference.
@@ -373,11 +361,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -404,10 +392,9 @@ contracts:
               - '[{"k":2},{"k":4}]'
           - std.json.parse:
             - '[{"k":1},{"k":3},{"k":4}]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-012
   title: evaluate set predicates compare by deep equality
   purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural equality.
@@ -418,11 +405,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -453,10 +440,9 @@ contracts:
             - '[{"k":1},{"k":2},{"k":3}]'
           - std.json.parse:
             - '{"k":2}'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-013
   title: evaluate map and filter support curried builtins
   purpose: Verifies builtin partial application works with map/filter collection transforms.
@@ -467,11 +453,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -488,22 +474,21 @@ contracts:
               - var: std.math.add
               - 10
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - std.json.parse:
-            - '[11,12,13]'
+            - "[11,12,13]"
         - std.logic.eq:
           - std.collection.filter:
             - call:
               - var: std.logic.lt
               - 3
             - std.json.parse:
-              - '[1,2,3,4,5]'
+              - "[1,2,3,4,5]"
           - std.json.parse:
-            - '[4,5]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+            - "[4,5]"
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-014
   title: evaluate reduce and collection helpers are deterministic
   purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried predicates.
@@ -514,11 +499,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -534,7 +519,7 @@ contracts:
             - var: std.math.add
             - 0
             - std.json.parse:
-              - '[1,2,3,4]'
+              - "[1,2,3,4]"
           - 10
         - std.logic.eq:
           - std.collection.reject:
@@ -542,16 +527,16 @@ contracts:
               - var: std.logic.lt
               - 2
             - std.json.parse:
-              - '[1,2,3,4]'
+              - "[1,2,3,4]"
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.logic.eq:
           - std.collection.find:
             - call:
               - var: std.logic.lt
               - 3
             - std.json.parse:
-              - '[1,2,3,4]'
+              - "[1,2,3,4]"
           - 4
         - std.logic.eq:
           - std.collection.partition:
@@ -559,9 +544,9 @@ contracts:
               - var: std.logic.lt
               - 2
             - std.json.parse:
-              - '[1,2,3,4]'
+              - "[1,2,3,4]"
           - std.json.parse:
-            - '[[3,4],[1,2]]'
+            - "[[3,4],[1,2]]"
         - std.logic.eq:
           - std.collection.group_by:
             - fn:
@@ -573,7 +558,7 @@ contracts:
                 - hi
                 - lo
             - std.json.parse:
-              - '[1,2,3,4]'
+              - "[1,2,3,4]"
           - std.json.parse:
             - '{"lo":[1,2],"hi":[3,4]}'
         - std.logic.eq:
@@ -587,10 +572,9 @@ contracts:
               - '[{"k":1},{"k":1},{"k":2}]'
           - std.json.parse:
             - '[{"k":1},{"k":2}]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-015
   title: evaluate flatten and list composition helpers
   purpose: Verifies flatten, concat, append, prepend, take, and drop operations.
@@ -601,11 +585,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -619,49 +603,48 @@ contracts:
         - std.logic.eq:
           - std.collection.flatten:
             - std.json.parse:
-              - '[1,[2,[3],[]],4]'
+              - "[1,[2,[3],[]],4]"
           - std.json.parse:
-            - '[1,2,3,4]'
+            - "[1,2,3,4]"
         - std.logic.eq:
           - std.collection.concat:
             - std.json.parse:
-              - '[1,2]'
+              - "[1,2]"
             - std.json.parse:
-              - '[3]'
+              - "[3]"
           - std.json.parse:
-            - '[1,2,3]'
+            - "[1,2,3]"
         - std.logic.eq:
           - std.collection.append:
             - 3
             - std.json.parse:
-              - '[1,2]'
+              - "[1,2]"
           - std.json.parse:
-            - '[1,2,3]'
+            - "[1,2,3]"
         - std.logic.eq:
           - std.collection.prepend:
             - 0
             - std.json.parse:
-              - '[1,2]'
+              - "[1,2]"
           - std.json.parse:
-            - '[0,1,2]'
+            - "[0,1,2]"
         - std.logic.eq:
           - std.collection.take:
             - 2
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.logic.eq:
           - std.collection.drop:
             - 2
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - std.json.parse:
-            - '[3]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+            - "[3]"
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-016
   title: evaluate currying chain with nested call succeeds
   purpose: Verifies repeated partial application resolves deterministically to a final non-callable value.
@@ -672,11 +655,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -693,10 +676,9 @@ contracts:
             - 2
           - 3
         - 5
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-017
   title: evaluate over-application of non-callable result is schema failure
   purpose: Verifies deterministic schema failure when extra call arguments remain after returning non-callable value.
@@ -707,7 +689,7 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: fail
@@ -730,10 +712,9 @@ contracts:
             - 1
           - 2
           - 3
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-018
   title: evaluate set ops enforce list inputs
   purpose: Verifies set algebra operators reject non-list inputs with schema errors.
@@ -744,7 +725,7 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: fail
@@ -763,11 +744,10 @@ contracts:
         std.set.intersection:
         - not-a-list
         - std.json.parse:
-          - '[]'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+          - "[]"
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-019
   title: evaluate ramda v1 arithmetic and list utilities behave deterministically
   purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
@@ -778,11 +758,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -828,38 +808,38 @@ contracts:
             - 1
             - 3
             - std.json.parse:
-              - '[0,1,2,3]'
+              - "[0,1,2,3]"
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.logic.eq:
           - std.collection.reverse:
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - std.json.parse:
-            - '[3,2,1]'
+            - "[3,2,1]"
         - std.logic.eq:
           - std.collection.zip:
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
             - std.json.parse:
-              - '[4,5]'
+              - "[4,5]"
           - std.json.parse:
-            - '[[1,4],[2,5]]'
+            - "[[1,4],[2,5]]"
         - std.logic.eq:
           - std.collection.zip_with:
             - var: std.math.add
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
             - std.json.parse:
-              - '[4,5,6]'
+              - "[4,5,6]"
           - std.json.parse:
-            - '[5,7,9]'
+            - "[5,7,9]"
         - std.logic.eq:
           - std.math.range:
             - 2
             - 5
           - std.json.parse:
-            - '[2,3,4]'
+            - "[2,3,4]"
         - std.logic.eq:
           - std.collection.repeat:
             - x
@@ -867,7 +847,7 @@ contracts:
           - std.json.parse:
             - '["x","x","x"]'
         - std.type.is_null:
-          - null
+          -
         - std.type.is_bool:
           - true
         - std.type.is_number:
@@ -876,14 +856,13 @@ contracts:
           - x
         - std.type.is_list:
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.type.is_dict:
           - std.json.parse:
             - '{"a":1}'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-020
   title: evaluate ramda v1 object utilities
   purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
@@ -894,11 +873,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -920,7 +899,7 @@ contracts:
             - std.json.parse:
               - '{"a":1,"b":2}'
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.logic.eq:
           - std.object.entries:
             - std.json.parse:
@@ -976,10 +955,9 @@ contracts:
             - '{"a":1}'
           - std.json.parse:
             - '{"a":1,"b":2}'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-021
   title: evaluate ramda v1 combinators and string helpers
   purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
@@ -990,11 +968,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -1035,8 +1013,8 @@ contracts:
         - std.logic.eq:
           - std.string.replace:
             - a-b-c
-            - '-'
-            - ':'
+            - "-"
+            - ":"
           - a:b:c
         - std.logic.eq:
           - std.string.pad_left:
@@ -1050,10 +1028,9 @@ contracts:
             - 3
             - '0'
           - '700'
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-022
   title: evaluate ramda v1 unary numeric and compare helpers
   purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values for policy expressions.
@@ -1064,11 +1041,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -1129,10 +1106,9 @@ contracts:
           - std.logic.xor:
             - true
             - true
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-023
   title: evaluate ramda v1 utility and predicate helpers
   purpose: Verifies utility and predicate helpers used by governance logic are deterministic and pure.
@@ -1143,11 +1119,11 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: pass
-      category: null
+      category:
   clauses:
     defaults: {}
     imports:
@@ -1161,22 +1137,22 @@ contracts:
         - std.logic.eq:
           - std.collection.count:
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - 3
         - std.logic.eq:
           - std.collection.first:
             - std.json.parse:
-              - '[9,8,7]'
+              - "[9,8,7]"
           - 9
         - std.logic.eq:
           - std.collection.rest:
             - std.json.parse:
-              - '[9,8,7]'
+              - "[9,8,7]"
           - std.json.parse:
-            - '[8,7]'
+            - "[8,7]"
         - std.logic.eq:
           - std.string.trim:
-            - '  x  '
+            - "  x  "
           - x
         - std.logic.eq:
           - std.string.lower:
@@ -1189,52 +1165,52 @@ contracts:
         - std.logic.eq:
           - std.string.split:
             - a,b,c
-            - ','
+            - ","
           - std.json.parse:
             - '["a","b","c"]'
         - std.logic.eq:
           - std.string.join:
             - std.json.parse:
               - '["a","b","c"]'
-            - '-'
+            - "-"
           - a-b-c
         - std.logic.eq:
           - std.null.coalesce:
-            - null
+            -
             - x
           - x
         - std.logic.eq:
           - std.collection.distinct:
             - std.json.parse:
-              - '[1,1,2,2,3]'
+              - "[1,1,2,2,3]"
           - std.json.parse:
-            - '[1,2,3]'
+            - "[1,2,3]"
         - std.logic.eq:
           - std.collection.sort_by:
             - std.json.parse:
-              - '[3,1,2]'
+              - "[3,1,2]"
             - var: std.fn.identity
           - std.json.parse:
-            - '[1,2,3]'
+            - "[1,2,3]"
         - std.logic.eq:
           - std.object.pluck:
             - std.json.parse:
               - '[{"k":1},{"k":2}]'
             - k
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.collection.all:
           - std.json.parse:
-            - '[true,true,true]'
+            - "[true,true,true]"
         - std.collection.any:
           - std.json.parse:
-            - '[false,true,false]'
+            - "[false,true,false]"
         - std.collection.none:
           - std.json.parse:
-            - '[false,false]'
+            - "[false,false]"
         - std.collection.is_empty:
           - std.json.parse:
-            - '[]'
+            - "[]"
         - std.string.matches:
           - a42
           - a[0-9]+
@@ -1248,7 +1224,7 @@ contracts:
         - std.logic.eq:
           - std.type.json_type:
             - std.json.parse:
-              - '[1,2]'
+              - "[1,2]"
             - list
           - true
         - std.logic.eq:
@@ -1260,7 +1236,7 @@ contracts:
         - std.logic.eq:
           - std.type.json_type:
             - std.json.parse:
-              - '[1,2]'
+              - "[1,2]"
             - array
           - true
         - std.logic.eq:
@@ -1284,29 +1260,28 @@ contracts:
           - true
         - std.type.is_array:
           - std.json.parse:
-            - '[1,2]'
+            - "[1,2]"
         - std.type.is_object:
           - std.json.parse:
             - '{"x":1}'
         - std.logic.eq:
           - std.math.sum:
             - std.json.parse:
-              - '[1,2,3]'
+              - "[1,2,3]"
           - 6
         - std.logic.eq:
           - std.math.min:
             - std.json.parse:
-              - '[4,2,8]'
+              - "[4,2,8]"
           - 2
         - std.logic.eq:
           - std.math.max:
             - std.json.parse:
-              - '[4,2,8]'
+              - "[4,2,8]"
           - 8
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 - id: DCCONF-EXPR-024
   title: evaluate ramda v1 schema failures are deterministic
   purpose: Verifies representative arity and type failures stay in schema category for the expanded builtin surface.
@@ -1317,7 +1292,7 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: python
       status: fail
@@ -1335,10 +1310,9 @@ contracts:
       assert:
         std.logic.compare:
         - 1
-  harness:
-    check:
-      profile: text.file
-      config: {}
+    profile: text.file
+    config: {}
+  harness: check
 ```
 
 

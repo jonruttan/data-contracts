@@ -70,8 +70,9 @@ Spec-lang lint code contract:
 - `SLINT033` `contract.export` case missing `library` metadata
 - `SLINT034` `library.stability` must be `alpha|beta|stable|internal`
 - `SLINT035` `library` required scalar metadata field is empty
-- `SLINT036` `contract.export` must declare non-empty `harness.exports`
-- `SLINT039` `harness.exports[].doc` missing or wrong shape
+- `SLINT036` `harness: export` suites must declare non-empty root `exports[]`
+  function entries
+- `SLINT039` `exports[].doc` missing or wrong shape for function exports
 - `SLINT049` `doc.params` names/order mismatch exported params
 - `SLINT052` `doc.examples` missing/empty
 - `SLINT054` `doc.portability.<runtime>` must be boolean

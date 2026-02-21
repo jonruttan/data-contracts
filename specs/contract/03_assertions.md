@@ -31,8 +31,8 @@ Scope separation:
 
 - assertion import bindings are declared only under `clauses.imports` and
   `clauses.predicates[].imports`.
-- suite-root `imports[]` / `exports[]` are external reference declarations and
-  do not implicitly bind assertion symbols.
+- suite-root `artifact.imports[]` / `artifact.exports[]` are external
+  reference declarations and do not implicitly bind assertion symbols.
 
 Import binding shape:
 
@@ -62,7 +62,8 @@ Import merge semantics:
 
 ## Governance Artifact Keys
 
-For `type: contract.check` with governance profile, common artifact imports include:
+For `harness: check` governance profiles (for example
+`clauses.profile: governance.scan`), common artifact imports include:
 
 - `text`
 - `summary_json`

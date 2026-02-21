@@ -32,4 +32,4 @@
 - Fence body MUST decode to either:
   - a mapping (one case), or
   - a list of mappings (many cases).
-- Each case MUST include `id` and `type`.
+- Each case MUST include `id` and `harness`.

@@ -1,20 +1,20 @@
-# Type Contract: contract.check
+# Harness Contract: check
 
 ## Status
 
-- v1 core type
+- v2 harness-dispatched core profile
 
 ## Purpose
 
-Execute a typed harness check profile and assert externally visible behavior through
+Execute a harness-dispatched check profile and assert externally visible behavior through
 explicitly imported assertion values.
 
 ## Required Fields
 
 - `id` (string)
-- `type` (must equal `contract.check`)
-- `harness` (mapping with `check.profile` and `check.config`)
-- `contract` (mapping with `defaults`/`steps`)
+- `harness` (must equal `check`)
+- `clauses.profile` (string)
+- `clauses` (mapping with `defaults`/`predicates`)
 
 ## Contract Import Rules
 
@@ -26,9 +26,9 @@ explicitly imported assertion values.
 
 ## Type Rules
 
-- runner-only setup/config keys MUST live under `harness`.
-- `harness.check.profile` selects runtime profile.
-- `harness.check.config` carries profile-specific inputs.
+- runtime setup/config keys are carried under `clauses.config`.
+- `clauses.profile` selects runtime profile.
+- `clauses.config` carries profile-specific inputs.
 - assertions must not depend on implicit runtime bindings.
 
 ## Failure Category Guidance

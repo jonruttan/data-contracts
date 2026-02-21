@@ -8,9 +8,7 @@ Coverage focus:
 
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
+schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-CLI-001
   title: conformance fixture sets explicit cli.run harness.entrypoint
@@ -23,22 +21,21 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: php
       status: skip
-      category: null
-  harness:
-    entrypoint: spec_runner.conformance_fixtures:main
-    check:
-      profile: cli.run
-      config:
-        argv:
-        - --help
-        exit_code: 0
+      category:
+  harness: check
   clauses:
     defaults: {}
     steps: []
+    profile: cli.run
+    config:
+      argv:
+      - "--help"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
 - id: DCCONF-CLI-002
   title: explicit entrypoint drives cli.run behavior deterministically
   purpose: Pins deterministic behavior for explicit harness entrypoint execution.
@@ -50,19 +47,12 @@ contracts:
   expect:
     portable:
       status: skip
-      category: null
+      category:
     overrides:
     - runner: php
       status: skip
-      category: null
-  harness:
-    entrypoint: spec_runner.conformance_fixtures:main
-    check:
-      profile: cli.run
-      config:
-        argv:
-        - --json
-        exit_code: 0
+      category:
+  harness: check
   clauses:
     defaults: {}
     imports:
@@ -75,6 +65,12 @@ contracts:
         std.string.contains:
         - var: stdout
         - '"ok": true'
+    profile: cli.run
+    config:
+      argv:
+      - "--json"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
 ```
 
 

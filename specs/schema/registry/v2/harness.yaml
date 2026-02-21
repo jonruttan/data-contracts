@@ -3,7 +3,7 @@ id: schema.registry.v2.harness
 type: harness
 fields:
   contracts[].harness:
-    type: mapping
-    required: false
+    type: string
+    required: true
     since: v2
-    description: Runner-only inputs namespace.
+    description: Harness contract key resolved by harness_contract_catalog_v1.

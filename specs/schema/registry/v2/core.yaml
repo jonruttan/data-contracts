@@ -14,39 +14,61 @@ fields:
     type: mapping
     required: false
     since: v2
-  defaults.type:
-    type: string
+  artifact:
+    type: mapping
     required: false
     since: v2
-  imports:
+  artifact.imports:
     type: list
     required: false
     since: v2
-  imports[].id:
+  artifact.imports[].id:
     type: string
     required: true
     since: v2
-  imports[].ref:
+  artifact.imports[].ref:
     type: string
     required: true
     since: v2
-  imports[].type:
+    description: Supports moustache templates resolved from suite context.
+  artifact.imports[].type:
     type: string
     required: false
     since: v2
-  imports[].inputs:
+  artifact.imports[].inputs:
     type: mapping
     required: false
     since: v2
-  imports[].outputs:
+  artifact.imports[].options:
     type: mapping
     required: false
     since: v2
-  imports[].options:
+  artifact.imports[].doc:
     type: mapping
     required: false
     since: v2
-  imports[].doc:
+  artifact.exports:
+    type: list
+    required: false
+    since: v2
+  artifact.exports[].id:
+    type: string
+    required: true
+    since: v2
+  artifact.exports[].ref:
+    type: string
+    required: true
+    since: v2
+    description: Supports moustache templates resolved from suite context.
+  artifact.exports[].type:
+    type: string
+    required: false
+    since: v2
+  artifact.exports[].options:
+    type: mapping
+    required: false
+    since: v2
+  artifact.exports[].doc:
     type: mapping
     required: false
     since: v2
@@ -54,30 +76,33 @@ fields:
     type: list
     required: false
     since: v2
-  exports[].id:
+  exports[].as:
     type: string
     required: true
     since: v2
-  exports[].ref:
+    description: Required function export symbol name.
+  exports[].from:
     type: string
     required: true
     since: v2
-  exports[].type:
+    enum:
+      - assert.function
+    description: Required function export source.
+  exports[].path:
     type: string
+    required: true
+    since: v2
+    description: Required function export path.
+  exports[].params:
+    type: list
     required: false
     since: v2
-  exports[].inputs:
-    type: mapping
+    description: Optional ordered function parameter names.
+  exports[].required:
+    type: bool
     required: false
     since: v2
-  exports[].outputs:
-    type: mapping
-    required: false
-    since: v2
-  exports[].options:
-    type: mapping
-    required: false
-    since: v2
+    description: Optional function export requirement flag.
   exports[].doc:
     type: mapping
     required: false
@@ -90,9 +115,9 @@ fields:
     type: string
     required: true
     since: v2
-  contracts[].type:
+  contracts[].harness:
     type: string
-    required: false
+    required: true
     since: v2
   title:
     type: string
@@ -146,10 +171,6 @@ fields:
     type: string
     required: false
     since: v2
-  contracts[].harness:
-    type: mapping
-    required: false
-    since: v2
   contracts[].when:
     type: mapping
     required: false
@@ -173,6 +194,14 @@ fields:
   contracts[].clauses:
     type: mapping
     required: true
+    since: v2
+  contracts[].clauses.profile:
+    type: string
+    required: false
+    since: v2
+  contracts[].clauses.config:
+    type: mapping
+    required: false
     since: v2
   contracts[].expect:
     type: mapping

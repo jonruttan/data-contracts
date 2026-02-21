@@ -3107,7 +3107,7 @@ links:
   - tests/test_chain_engine_unit.py
   implementation_refs:
   - dc-runner-python
-  notes: Producer symbol ownership flows through explicit harness.exports declarations.
+  notes: Producer symbol ownership flows through explicit root function export declarations.
 - rule_id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CHAIN_EXPORTS_FROM_KEY_REQUIRED
   contract_refs:
@@ -3122,7 +3122,7 @@ links:
   - dc-runner-python
   - dc-runner-python
   - scripts/normalize_repo.py
-  notes: Harness exports must use from key only.
+  notes: Root function exports must use from key only.
 - rule_id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   contract_refs:
@@ -3504,7 +3504,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - dc-runner-rust
-  notes: contract.job metadata uses harness.jobs[] list entries.
+  notes: harness job metadata uses clauses.config.jobs[] list entries.
 - rule_id: OPS_JOB_CAPABILITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED
   contract_refs:

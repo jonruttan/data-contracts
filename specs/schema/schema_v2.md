@@ -40,26 +40,29 @@ Related docs/reference schemas:
 - `schema_ref` (string, required): canonical virtual-root schema path
 - `contracts` (list, required): non-empty list of executable contract items
 - `defaults` (mapping, optional): shallow defaults merged into each contract item
-- `imports` (list, optional): suite-level external import declarations
-  - `imports[].id` (string, required): internal reference key
-  - `imports[].ref` (string, required): local/external ref or URL; supports moustache
-    template expressions (`{{...}}`) resolved from suite context
-  - `imports[].type` (string, optional): expected MIME type for resolved `ref`
-    payload (for example `application/json`, `text/plain`, `application/yaml`)
-  - `imports[].inputs` (mapping, optional): open mapping for producer inputs
-  - `imports[].outputs` (mapping, optional): open mapping for produced outputs
-  - `imports[].options` (mapping, optional): open mapping for runtime options
-  - `imports[].doc` (mapping, optional): open mapping for entry documentation metadata
-- `exports` (list, optional): suite-level external export declarations
-  - `exports[].id` (string, required): internal reference key
-  - `exports[].ref` (string, required): local/external ref or URL; supports moustache
-    template expressions (`{{...}}`) resolved from suite context
-  - `exports[].type` (string, optional): expected MIME type for resolved `ref`
-    payload (for example `application/json`, `text/plain`, `application/yaml`)
-  - `exports[].inputs` (mapping, optional): open mapping for producer inputs
-  - `exports[].outputs` (mapping, optional): open mapping for produced outputs
-  - `exports[].options` (mapping, optional): open mapping for runtime options
-  - `exports[].doc` (mapping, optional): open mapping for entry documentation metadata
+- `artifact` (mapping, optional): suite-level artifact reference declarations
+  - `artifact.imports` (list, optional): artifact import declarations
+    - `id` (string, required)
+    - `ref` (string, required): supports moustache template expressions (`{{...}}`)
+      resolved from suite context
+    - `type` (string, optional): expected MIME type for resolved `ref`
+    - `inputs` (mapping, optional)
+    - `options` (mapping, optional)
+    - `doc` (mapping, optional)
+  - `artifact.exports` (list, optional): artifact export declarations
+    - `id` (string, required)
+    - `ref` (string, required): supports moustache template expressions (`{{...}}`)
+      resolved from suite context
+    - `type` (string, optional): expected MIME type for resolved `ref`
+    - `options` (mapping, optional)
+    - `doc` (mapping, optional)
+- `exports` (list, optional): function export declarations only
+  - `exports[].as` (string, required): exported function symbol name
+  - `exports[].from` (string, required): must be `assert.function`
+  - `exports[].path` (string, required): producer function body path
+  - `exports[].params` (list, optional): ordered parameter names
+  - `exports[].required` (bool, optional): export requirement flag
+  - `exports[].doc` (mapping, optional): function documentation metadata
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
@@ -87,10 +90,12 @@ level in:
 Each `contracts[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
-- `type` (string, required directly or inherited from `defaults.type`)
+- `harness` (string, required): harness contract name resolved from `specs/schema/harness_contract_catalog_v1.yaml`
 - `clauses` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
-- `expect`/`requires`/`harness`/`when` (optional)
+- `expect`/`requires`/`when` (optional)
+- `clauses.profile` (string, optional globally; requiredness is harness-specific)
+- `clauses.config` (mapping, optional globally; requiredness is harness-specific)
 
 Parser behavior:
 
@@ -110,14 +115,22 @@ Parser behavior:
 - `spec_version` is required
 - `schema_ref` is required
 - each `contracts[]` item requires `id`
+- each `contracts[]` item requires `harness` (string)
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
-- `imports[].ref` and `exports[].ref` MUST be strings
-- `imports[].ref` and `exports[].ref` template expressions use moustache
-  syntax and resolve from suite context only
-- unresolved `imports[].ref`/`exports[].ref` template expressions are
-  schema/runtime failures
-- `contract.export` top-level `imports` is forbidden in v2
+- root `imports` is invalid in v2
+- `artifact.imports[].ref` and `artifact.exports[].ref` MUST be strings
+- `artifact.imports[].ref` and `artifact.exports[].ref` template expressions
+  use moustache syntax and resolve from suite context only
+- unresolved `artifact.imports[].ref`/`artifact.exports[].ref` template
+  expressions are schema/runtime failures
+- root `exports[]` is function-only:
+  - `exports[].from` MUST be `assert.function`
+  - `exports[].mode` is invalid
+  - `exports[].id` is invalid
+  - `exports[].ref` is invalid
+- unknown harness names MUST hard-fail during schema validation
+- legacy `type` on contract items is invalid in v2
 
 `expect` (conformance metadata):
 
@@ -152,9 +165,9 @@ Normative contract details:
 - `specs/contract/06_conformance.md`
 - `specs/contract/07_portable_spec_authoring.md`
 
-## Type-Specific Fields
+## Harness-Profile Fields
 
-### `type: text.file`
+### `harness: check` with `clauses.profile: text.file`
 
 `text.file` asserts against file content.
 
@@ -185,17 +198,15 @@ Markdown library authoring guidance:
   - raw markdown string
   - markdown profile envelope (`value` + optional `context`)
 
-## `harness` Namespace
+## Harness Dispatch
 
-Runner-only inputs MUST live under `harness:` to preserve separation of
-concerns and keep the spec format portable.
+Harness dispatch is selected by `contracts[].harness` and validated against `specs/schema/harness_contract_catalog_v1.yaml`. Runtime profile/config data is declared in `clauses.profile` and `clauses.config`.
 
 Governance assertion contract:
 
-- For `type: governance.check` cases, decision obligations MUST be encoded in
+- For governance check profiles, decision obligations MUST be encoded in
   `clauses` blocks.
-- `harness.evaluate` and
-  `harness.orchestration_policy.evaluate` are forbidden.
+- ad-hoc harness evaluate surfaces are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
@@ -217,7 +228,7 @@ Security model:
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `type: cli.run`, supported `harness` keys include:
+For `harness: check` with `clauses.profile: cli.run`, supported `clauses.config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -231,9 +242,9 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
 - `spec_lang` (mapping): evaluator budgets for `evaluate` leaves
 - `orchestration` (mapping): orchestration tool dispatch contract for
-  `type: orchestration.run`
+  orchestration profiles
 
-For `type: api.http`, supported `harness` keys include:
+For `harness: check` with `clauses.profile: api.http`, supported `clauses.config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -245,7 +256,7 @@ For `type: api.http`, supported `harness` keys include:
   - `teardown.cwd` (virtual-root path, optional)
   - `teardown.env` (mapping, optional)
   - `fail_fast` (bool, default `true`)
-- `harness.api_http.auth.oauth` (mapping):
+- `api_http.auth.oauth` (mapping):
   - `grant_type`: `client_credentials`
   - `token_url`: token endpoint URL or contract path
   - `client_id_env`: env var name for OAuth client id
@@ -260,7 +271,7 @@ For `type: api.http`, supported `harness` keys include:
 OAuth and execution rules:
 
 - credentials MUST be env references (`*_env`) only; inline secrets are invalid
-- network `http(s)` token/request URLs require `harness.api_http.mode: live`
+- network `http(s)` token/request URLs require `api_http.mode: live`
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
 
@@ -284,27 +295,27 @@ OAuth and execution rules:
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `type: docs.generate`, supported `harness` keys include:
+For `harness: check` with `clauses.profile: docs.generate`, supported `clauses.config` keys include:
 
-- `harness.docs_generate.surface_id` (required)
-- `harness.docs_generate.mode` (required): `write|check`
-- `harness.docs_generate.output_mode` (required): `markers|full_file`
-- `harness.docs_generate.template_path` (required): virtual-root path
-- `harness.docs_generate.output_path` (required): virtual-root path
-- `harness.docs_generate.marker_surface_id` (required when `output_mode=markers`)
-- `harness.docs_generate.data_sources` (required list):
+- `docs_generate.surface_id` (required)
+- `docs_generate.mode` (required): `write|check`
+- `docs_generate.output_mode` (required): `markers|full_file`
+- `docs_generate.template_path` (required): virtual-root path
+- `docs_generate.output_path` (required): virtual-root path
+- `docs_generate.marker_surface_id` (required when `output_mode=markers`)
+- `docs_generate.data_sources` (required list):
   - `id`
   - `source_type`: `json_file|yaml_file|generated_artifact|command_output`
   - `path` for file/artifact source types
   - `command` for `command_output` source type
-- `harness.docs_generate.strict` (optional bool, default `true`)
+- `docs_generate.strict` (optional bool, default `true`)
 
 `setup_files[*].path` constraints:
 
 - MUST be relative
 - MUST resolve within the runner temp directory (no path escape)
 
-`harness.spec_lang` fields:
+`clauses.config.spec_lang` fields:
 
 - `max_steps` (int, >=1)
 - `max_nodes` (int, >=1)
@@ -323,7 +334,7 @@ For `type: docs.generate`, supported `harness` keys include:
 - `capabilities` (list[string], optional): explicit evaluator capabilities
   (for example `ops.os`).
 
-`harness.spec_lang.includes` format scope:
+`clauses.config.spec_lang.includes` format scope:
 
 - library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
   files
@@ -331,13 +342,13 @@ For `type: docs.generate`, supported `harness` keys include:
   root-relative values normalize to canonical `/...`
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
-- `type: spec.export` producer cases define reusable symbols through
-  `harness.exports` entries using `from: assert.function`; function
+- producer cases define reusable symbols through root `exports[]` entries using
+  `from: assert.function`; function
   bodies are sourced from producer contract-step `asserts` expression mappings
 - Canonical export source marker is ``assert.function``.
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
-- executable case types MUST NOT declare `harness.spec_lang.includes`;
+- executable case types MUST NOT declare `clauses.config.spec_lang.includes`;
   executable symbol loading is chain-first via `harness.chain`
 
 `harness.chain` fields:
@@ -408,8 +419,8 @@ Documentation generator model:
 
 Implementation note:
 
-- `harness.entrypoint` is required for `cli.run` execution.
-- Conformance fixtures SHOULD always set `harness.entrypoint` explicitly.
+- `clauses.config.entrypoint` is required for `cli.run` execution.
+- Conformance fixtures SHOULD always set explicit entrypoint config.
 - Runners MAY provide a safe mode (for example `SPEC_RUNNER_SAFE_MODE=1`) that
   disables hook execution for `cli.run`.
 - Runners MAY provide environment allowlisting for subprocess execution (for
@@ -425,23 +436,23 @@ Assertion targets for `cli.run`:
 - `context_json`: JSON subject profile envelope
 - `meta_json`: runtime metadata envelope
 
-## Types
+## Profiles
 
-Currently supported types:
+Currently supported `clauses.profile` values include:
 
 - `cli.run` (core)
 - `text.file` (core)
 - `docs.generate` (core extension)
 - `orchestration.run` (core extension)
 
-Type contracts live under:
+Profile contracts live under:
 
 - `specs/contract/types/`
 
-Domain-specific adapters are expected to publish a matching type contract doc
+Domain-specific adapters are expected to publish a matching profile contract doc
 before portable conformance usage.
 
-Published extension type contracts:
+Published extension profile contracts:
 
 - `api.http` (see `specs/contract/types/api_http.md`)
 
@@ -636,23 +647,23 @@ Lifecycle order:
 - `fail` runs once on first blocking step or hook failure
 - `complete` runs only after all steps and hooks pass
 
-`contract.job` executable type (v2):
+`harness: job` executable profile (v2):
 
-- `type: contract.job`
+- `harness: job`
 - required:
-  - `harness.jobs` (metadata list)
+  - `clauses.config.jobs` (metadata list)
   - `clauses`
 - optional:
-  - `harness.jobs[].mode`
-  - `harness.jobs[].inputs`
-  - `harness.jobs[].outputs`
+  - `clauses.config.jobs[].mode`
+  - `clauses.config.jobs[].inputs`
+  - `clauses.config.jobs[].outputs`
 
 Dispatch clauses:
 
 - dispatch is contract-driven using `ops.job.dispatch`
-- dispatch metadata is read from `harness.jobs[]` matched by `id`
-- `harness.job` non-canonical singular form is forbidden
-- `ops.job.dispatch` requires `harness.spec_lang.capabilities` to include `ops.job`
+- dispatch metadata is read from `clauses.config.jobs[]` matched by `id`
+- `clauses.config.job` non-canonical singular form is forbidden
+- `ops.job.dispatch` requires `clauses.config.spec_lang.capabilities` to include `ops.job`
 
 Job ref grammar:
 
@@ -668,14 +679,16 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 39
-- type_profiles: 3
+- top_level_fields: 43
+- harness_catalog: `/specs/schema/harness_contract_catalog_v1.yaml`
 
 ### Top-Level Keys
 
 | key | type | required | since |
 |---|---|---|---|
-| `clauses` | `any` | `false` | `v1` |
+| `clauses` | `mapping` | `true` | `v2` |
+| `clauses.config` | `mapping` | `false` | `v2` |
+| `clauses.profile` | `string` | `false` | `v2` |
 | `doc` | `mapping` | `false` | `v1` |
 | `doc.audience` | `string` | `false` | `v1` |
 | `doc.description` | `string` | `false` | `v1` |
@@ -685,57 +698,63 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `doc.tags` | `list` | `false` | `v1` |
 | `domain` | `string` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
+| `artifact` | `mapping` | `false` | `v2` |
+| `artifact.imports` | `list` | `false` | `v2` |
+| `artifact.imports[].doc` | `mapping` | `false` | `v2` |
+| `artifact.imports[].id` | `string` | `true` | `v2` |
+| `artifact.imports[].inputs` | `mapping` | `false` | `v2` |
+| `artifact.imports[].options` | `mapping` | `false` | `v2` |
+| `artifact.imports[].ref` | `string` | `true` | `v2` |
+| `artifact.imports[].type` | `string` | `false` | `v2` |
+| `artifact.exports` | `list` | `false` | `v2` |
+| `artifact.exports[].doc` | `mapping` | `false` | `v2` |
+| `artifact.exports[].id` | `string` | `true` | `v2` |
+| `artifact.exports[].options` | `mapping` | `false` | `v2` |
+| `artifact.exports[].ref` | `string` | `true` | `v2` |
+| `artifact.exports[].type` | `string` | `false` | `v2` |
 | `exports` | `list` | `false` | `v2` |
+| `exports[].as` | `string` | `true` | `v2` |
 | `exports[].doc` | `mapping` | `false` | `v2` |
-| `exports[].id` | `string` | `true` | `v2` |
-| `exports[].inputs` | `mapping` | `false` | `v2` |
-| `exports[].options` | `mapping` | `false` | `v2` |
-| `exports[].outputs` | `mapping` | `false` | `v2` |
-| `exports[].ref` | `string` | `true` | `v2` |
-| `exports[].type` | `string` | `false` | `v2` |
-| `harness` | `mapping` | `false` | `v1` |
+| `exports[].from` | `string` | `true` | `v2` |
+| `exports[].path` | `string` | `true` | `v2` |
+| `exports[].params` | `list` | `false` | `v2` |
+| `exports[].required` | `bool` | `false` | `v2` |
+| `harness` | `string` | `true` | `v2` |
 | `id` | `string` | `true` | `v1` |
-| `imports` | `list` | `false` | `v2` |
-| `imports[].doc` | `mapping` | `false` | `v2` |
-| `imports[].id` | `string` | `true` | `v2` |
-| `imports[].inputs` | `mapping` | `false` | `v2` |
-| `imports[].options` | `mapping` | `false` | `v2` |
-| `imports[].outputs` | `mapping` | `false` | `v2` |
-| `imports[].ref` | `string` | `true` | `v2` |
-| `imports[].type` | `string` | `false` | `v2` |
 | `path` | `string` | `false` | `v1` |
 | `purpose` | `string` | `false` | `v1` |
 | `requires` | `mapping` | `false` | `v1` |
 | `title` | `string` | `false` | `v1` |
-| `type` | `string` | `true` | `v1` |
 | `when` | `mapping` | `false` | `v1` |
 | `when.complete` | `list` | `false` | `v1` |
 | `when.fail` | `list` | `false` | `v1` |
 | `when.optional` | `list` | `false` | `v1` |
 | `when.required` | `list` | `false` | `v1` |
 
-### Type Profiles
+### Harness Catalog
 
-| type | required keys | extra keys |
+| harness | required keys | required clause keys |
 |---|---|---|
-| `contract.check` | `harness`, `clauses` | - |
-| `contract.export` | `clauses`, `harness`, `library`, `doc` | - |
-| `contract.job` | `harness`, `clauses` | - |
+| `check` | `harness`, `clauses` | `profile`, `config` |
+| `export` | `harness`, `clauses`, `library`, `doc` | `profile`, `config` |
+| `job` | `harness`, `clauses` | `profile`, `config` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 39
-- type_profile_count: 3
-- total_type_field_count: 40
+- top_level_field_count: 43
+- harness_count: 3
+- deprecated_type_overlays: 3
 
 ### Top-Level Fields
 
 | key | type | required | since |
 |---|---|---|---|
-| `clauses` | `any` | false | `v1` |
+| `clauses` | `mapping` | true | `v2` |
+| `clauses.config` | `mapping` | false | `v2` |
+| `clauses.profile` | `string` | false | `v2` |
 | `doc` | `mapping` | false | `v1` |
 | `doc.audience` | `string` | false | `v1` |
 | `doc.description` | `string` | false | `v1` |
@@ -745,40 +764,44 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `doc.tags` | `list` | false | `v1` |
 | `domain` | `string` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
+| `artifact` | `mapping` | false | `v2` |
+| `artifact.imports` | `list` | false | `v2` |
+| `artifact.imports[].doc` | `mapping` | false | `v2` |
+| `artifact.imports[].id` | `string` | true | `v2` |
+| `artifact.imports[].inputs` | `mapping` | false | `v2` |
+| `artifact.imports[].options` | `mapping` | false | `v2` |
+| `artifact.imports[].ref` | `string` | true | `v2` |
+| `artifact.imports[].type` | `string` | false | `v2` |
+| `artifact.exports` | `list` | false | `v2` |
+| `artifact.exports[].doc` | `mapping` | false | `v2` |
+| `artifact.exports[].id` | `string` | true | `v2` |
+| `artifact.exports[].options` | `mapping` | false | `v2` |
+| `artifact.exports[].ref` | `string` | true | `v2` |
+| `artifact.exports[].type` | `string` | false | `v2` |
 | `exports` | `list` | false | `v2` |
+| `exports[].as` | `string` | true | `v2` |
 | `exports[].doc` | `mapping` | false | `v2` |
-| `exports[].id` | `string` | true | `v2` |
-| `exports[].inputs` | `mapping` | false | `v2` |
-| `exports[].options` | `mapping` | false | `v2` |
-| `exports[].outputs` | `mapping` | false | `v2` |
-| `exports[].ref` | `string` | true | `v2` |
-| `exports[].type` | `string` | false | `v2` |
-| `harness` | `mapping` | false | `v1` |
+| `exports[].from` | `string` | true | `v2` |
+| `exports[].path` | `string` | true | `v2` |
+| `exports[].params` | `list` | false | `v2` |
+| `exports[].required` | `bool` | false | `v2` |
+| `harness` | `string` | true | `v2` |
 | `id` | `string` | true | `v1` |
-| `imports` | `list` | false | `v2` |
-| `imports[].doc` | `mapping` | false | `v2` |
-| `imports[].id` | `string` | true | `v2` |
-| `imports[].inputs` | `mapping` | false | `v2` |
-| `imports[].options` | `mapping` | false | `v2` |
-| `imports[].outputs` | `mapping` | false | `v2` |
-| `imports[].ref` | `string` | true | `v2` |
-| `imports[].type` | `string` | false | `v2` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |
 | `requires` | `mapping` | false | `v1` |
 | `title` | `string` | false | `v1` |
-| `type` | `string` | true | `v1` |
 | `when` | `mapping` | false | `v1` |
 | `when.complete` | `list` | false | `v1` |
 | `when.fail` | `list` | false | `v1` |
 | `when.optional` | `list` | false | `v1` |
 | `when.required` | `list` | false | `v1` |
 
-### Type Profiles
+### Harness Contract Matrix
 
-| case_type | field_count | required_top_level |
-|---|---|---|
-| `contract.check` | 5 | `harness`, `clauses` |
-| `contract.export` | 28 | `clauses`, `harness`, `library`, `doc` |
-| `contract.job` | 7 | `harness`, `clauses` |
+| harness | required_top_level | required_clauses | allowed_export_modes |
+|---|---|---|---|
+| `check` | `harness`, `clauses` | `profile`, `config` | `function` |
+| `export` | `harness`, `clauses`, `library`, `doc` | `profile`, `config` | `function` |
+| `job` | `harness`, `clauses` | `profile`, `config` | `function` |
 <!-- GENERATED:END spec_schema_field_catalog -->

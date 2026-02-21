@@ -7,7 +7,7 @@ without host-language hooks.
 
 ## Harness Shape
 
-Cases MAY configure library loading via `harness.spec_lang`:
+Cases MAY configure library loading via `clauses.config.spec_lang`:
 
 - `includes` (list[string]): ordered paths to library spec docs/files
 - `exports` (list[string], optional): explicit symbol allowlist visible to case
@@ -16,17 +16,18 @@ Cases MAY configure library loading via `harness.spec_lang`:
 
 Suite-level external references:
 
-- executable suite docs may declare root `imports[]` / `exports[]` entries for
-  external references and URLs outside per-contract assertion/harness blocks.
+- executable suite docs may declare `artifact.imports[]` /
+  `artifact.exports[]` entries for external references and URLs outside
+  per-contract assertion/harness blocks.
 - these suite-root declarations are metadata/coordination surfaces and are
-  distinct from `clauses.imports`, `harness.spec_lang.imports`, and
-  `harness.exports`.
-- `imports[].ref` / `exports[].ref` support moustache (`{{...}}`) template
-  expressions resolved from suite context only.
+  distinct from `clauses.imports`, `clauses.config.spec_lang.imports`, and
+  suite-root `exports[]` function declarations.
+- `artifact.imports[].ref` / `artifact.exports[].ref` support moustache
+  (`{{...}}`) template expressions resolved from suite context only.
 
 Governance policy reuse:
 
-- `type: governance.check` cases MUST load library symbols through
+- `harness: check` governance cases MUST load library symbols through
   `harness.chain` library-symbol exports/imports and MUST call exported
   library symbols from `evaluate`.
 
@@ -52,7 +53,7 @@ Required fields for each producer case:
 - `id`
 - `type: spec.export`
 - `assert` (list of step mappings whose `checks` carry function bodies)
-- `harness.exports` (list of exported symbols)
+- suite-root `exports[]` (list of exported function symbols)
   - each export entry uses:
     - `as` (symbol name)
     - `from: assert.function`
@@ -65,7 +66,7 @@ Optional fields:
 
 Export model:
 
-- Exported symbols are declared explicitly in `harness.exports`.
+- Exported symbols are declared explicitly in suite-root `exports[]` entries.
 - Export bodies are compiled from producer assert steps referenced by
   `path` with `from: assert.function`.
 

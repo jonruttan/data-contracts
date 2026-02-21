@@ -3269,10 +3269,10 @@ rules:
 - id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: harness.exports
+  applies_to: exports
   norm: MUST
-  requirement: producer_symbols_require_explicit_harness_exports
-  description: 'Producer symbols must be declared explicitly on harness.exports.
+  requirement: producer_symbols_require_explicit_root_exports
+  description: 'Producer symbols must be declared explicitly on root function-only exports[].
 
     '
   rationale: Keeps producer symbol ownership explicit and stable.
@@ -3283,10 +3283,10 @@ rules:
 - id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.exports[*].from
+  applies_to: exports[*].from
   norm: MUST
-  requirement: harness_exports_must_use_from_key
-  description: 'Each harness export entry must declare a `from` key.
+  requirement: root_function_exports_must_use_from_key
+  description: 'Each root function export entry must declare a `from` key.
 
     '
   rationale: Keeps export source selection explicit and deterministic.
@@ -3299,10 +3299,10 @@ rules:
 - id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.exports
+  applies_to: exports
   norm: MUST
-  requirement: harness_exports_use_list_form_only
-  description: 'Harness exports must use list-form entries; mapping-form entries are
+  requirement: root_exports_use_list_form_only
+  description: 'Root exports must use list-form entries; mapping-form entries are
     forbidden.
 
     '
@@ -3317,10 +3317,10 @@ rules:
 - id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   introduced_in: v1
   scope: implementation
-  applies_to: harness.exports[*]
+  applies_to: exports[*]
   norm: MUST
   requirement: assert_function_imports_require_symbol_path
-  description: 'Harness exports using `from: assert.function` must define non-empty
+  description: 'Root exports using `from: assert.function` must define non-empty
     `path`.
 
     '
@@ -3883,10 +3883,10 @@ rules:
 - id: HARNESS_JOBS_METADATA_LIST_REQUIRED
   introduced_in: v1
   scope: runtime
-  applies_to: contract.job.harness.jobs
+  applies_to: harness.job.clauses.config.jobs
   norm: MUST
-  requirement: contract_job_cases_use_harness_jobs_metadata_list
-  description: contract.job cases must declare job metadata under harness.jobs[]
+  requirement: harness_job_cases_use_clauses_config_jobs_metadata_list
+  description: harness: job cases must declare job metadata under clauses.config.jobs[]
     entries.
   rationale: Separates execution metadata from contract decision logic.
   risk_if_violated: Job metadata shape becomes inconsistent across cases and runtimes.
@@ -3899,7 +3899,7 @@ rules:
   applies_to: spec_lang.ops.job.dispatch
   norm: MUST
   requirement: ops_job_dispatch_requires_capability
-  description: ops.job.dispatch must fail unless harness.spec_lang.capabilities includes
+  description: ops.job.dispatch must fail unless clauses.config.spec_lang.capabilities includes
     ops.job.
   rationale: Keeps effectful dispatch behavior explicitly capability-gated.
   risk_if_violated: Specs may dispatch helpers unexpectedly without explicit authorization.
