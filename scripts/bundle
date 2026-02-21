@@ -367,7 +367,7 @@ package_cmd() {
   resolve_impl "$runner" "$root_bundle" "$tmp_resolved" "$repo_root" "$source_repo" "$source_ref" "$source_commit"
 
   local package_name package_path sha_path intoto_path package_sha generated_at
-  package_name="bundle-${root_bundle}-${bundle_version}.tar.gz"
+  package_name="data-contract-bundle-${root_bundle}-v${bundle_version}.tar.gz"
   package_path="${out_dir}/${package_name}"
   sha_path="${out_dir}/${package_name}.sha256"
   intoto_path="${out_dir}/${package_name}.intoto.json"

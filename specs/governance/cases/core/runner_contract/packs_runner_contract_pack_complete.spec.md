@@ -22,6 +22,7 @@ contracts:
           - /specs/conformance/cases/runner_cli/runner_cli_required_help.spec.md
           - /specs/conformance/cases/runner_build_tool/runner_build_tool_required_core.spec.md
           - /specs/conformance/cases/runner_build_tool/runner_build_tool_required_sync.spec.md
+          - /specs/conformance/cases/runner_build_tool/runner_build_tool_bundle_asset_naming.spec.md
       check:
         profile: governance.scan
         config:

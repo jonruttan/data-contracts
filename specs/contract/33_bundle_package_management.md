@@ -12,9 +12,9 @@ Defines package-based bundle producer/consumer behavior for runner repositories.
 ## Producer Responsibilities (`data-contracts`)
 
 - Publish bundle package release assets:
-  - `bundle-{bundle_id}-{bundle_version}.tar.gz`
-  - `bundle-{bundle_id}-{bundle_version}.tar.gz.sha256`
-  - `bundle-{bundle_id}-{bundle_version}.tar.gz.intoto.json`
+  - `data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz`
+  - `data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz.sha256`
+  - `data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz.intoto.json`
 - Ensure package payload contains:
   - resolved filesystem tree
   - `resolved_bundle_lock_v1.yaml`
