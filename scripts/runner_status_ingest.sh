@@ -12,7 +12,7 @@ source "${ROOT_DIR}/scripts/ingest/fetch_release_asset.sh"
 source "${ROOT_DIR}/scripts/ingest/emit_matrix_artifacts.sh"
 source "${ROOT_DIR}/scripts/ingest/emit_ingest_log.sh"
 
-REGISTRY_PATH="/specs/schema/runner_certification_registry_v1.yaml"
+REGISTRY_PATH="/specs/schema/runner_certification_registry_v2.yaml"
 OUT_JSON="/.artifacts/runner-status-matrix.json"
 OUT_MD="/.artifacts/runner-status-matrix.md"
 OUT_LOG_JSON="/.artifacts/runner-status-ingest-log.json"

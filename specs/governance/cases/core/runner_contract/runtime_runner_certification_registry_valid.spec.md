@@ -10,7 +10,7 @@ contracts:
     harness:
       root: .
       runner_certification:
-        path: /specs/schema/runner_certification_registry_v1.yaml
+        path: /specs/schema/runner_certification_registry_v2.yaml
         required_runner_ids:
         - rust
         - python

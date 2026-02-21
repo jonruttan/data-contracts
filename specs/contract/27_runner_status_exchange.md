@@ -1,7 +1,7 @@
 # Runner Status Exchange Contract (v1)
 
-Defines the cross-repo status exchange contract between `data-contracts` and
-external runner repositories (`dc-runner-*`).
+Defines the cross-repo status exchange and certification contracts between
+`data-contracts` and external runner repositories (`dc-runner-*`).
 
 ## Purpose
 
@@ -37,6 +37,31 @@ Producers MUST ensure:
 - status artifact URLs are immutable release asset URLs
 - checksums are included in report metadata where supported
 - `fresh_until` reflects producer freshness intent
+
+Each active runner repository MUST also emit a runner execution certificate
+artifact via `runner-certify`.
+
+Required certificate schema:
+
+- `/specs/schema/runner_execution_certificate_v2.yaml`
+
+Required certificate registry:
+
+- `/specs/schema/runner_certification_registry_v2.yaml`
+
+Required certificate outputs:
+
+- `/.artifacts/runner-certification-{runner}.json`
+- `/.artifacts/runner-certification-{runner}.md`
+
+Required certificate v2 sections:
+
+- `runner`
+- `execution_intent`
+- `equivalence`
+- `summary`
+- `checks`
+- `proof`
 
 ## Consumer Contract (`data-contracts`)
 

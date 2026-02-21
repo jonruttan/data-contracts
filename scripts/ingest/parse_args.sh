@@ -5,7 +5,7 @@ ingest_usage() {
 Usage: ./scripts/runner_status_ingest.sh [options]
 
 Options:
-  --registry <path>        Runner certification registry path (default: /specs/schema/runner_certification_registry_v1.yaml)
+  --registry <path>        Runner certification registry path (default: /specs/schema/runner_certification_registry_v2.yaml)
   --out-json <path>        Matrix JSON output path (default: /.artifacts/runner-status-matrix.json)
   --out-md <path>          Matrix Markdown output path (default: /.artifacts/runner-status-matrix.md)
   --log-json <path>        Ingest log output path (default: /.artifacts/runner-status-ingest-log.json)

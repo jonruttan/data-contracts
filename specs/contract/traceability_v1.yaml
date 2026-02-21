@@ -3746,7 +3746,7 @@ links:
   - specs/contract/25_compatibility_matrix.md
   - specs/contract/27_runner_status_exchange.md
   schema_refs:
-  - specs/schema/runner_certification_registry_v1.yaml
+  - specs/schema/runner_certification_registry_v2.yaml
   conformance_case_ids:
   - DCCONF-RSTAT-003
   unit_test_refs:

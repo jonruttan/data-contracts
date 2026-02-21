@@ -1272,7 +1272,7 @@ rules:
   risk_if_violated: Compatibility telemetry becomes ad-hoc or silently absent.
   references:
   - scripts/runner_status_ingest.sh
-  - specs/schema/runner_certification_registry_v1.yaml
+  - specs/schema/runner_certification_registry_v2.yaml
   - specs/governance/cases/core/runner_contract/runtime_compatibility_status_ingestion_configured.spec.md
 - id: RUNTIME_COMPATIBILITY_STATUS_FRESHNESS_WITHIN_SLO
   introduced_in: v1

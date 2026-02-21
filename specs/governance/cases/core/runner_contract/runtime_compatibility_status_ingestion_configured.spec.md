@@ -12,7 +12,7 @@ contracts:
       status_ingestion:
         files:
         - /scripts/runner_status_ingest.sh
-        - /specs/schema/runner_certification_registry_v1.yaml
+        - /specs/schema/runner_certification_registry_v2.yaml
         required_tokens:
         - release_api_url
         - report_asset_name

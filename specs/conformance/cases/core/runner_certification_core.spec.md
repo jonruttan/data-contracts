@@ -5,12 +5,17 @@ defaults:
   type: contract.check
 contracts:
   - id: DCCONF-RCERT-001
-    title: runner certification core checks MUST assertions deterministically
-    purpose: Confirms required certification core clauses remain strict and deterministic.
+    title: runner execution certificate v2 schema is declared
+    purpose: Ensures the v2 runner execution certificate schema is present with core sections.
     harness:
       check:
         profile: text.file
         config: {}
+      use:
+      - ref: /specs/libraries/policy/policy_text.spec.md
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_pair
     clauses:
       defaults: {}
       imports:
@@ -20,32 +25,51 @@ contracts:
       predicates:
       - id: assert_1
         assert:
-          std.string.contains:
+        - call:
+          - {var: policy.text.contains_pair}
           - {var: text}
-          - contract-spec
-  - id: DCCONF-RCERT-002
-    title: runner certification core MAY assertions remain available
-    purpose: Ensures MAY clauses remain supported for compatibility-oriented certification checks.
-    harness:
-      check:
-        profile: text.file
-        config: {}
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - text
-      predicates:
-      - id: assert_1
-        required: false
-        assert:
-        - std.string.contains:
+          - type
+          - runtime.runner_execution_certificate
+        - call:
+          - {var: policy.text.contains_pair}
           - {var: text}
           - version
-        - std.string.contains:
+          - "2"
+  - id: DCCONF-RCERT-002
+    title: runner execution certificate v2 includes intent equivalence and proof
+    purpose: Ensures v2 schema defines deterministic intent and payload proof fields.
+    harness:
+      check:
+        profile: text.file
+        config: {}
+      use:
+      - ref: /specs/libraries/policy/policy_text.spec.md
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_pair
+    clauses:
+      defaults: {}
+      imports:
+      - from: artifact
+        names:
+        - text
+      predicates:
+      - id: assert_1
+        assert:
+        - call:
+          - {var: policy.text.contains_pair}
           - {var: text}
-          - contract-spec
+          - execution_intent
+          - registry_ref
+        - call:
+          - {var: policy.text.contains_pair}
+          - {var: text}
+          - equivalence
+          - intent_hash
+        - call:
+          - {var: policy.text.contains_pair}
+          - {var: text}
+          - proof
+          - payload_sha256
 ```
-
 
