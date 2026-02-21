@@ -70,7 +70,7 @@ Parser behavior:
 - `spec_version` is required
 - `schema_ref` is required
 - each `contracts[]` item requires `id`
-- `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v1.yaml`
+- `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 
 `expect` (conformance metadata):
@@ -166,7 +166,7 @@ Security model:
 
 - Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute
   project code/commands with runner process privileges.
-- Running untrusted spec documents is unsafe and out of scope for v1.
+- Running untrusted spec documents is unsafe and out of scope for v2.
 - Implementations MAY pass process environment variables to `cli.run`; keep
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
@@ -354,7 +354,7 @@ Chain template interpolation:
 Documentation generator model:
 
 - docs generation surfaces are declared in
-  `specs/schema/docs_generator_registry_v1.yaml`.
+  `specs/schema/docs_generator_registry_v2.yaml`.
 - generator-owned markdown sections MUST use read-only markers:
   - `<!-- GENERATED:START surface_id -->`
   - `<!-- GENERATED:END surface_id -->`
@@ -453,7 +453,7 @@ Symbol resolution:
 
 Supported operators:
 
-- universal core operator: spec-lang v1 operator-keyed mappings at each leaf
+- universal core operator: spec-lang v2 operator-keyed mappings at each leaf
 
 Core executable-surface rule:
 
@@ -469,8 +469,8 @@ Operator constraints:
 - subject reference node: `{var: subject}` resolves via explicit imports
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
-  `specs/contract/03b_spec_lang_v1.md`
-- spec-lang v1 includes deep-equality set algebra (`union`, `intersection`,
+  `specs/contract/03b_spec_lang_v2.md`
+- spec-lang v2 includes deep-equality set algebra (`union`, `intersection`,
   `difference`, `symmetric_difference`, `is_subset`, `is_superset`,
   `set_equals`) and collection transforms (`map`, `filter`, `reduce`, etc.)
   with automatic builtin currying semantics
@@ -502,7 +502,7 @@ Operator constraints:
 - path fields in scoped harness/type config use virtual-root canonical `/...`
   form; `..` contract-root escapes are invalid
 - regex portability guidance for spec-lang expressions is defined in
-  `specs/contract/03a_regex_portability_v1.md`
+  `specs/contract/03a_regex_portability_v2.md`
 
 Step metadata constraints:
 
@@ -570,7 +570,7 @@ clauses:
       - 0
 ```
 
-`when` lifecycle hooks (v1):
+`when` lifecycle hooks:
 
 - optional `when` mapping on executable cases
 - non-canonical `harness.on` is forbidden (hard cut)

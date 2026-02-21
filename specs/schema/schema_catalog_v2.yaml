@@ -1,0 +1,10 @@
+version: 2
+schemas:
+  - schema_id: contract_spec
+    major: 2
+    path: /specs/schema/schema_v2.md
+    status: active
+  - schema_id: contract_spec
+    major: 1
+    path: /specs/schema/schema_v1.md
+    status: deprecated
