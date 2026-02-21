@@ -51,6 +51,7 @@ Read in order:
 37. `/specs/contract/31_contract_set_resolution.md`
 38. `/specs/contract/32_contract_bundle_taxonomy.md`
 39. `/specs/contract/33_bundle_package_management.md`
+40. `/specs/contract/34_runner_implementation_spec_bundles.md`
 
 Type contracts:
 

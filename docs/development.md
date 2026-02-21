@@ -47,6 +47,14 @@ Canonical bundle package operations:
 ./scripts/bundle install-check --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
 ```
 
+Project lock guidance:
+
+- Use root `bundles.lock.yaml` with multiple `bundles[]` entries.
+- Keep the base runner contract bundle as `role: primary`.
+- Add implementation-specific bundles from `dc-runner-*-specs` as
+  `role: additional`.
+- Keep each bundle install isolated via unique, non-overlapping `install_dir`.
+
 Canonical runner-ingestible pack manifests:
 
 - `/Users/jon/Workspace/Development/data-contracts/specs/packs/runner_contract_pack_v1.yaml`

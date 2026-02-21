@@ -13,7 +13,9 @@ Canonical specification root for `data-contracts`.
 - Reusable libraries: `/specs/libraries/index.md`
 - Runner-ingestible packs: `/specs/packs/index.md`
 - Bundle contracts/schemas: `/specs/contract/33_bundle_package_management.md`,
-  `/specs/schema/bundle_manifest_v1.yaml`
+  `/specs/contract/34_runner_implementation_spec_bundles.md`,
+  `/specs/schema/bundle_manifest_v1.yaml`,
+  `/specs/schema/implementation_bundle_overlay_v1.yaml`
 
 ## Subdomains
 

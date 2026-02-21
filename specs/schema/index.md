@@ -29,6 +29,8 @@ Canonical schema sources for executable `contract-spec` documents.
 - `/specs/schema/resolved_bundle_lock_v1.yaml`
 - `/specs/schema/runner_bundle_lock_v1.yaml`
 - `/specs/schema/project_bundle_lock_v1.yaml`
+- `/specs/schema/implementation_bundle_overlay_v1.yaml`
+- `/specs/schema/implementation_bundle_build_lock_v1.yaml`
 - `/specs/schema/contract_set_manifest_v1.yaml`
 - `/specs/schema/resolved_contract_set_lock_v1.yaml`
 - `/specs/schema/core_script_allowlist_v1.yaml`

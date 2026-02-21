@@ -23,6 +23,8 @@ Runner repositories MUST provide deterministic support for:
 Runner repositories MAY provide:
 
 - `smoke`
+- `build-impl`
+- `package-impl`
 - `package-check`
 - `release-verify`
 - `docs-check`
@@ -40,6 +42,10 @@ Runner repositories MAY provide:
   pinned bundle package checksum and lock metadata.
 - `bundle-sync` and `bundle-sync-check` SHOULD consume root
   `bundles.lock.yaml` (project multi-bundle lock) when available.
+- `build-impl`: compose implementation spec bundle by applying patch overlays to
+  a pinned base bundle package.
+- `package-impl`: package composed implementation bundle with canonical
+  `data-contract-bundle-*` naming and sidecars.
 - `compat-check`: verify runner compatibility surface against pinned upstream contracts.
 
 For MAY tasks, behavior MUST match task-id intent and MUST NOT weaken MUST task

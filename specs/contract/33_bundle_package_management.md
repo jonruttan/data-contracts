@@ -19,6 +19,12 @@ Canonical bundle manifests and release assets are owned by:
 `data-contracts` defines contracts and schemas for bundle behavior but is not
 the canonical manifest source.
 
+Implementation-specific overlay bundle sources are owned in:
+
+- `https://github.com/jonruttan/dc-runner-rust-specs`
+- `https://github.com/jonruttan/dc-runner-python-specs`
+- `https://github.com/jonruttan/dc-runner-php-specs`
+
 ## Producer Responsibilities (`data-contracts-bundles`)
 
 - Publish bundle package release assets:
@@ -56,6 +62,10 @@ Install directory overlap is forbidden.
   `/specs/schema/resolved_bundle_lock_v1.yaml`
 - Bundle manifest schema:
   `/specs/schema/bundle_manifest_v1.yaml`
+- Implementation overlay schema:
+  `/specs/schema/implementation_bundle_overlay_v1.yaml`
+- Implementation build lock schema:
+  `/specs/schema/implementation_bundle_build_lock_v1.yaml`
 - Project lock schema:
   `/specs/schema/project_bundle_lock_v1.yaml`
 - Runner lock schema:

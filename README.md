@@ -75,6 +75,14 @@ This repository does not execute runtime lanes.
 - Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_bundle_lock_v1.yaml`
 - Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/project_bundle_lock_v1.yaml`
 - Legacy runner lock schema (deprecated): `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_bundle_lock_v1.yaml`
+- Implementation overlay schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/implementation_bundle_overlay_v1.yaml`
+- Implementation build lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/implementation_bundle_build_lock_v1.yaml`
+- Implementation overlay contract: `/Users/jon/Workspace/Development/data-contracts/specs/contract/34_runner_implementation_spec_bundles.md`
+- Implementation spec bundle repos:
+  - [`jonruttan/dc-runner-rust-specs`](https://github.com/jonruttan/dc-runner-rust-specs)
+  - [`jonruttan/dc-runner-python-specs`](https://github.com/jonruttan/dc-runner-python-specs)
+  - [`jonruttan/dc-runner-php-specs`](https://github.com/jonruttan/dc-runner-php-specs)
+- `bundles.lock.yaml` supports multi-bundle entries using `role: primary|additional` with isolated non-overlapping `install_dir` per bundle.
 
 Legacy alias:
 

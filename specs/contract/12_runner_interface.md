@@ -52,14 +52,23 @@ Portable CLI surface is defined by:
 Bundle package management surface is defined by:
 
 - `/specs/contract/33_bundle_package_management.md`
+- `/specs/contract/34_runner_implementation_spec_bundles.md`
 - `/specs/schema/bundle_manifest_v1.yaml`
 - `/specs/schema/resolved_bundle_lock_v1.yaml`
 - `/specs/schema/runner_bundle_lock_v1.yaml`
 - `/specs/schema/project_bundle_lock_v1.yaml`
+- `/specs/schema/implementation_bundle_overlay_v1.yaml`
+- `/specs/schema/implementation_bundle_build_lock_v1.yaml`
 
 Canonical bundle manifest and package librarian repository:
 
 - `https://github.com/jonruttan/data-contracts-bundles`
+
+Implementation-specific overlay repositories:
+
+- `https://github.com/jonruttan/dc-runner-rust-specs`
+- `https://github.com/jonruttan/dc-runner-python-specs`
+- `https://github.com/jonruttan/dc-runner-php-specs`
 
 ## Policy Semantics
 

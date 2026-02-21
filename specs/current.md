@@ -21,6 +21,9 @@ Date: 2026-02-18
   names `bundle_version` and `maintainers`
 - Runner sync task contract: required task IDs are `bundle-sync` and `bundle-sync-check`
 - Project multi-bundle lock: root `bundles.lock.yaml` using `project_bundle_lock_v1`
+- Implementation runner spec bundles: `dc-runner-*-specs` build patch overlays on
+  canonical base bundles from `data-contracts-bundles` and publish
+  implementation-specific `data-contract-bundle-*` assets
 
 ## Canonical Specs
 

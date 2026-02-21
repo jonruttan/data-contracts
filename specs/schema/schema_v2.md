@@ -27,6 +27,8 @@ Related docs/reference schemas:
 - `specs/schema/resolved_bundle_lock_v1.yaml`
 - `specs/schema/runner_bundle_lock_v1.yaml`
 - `specs/schema/project_bundle_lock_v1.yaml`
+- `specs/schema/implementation_bundle_overlay_v1.yaml`
+- `specs/schema/implementation_bundle_build_lock_v1.yaml`
 - `specs/schema/registry/v2/*.yaml`
 - `specs/contract/19_spec_lang_stdlib_profile_v2.md`
 - `specs/contract/20_subject_profiles_v2.md`
@@ -77,6 +79,10 @@ Bundle terminology policy:
 - canonical project-level bundle installs are pinned in root `bundles.lock.yaml`
   using `/specs/schema/project_bundle_lock_v1.yaml`.
 - `/specs/schema/runner_bundle_lock_v1.yaml` is deprecated for new integrations.
+- implementation-specific overlays on base runner bundles are described by
+  `/specs/schema/implementation_bundle_overlay_v1.yaml`.
+- deterministic implementation build outputs are recorded in
+  `/specs/schema/implementation_bundle_build_lock_v1.yaml`.
 
 Each `contracts[]` item:
 

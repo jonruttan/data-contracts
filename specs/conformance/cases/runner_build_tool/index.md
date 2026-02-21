@@ -10,5 +10,8 @@ Portable maintenance task contract surface.
 - `/specs/conformance/cases/runner_build_tool/runner_build_tool_bundle_lock_schema.spec.md`
 - `/specs/conformance/cases/runner_build_tool/runner_build_tool_bundle_asset_naming.spec.md`
 - `/specs/conformance/cases/runner_build_tool/runner_build_tool_install_surface.spec.md`
+- `/specs/conformance/cases/runner_build_tool/runner_build_tool_impl_overlay_schema.spec.md`
+- `/specs/conformance/cases/runner_build_tool/runner_build_tool_impl_bundle_commands.spec.md`
+- `/specs/conformance/cases/runner_build_tool/runner_build_tool_project_lock_additional_role.spec.md`
 - `/specs/conformance/cases/runner_build_tool/runner_build_tool_may_catalog.spec.md`
 - `/specs/conformance/cases/runner_build_tool/runner_build_tool_manifest_path.spec.md`
