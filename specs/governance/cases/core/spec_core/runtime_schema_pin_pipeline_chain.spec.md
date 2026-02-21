@@ -37,7 +37,6 @@ contracts:
             - policy.schema_pin.unknown_schema_ref_zero
             - policy.schema_pin.version_match_zero
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

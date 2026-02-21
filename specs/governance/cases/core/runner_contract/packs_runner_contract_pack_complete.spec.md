@@ -33,7 +33,6 @@ contracts:
         config:
           check: packs.runner_contract_pack_complete
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

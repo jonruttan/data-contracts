@@ -9,7 +9,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -33,7 +32,6 @@ contracts:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
-  harness: check
 - id: DCCONF-PROFILE-002
   title: text.file exposes context_json subject profile envelope
   purpose: Ensures text.file harness provides context_json target with profile metadata and JSON value payload.
@@ -41,7 +39,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -68,6 +65,7 @@ contracts:
     profile: text.file
     config:
       path: "/specs/contract/20_subject_profiles_v1.md"
+defaults:
   harness: check
 ```
 

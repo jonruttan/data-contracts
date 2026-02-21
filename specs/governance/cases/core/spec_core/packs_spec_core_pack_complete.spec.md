@@ -21,7 +21,6 @@ contracts:
         config:
           check: packs.spec_core_pack_complete
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

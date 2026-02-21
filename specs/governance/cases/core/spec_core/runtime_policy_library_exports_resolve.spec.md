@@ -31,7 +31,6 @@ contracts:
         config:
           check: runtime.policy_library_exports_resolve
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

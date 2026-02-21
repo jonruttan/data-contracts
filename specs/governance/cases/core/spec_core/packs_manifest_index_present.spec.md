@@ -20,7 +20,6 @@ contracts:
         config:
           check: packs.manifest_index_present
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

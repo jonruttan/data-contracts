@@ -19,7 +19,6 @@ contracts:
       - target=text
       - op=evaluate
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:

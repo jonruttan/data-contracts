@@ -19,7 +19,6 @@ contracts:
         config:
           check: runtime.shell_extractors_fact_only_enforced
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

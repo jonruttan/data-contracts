@@ -26,7 +26,6 @@ contracts:
         config:
           check: runtime.non_core_scripts_not_in_active_docs
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

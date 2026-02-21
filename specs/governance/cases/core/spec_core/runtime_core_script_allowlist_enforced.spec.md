@@ -27,7 +27,6 @@ contracts:
         config:
           check: runtime.core_script_allowlist_enforced
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

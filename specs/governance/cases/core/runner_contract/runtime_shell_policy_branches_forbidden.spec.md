@@ -20,7 +20,6 @@ contracts:
         config:
           check: runtime.shell_policy_branches_forbidden
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

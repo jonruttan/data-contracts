@@ -5,13 +5,11 @@ contracts:
 - id: DCCONF-CHAIN-EXPORT-002
   title: producer export path must resolve to producer assert step id
   purpose: Ensures from=assert.function exports fail with schema category when export path does not resolve to a producer assert step.
-  harness: check
   expect:
     portable:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     steps: []
     profile: text.file
     config:
@@ -24,13 +22,11 @@ contracts:
 - id: DCCONF-CHAIN-EXPORT-003
   title: producer export source assert step must use class must
   purpose: Ensures from=assert.function exports fail with schema category when source step class is not must.
-  harness: check
   expect:
     portable:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     steps: []
     profile: text.file
     config:
@@ -40,6 +36,8 @@ contracts:
         as: bad_export_class_fixture
         symbols:
         - bad.class.symbol
+defaults:
+  harness: check
 ```
 
 

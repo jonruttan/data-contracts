@@ -5,12 +5,10 @@ contracts:
 - id: DCCONF-DOMAIN-LIB-001
   title: domain http library defines status helper
   purpose: Ensures domain HTTP library exports reusable status-based assertion helper.
-  harness: check
   expect:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -193,12 +191,10 @@ contracts:
 - id: DCCONF-DOMAIN-LIB-002
   title: domain library index references all domain library files
   purpose: Ensures domain index remains synchronized with all domain library spec files.
-  harness: check
   expect:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -422,6 +418,8 @@ contracts:
         as: lib_php_core_spec
         symbols:
         - php.is_assoc_projection
+defaults:
+  harness: check
 ```
 
 

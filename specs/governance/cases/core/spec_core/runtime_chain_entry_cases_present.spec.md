@@ -21,7 +21,6 @@ contracts:
         config:
           check: runtime.chain_entry_cases_present
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

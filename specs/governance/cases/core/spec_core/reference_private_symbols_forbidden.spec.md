@@ -1,41 +1,39 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-REF-SYMBOLS-004
-    title: private library symbols are not referenced externally
-    purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols
-      from library docs.
-    harness:
-      root: .
-      check:
-        profile: governance.scan
-        config:
-          check: reference.private_symbols_forbidden
-      use:
-      - ref: /specs/libraries/policy/policy_assertions.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.assert.no_violations
-        - policy.assert.summary_passed
-        - policy.assert.summary_check_id
-        - policy.assert.scan_pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - summary_json
-      predicates:
-      - id: assert_1
-        assert:
-          call:
-          - {var: policy.assert.summary_check_id}
-          - std.object.assoc:
-            - summary_json
-            - {var: summary_json}
-            - lit: {}
-          - reference.private_symbols_forbidden
+- id: DCGOV-REF-SYMBOLS-004
+  title: private library symbols are not referenced externally
+  purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols from library docs.
+  harness:
+    root: "."
+    check:
+      profile: governance.scan
+      config:
+        check: reference.private_symbols_forbidden
+    use:
+    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+        call:
+        - var: policy.assert.summary_check_id
+        - std.object.assoc:
+          - summary_json
+          - var: summary_json
+          - lit: {}
+        - reference.private_symbols_forbidden
 ```

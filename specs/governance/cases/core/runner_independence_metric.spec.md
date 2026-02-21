@@ -14,7 +14,6 @@ contracts:
         config:
           check: governance.structured_assertions_required
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

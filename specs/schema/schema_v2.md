@@ -39,7 +39,9 @@ Related docs/reference schemas:
 - `spec_version` (int, required): schema major used by this suite
 - `schema_ref` (string, required): canonical virtual-root schema path
 - `contracts` (list, required): non-empty list of executable contract items
-- `defaults` (mapping, optional): shallow defaults merged into each contract item
+- `defaults` (mapping, optional): shallow defaults merged into each contract
+  item; defaults should be used only for measurable duplication reduction and
+  empty defaults mappings are non-canonical
 - `artifact` (mapping, optional): suite-level artifact reference declarations
   - `artifact.imports` (list, optional): artifact import declarations
     - `id` (string, required)

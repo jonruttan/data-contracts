@@ -1,40 +1,39 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-NORM-PATHS-001
-    title: scoped spec paths use canonical virtual-root form
-    purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
-    harness:
-      root: .
-      check:
-        profile: governance.scan
-        config:
-          check: normalization.virtual_root_paths_only
-      use:
-      - ref: /specs/libraries/policy/policy_assertions.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.assert.no_violations
-        - policy.assert.summary_passed
-        - policy.assert.summary_check_id
-        - policy.assert.scan_pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - summary_json
-      predicates:
-      - id: assert_1
-        assert:
-          call:
-          - {var: policy.assert.summary_check_id}
-          - std.object.assoc:
-            - summary_json
-            - {var: summary_json}
-            - lit: {}
-          - normalization.virtual_root_paths_only
+- id: DCGOV-NORM-PATHS-001
+  title: scoped spec paths use canonical virtual-root form
+  purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
+  harness:
+    root: "."
+    check:
+      profile: governance.scan
+      config:
+        check: normalization.virtual_root_paths_only
+    use:
+    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+        call:
+        - var: policy.assert.summary_check_id
+        - std.object.assoc:
+          - summary_json
+          - var: summary_json
+          - lit: {}
+        - normalization.virtual_root_paths_only
 ```

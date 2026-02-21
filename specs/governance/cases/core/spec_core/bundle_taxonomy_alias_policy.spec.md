@@ -13,7 +13,6 @@ contracts:
         config:
           path: /specs/contract/32_contract_bundle_taxonomy.md
     clauses:
-      defaults: {}
       imports:
       - from: artifact
         names:
@@ -42,7 +41,6 @@ contracts:
         config:
           path: /specs/schema/schema_v2.md
     clauses:
-      defaults: {}
       imports:
       - from: artifact
         names:

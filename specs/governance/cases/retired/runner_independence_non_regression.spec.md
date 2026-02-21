@@ -1,74 +1,72 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-RUNTIME-INDEP-002
-    title: runner independence metric is non-regressing
-    purpose: Enforces monotonic non-regression for runner independence metrics against checked-in
-      baseline.
-    harness:
-      root: .
-      runner_independence_non_regression:
-        baseline_path: /specs/governance/metrics/runner_independence_baseline.json
-        summary_fields:
-          overall_runner_independence_ratio: non_decrease
-          direct_runtime_invocation_count: non_increase
-        segment_fields:
+- id: DCGOV-RUNTIME-INDEP-002
+  title: runner independence metric is non-regressing
+  purpose: Enforces monotonic non-regression for runner independence metrics against checked-in baseline.
+  harness:
+    root: "."
+    runner_independence_non_regression:
+      baseline_path: "/specs/governance/metrics/runner_independence_baseline.json"
+      summary_fields:
+        overall_runner_independence_ratio: non_decrease
+        direct_runtime_invocation_count: non_increase
+      segment_fields:
+        gate_scripts:
+          mean_runner_interface_usage_ratio: non_decrease
+      epsilon: 1.0e-12
+      runner_independence:
+        segment_files:
           gate_scripts:
-            mean_runner_interface_usage_ratio: non_decrease
-        epsilon: 1.0e-12
-        runner_independence:
-          segment_files:
-            gate_scripts:
-            - scripts/ci_gate.sh
-            - scripts/ci_gate.sh
-            - scripts/control_plane.sh
-            ci_workflows:
-            - .github/workflows/*.yml
-            adapter_interfaces:
-            - scripts/runner_bin.sh
-            - dc-runner-rust
-            - dc-runner-rust
-          direct_runtime_token_segments:
-          - gate_scripts
-          - ci_workflows
-      check:
-        profile: governance.scan
-        config:
-          check: runtime.runner_independence_non_regression
-      use:
-      - ref: /specs/libraries/policy/policy_core.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.pass_when_no_violations
-    clauses:
-      defaults: {}
+          - scripts/ci_gate.sh
+          - scripts/ci_gate.sh
+          - scripts/control_plane.sh
+          ci_workflows:
+          - ".github/workflows/*.yml"
+          adapter_interfaces:
+          - scripts/runner_bin.sh
+          - dc-runner-rust
+          - dc-runner-rust
+        direct_runtime_token_segments:
+        - gate_scripts
+        - ci_workflows
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.runner_independence_non_regression
+    use:
+    - ref: "/specs/libraries/policy/policy_core.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.pass_when_no_violations
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - violation_count
+    predicates:
+    - id: assert_1
+      assert:
+        std.logic.eq:
+        - var: violation_count
+        - 0
+    - id: assert_2
+      assert:
+      - std.logic.eq:
+        - std.object.get:
+          - var: summary_json
+          - passed
+        - true
+      - std.logic.eq:
+        - std.object.get:
+          - var: summary_json
+          - check_id
+        - runtime.runner_independence_non_regression
       imports:
       - from: artifact
         names:
-        - violation_count
-      predicates:
-      - id: assert_1
-        assert:
-          std.logic.eq:
-          - {var: violation_count}
-          - 0
-      - id: assert_2
-        assert:
-        - std.logic.eq:
-          - std.object.get:
-            - {var: summary_json}
-            - passed
-          - true
-        - std.logic.eq:
-          - std.object.get:
-            - {var: summary_json}
-            - check_id
-          - runtime.runner_independence_non_regression
-        imports:
-        - from: artifact
-          names:
-          - summary_json
+        - summary_json
 ```

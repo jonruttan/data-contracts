@@ -37,7 +37,6 @@ contracts:
             - policy.ingest.compat_stale_missing_count_within_limit
             - policy.ingest.log_entries_correlate_matrix_rows
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

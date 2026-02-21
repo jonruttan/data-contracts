@@ -5,9 +5,7 @@ contracts:
 - id: DCCONF-RCERT-001
   title: runner execution certificate v2 schema is declared
   purpose: Ensures the v2 runner execution certificate schema is present with core sections.
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -35,9 +33,7 @@ contracts:
 - id: DCCONF-RCERT-002
   title: runner execution certificate v2 includes intent equivalence and proof
   purpose: Ensures v2 schema defines deterministic intent and payload proof fields.
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -67,5 +63,7 @@ contracts:
         as: lib_policy_text
         symbols:
         - policy.text.contains_pair
+defaults:
+  harness: check
 ```
 

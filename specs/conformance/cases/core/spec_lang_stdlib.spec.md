@@ -9,7 +9,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -40,7 +39,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-002
   title: core collection and object operators evaluate deterministically
   purpose: Validates representative object and json operators in the stdlib profile.
@@ -48,7 +46,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -79,7 +76,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-003
   title: ops fs path operators evaluate deterministically
   purpose: Validates pure contract-posix path helpers under ops.fs.path.
@@ -87,7 +83,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -129,7 +124,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-004
   title: ops fs file metadata helpers evaluate deterministically
   purpose: Validates metadata-only file predicates and getters under ops.fs.file.
@@ -137,7 +131,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -193,7 +186,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-005
   title: ops fs json helpers evaluate deterministically
   purpose: Validates pure json parse/path helpers under ops.fs.json.
@@ -201,7 +193,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -260,7 +251,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-006
   title: ops fs json helpers fail schema for bad argument shapes
   purpose: Ensures ops.fs.json path utilities reject invalid path shapes.
@@ -269,7 +259,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -286,7 +275,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-007
   title: ops fs glob helpers evaluate deterministically
   purpose: Validates pure glob matching/filter helpers under ops.fs.glob.
@@ -294,7 +282,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -332,7 +319,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-008
   title: ops fs glob helpers fail schema for bad argument shapes
   purpose: Ensures ops.fs.glob helpers reject invalid list element types.
@@ -341,7 +327,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -359,7 +344,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-009
   title: ops fs path relativize and common_prefix evaluate deterministically
   purpose: Validates pure relative-path and common-prefix helpers.
@@ -367,7 +351,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -400,7 +383,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-010
   title: ops fs path common_prefix fails schema for non-string entries
   purpose: Ensures common_prefix rejects list entries that are not strings.
@@ -409,7 +391,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -426,7 +407,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-011
   title: ops fs path parents and within evaluate deterministically
   purpose: Validates pure parent chain and containment helpers.
@@ -434,7 +414,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -474,7 +453,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-012
   title: ops fs path parents fails schema for non-string argument
   purpose: Ensures parents rejects non-string input.
@@ -483,7 +461,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -498,7 +475,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-013
   title: ops fs path compare and sort evaluate deterministically
   purpose: Validates pure normalized path compare and sort helpers.
@@ -506,7 +482,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -537,7 +512,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  harness: check
 - id: DCCONF-STDLIB-014
   title: ops fs path sort fails schema for non-string entries
   purpose: Ensures sort rejects list entries that are not strings.
@@ -546,7 +520,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -564,6 +537,7 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
+defaults:
   harness: check
 ```
 

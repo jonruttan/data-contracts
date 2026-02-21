@@ -19,7 +19,6 @@ contracts:
         config:
           check: runtime.ingest_policy_branches_forbidden
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

@@ -36,7 +36,6 @@ contracts:
             - policy.ci.optional_profile_report_only
             - policy.ci.artifacts_present
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

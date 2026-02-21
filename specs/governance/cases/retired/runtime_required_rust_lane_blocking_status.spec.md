@@ -1,42 +1,43 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-RUNTIME-CONFIG-006
-    title: required lane remains blocking
-    purpose: Ensures the required CI gate lane is implementation-agnostic and not configured as non-blocking.
-    harness:
-      root: .
-      required_rust_lane:
-        workflow: /.github/workflows/ci.yml
-        required_tokens:
-        - ci-gate: null
-        - Run CI gate (required lane)
-        - run: ./scripts/ci_gate.sh
-        forbidden_tokens:
-        - Run CI gate (diagnostic lane)
-        - "continue-on-error: true\n        run: ./scripts/ci_gate.sh"
-      check:
-        profile: governance.scan
-        config:
-          check: runtime.required_rust_lane_blocking_status
-      use:
-      - ref: /specs/libraries/policy/policy_core.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.pass_when_no_violations
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - violation_count
-      predicates:
-      - id: assert_1
-        assert:
-          std.logic.eq:
-          - {var: violation_count}
-          - 0
+- id: DCGOV-RUNTIME-CONFIG-006
+  title: required lane remains blocking
+  purpose: Ensures the required CI gate lane is implementation-agnostic and not configured as non-blocking.
+  harness:
+    root: "."
+    required_rust_lane:
+      workflow: "/.github/workflows/ci.yml"
+      required_tokens:
+      - ci-gate:
+      - Run CI gate (required lane)
+      - run: "./scripts/ci_gate.sh"
+      forbidden_tokens:
+      - Run CI gate (diagnostic lane)
+      - |-
+        continue-on-error: true
+                run: ./scripts/ci_gate.sh
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.required_rust_lane_blocking_status
+    use:
+    - ref: "/specs/libraries/policy/policy_core.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.pass_when_no_violations
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - violation_count
+    predicates:
+    - id: assert_1
+      assert:
+        std.logic.eq:
+        - var: violation_count
+        - 0
 ```

@@ -23,7 +23,6 @@ contracts:
         config:
           check: packs.pack_paths_resolve
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

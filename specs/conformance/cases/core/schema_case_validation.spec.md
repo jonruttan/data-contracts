@@ -38,7 +38,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -60,7 +59,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -81,7 +79,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     predicates:
     - id: __export__schema.validation.ok
       assert:
@@ -109,7 +106,6 @@ contracts:
   imports:
   - "/specs/libraries/domain/path_core.spec.md"
   clauses:
-    defaults: {}
     predicates:
     - id: __export__schema.validation.forbidden
       assert:
@@ -135,7 +131,6 @@ contracts:
       status: fail
       category: schema
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -148,7 +143,6 @@ contracts:
       category: schema
   harness: unknown_harness
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -162,7 +156,6 @@ contracts:
   type: contract.check
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -175,10 +168,9 @@ contracts:
       category: schema
   imports:
   - id: legacy_import
-    ref: /specs/schema/schema_v2.md
+    ref: "/specs/schema/schema_v2.md"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -193,10 +185,9 @@ contracts:
   - as: schema.validation.invalid_mode
     mode: function
     from: assert.function
-    path: /__export__schema.validation.ok
+    path: "/__export__schema.validation.ok"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -211,10 +202,9 @@ contracts:
   - id: schema.validation.invalid_id
     as: schema.validation.invalid_id
     from: assert.function
-    path: /__export__schema.validation.ok
+    path: "/__export__schema.validation.ok"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -228,11 +218,10 @@ contracts:
   exports:
   - as: schema.validation.invalid_ref
     from: assert.function
-    path: /__export__schema.validation.ok
-    ref: /specs/schema/schema_v2.md
+    path: "/__export__schema.validation.ok"
+    ref: "/specs/schema/schema_v2.md"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -246,10 +235,9 @@ contracts:
   exports:
   - as: schema.validation.invalid_from
     from: custom.function
-    path: /__export__schema.validation.ok
+    path: "/__export__schema.validation.ok"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -265,7 +253,6 @@ contracts:
     - id: missing_ref
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -279,12 +266,11 @@ contracts:
   artifact:
     exports:
     - id: invalid_artifact_export
-      ref: /specs/schema/schema_v2.md
+      ref: "/specs/schema/schema_v2.md"
       inputs: {}
       outputs: {}
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -297,10 +283,9 @@ contracts:
       category: schema
   artifact:
     exports:
-    - ref: /specs/schema/schema_v2.md
+    - ref: "/specs/schema/schema_v2.md"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:
@@ -317,7 +302,6 @@ contracts:
       ref: "{{unknown_suite_var}}"
   harness: check
   clauses:
-    defaults: {}
     predicates:
     - id: assert_1
       assert:

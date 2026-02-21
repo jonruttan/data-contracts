@@ -20,7 +20,6 @@ contracts:
         config:
           check: packs.project_docs_pack_complete
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

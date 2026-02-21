@@ -22,7 +22,6 @@ contracts:
         config:
           check: packs.pack_case_ids_unique
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names: [violation_count]

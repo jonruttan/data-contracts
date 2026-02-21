@@ -9,7 +9,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -39,7 +38,6 @@ contracts:
         symbols:
         - policy.text.contains_all
         - policy.text.contains_none
-  harness: check
 - id: DCCONF-LIB-CONTRACT-002
   title: path library uses producer harness exports
   purpose: Ensures path library authoring uses producer-owned root exports mode=function with assert.function source mappings.
@@ -47,7 +45,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -77,7 +74,6 @@ contracts:
         symbols:
         - policy.text.contains_all
         - policy.text.contains_none
-  harness: check
 - id: DCCONF-LIB-CONTRACT-003
   title: policy library index tracks canonical files
   purpose: Ensures generated policy library index includes canonical file references.
@@ -85,7 +81,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -107,6 +102,7 @@ contracts:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
+defaults:
   harness: check
 ```
 

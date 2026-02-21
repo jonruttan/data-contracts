@@ -9,7 +9,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -34,7 +33,6 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
-  harness: check
 - id: DCCONF-SCHEMA-STDLIB-004
   title: parsed payload predicates support deterministic error-shape checks
   purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value checks.
@@ -42,7 +40,6 @@ contracts:
     portable:
       status: pass
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -69,6 +66,7 @@ contracts:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
+defaults:
   harness: check
 ```
 

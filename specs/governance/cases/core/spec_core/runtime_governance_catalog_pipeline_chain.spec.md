@@ -37,7 +37,6 @@ contracts:
             - policy.catalog.multi_tier_collisions_zero
             - policy.catalog.check_field_presence_zero
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

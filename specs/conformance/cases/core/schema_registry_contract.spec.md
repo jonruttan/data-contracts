@@ -10,7 +10,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:

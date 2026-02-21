@@ -1,47 +1,45 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-SPEC-MD-004
-    title: generated data artifacts do not embed executable spec blocks
-    purpose: Ensures machine-native yaml and json data artifact surfaces remain non-executable
-      and do not contain yaml contract-spec fences.
-    harness:
-      root: .
-      check:
-        profile: governance.scan
-        config:
-          check: spec.generated_data_artifacts_not_embedded_in_spec_blocks
-      use:
-      - ref: /specs/libraries/policy/policy_assertions.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.assert.no_violations
-        - policy.assert.summary_passed
-        - policy.assert.summary_check_id
-        - policy.assert.scan_pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - summary_json
-      predicates:
-      - id: assert_1
-        assert:
-        - call:
-          - {var: policy.assert.summary_check_id}
-          - std.object.assoc:
-            - summary_json
-            - {var: summary_json}
-            - lit: {}
-          - spec.generated_data_artifacts_not_embedded_in_spec_blocks
-        - call:
-          - {var: policy.assert.summary_passed}
-          - std.object.assoc:
-            - summary_json
-            - {var: summary_json}
-            - lit: {}
+- id: DCGOV-SPEC-MD-004
+  title: generated data artifacts do not embed executable spec blocks
+  purpose: Ensures machine-native yaml and json data artifact surfaces remain non-executable and do not contain yaml contract-spec fences.
+  harness:
+    root: "."
+    check:
+      profile: governance.scan
+      config:
+        check: spec.generated_data_artifacts_not_embedded_in_spec_blocks
+    use:
+    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - call:
+        - var: policy.assert.summary_check_id
+        - std.object.assoc:
+          - summary_json
+          - var: summary_json
+          - lit: {}
+        - spec.generated_data_artifacts_not_embedded_in_spec_blocks
+      - call:
+        - var: policy.assert.summary_passed
+        - std.object.assoc:
+          - summary_json
+          - var: summary_json
+          - lit: {}
 ```

@@ -1,50 +1,49 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-RUNTIME-PREPUSH-005
-    title: local ci parity entrypoint is documented for contributors
-    purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and hook installation.
-    harness:
-      root: .
-      local_ci_parity_docs:
-        files:
-        - /README.md
-        - /docs/development.md
-        - /docs/book/60_runner_and_gates.md
-        - /docs/book/80_troubleshooting.md
-        required_tokens:
-        - make prepush
-        - make prepush-fast
-        - make hooks-install
-        - SPEC_PREPUSH_BYPASS=1
-      check:
-        profile: governance.scan
-        config:
-          check: runtime.local_ci_parity_entrypoint_documented
-      use:
-      - ref: /specs/libraries/policy/policy_assertions.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.assert.no_violations
-        - policy.assert.summary_passed
-        - policy.assert.summary_check_id
-        - policy.assert.scan_pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - violation_count
-      predicates:
-      - id: assert_1
-        assert:
-          call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+- id: DCGOV-RUNTIME-PREPUSH-005
+  title: local ci parity entrypoint is documented for contributors
+  purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and hook installation.
+  harness:
+    root: "."
+    local_ci_parity_docs:
+      files:
+      - "/README.md"
+      - "/docs/development.md"
+      - "/docs/book/60_runner_and_gates.md"
+      - "/docs/book/80_troubleshooting.md"
+      required_tokens:
+      - make prepush
+      - make prepush-fast
+      - make hooks-install
+      - SPEC_PREPUSH_BYPASS=1
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.local_ci_parity_entrypoint_documented
+    use:
+    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - violation_count
+    predicates:
+    - id: assert_1
+      assert:
+        call:
+        - var: policy.assert.no_violations
+        - std.object.assoc:
+          - violation_count
+          - var: violation_count
+          - lit: {}
 ```

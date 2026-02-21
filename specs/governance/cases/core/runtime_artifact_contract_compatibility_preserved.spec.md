@@ -20,7 +20,6 @@ contracts:
         config:
           check: runtime.artifact_contract_compatibility_preserved
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

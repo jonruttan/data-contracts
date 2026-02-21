@@ -19,7 +19,6 @@ contracts:
         config:
           check: governance.policy_source_spec_lang_required
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

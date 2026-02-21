@@ -12,9 +12,7 @@ contracts:
     portable:
       status: pass
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -44,9 +42,7 @@ contracts:
     portable:
       status: pass
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -82,7 +78,6 @@ contracts:
       message_tokens:
       - spec_lang let binding must be [name, expr]
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -118,7 +113,6 @@ contracts:
             - 1500
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-004
   title: evaluate false predicate fails assertion
   purpose: Verifies evaluate false result is categorized as assertion failure.
@@ -132,7 +126,6 @@ contracts:
       message_tokens:
       - op=evaluate
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -145,7 +138,6 @@ contracts:
         - NOPE_PREFIX
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-005
   title: evaluate malformed form fails schema
   purpose: Verifies malformed evaluate forms fail with schema classification.
@@ -159,7 +151,6 @@ contracts:
       message_tokens:
       - operator args must be a list
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -171,7 +162,6 @@ contracts:
           bad: shape
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-006
   title: evaluate unknown symbol fails schema
   purpose: Verifies unknown symbols are rejected as schema violations.
@@ -185,7 +175,6 @@ contracts:
       message_tokens:
       - unsupported spec_lang symbol
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -198,7 +187,6 @@ contracts:
           - 1
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-007
   title: evaluate recursive literal-expression shape fails schema
   purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically as schema.
@@ -211,9 +199,7 @@ contracts:
       category: schema
       message_tokens:
       - spec_lang let binding must be [name, expr]
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -254,9 +240,7 @@ contracts:
     portable:
       status: pass
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -284,10 +268,6 @@ contracts:
 - id: DCCONF-EXPR-009
   title: evaluate set intersection supports deep structural equality
   purpose: Verifies intersection deduplicates and compares nested values structurally with stable left-first output.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -297,7 +277,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -315,14 +294,9 @@ contracts:
           - '[{"k":1},{"k":2}]'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-010
   title: evaluate set union keeps stable left-first unique ordering
   purpose: Verifies union preserves first-seen ordering while removing deep-equal duplicates.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -332,7 +306,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -350,14 +323,9 @@ contracts:
           - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-011
   title: evaluate difference and symmetric_difference are deterministic
   purpose: Verifies set difference semantics and deterministic ordering for symmetric_difference.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -367,7 +335,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -394,14 +361,9 @@ contracts:
             - '[{"k":1},{"k":3},{"k":4}]'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-012
   title: evaluate set predicates compare by deep equality
   purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural equality.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -411,7 +373,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -442,14 +403,9 @@ contracts:
             - '{"k":2}'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-013
   title: evaluate map and filter support curried builtins
   purpose: Verifies builtin partial application works with map/filter collection transforms.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -459,7 +415,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -488,14 +443,9 @@ contracts:
             - "[4,5]"
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-014
   title: evaluate reduce and collection helpers are deterministic
   purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried predicates.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -505,7 +455,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -574,14 +523,9 @@ contracts:
             - '[{"k":1},{"k":2}]'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-015
   title: evaluate flatten and list composition helpers
   purpose: Verifies flatten, concat, append, prepend, take, and drop operations.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -591,7 +535,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -644,14 +587,9 @@ contracts:
             - "[3]"
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-016
   title: evaluate currying chain with nested call succeeds
   purpose: Verifies repeated partial application resolves deterministically to a final non-callable value.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -661,7 +599,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -678,14 +615,9 @@ contracts:
         - 5
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-017
   title: evaluate over-application of non-callable result is schema failure
   purpose: Verifies deterministic schema failure when extra call arguments remain after returning non-callable value.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -697,7 +629,6 @@ contracts:
       message_tokens:
       - over-application error
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -714,14 +645,9 @@ contracts:
           - 3
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-018
   title: evaluate set ops enforce list inputs
   purpose: Verifies set algebra operators reject non-list inputs with schema errors.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -733,7 +659,6 @@ contracts:
       message_tokens:
       - expects list
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -747,14 +672,9 @@ contracts:
           - "[]"
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-019
   title: evaluate ramda v1 arithmetic and list utilities behave deterministically
   purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -764,7 +684,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -862,14 +781,9 @@ contracts:
             - '{"a":1}'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-020
   title: evaluate ramda v1 object utilities
   purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -879,7 +793,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -957,14 +870,9 @@ contracts:
             - '{"a":1,"b":2}'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-021
   title: evaluate ramda v1 combinators and string helpers
   purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -974,7 +882,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -1030,14 +937,9 @@ contracts:
           - '700'
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-022
   title: evaluate ramda v1 unary numeric and compare helpers
   purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values for policy expressions.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -1047,7 +949,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -1108,14 +1009,9 @@ contracts:
             - true
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-023
   title: evaluate ramda v1 utility and predicate helpers
   purpose: Verifies utility and predicate helpers used by governance logic are deterministic and pure.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -1125,7 +1021,6 @@ contracts:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -1281,14 +1176,9 @@ contracts:
           - 8
     profile: text.file
     config: {}
-  harness: check
 - id: DCCONF-EXPR-024
   title: evaluate ramda v1 schema failures are deterministic
   purpose: Verifies representative arity and type failures stay in schema category for the expanded builtin surface.
-  requires:
-    capabilities:
-    - evaluate.spec_lang.ramda.v1
-    when_missing: skip
   expect:
     portable:
       status: skip
@@ -1300,7 +1190,6 @@ contracts:
       message_tokens:
       - arity error
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -1312,7 +1201,12 @@ contracts:
         - 1
     profile: text.file
     config: {}
+defaults:
   harness: check
+  requires:
+    capabilities:
+    - evaluate.spec_lang.ramda.v1
+    when_missing: skip
 ```
 
 

@@ -5,15 +5,11 @@ contracts:
 - id: DCCONF-API-001
   title: api.http GET reads relative fixture and exposes body assertions
   purpose: Verifies api.http can resolve a local relative request url and assert deterministic status and json body shape.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -38,13 +34,9 @@ contracts:
       request:
         method: GET
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  harness: check
 - id: DCCONF-API-002
   title: api.http requires request.url
   purpose: Verifies api.http reports a schema violation when request url is missing from portable fixture input.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: fail
@@ -52,7 +44,6 @@ contracts:
       message_tokens:
       - api.http request.url is required
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -67,7 +58,6 @@ contracts:
     config:
       request:
         method: GET
-  harness: check
 - id: DCCONF-API-003
   title: api.http skip path honors requires.when_missing
   purpose: Verifies extension capability gating can skip fixtures when a required capability is absent.
@@ -81,7 +71,6 @@ contracts:
       status: skip
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -97,19 +86,14 @@ contracts:
       request:
         method: GET
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  harness: check
 - id: DCCONF-API-004
   title: api.http supports POST with body_json
   purpose: Verifies practical REST mutating verb support for POST requests in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -127,19 +111,14 @@ contracts:
         url: "/specs/conformance/cases/fixtures/api_http_created.json"
         body_json:
           name: sample
-  harness: check
 - id: DCCONF-API-005
   title: api.http supports PUT
   purpose: Verifies practical REST verb support for PUT in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -155,19 +134,14 @@ contracts:
       request:
         method: PUT
         url: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
-  harness: check
 - id: DCCONF-API-006
   title: api.http supports PATCH
   purpose: Verifies practical REST verb support for PATCH in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -183,19 +157,14 @@ contracts:
       request:
         method: PATCH
         url: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
-  harness: check
 - id: DCCONF-API-007
   title: api.http supports DELETE
   purpose: Verifies practical REST verb support for DELETE in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -213,19 +182,14 @@ contracts:
       request:
         method: DELETE
         url: "/specs/conformance/cases/fixtures/api_http_deleted.json"
-  harness: check
 - id: DCCONF-API-008
   title: api.http supports HEAD
   purpose: Verifies practical REST verb support for HEAD in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -241,19 +205,14 @@ contracts:
       request:
         method: HEAD
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  harness: check
 - id: DCCONF-API-009
   title: api.http supports OPTIONS
   purpose: Verifies practical REST verb support for OPTIONS in deterministic mode.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -269,13 +228,9 @@ contracts:
       request:
         method: OPTIONS
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  harness: check
 - id: DCCONF-API-010
   title: api.http rejects unsupported request method
   purpose: Verifies unsupported HTTP verbs are rejected as schema violations.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: fail
@@ -283,7 +238,6 @@ contracts:
       message_tokens:
       - request.method must be one of
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -299,13 +253,9 @@ contracts:
       request:
         method: TRACE
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  harness: check
 - id: DCCONF-API-011
   title: api.http preflight requires OPTIONS method
   purpose: Verifies cors preflight helper enforces request.method OPTIONS.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: fail
@@ -313,7 +263,6 @@ contracts:
       message_tokens:
       - request.cors.preflight requires request.method OPTIONS
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -333,20 +282,14 @@ contracts:
           preflight: true
           origin: https://client.example
           request_method: POST
-  harness: check
 - id: DCCONF-API-012
   title: api.http scenario executes round-trip requests in order
   purpose: Verifies requests scenario supports step templating and exposes steps_json target.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -385,16 +328,11 @@ contracts:
 - id: DCCONF-API-013
   title: api.http oauth deterministic local token exchange
   purpose: Verifies oauth auth profile resolves env refs and produces oauth context metadata without network access.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: pass
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -433,18 +371,13 @@ contracts:
 - id: DCCONF-API-014
   title: api.http oauth missing env refs is schema failure
   purpose: Verifies oauth env-ref credentials are required and missing env vars fail as schema.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: fail
       category: schema
       message_tokens:
       - oauth env var is required
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -470,18 +403,13 @@ contracts:
 - id: DCCONF-API-015
   title: api.http oauth invalid auth_style is schema failure
   purpose: Verifies oauth auth_style is validated against supported values.
-  requires:
-    capabilities:
-    - api.http
   expect:
     portable:
       status: fail
       category: schema
       message_tokens:
       - auth_style
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -517,9 +445,7 @@ contracts:
     portable:
       status: skip
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -555,9 +481,7 @@ contracts:
     portable:
       status: skip
       category:
-  harness: check
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -586,6 +510,11 @@ contracts:
         - domain.http.step_body_json_get
         - domain.http.step_by_id
         - domain.http.step_status_is
+defaults:
+  harness: check
+  requires:
+    capabilities:
+    - api.http
 ```
 
 

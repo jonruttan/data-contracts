@@ -23,7 +23,6 @@ contracts:
         config:
           check: runtime.infra_script_boundary_enforced
     clauses:
-      defaults: {}
       imports:
         - from: artifact
           names:

@@ -1,70 +1,68 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCGOV-RUNTIME-TRIAGE-023
-    title: fast-path consistency is enforced across pre-push and gate scripts
-    purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate, and
-      managed pre-push hook.
-    harness:
-      root: .
-      fast_path_consistency:
-        file_token_sets:
-        - path: /scripts/ci_gate.sh
-          required_tokens:
-          - paths_all_in_list "specs/governance/check_sets_v1.yaml"
-          - is_fast_path_script_only_change
-          - paths_all_in_list "scripts/ci_gate.sh" "scripts/ci_gate.sh"
-          - skip normalize-check (check_sets-only change)
-          - skip docs-generate-check (check_sets-only change)
-          - skip normalize-check (gate-script-only change)
-          - skip docs-generate-check (gate-script-only change)
-        - path: /scripts/ci_gate.sh
-          required_tokens:
-          - SPEC_CI_GATE_LOCAL_FAST_PATH
-          - only_check_sets_changes
-          - only_gate_script_changes
-          - specs/governance/check_sets_v1.yaml
-          - CI:-}
-          - 'local fast path: check_sets-only change; delegating to ci_gate.sh'
-          - 'local fast path: gate-script-only change; delegating to ci_gate.sh'
-        - path: /.githooks/pre-push
-          required_tokens:
-          - is_check_sets_only_change
-          - is_gate_script_only_change
-          - specs/governance/check_sets_v1.yaml
-          - scripts/ci_gate.sh
-          - scripts/ci_gate.sh
-          - 'fast path: check_sets-only change'
-          - 'fast path: gate-script-only change'
-          - make prepush
-      check:
-        profile: governance.scan
-        config:
-          check: runtime.fast_path_consistency_required
-      use:
-      - ref: /specs/libraries/policy/policy_assertions.spec.md
-        as: lib_policy_core_spec
-        symbols:
-        - policy.assert.no_violations
-        - policy.assert.summary_passed
-        - policy.assert.summary_check_id
-        - policy.assert.scan_pass
-    clauses:
-      defaults: {}
-      imports:
-      - from: artifact
-        names:
-        - violation_count
-      predicates:
-      - id: assert_1
-        assert:
-          call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+- id: DCGOV-RUNTIME-TRIAGE-023
+  title: fast-path consistency is enforced across pre-push and gate scripts
+  purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate, and managed pre-push hook.
+  harness:
+    root: "."
+    fast_path_consistency:
+      file_token_sets:
+      - path: "/scripts/ci_gate.sh"
+        required_tokens:
+        - paths_all_in_list "specs/governance/check_sets_v1.yaml"
+        - is_fast_path_script_only_change
+        - paths_all_in_list "scripts/ci_gate.sh" "scripts/ci_gate.sh"
+        - skip normalize-check (check_sets-only change)
+        - skip docs-generate-check (check_sets-only change)
+        - skip normalize-check (gate-script-only change)
+        - skip docs-generate-check (gate-script-only change)
+      - path: "/scripts/ci_gate.sh"
+        required_tokens:
+        - SPEC_CI_GATE_LOCAL_FAST_PATH
+        - only_check_sets_changes
+        - only_gate_script_changes
+        - specs/governance/check_sets_v1.yaml
+        - CI:-}
+        - 'local fast path: check_sets-only change; delegating to ci_gate.sh'
+        - 'local fast path: gate-script-only change; delegating to ci_gate.sh'
+      - path: "/.githooks/pre-push"
+        required_tokens:
+        - is_check_sets_only_change
+        - is_gate_script_only_change
+        - specs/governance/check_sets_v1.yaml
+        - scripts/ci_gate.sh
+        - scripts/ci_gate.sh
+        - 'fast path: check_sets-only change'
+        - 'fast path: gate-script-only change'
+        - make prepush
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.fast_path_consistency_required
+    use:
+    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - violation_count
+    predicates:
+    - id: assert_1
+      assert:
+        call:
+        - var: policy.assert.no_violations
+        - std.object.assoc:
+          - violation_count
+          - var: violation_count
+          - lit: {}
 ```

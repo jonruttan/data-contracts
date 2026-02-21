@@ -5,9 +5,7 @@ contracts:
 - id: DCCONF-JOB-004
   title: schema registry build via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -63,9 +61,7 @@ contracts:
 - id: DCCONF-JOB-005
   title: schema registry check via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -121,9 +117,7 @@ contracts:
 - id: DCCONF-JOB-006
   title: docs lint via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -176,9 +170,7 @@ contracts:
 - id: DCCONF-JOB-007
   title: docs generate build via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -232,9 +224,7 @@ contracts:
 - id: DCCONF-JOB-008
   title: docs generate check via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -288,9 +278,7 @@ contracts:
 - id: DCCONF-JOB-009
   title: docs build reference book via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -345,9 +333,7 @@ contracts:
 - id: DCCONF-JOB-010
   title: docs build check reference book via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -402,9 +388,7 @@ contracts:
 - id: DCCONF-JOB-011
   title: docs graph export via contract.job
   purpose: Ensures script command contracts dispatch and return deterministic success state.
-  harness: job
   clauses:
-    defaults: {}
     imports:
     - from: artifact
       names:
@@ -456,6 +440,8 @@ contracts:
     complete:
     - ops.job.dispatch:
       - on_complete
+defaults:
+  harness: job
 ```
 
 

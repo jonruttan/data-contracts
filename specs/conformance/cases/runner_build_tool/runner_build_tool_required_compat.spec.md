@@ -1,25 +1,25 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
 contracts:
-  - id: DCCONF-BTOOL-003
-    title: runner build tool contract defines required compat task
-    purpose: Portable build tool contract must define compat-check required task.
-    harness:
-      check:
-        profile: text.file
-        config: {}
-    clauses:
-      defaults: {}
-      imports:
-        - from: artifact
-          names: [text]
-      predicates:
-        - id: assert_1
-          assert:
-            std.string.contains:
-              - {var: text}
-              - compat-check
+- id: DCCONF-BTOOL-003
+  title: runner build tool contract defines required compat task
+  purpose: Portable build tool contract must define compat-check required task.
+  harness:
+    check:
+      profile: text.file
+      config: {}
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - text
+    predicates:
+    - id: assert_1
+      assert:
+        std.string.contains:
+        - var: text
+        - compat-check
 ```
