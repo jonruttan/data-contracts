@@ -74,6 +74,28 @@ Install directory overlap is forbidden.
 `runner_bundle_lock_v1` is deprecated and retained only for migration
 compatibility.
 
+## Bundle Governance Boundary
+
+- Bundle/package governance is a package-contract concern and not part of the
+  executable `contract-spec` suite top-level schema shape.
+- Self-hosted tools may install their own governing bundle package (for
+  example `data-contracts-bundler`) and run conformance/governance checks from
+  that installed bundle content.
+
+## Self-Bootstrap Pattern (One-Time Ad-Hoc)
+
+For tools governed by their own bundle package, one ad-hoc bootstrap step is
+allowed to solve first-install chicken-and-egg constraints:
+
+- bootstrap lock input MUST be pinned and deterministic.
+- bootstrap install MUST verify package checksums.
+- bootstrap install MUST verify `resolved_bundle_lock_v1.yaml` and
+  `resolved_files.sha256`.
+- repeated ad-hoc bootstrap MUST fail unless an explicit force/reset path is
+  provided.
+- after successful bootstrap, standard `bundles.lock.yaml`-governed
+  `install`/`install-check` behavior is required.
+
 ## Failure Behavior
 
 Failure messages MUST be direct and actionable:

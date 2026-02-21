@@ -23,12 +23,6 @@ Related docs/reference schemas:
 - `specs/schema/run_trace_v2.yaml`
 - `specs/schema/orchestration_result_v2.yaml`
 - `specs/schema/registry_schema_v2.yaml`
-- `specs/schema/bundle_manifest_v1.yaml`
-- `specs/schema/resolved_bundle_lock_v1.yaml`
-- `specs/schema/runner_bundle_lock_v1.yaml`
-- `specs/schema/project_bundle_lock_v1.yaml`
-- `specs/schema/implementation_bundle_overlay_v1.yaml`
-- `specs/schema/implementation_bundle_build_lock_v1.yaml`
 - `specs/schema/registry/v2/*.yaml`
 - `specs/contract/19_spec_lang_stdlib_profile_v2.md`
 - `specs/contract/20_subject_profiles_v2.md`
@@ -49,40 +43,19 @@ Related docs/reference schemas:
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
-- `bundle` (mapping, optional): bundle taxonomy metadata for project-scoped validation packs
 
-`bundle` metadata keys:
+Bundle/package management is not part of `contract-spec` suite shape in v2.
+Bundle taxonomy, lock, and package semantics are defined at package-contract
+level in:
 
-- `bundle.id` (string, optional): stable bundle identifier
-- `bundle.bundle_version` (string, optional): semantic bundle revision string
-- `bundle.summary` (string, optional): concise bundle description
-- `bundle.maintainers` (list, optional): owner list
-  - `bundle.maintainers[].name` (string, required when maintainer entry is present)
-  - `bundle.maintainers[].contact` (string, optional)
-- `bundle.domains` (list, optional): functional grouping entries
-  - `bundle.domains[].id` (string, required when domain entry is present)
-  - `bundle.domains[].modules` (list, optional)
-  - `bundle.domains[].modules[].id` (string, required when module entry is present)
-  - `bundle.domains[].modules[].include_paths` (list[string], optional)
-  - `bundle.domains[].modules[].exclude_paths` (list[string], optional)
-  - `bundle.domains[].modules[].artifacts` (list, optional)
-    - `bundle.domains[].modules[].artifacts[].path` (string, required when artifact entry is present)
-    - `bundle.domains[].modules[].artifacts[].kind` (required):
-      `file|dir|report|manifest|lock`
-  - `bundle.domains[].modules[].contracts` (list[string], optional): contract path references
-
-Bundle terminology policy:
-
-- Canonical metadata names are `bundle_version` and `maintainers`.
-- `version` and `author` are migration aliases in prose only and are not canonical
-  schema keys.
-- canonical project-level bundle installs are pinned in root `bundles.lock.yaml`
-  using `/specs/schema/project_bundle_lock_v1.yaml`.
-- `/specs/schema/runner_bundle_lock_v1.yaml` is deprecated for new integrations.
-- implementation-specific overlays on base runner bundles are described by
-  `/specs/schema/implementation_bundle_overlay_v1.yaml`.
-- deterministic implementation build outputs are recorded in
-  `/specs/schema/implementation_bundle_build_lock_v1.yaml`.
+- `specs/contract/32_contract_bundle_taxonomy.md`
+- `specs/contract/33_bundle_package_management.md`
+- `specs/contract/34_runner_implementation_spec_bundles.md`
+- `specs/schema/bundle_manifest_v1.yaml`
+- `specs/schema/resolved_bundle_lock_v1.yaml`
+- `specs/schema/project_bundle_lock_v1.yaml`
+- `specs/schema/implementation_bundle_overlay_v1.yaml`
+- `specs/schema/implementation_bundle_build_lock_v1.yaml`
 
 Each `contracts[]` item:
 

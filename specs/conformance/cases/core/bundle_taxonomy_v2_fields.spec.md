@@ -5,8 +5,8 @@ defaults:
   type: contract.check
 contracts:
   - id: DCCONF-BUNDLE-001
-    title: v2 schema docs define optional bundle suite metadata
-    purpose: Ensures schema_v2 suite fields describe canonical bundle metadata keys.
+    title: v2 schema docs forbid bundle suite metadata in contract-spec shape
+    purpose: Ensures schema_v2 does not define top-level bundle metadata on executable suites.
     expect:
       portable:
         status: pass
@@ -20,23 +20,27 @@ contracts:
       predicates:
       - id: assert_1
         assert:
-        - std.string.contains:
-          - {var: text}
-          - - `bundle` (mapping, optional)
-        - std.string.contains:
-          - {var: text}
-          - - `bundle.bundle_version` (string, optional)
-        - std.string.contains:
-          - {var: text}
-          - - `bundle.maintainers` (list, optional)
+          std.logic.and:
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - - `bundle` (mapping, optional)
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - - `bundle.bundle_version` (string, optional)
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - - `bundle.maintainers` (list, optional)
     harness:
       check:
         profile: text.file
         config:
           path: /specs/schema/schema_v2.md
   - id: DCCONF-BUNDLE-002
-    title: v2 core registry includes bundle taxonomy fields
-    purpose: Ensures schema registry v2 core profile codifies optional bundle mappings.
+    title: v2 core registry excludes bundle taxonomy fields
+    purpose: Ensures schema registry v2 core profile does not codify top-level bundle mappings.
     expect:
       portable:
         status: pass
@@ -50,15 +54,19 @@ contracts:
       predicates:
       - id: assert_1
         assert:
-        - std.string.contains:
-          - {var: text}
-          - "bundle:"
-        - std.string.contains:
-          - {var: text}
-          - "bundle.bundle_version:"
-        - std.string.contains:
-          - {var: text}
-          - "bundle.domains[].modules[].artifacts[].kind:"
+          std.logic.and:
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - "bundle:"
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - "bundle.bundle_version:"
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - "bundle.domains[].modules[].artifacts[].kind:"
     harness:
       check:
         profile: text.file

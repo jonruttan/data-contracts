@@ -34,8 +34,8 @@ contracts:
           - {var: text}
           - pack
   - id: DCGOV-BUNDLE-TAXONOMY-002
-    title: schema v2 docs mark version and author as prose aliases only
-    purpose: Ensures schema_v2 narrative preserves canonical key policy for bundle metadata.
+    title: schema v2 docs keep bundle semantics outside contract-spec suite shape
+    purpose: Ensures schema_v2 does not define top-level bundle metadata and points to package-level contracts.
     harness:
       check:
         profile: text.file
@@ -50,10 +50,12 @@ contracts:
       predicates:
       - id: assert_1
         assert:
-        - std.string.contains:
-          - {var: text}
-          - Canonical metadata names are `bundle_version` and `maintainers`.
-        - std.string.contains:
-          - {var: text}
-          - "`version` and `author` are migration aliases in prose only"
+          std.logic.and:
+          - std.logic.not:
+            - std.string.contains:
+              - {var: text}
+              - - `bundle` (mapping, optional)
+          - std.string.contains:
+            - {var: text}
+            - Bundle/package management is not part of `contract-spec` suite shape in v2.
 ```
