@@ -10,22 +10,22 @@ Markdown files selected by case-file pattern (default `*.spec.md`) as fenced blo
 
 Related docs/reference schemas:
 
-- `specs/schema/docs_schema_v1.md`
-- `specs/schema/reference_manifest_v1.md`
-- `specs/schema/objective_metrics_schema_v1.md`
-- `specs/schema/docs_generator_registry_v1.yaml`
-- `specs/schema/docs_layout_profile_v1.yaml`
-- `specs/schema/runner_api_catalog_v1.yaml`
-- `specs/schema/harness_type_catalog_v1.yaml`
-- `specs/schema/spec_lang_builtin_catalog_v1.yaml`
-- `specs/schema/spec_lang_stdlib_profile_v1.yaml`
-- `specs/schema/subject_profiles_v1.yaml`
-- `specs/schema/run_trace_v1.yaml`
-- `specs/schema/orchestration_result_v1.yaml`
-- `specs/schema/registry_schema_v1.yaml`
+- `specs/schema/docs_schema_v2.md`
+- `specs/schema/reference_manifest_v2.md`
+- `specs/schema/objective_metrics_schema_v2.md`
+- `specs/schema/docs_generator_registry_v2.yaml`
+- `specs/schema/docs_layout_profile_v2.yaml`
+- `specs/schema/runner_api_catalog_v2.yaml`
+- `specs/schema/harness_type_catalog_v2.yaml`
+- `specs/schema/spec_lang_builtin_catalog_v2.yaml`
+- `specs/schema/spec_lang_stdlib_profile_v2.yaml`
+- `specs/schema/subject_profiles_v2.yaml`
+- `specs/schema/run_trace_v2.yaml`
+- `specs/schema/orchestration_result_v2.yaml`
+- `specs/schema/registry_schema_v2.yaml`
 - `specs/schema/registry/v2/*.yaml`
-- `specs/contract/19_spec_lang_stdlib_profile_v1.md`
-- `specs/contract/20_subject_profiles_v1.md`
+- `specs/contract/19_spec_lang_stdlib_profile_v2.md`
+- `specs/contract/20_subject_profiles_v2.md`
 - `specs/contract/21_schema_registry_contract.md`
 - `specs/contract/24_runtime_profiling_contract.md`
 ```
