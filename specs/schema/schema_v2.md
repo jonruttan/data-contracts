@@ -40,9 +40,36 @@ Related docs/reference schemas:
 - `schema_ref` (string, required): canonical virtual-root schema path
 - `contracts` (list, required): non-empty list of executable contract items
 - `defaults` (mapping, optional): shallow defaults merged into each contract item
+- `imports` (list, optional): suite-level external import declarations
+  - `imports[].id` (string, required): internal reference key
+  - `imports[].ref` (string, required): local/external ref or URL; supports moustache
+    template expressions (`{{...}}`) resolved from suite context
+  - `imports[].type` (string, optional): expected MIME type for resolved `ref`
+    payload (for example `application/json`, `text/plain`, `application/yaml`)
+  - `imports[].inputs` (mapping, optional): open mapping for producer inputs
+  - `imports[].outputs` (mapping, optional): open mapping for produced outputs
+  - `imports[].options` (mapping, optional): open mapping for runtime options
+  - `imports[].doc` (mapping, optional): open mapping for entry documentation metadata
+- `exports` (list, optional): suite-level external export declarations
+  - `exports[].id` (string, required): internal reference key
+  - `exports[].ref` (string, required): local/external ref or URL; supports moustache
+    template expressions (`{{...}}`) resolved from suite context
+  - `exports[].type` (string, optional): expected MIME type for resolved `ref`
+    payload (for example `application/json`, `text/plain`, `application/yaml`)
+  - `exports[].inputs` (mapping, optional): open mapping for producer inputs
+  - `exports[].outputs` (mapping, optional): open mapping for produced outputs
+  - `exports[].options` (mapping, optional): open mapping for runtime options
+  - `exports[].doc` (mapping, optional): open mapping for entry documentation metadata
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
+- `doc` (mapping, optional): suite-level documentation metadata
+  - `doc.summary` (string, optional)
+  - `doc.description` (string, optional)
+  - `doc.audience` (string, optional)
+  - `doc.since` (string, optional)
+  - `doc.tags` (list, optional)
+  - `doc.see_also` (list, optional)
 
 Bundle/package management is not part of `contract-spec` suite shape in v2.
 Bundle taxonomy, lock, and package semantics are defined at package-contract
@@ -85,6 +112,12 @@ Parser behavior:
 - each `contracts[]` item requires `id`
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
+- `imports[].ref` and `exports[].ref` MUST be strings
+- `imports[].ref` and `exports[].ref` template expressions use moustache
+  syntax and resolve from suite context only
+- unresolved `imports[].ref`/`exports[].ref` template expressions are
+  schema/runtime failures
+- `contract.export` top-level `imports` is forbidden in v2
 
 `expect` (conformance metadata):
 
@@ -635,7 +668,7 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 23
+- top_level_fields: 39
 - type_profiles: 3
 
 ### Top-Level Keys
@@ -652,8 +685,24 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `doc.tags` | `list` | `false` | `v1` |
 | `domain` | `string` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
+| `exports` | `list` | `false` | `v2` |
+| `exports[].doc` | `mapping` | `false` | `v2` |
+| `exports[].id` | `string` | `true` | `v2` |
+| `exports[].inputs` | `mapping` | `false` | `v2` |
+| `exports[].options` | `mapping` | `false` | `v2` |
+| `exports[].outputs` | `mapping` | `false` | `v2` |
+| `exports[].ref` | `string` | `true` | `v2` |
+| `exports[].type` | `string` | `false` | `v2` |
 | `harness` | `mapping` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
+| `imports` | `list` | `false` | `v2` |
+| `imports[].doc` | `mapping` | `false` | `v2` |
+| `imports[].id` | `string` | `true` | `v2` |
+| `imports[].inputs` | `mapping` | `false` | `v2` |
+| `imports[].options` | `mapping` | `false` | `v2` |
+| `imports[].outputs` | `mapping` | `false` | `v2` |
+| `imports[].ref` | `string` | `true` | `v2` |
+| `imports[].type` | `string` | `false` | `v2` |
 | `path` | `string` | `false` | `v1` |
 | `purpose` | `string` | `false` | `v1` |
 | `requires` | `mapping` | `false` | `v1` |
@@ -670,7 +719,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | type | required keys | extra keys |
 |---|---|---|
 | `contract.check` | `harness`, `clauses` | - |
-| `contract.export` | `clauses`, `harness`, `library`, `doc` | `imports` |
+| `contract.export` | `clauses`, `harness`, `library`, `doc` | - |
 | `contract.job` | `harness`, `clauses` | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
@@ -678,7 +727,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 23
+- top_level_field_count: 39
 - type_profile_count: 3
 - total_type_field_count: 40
 
@@ -696,8 +745,24 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `doc.tags` | `list` | false | `v1` |
 | `domain` | `string` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
+| `exports` | `list` | false | `v2` |
+| `exports[].doc` | `mapping` | false | `v2` |
+| `exports[].id` | `string` | true | `v2` |
+| `exports[].inputs` | `mapping` | false | `v2` |
+| `exports[].options` | `mapping` | false | `v2` |
+| `exports[].outputs` | `mapping` | false | `v2` |
+| `exports[].ref` | `string` | true | `v2` |
+| `exports[].type` | `string` | false | `v2` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
+| `imports` | `list` | false | `v2` |
+| `imports[].doc` | `mapping` | false | `v2` |
+| `imports[].id` | `string` | true | `v2` |
+| `imports[].inputs` | `mapping` | false | `v2` |
+| `imports[].options` | `mapping` | false | `v2` |
+| `imports[].outputs` | `mapping` | false | `v2` |
+| `imports[].ref` | `string` | true | `v2` |
+| `imports[].type` | `string` | false | `v2` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |
 | `requires` | `mapping` | false | `v1` |

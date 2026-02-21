@@ -27,6 +27,13 @@ prior forms are forbidden:
 
 Assertions must consume explicitly imported values.
 
+Scope separation:
+
+- assertion import bindings are declared only under `clauses.imports` and
+  `clauses.predicates[].imports`.
+- suite-root `imports[]` / `exports[]` are external reference declarations and
+  do not implicitly bind assertion symbols.
+
 Import binding shape:
 
 - `imports` is a list of mapping items

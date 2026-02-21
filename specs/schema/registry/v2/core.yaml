@@ -18,6 +18,70 @@ fields:
     type: string
     required: false
     since: v2
+  imports:
+    type: list
+    required: false
+    since: v2
+  imports[].id:
+    type: string
+    required: true
+    since: v2
+  imports[].ref:
+    type: string
+    required: true
+    since: v2
+  imports[].type:
+    type: string
+    required: false
+    since: v2
+  imports[].inputs:
+    type: mapping
+    required: false
+    since: v2
+  imports[].outputs:
+    type: mapping
+    required: false
+    since: v2
+  imports[].options:
+    type: mapping
+    required: false
+    since: v2
+  imports[].doc:
+    type: mapping
+    required: false
+    since: v2
+  exports:
+    type: list
+    required: false
+    since: v2
+  exports[].id:
+    type: string
+    required: true
+    since: v2
+  exports[].ref:
+    type: string
+    required: true
+    since: v2
+  exports[].type:
+    type: string
+    required: false
+    since: v2
+  exports[].inputs:
+    type: mapping
+    required: false
+    since: v2
+  exports[].outputs:
+    type: mapping
+    required: false
+    since: v2
+  exports[].options:
+    type: mapping
+    required: false
+    since: v2
+  exports[].doc:
+    type: mapping
+    required: false
+    since: v2
   contracts:
     type: list
     required: true
@@ -36,6 +100,34 @@ fields:
     since: v2
   purpose:
     type: string
+    required: false
+    since: v2
+  doc:
+    type: mapping
+    required: false
+    since: v2
+  doc.summary:
+    type: string
+    required: false
+    since: v2
+  doc.description:
+    type: string
+    required: false
+    since: v2
+  doc.audience:
+    type: string
+    required: false
+    since: v2
+  doc.since:
+    type: string
+    required: false
+    since: v2
+  doc.tags:
+    type: list
+    required: false
+    since: v2
+  doc.see_also:
+    type: list
     required: false
     since: v2
   domain:
@@ -124,33 +216,5 @@ fields:
     since: v2
   contracts[].requires:
     type: mapping
-    required: false
-    since: v2
-  contracts[].doc:
-    type: mapping
-    required: false
-    since: v2
-  contracts[].doc.summary:
-    type: string
-    required: false
-    since: v2
-  contracts[].doc.description:
-    type: string
-    required: false
-    since: v2
-  contracts[].doc.audience:
-    type: string
-    required: false
-    since: v2
-  contracts[].doc.since:
-    type: string
-    required: false
-    since: v2
-  contracts[].doc.tags:
-    type: list
-    required: false
-    since: v2
-  contracts[].doc.see_also:
-    type: list
     required: false
     since: v2

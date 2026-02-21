@@ -14,6 +14,16 @@ Cases MAY configure library loading via `harness.spec_lang`:
 - `imports` (list[mapping], optional): case-scoped stdlib import bindings
   (`from`, `names`, optional `as`)
 
+Suite-level external references:
+
+- executable suite docs may declare root `imports[]` / `exports[]` entries for
+  external references and URLs outside per-contract assertion/harness blocks.
+- these suite-root declarations are metadata/coordination surfaces and are
+  distinct from `clauses.imports`, `harness.spec_lang.imports`, and
+  `harness.exports`.
+- `imports[].ref` / `exports[].ref` support moustache (`{{...}}`) template
+  expressions resolved from suite context only.
+
 Governance policy reuse:
 
 - `type: governance.check` cases MUST load library symbols through

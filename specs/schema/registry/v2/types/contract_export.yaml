@@ -7,8 +7,7 @@ required_top_level:
   - harness
   - library
   - doc
-allowed_top_level_extra:
-  - imports
+allowed_top_level_extra: []
 fields:
   clauses:
     type: mapping

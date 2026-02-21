@@ -8,6 +8,15 @@
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
 
+Suite-root external references:
+
+- executable suites MAY declare top-level `imports[]` and `exports[]` to model
+  references external to per-contract harness/assertion blocks.
+- these suite-root declarations do not replace `harness.exports`,
+  `harness.chain.imports`, or `clauses.imports`.
+- `imports[].ref` / `exports[].ref` template expressions use moustache
+  (`{{...}}`) syntax and resolve from suite context only.
+
 ## Entrypoint
 
 For `type: cli.run`:
