@@ -4237,6 +4237,35 @@ rules:
   - specs/contract/29_runner_cli_interface.md
   - specs/schema/runner_cli_contract_v1.yaml
   - specs/conformance/cases/runner_cli/runner_cli_required_help.spec.md
+- id: CONTRACT_SPEC_FORMATTER_COMMAND_REQUIRED
+  introduced_in: v2
+  scope: runtime
+  applies_to: runner.cli.contract_spec_format
+  norm: MUST
+  requirement: portable_contract_spec_formatter_modes_must_be_contract_defined
+  description: Portable runner CLI contract must define `contract-spec-format`
+    with both `--check` and `--write` modes for v2 contract-spec blocks.
+  rationale: Keeps key-order normalization deterministic and implementation-agnostic.
+  risk_if_violated: Contract-spec ordering drifts and review diffs become noisy.
+  references:
+  - specs/contract/29_runner_cli_interface.md
+  - specs/schema/runner_cli_contract_v1.yaml
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_check.spec.md
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md
+- id: CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
+  introduced_in: v2
+  scope: governance
+  applies_to: schema.v2.contract_spec_order
+  norm: SHOULD
+  requirement: v2_contract_spec_key_order_is_canonicalized
+  description: v2 contract-spec blocks should maintain canonical suite-root and
+    contract-item key ordering, with no list item reordering.
+  rationale: Improves readability and keeps diffs minimal.
+  risk_if_violated: Authoring churn and non-deterministic review diffs increase.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/contract/29_runner_cli_interface.md
+  - specs/conformance/style.md
 - id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   introduced_in: v1
   scope: runtime

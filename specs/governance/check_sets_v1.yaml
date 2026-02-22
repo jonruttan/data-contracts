@@ -551,6 +551,8 @@ profiles:
         kind: report_only
       - id: normalization.docs_token_sync
         kind: report_only
+      - id: normalization.contract_spec_key_order_v2
+        kind: report_only
       - id: normalization.library_mapping_ast_only
         kind: report_only
       - id: normalization.mapping_ast_only
@@ -768,6 +770,8 @@ profiles:
       - id: runtime.runner_interface_gate_sync
         kind: report_only
       - id: runtime.runner_interface_subcommands
+        kind: report_only
+      - id: runtime.contract_spec_formatter_contract_sync
         kind: report_only
       - id: runtime.scope_sync
         kind: report_only

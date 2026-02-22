@@ -3,8 +3,57 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.export
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - '{''exports'': [{''as'': ''domain.fs.file_ext_eq'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.file_ext_eq'', ''params'': [''meta'', ''ext''], ''required'': True, ''docs'': [{''id'': ''domain.fs.file_ext_eq.doc.1'', ''summary'': ''Contract export for `domain.fs.file_ext_eq`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  meta: "<meta>"\n  ext: "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: meta\n  type: any\n  required: true\n  description: Input parameter `meta`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.glob_all'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.glob_all'', ''params'': [''paths'', ''pattern''], ''required'': True, ''docs'': [{''id'': ''domain.fs.glob_all.doc.1'', ''summary'': ''Contract export for `domain.fs.glob_all`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: "<paths>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\ n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.glob_any_spec_files'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.glob_any_spec_files'', ''params'': [''paths''], ''required'': True, ''docs'': [{''id'': ''domain.fs.glob_any_spec_files.doc.1'', ''summary'': ''Contract export for `domain.fs.glob_any_spec_files`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: "<paths>"\nexpected: "<result>"\ nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\ nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.glob_filter'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.glob_filter'', ''params'': [''paths'', ''pattern''], ''required'': True, ''docs'': [{''id'': ''domain.fs.glob_filter.doc.1'', ''summary'': ''Contract export for `domain.fs.glob_filter`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: "<paths>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\ n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.is_docs_spec_file'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.is_docs_spec_file'', ''params'': [''path''], ''required'': True, ''docs'': [{''id'': ''domain.fs.is_docs_spec_file.doc.1'', ''summary'': ''Contract export for `domain.fs.is_docs_spec_file`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\ nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.json_get_or_text'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.json_get_or_text'', ''params'': [''json_text'', ''path_segments'', ''fallback''], ''required'': True, ''docs'': [{''id'': ''domain.fs.json_get_or_text.doc.1'', ''summary'': ''Contract export for `domain.fs.json_get_or_text`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: "<json_text>"\n  path_segments: "<path_segments>"\n  fallback: "<fallback>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- name: fallback\n  type: any\n  required: true\n  description: Input parameter `fallback`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\ n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.json_get_text'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.json_get_text'', ''params'': [''json_text'', ''path_segments''], ''required'': True, ''docs'': [{''id'': ''domain.fs.json_get_text.doc.1'', ''summary'': ''Contract export for `domain.fs.json_get_text`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: "<json_text>"\n  path_segments: "<path_segments>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.json_has_path_text'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.json_has_path_text'', ''params'': [''json_text'', ''path_segments''], ''required'': True, ''docs'': [{''id'': ''domain.fs.json_has_path_text.doc.1'', ''summary'': ''Contract export for `domain.fs.json_has_path_text`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: "<json_text>"\n  path_segments: "<path_segments>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.json_path_eq_text'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.json_path_eq_text'', ''params'': [''json_text'', ''path_segments'', ''expected''], ''required'': True, ''docs'': [{''id'': ''domain.fs.json_path_eq_text.doc.1'', ''summary'': ''Contract export for `domain.fs.json_path_eq_text`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  json_text: "<json_text>"\n  path_segments: "<path_segments>"\n  expected: "<expected>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: json_text\n  type: any\n  required: true\n  description: Input parameter `json_text`.\n- name: path_segments\n  type: any\n  required: true\n  description: Input parameter `path_segments`.\n- name: expected\n  type: any\n  required: true\n  description: Input parameter `expected`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\ n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''domain.fs.sort_spec_files'', ''from'': ''assert.function'', ''path'': ''/__export__domain.fs.sort_spec_files'', ''params'': [''paths''], ''required'': True, ''docs'': [{''id'': ''domain.fs.sort_spec_files.doc.1'', ''summary'': ''Contract export for `domain.fs.sort_spec_files`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  paths: "<paths>"\nexpected: "<result>"\ nnotes: Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n  required: true\n  description: Input parameter `paths`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\ nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+services:
+  defaults:
+    profile: default
+    config: {}
+  entries:
+  - id: svc.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_sort_spec_files_from_assert_function_path_export_domain_fs_sort_spec_files_params_paths_required_true_docs_id_domain_fs_sort_spec_files_doc_1_summary_contract_export_for_domain_fs_sort_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_sort_spec_files_from_assert_function_path_export_domain_fs_sort_spec_files_params_paths_required_true_docs_id_domain_fs_sort_spec_files_doc_1_summary_contract_export_for_domain_fs_sort_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_json_get_or_text_from_assert_function_path_export_domain_fs_json_get_or_text_params_json_text_path_segments_fallback_required_true_docs_id_domain_fs_json_get_or_text_doc_1_summary_contract_export_for_domain_fs_json_get_or_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_json_get_or_text_from_assert_function_path_export_domain_fs_json_get_or_text_params_json_text_path_segments_fallback_required_true_docs_id_domain_fs_json_get_or_text_doc_1_summary_contract_export_for_domain_fs_json_get_or_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_json_has_path_text_from_assert_function_path_export_domain_fs_json_has_path_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_has_path_text_doc_1_summary_contract_export_for_domain_fs_json_has_path_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_json_has_path_text_from_assert_function_path_export_domain_fs_json_has_path_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_has_path_text_doc_1_summary_contract_export_for_domain_fs_json_has_path_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_glob_any_spec_files_from_assert_function_path_export_domain_fs_glob_any_spec_files_params_paths_required_true_docs_id_domain_fs_glob_any_spec_files_doc_1_summary_contract_export_for_domain_fs_glob_any_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_glob_any_spec_files_from_assert_function_path_export_domain_fs_glob_any_spec_files_params_paths_required_true_docs_id_domain_fs_glob_any_spec_files_doc_1_summary_contract_export_for_domain_fs_glob_any_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_file_ext_eq_from_assert_function_path_export_domain_fs_file_ext_eq_params_meta_ext_required_true_docs_id_domain_fs_file_ext_eq_doc_1_summary_contract_export_for_domain_fs_file_ext_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_ext_ext_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_ext_n_type_any_n_required_true_n_description_input_parameter_ext_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_file_ext_eq_from_assert_function_path_export_domain_fs_file_ext_eq_params_meta_ext_required_true_docs_id_domain_fs_file_ext_eq_doc_1_summary_contract_export_for_domain_fs_file_ext_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_ext_ext_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_ext_n_type_any_n_required_true_n_description_input_parameter_ext_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_json_get_text_from_assert_function_path_export_domain_fs_json_get_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_get_text_doc_1_summary_contract_export_for_domain_fs_json_get_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_json_get_text_from_assert_function_path_export_domain_fs_json_get_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_get_text_doc_1_summary_contract_export_for_domain_fs_json_get_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_json_path_eq_text_from_assert_function_path_export_domain_fs_json_path_eq_text_params_json_text_path_segments_expected_required_true_docs_id_domain_fs_json_path_eq_text_doc_1_summary_contract_export_for_domain_fs_json_path_eq_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_expected_expected_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_expected_n_type_any_n_required_true_n_description_input_parameter_expected_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_json_path_eq_text_from_assert_function_path_export_domain_fs_json_path_eq_text_params_json_text_path_segments_expected_required_true_docs_id_domain_fs_json_path_eq_text_doc_1_summary_contract_export_for_domain_fs_json_path_eq_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_expected_expected_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_expected_n_type_any_n_required_true_n_description_input_parameter_expected_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_glob_filter_from_assert_function_path_export_domain_fs_glob_filter_params_paths_pattern_required_true_docs_id_domain_fs_glob_filter_doc_1_summary_contract_export_for_domain_fs_glob_filter_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_glob_filter_from_assert_function_path_export_domain_fs_glob_filter_params_paths_pattern_required_true_docs_id_domain_fs_glob_filter_doc_1_summary_contract_export_for_domain_fs_glob_filter_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  - id: svc.exports_as_domain_fs_glob_all_from_assert_function_path_export_domain_fs_glob_all_params_paths_pattern_required_true_docs_id_domain_fs_glob_all_doc_1_summary_contract_export_for_domain_fs_glob_all_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    type: legacy.exports_as_domain_fs_glob_all_from_assert_function_path_export_domain_fs_glob_all_params_paths_pattern_required_true_docs_id_domain_fs_glob_all_doc_1_summary_contract_export_for_domain_fs_glob_all_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
 contracts:
 - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
+  docs:
+  - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+    audience: spec-authors
+    status: active
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    since: v1
+    tags:
+    - contract.export
   clauses:
     predicates:
     - id: __export__domain.fs.is_docs_spec_file
@@ -25,18 +74,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
   docs:
-  - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
   clauses:
     predicates:
     - id: __export__domain.fs.sort_spec_files
@@ -52,18 +99,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
   clauses:
     predicates:
     - id: __export__domain.fs.json_get_or_text
@@ -80,18 +125,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
   clauses:
     predicates:
     - id: __export__domain.fs.json_has_path_text
@@ -107,18 +150,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
   docs:
-  - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
   clauses:
     predicates:
     - id: __export__domain.fs.glob_any_spec_files
@@ -133,18 +174,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
   docs:
-  - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
   clauses:
     predicates:
     - id: __export__domain.fs.file_ext_eq
@@ -160,18 +199,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
   clauses:
     predicates:
     - id: __export__domain.fs.json_get_text
@@ -187,18 +224,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
   clauses:
     predicates:
     - id: __export__domain.fs.json_path_eq_text
@@ -208,7 +243,7 @@ contracts:
           - var: domain.fs.json_get_or_text
           - var: json_text
           - var: path_segments
-          - 
+          -
         - var: expected
   library:
     id: domain.fs.core
@@ -217,18 +252,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
   docs:
-  - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
   clauses:
     predicates:
     - id: __export__domain.fs.glob_filter
@@ -243,18 +276,16 @@ contracts:
     owner: data-contracts
     tags:
     - domain
+- id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
   docs:
-  - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for 
-      `contract.export`.
+  - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL.doc.1
+    summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference text.
     since: v1
     tags:
     - contract.export
-- id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
   clauses:
     predicates:
     - id: __export__domain.fs.glob_all
@@ -269,214 +300,6 @@ contracts:
     owner: data-contracts
     tags:
     - domain
-  docs:
-  - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for 
-      `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored 
-      reference text.
-    since: v1
-    tags:
-    - contract.export
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'exports': [{'as': 'domain.fs.file_ext_eq', 'from': 'assert.function', 'path':
-      '/__export__domain.fs.file_ext_eq', 'params': ['meta', 'ext'], 'required': True,
-      'docs': [{'id': 'domain.fs.file_ext_eq.doc.1', 'summary': 'Contract export for
-      `domain.fs.file_ext_eq`.', 'audience': 'spec-authors', 'status': 'active', 'description':
-      'Auto-generated metadata stub. Replace with authored reference text.\\n\\nLegacy
-      doc fields migrated to description:\\n- examples[]: title: Basic usage\\ninput:\\\
-      n  meta: \"<meta>\"\\n  ext: \"<ext>\"\\nexpected: \"<result>\"\\nnotes: Replace
-      with a concrete scenario.\\n- params: - name: meta\\n  type: any\\n  required:
-      true\\n  description: Input parameter `meta`.\\n- name: ext\\n  type: any\\\
-      n  required: true\\n  description: Input parameter `ext`.\\n- returns: type:
-      any\\ndescription: Result payload for this symbol.\\n- errors: - code: SCHEMA_ERROR\\\
-      n  when: Input payload does not satisfy contract shape requirements.\\n  category:
-      schema\\n- portability: python: true\\nphp: true\\nrust: true\\nnotes: Confirm
-      per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.glob_all', 'from': 'assert.function', 'path':
-      '/__export__domain.fs.glob_all', 'params': ['paths', 'pattern'], 'required':
-      True, 'docs': [{'id': 'domain.fs.glob_all.doc.1', 'summary': 'Contract export
-      for `domain.fs.glob_all`.', 'audience': 'spec-authors', 'status': 'active',
-      'description': 'Auto-generated metadata stub. Replace with authored reference
-      text.\\n\\nLegacy doc fields migrated to description:\\n- examples[]: title:
-      Basic usage\\ninput:\\n  paths: \"<paths>\"\\n  pattern: \"<pattern>\"\\nexpected:
-      \"<result>\"\\nnotes: Replace with a concrete scenario.\\n- params: - name:
-      paths\\n  type: any\\n  required: true\\n  description: Input parameter `paths`.\\
-      n- name: pattern\\n  type: any\\n  required: true\\n  description: Input parameter
-      `pattern`.\\n- returns: type: any\\ndescription: Result payload for this symbol.\\
-      n- errors: - code: SCHEMA_ERROR\\n  when: Input payload does not satisfy contract
-      shape requirements.\\n  category: schema\\n- portability: python: true\\nphp:
-      true\\nrust: true\\nnotes: Confirm per-runtime behavior and caveats.', 'since':
-      'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.glob_any_spec_files', 'from': 'assert.function',
-      'path': '/__export__domain.fs.glob_any_spec_files', 'params': ['paths'], 'required':
-      True, 'docs': [{'id': 'domain.fs.glob_any_spec_files.doc.1', 'summary': 'Contract
-      export for `domain.fs.glob_any_spec_files`.', 'audience': 'spec-authors', 'status':
-      'active', 'description': 'Auto-generated metadata stub. Replace with authored
-      reference text.\\n\\nLegacy doc fields migrated to description:\\n- examples[]:
-      title: Basic usage\\ninput:\\n  paths: \"<paths>\"\\nexpected: \"<result>\"\\
-      nnotes: Replace with a concrete scenario.\\n- params: - name: paths\\n  type:
-      any\\n  required: true\\n  description: Input parameter `paths`.\\n- returns:
-      type: any\\ndescription: Result payload for this symbol.\\n- errors: - code:
-      SCHEMA_ERROR\\n  when: Input payload does not satisfy contract shape requirements.\\\
-      n  category: schema\\n- portability: python: true\\nphp: true\\nrust: true\\
-      nnotes: Confirm per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.glob_filter', 'from': 'assert.function', 'path':
-      '/__export__domain.fs.glob_filter', 'params': ['paths', 'pattern'], 'required':
-      True, 'docs': [{'id': 'domain.fs.glob_filter.doc.1', 'summary': 'Contract export
-      for `domain.fs.glob_filter`.', 'audience': 'spec-authors', 'status': 'active',
-      'description': 'Auto-generated metadata stub. Replace with authored reference
-      text.\\n\\nLegacy doc fields migrated to description:\\n- examples[]: title:
-      Basic usage\\ninput:\\n  paths: \"<paths>\"\\n  pattern: \"<pattern>\"\\nexpected:
-      \"<result>\"\\nnotes: Replace with a concrete scenario.\\n- params: - name:
-      paths\\n  type: any\\n  required: true\\n  description: Input parameter `paths`.\\
-      n- name: pattern\\n  type: any\\n  required: true\\n  description: Input parameter
-      `pattern`.\\n- returns: type: any\\ndescription: Result payload for this symbol.\\
-      n- errors: - code: SCHEMA_ERROR\\n  when: Input payload does not satisfy contract
-      shape requirements.\\n  category: schema\\n- portability: python: true\\nphp:
-      true\\nrust: true\\nnotes: Confirm per-runtime behavior and caveats.', 'since':
-      'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.is_docs_spec_file', 'from': 'assert.function',
-      'path': '/__export__domain.fs.is_docs_spec_file', 'params': ['path'], 'required':
-      True, 'docs': [{'id': 'domain.fs.is_docs_spec_file.doc.1', 'summary': 'Contract
-      export for `domain.fs.is_docs_spec_file`.', 'audience': 'spec-authors', 'status':
-      'active', 'description': 'Auto-generated metadata stub. Replace with authored
-      reference text.\\n\\nLegacy doc fields migrated to description:\\n- examples[]:
-      title: Basic usage\\ninput:\\n  path: \"<path>\"\\nexpected: \"<result>\"\\\
-      nnotes: Replace with a concrete scenario.\\n- params: - name: path\\n  type:
-      any\\n  required: true\\n  description: Input parameter `path`.\\n- returns:
-      type: any\\ndescription: Result payload for this symbol.\\n- errors: - code:
-      SCHEMA_ERROR\\n  when: Input payload does not satisfy contract shape requirements.\\\
-      n  category: schema\\n- portability: python: true\\nphp: true\\nrust: true\\
-      nnotes: Confirm per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.json_get_or_text', 'from': 'assert.function',
-      'path': '/__export__domain.fs.json_get_or_text', 'params': ['json_text', 'path_segments',
-      'fallback'], 'required': True, 'docs': [{'id': 'domain.fs.json_get_or_text.doc.1',
-      'summary': 'Contract export for `domain.fs.json_get_or_text`.', 'audience':
-      'spec-authors', 'status': 'active', 'description': 'Auto-generated metadata
-      stub. Replace with authored reference text.\\n\\nLegacy doc fields migrated
-      to description:\\n- examples[]: title: Basic usage\\ninput:\\n  json_text: \"\
-      <json_text>\"\\n  path_segments: \"<path_segments>\"\\n  fallback: \"<fallback>\"\
-      \\nexpected: \"<result>\"\\nnotes: Replace with a concrete scenario.\\n- params:
-      - name: json_text\\n  type: any\\n  required: true\\n  description: Input parameter
-      `json_text`.\\n- name: path_segments\\n  type: any\\n  required: true\\n  description:
-      Input parameter `path_segments`.\\n- name: fallback\\n  type: any\\n  required:
-      true\\n  description: Input parameter `fallback`.\\n- returns: type: any\\ndescription:
-      Result payload for this symbol.\\n- errors: - code: SCHEMA_ERROR\\n  when: Input
-      payload does not satisfy contract shape requirements.\\n  category: schema\\
-      n- portability: python: true\\nphp: true\\nrust: true\\nnotes: Confirm per-runtime
-      behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.json_get_text', 'from': 'assert.function', 'path':
-      '/__export__domain.fs.json_get_text', 'params': ['json_text', 'path_segments'],
-      'required': True, 'docs': [{'id': 'domain.fs.json_get_text.doc.1', 'summary':
-      'Contract export for `domain.fs.json_get_text`.', 'audience': 'spec-authors',
-      'status': 'active', 'description': 'Auto-generated metadata stub. Replace with
-      authored reference text.\\n\\nLegacy doc fields migrated to description:\\n-
-      examples[]: title: Basic usage\\ninput:\\n  json_text: \"<json_text>\"\\n  path_segments:
-      \"<path_segments>\"\\nexpected: \"<result>\"\\nnotes: Replace with a concrete
-      scenario.\\n- params: - name: json_text\\n  type: any\\n  required: true\\n\
-      \  description: Input parameter `json_text`.\\n- name: path_segments\\n  type:
-      any\\n  required: true\\n  description: Input parameter `path_segments`.\\n-
-      returns: type: any\\ndescription: Result payload for this symbol.\\n- errors:
-      - code: SCHEMA_ERROR\\n  when: Input payload does not satisfy contract shape
-      requirements.\\n  category: schema\\n- portability: python: true\\nphp: true\\
-      nrust: true\\nnotes: Confirm per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.json_has_path_text', 'from': 'assert.function',
-      'path': '/__export__domain.fs.json_has_path_text', 'params': ['json_text', 'path_segments'],
-      'required': True, 'docs': [{'id': 'domain.fs.json_has_path_text.doc.1', 'summary':
-      'Contract export for `domain.fs.json_has_path_text`.', 'audience': 'spec-authors',
-      'status': 'active', 'description': 'Auto-generated metadata stub. Replace with
-      authored reference text.\\n\\nLegacy doc fields migrated to description:\\n-
-      examples[]: title: Basic usage\\ninput:\\n  json_text: \"<json_text>\"\\n  path_segments:
-      \"<path_segments>\"\\nexpected: \"<result>\"\\nnotes: Replace with a concrete
-      scenario.\\n- params: - name: json_text\\n  type: any\\n  required: true\\n\
-      \  description: Input parameter `json_text`.\\n- name: path_segments\\n  type:
-      any\\n  required: true\\n  description: Input parameter `path_segments`.\\n-
-      returns: type: any\\ndescription: Result payload for this symbol.\\n- errors:
-      - code: SCHEMA_ERROR\\n  when: Input payload does not satisfy contract shape
-      requirements.\\n  category: schema\\n- portability: python: true\\nphp: true\\
-      nrust: true\\nnotes: Confirm per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.json_path_eq_text', 'from': 'assert.function',
-      'path': '/__export__domain.fs.json_path_eq_text', 'params': ['json_text', 'path_segments',
-      'expected'], 'required': True, 'docs': [{'id': 'domain.fs.json_path_eq_text.doc.1',
-      'summary': 'Contract export for `domain.fs.json_path_eq_text`.', 'audience':
-      'spec-authors', 'status': 'active', 'description': 'Auto-generated metadata
-      stub. Replace with authored reference text.\\n\\nLegacy doc fields migrated
-      to description:\\n- examples[]: title: Basic usage\\ninput:\\n  json_text: \"\
-      <json_text>\"\\n  path_segments: \"<path_segments>\"\\n  expected: \"<expected>\"\
-      \\nexpected: \"<result>\"\\nnotes: Replace with a concrete scenario.\\n- params:
-      - name: json_text\\n  type: any\\n  required: true\\n  description: Input parameter
-      `json_text`.\\n- name: path_segments\\n  type: any\\n  required: true\\n  description:
-      Input parameter `path_segments`.\\n- name: expected\\n  type: any\\n  required:
-      true\\n  description: Input parameter `expected`.\\n- returns: type: any\\ndescription:
-      Result payload for this symbol.\\n- errors: - code: SCHEMA_ERROR\\n  when: Input
-      payload does not satisfy contract shape requirements.\\n  category: schema\\
-      n- portability: python: true\\nphp: true\\nrust: true\\nnotes: Confirm per-runtime
-      behavior and caveats.', 'since': 'v1'}]}]}"
-    - "{'exports': [{'as': 'domain.fs.sort_spec_files', 'from': 'assert.function',
-      'path': '/__export__domain.fs.sort_spec_files', 'params': ['paths'], 'required':
-      True, 'docs': [{'id': 'domain.fs.sort_spec_files.doc.1', 'summary': 'Contract
-      export for `domain.fs.sort_spec_files`.', 'audience': 'spec-authors', 'status':
-      'active', 'description': 'Auto-generated metadata stub. Replace with authored
-      reference text.\\n\\nLegacy doc fields migrated to description:\\n- examples[]:
-      title: Basic usage\\ninput:\\n  paths: \"<paths>\"\\nexpected: \"<result>\"\\
-      nnotes: Replace with a concrete scenario.\\n- params: - name: paths\\n  type:
-      any\\n  required: true\\n  description: Input parameter `paths`.\\n- returns:
-      type: any\\ndescription: Result payload for this symbol.\\n- errors: - code:
-      SCHEMA_ERROR\\n  when: Input payload does not satisfy contract shape requirements.\\\
-      n  category: schema\\n- portability: python: true\\nphp: true\\nrust: true\\
-      nnotes: Confirm per-runtime behavior and caveats.', 'since': 'v1'}]}]}"
-services:
-  defaults:
-    profile: default
-    config: {}
-  entries:
-  - id: 
-      svc.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_sort_spec_files_from_assert_function_path_export_domain_fs_sort_spec_files_params_paths_required_true_docs_id_domain_fs_sort_spec_files_doc_1_summary_contract_export_for_domain_fs_sort_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_sort_spec_files_from_assert_function_path_export_domain_fs_sort_spec_files_params_paths_required_true_docs_id_domain_fs_sort_spec_files_doc_1_summary_contract_export_for_domain_fs_sort_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_json_get_or_text_from_assert_function_path_export_domain_fs_json_get_or_text_params_json_text_path_segments_fallback_required_true_docs_id_domain_fs_json_get_or_text_doc_1_summary_contract_export_for_domain_fs_json_get_or_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_json_get_or_text_from_assert_function_path_export_domain_fs_json_get_or_text_params_json_text_path_segments_fallback_required_true_docs_id_domain_fs_json_get_or_text_doc_1_summary_contract_export_for_domain_fs_json_get_or_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_json_has_path_text_from_assert_function_path_export_domain_fs_json_has_path_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_has_path_text_doc_1_summary_contract_export_for_domain_fs_json_has_path_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_json_has_path_text_from_assert_function_path_export_domain_fs_json_has_path_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_has_path_text_doc_1_summary_contract_export_for_domain_fs_json_has_path_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_glob_any_spec_files_from_assert_function_path_export_domain_fs_glob_any_spec_files_params_paths_required_true_docs_id_domain_fs_glob_any_spec_files_doc_1_summary_contract_export_for_domain_fs_glob_any_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_glob_any_spec_files_from_assert_function_path_export_domain_fs_glob_any_spec_files_params_paths_required_true_docs_id_domain_fs_glob_any_spec_files_doc_1_summary_contract_export_for_domain_fs_glob_any_spec_files_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_file_ext_eq_from_assert_function_path_export_domain_fs_file_ext_eq_params_meta_ext_required_true_docs_id_domain_fs_file_ext_eq_doc_1_summary_contract_export_for_domain_fs_file_ext_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_ext_ext_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_ext_n_type_any_n_required_true_n_description_input_parameter_ext_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_file_ext_eq_from_assert_function_path_export_domain_fs_file_ext_eq_params_meta_ext_required_true_docs_id_domain_fs_file_ext_eq_doc_1_summary_contract_export_for_domain_fs_file_ext_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_ext_ext_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_ext_n_type_any_n_required_true_n_description_input_parameter_ext_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_json_get_text_from_assert_function_path_export_domain_fs_json_get_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_get_text_doc_1_summary_contract_export_for_domain_fs_json_get_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_json_get_text_from_assert_function_path_export_domain_fs_json_get_text_params_json_text_path_segments_required_true_docs_id_domain_fs_json_get_text_doc_1_summary_contract_export_for_domain_fs_json_get_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_json_path_eq_text_from_assert_function_path_export_domain_fs_json_path_eq_text_params_json_text_path_segments_expected_required_true_docs_id_domain_fs_json_path_eq_text_doc_1_summary_contract_export_for_domain_fs_json_path_eq_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_expected_expected_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_expected_n_type_any_n_required_true_n_description_input_parameter_expected_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_json_path_eq_text_from_assert_function_path_export_domain_fs_json_path_eq_text_params_json_text_path_segments_expected_required_true_docs_id_domain_fs_json_path_eq_text_doc_1_summary_contract_export_for_domain_fs_json_path_eq_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_json_text_json_text_n_path_segments_path_segments_n_expected_expected_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_json_text_n_type_any_n_required_true_n_description_input_parameter_json_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_expected_n_type_any_n_required_true_n_description_input_parameter_expected_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_glob_filter_from_assert_function_path_export_domain_fs_glob_filter_params_paths_pattern_required_true_docs_id_domain_fs_glob_filter_doc_1_summary_contract_export_for_domain_fs_glob_filter_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_glob_filter_from_assert_function_path_export_domain_fs_glob_filter_params_paths_pattern_required_true_docs_id_domain_fs_glob_filter_doc_1_summary_contract_export_for_domain_fs_glob_filter_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  - id: 
-      svc.exports_as_domain_fs_glob_all_from_assert_function_path_export_domain_fs_glob_all_params_paths_pattern_required_true_docs_id_domain_fs_glob_all_doc_1_summary_contract_export_for_domain_fs_glob_all_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-    type: 
-      legacy.exports_as_domain_fs_glob_all_from_assert_function_path_export_domain_fs_glob_all_params_paths_pattern_required_true_docs_id_domain_fs_glob_all_doc_1_summary_contract_export_for_domain_fs_glob_all_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_paths_paths_n_pattern_pattern_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_paths_n_type_any_n_required_true_n_description_input_parameter_paths_n_name_pattern_n_type_any_n_required_true_n_description_input_parameter_pattern_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
 ```
 
 

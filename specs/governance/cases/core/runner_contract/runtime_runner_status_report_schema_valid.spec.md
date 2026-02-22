@@ -3,11 +3,23 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'runner_status_report_schema': {'path': '/specs/schema/runner_status_report_v1.yaml', 'required_tokens': [{'type': 'runtime.runner_status_report'}, 'runner_id', 'implementation_repo', 'generated_at', 'fresh_until', 'command_results', 'artifact_refs']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_status_report_schema_valid'}}}"
+services:
+  entries:
+  - id: svc.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid.default.1
+    type: legacy.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid
+    io: io
+    profile: default
+    config: {}
 contracts:
 - id: DCGOV-RUNTIME-STATUS-001
   title: runner status report schema is defined
-  purpose: Ensures runner status exchange producer payload shape is declared and
-    stable.
+  purpose: Ensures runner status exchange producer payload shape is declared and stable.
   clauses:
     imports:
     - from: artifact
@@ -22,23 +34,5 @@ contracts:
           - violation_count
           - var: violation_count
           - lit: {}
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'runner_status_report_schema': {'path': '/specs/schema/runner_status_report_v1.yaml',
-      'required_tokens': [{'type': 'runtime.runner_status_report'}, 'runner_id', 'implementation_repo',
-      'generated_at', 'fresh_until', 'command_results', 'artifact_refs']}, 'check':
-      {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_status_report_schema_valid'}}}"
-services:
-  entries:
-  - id: 
-      svc.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid.default.1
-    type: 
-      legacy.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid
-    io: io
-    profile: default
-    config: {}
 ```
 

@@ -3,11 +3,23 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
+services:
+  entries:
+  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+    io: io
+    profile: default
+    config: {}
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-002
   title: project bundle lock schema is indexed
-  purpose: Ensures schema index includes project bundle lock schema for 
-    multi-bundle installs.
+  purpose: Ensures schema index includes project bundle lock schema for multi-bundle installs.
   clauses:
     imports:
     - from: artifact
@@ -29,17 +41,4 @@ contracts:
         std.string.contains:
         - var: text
         - "/specs/schema/project_bundle_lock_v1.yaml"
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
-services:
-  entries:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-    io: io
-    profile: default
-    config: {}
 ```

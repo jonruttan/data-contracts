@@ -3,22 +3,6 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
-contracts:
-- id: DCCONF-RCLI-004
-  title: runner cli unknown commands fail non-zero
-  purpose: Portable CLI contract requires unknown commands to fail with non-zero
-    status.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - text
-    predicates:
-    - id: assert_1
-      assert:
-        std.string.contains:
-        - var: text
-        - unknown command
 harness:
   type: unit.test
   profile: check
@@ -32,4 +16,19 @@ services:
     io: io
     profile: default
     config: {}
+contracts:
+- id: DCCONF-RCLI-004
+  title: runner cli unknown commands fail non-zero
+  purpose: Portable CLI contract requires unknown commands to fail with non-zero status.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - text
+    predicates:
+    - id: assert_1
+      assert:
+        std.string.contains:
+        - var: text
+        - unknown command
 ```

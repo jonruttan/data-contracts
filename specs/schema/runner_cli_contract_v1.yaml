@@ -4,6 +4,7 @@ required:
   - version
   - required_commands
   - optional_capabilities
+  - formatter_contract
   - output_contract
 properties:
   version:
@@ -26,6 +27,33 @@ properties:
     items:
       type: string
       minLength: 1
+  formatter_contract:
+    type: object
+    required: [command, modes, scope]
+    properties:
+      command:
+        type: string
+        const: contract-spec-format
+      modes:
+        type: array
+        minItems: 2
+        items:
+          type: string
+      scope:
+        type: object
+        required: [spec_version, levels, reorder_array_items]
+        properties:
+          spec_version:
+            type: integer
+            const: 2
+          levels:
+            type: array
+            minItems: 2
+            items:
+              type: string
+          reorder_array_items:
+            type: boolean
+            const: false
   output_contract:
     type: object
     required: [structured_mode_flag, stdout_json_keys, unknown_command_exit_non_zero]

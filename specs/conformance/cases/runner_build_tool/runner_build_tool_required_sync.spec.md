@@ -3,11 +3,23 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/30_build_tool_command_set.md'}}}"
+services:
+  entries:
+  - id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+    type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
+    io: io
+    profile: default
+    config: {}
 contracts:
 - id: DCCONF-BTOOL-002
   title: runner build tool contract defines required bundle sync tasks
-  purpose: Portable build tool contract must define bundle-sync and 
-    bundle-sync-check required tasks.
+  purpose: Portable build tool contract must define bundle-sync and bundle-sync-check required tasks.
   clauses:
     imports:
     - from: artifact
@@ -36,19 +48,4 @@ contracts:
           std.string.contains:
           - var: text
           - "`spec-sync-check`"
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/30_build_tool_command_set.md'}}}"
-services:
-  entries:
-  - id: 
-      svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
-    type: 
-      legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
-    io: io
-    profile: default
-    config: {}
 ```

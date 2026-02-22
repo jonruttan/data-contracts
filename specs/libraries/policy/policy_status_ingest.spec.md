@@ -1,9 +1,24 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-INGEST-001', 'as': 'lib_policy_ingest', 'symbols': ['policy.ingest.matrix_has_rows', 'policy.ingest.required_lane_policy_effect_valid', 'policy.ingest.compat_stale_missing_count_within_limit', 'policy.ingest.log_entries_correlate_matrix_rows']}]}"
+    - "{'exports': [{'as': 'policy.ingest.matrix_has_rows', 'from': 'assert.function', 'path': '/__export__policy.ingest.matrix_has_rows', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.required_lane_policy_effect_valid', 'from': 'assert.function', 'path': '/__export__policy.ingest.required_lane_policy_effect_valid', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.compat_stale_missing_count_within_limit', 'from': 'assert.function', 'path': '/__export__policy.ingest.compat_stale_missing_count_within_limit', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.log_entries_correlate_matrix_rows', 'from': 'assert.function', 'path': '/__export__policy.ingest.log_entries_correlate_matrix_rows', 'params': ['subject'], 'required': True}]}"
+services:
+  defaults:
+    profile: default
+    config: {}
+  entries:
+  - id: svc.exports_as_policy_ingest_matrix_has_rows_from_assert_function_path_export_policy_ingest_matrix_has_rows_params_subject_required_true_as_policy_ingest_required_lane_policy_effect_valid_from_assert_function_path_export_policy_ingest_required_lane_policy_effect_valid_params_subject_required_true_as_policy_ingest_compat_stale_missing_count_within_limit_from_assert_function_path_export_policy_ingest_compat_stale_missing_count_within_limit_params_subject_required_true_as_policy_ingest_log_entries_correlate_matrix_rows_from_assert_function_path_export_policy_ingest_log_entries_correlate_matrix_rows_params_subject_required_true.default.1
+    type: legacy.exports_as_policy_ingest_matrix_has_rows_from_assert_function_path_export_policy_ingest_matrix_has_rows_params_subject_required_true_as_policy_ingest_required_lane_policy_effect_valid_from_assert_function_path_export_policy_ingest_required_lane_policy_effect_valid_params_subject_required_true_as_policy_ingest_compat_stale_missing_count_within_limit_from_assert_function_path_export_policy_ingest_compat_stale_missing_count_within_limit_params_subject_required_true_as_policy_ingest_log_entries_correlate_matrix_rows_from_assert_function_path_export_policy_ingest_log_entries_correlate_matrix_rows_params_subject_required_true
+  - id: svc.check_profile_text_file_config_use_ref_lib_policy_ingest_001_as_lib_policy_ingest_symbols_policy_ingest_matrix_has_rows_policy_ingest_required_lane_policy_effect_valid_policy_ingest_compat_stale_missing_count_within_limit_policy_ingest_log_entries_correlate_matrix_rows.default.1
+    type: legacy.check_profile_text_file_config_use_ref_lib_policy_ingest_001_as_lib_policy_ingest_symbols_policy_ingest_matrix_has_rows_policy_ingest_required_lane_policy_effect_valid_policy_ingest_compat_stale_missing_count_within_limit_policy_ingest_log_entries_correlate_matrix_rows
 contracts:
 - id: LIB-POLICY-INGEST-001
-  type: contract.export
   title: status ingest predicates
   clauses:
     predicates:
@@ -60,8 +75,8 @@ contracts:
     tags:
     - policy
     - runtime
+  type: contract.export
 - id: LIB-POLICY-INGEST-900
-  type: contract.check
   title: status ingest policy library smoke
   clauses:
     imports:
@@ -96,36 +111,7 @@ contracts:
             ingest_log:
               entries:
               - runner_id: dc-runner-rust
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-INGEST-001',
-      'as': 'lib_policy_ingest', 'symbols': ['policy.ingest.matrix_has_rows', 'policy.ingest.required_lane_policy_effect_valid',
-      'policy.ingest.compat_stale_missing_count_within_limit', 'policy.ingest.log_entries_correlate_matrix_rows']}]}"
-    - "{'exports': [{'as': 'policy.ingest.matrix_has_rows', 'from': 'assert.function',
-      'path': '/__export__policy.ingest.matrix_has_rows', 'params': ['subject'], 'required':
-      True}, {'as': 'policy.ingest.required_lane_policy_effect_valid', 'from': 'assert.function',
-      'path': '/__export__policy.ingest.required_lane_policy_effect_valid', 'params':
-      ['subject'], 'required': True}, {'as': 'policy.ingest.compat_stale_missing_count_within_limit',
-      'from': 'assert.function', 'path': '/__export__policy.ingest.compat_stale_missing_count_within_limit',
-      'params': ['subject'], 'required': True}, {'as': 'policy.ingest.log_entries_correlate_matrix_rows',
-      'from': 'assert.function', 'path': '/__export__policy.ingest.log_entries_correlate_matrix_rows',
-      'params': ['subject'], 'required': True}]}"
-services:
-  defaults:
-    profile: default
-    config: {}
-  entries:
-  - id: 
-      svc.exports_as_policy_ingest_matrix_has_rows_from_assert_function_path_export_policy_ingest_matrix_has_rows_params_subject_required_true_as_policy_ingest_required_lane_policy_effect_valid_from_assert_function_path_export_policy_ingest_required_lane_policy_effect_valid_params_subject_required_true_as_policy_ingest_compat_stale_missing_count_within_limit_from_assert_function_path_export_policy_ingest_compat_stale_missing_count_within_limit_params_subject_required_true_as_policy_ingest_log_entries_correlate_matrix_rows_from_assert_function_path_export_policy_ingest_log_entries_correlate_matrix_rows_params_subject_required_true.default.1
-    type: 
-      legacy.exports_as_policy_ingest_matrix_has_rows_from_assert_function_path_export_policy_ingest_matrix_has_rows_params_subject_required_true_as_policy_ingest_required_lane_policy_effect_valid_from_assert_function_path_export_policy_ingest_required_lane_policy_effect_valid_params_subject_required_true_as_policy_ingest_compat_stale_missing_count_within_limit_from_assert_function_path_export_policy_ingest_compat_stale_missing_count_within_limit_params_subject_required_true_as_policy_ingest_log_entries_correlate_matrix_rows_from_assert_function_path_export_policy_ingest_log_entries_correlate_matrix_rows_params_subject_required_true
-  - id: 
-      svc.check_profile_text_file_config_use_ref_lib_policy_ingest_001_as_lib_policy_ingest_symbols_policy_ingest_matrix_has_rows_policy_ingest_required_lane_policy_effect_valid_policy_ingest_compat_stale_missing_count_within_limit_policy_ingest_log_entries_correlate_matrix_rows.default.1
-    type: 
-      legacy.check_profile_text_file_config_use_ref_lib_policy_ingest_001_as_lib_policy_ingest_symbols_policy_ingest_matrix_has_rows_policy_ingest_required_lane_policy_effect_valid_policy_ingest_compat_stale_missing_count_within_limit_policy_ingest_log_entries_correlate_matrix_rows
+  type: contract.check
 ```
 
 

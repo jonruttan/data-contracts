@@ -1,9 +1,24 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-ASSERT-001', 'as': 'lib_policy_assertions', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    - "{'exports': [{'as': 'policy.assert.no_violations', 'from': 'assert.function', 'path': '/__export__policy.assert.no_violations', 'params': ['subject'], 'required': True}, {'as': 'policy.assert.summary_passed', 'from': 'assert.function', 'path': '/__export__policy.assert.summary_passed', 'params': ['subject'], 'required': True}, {'as': 'policy.assert.summary_check_id', 'from': 'assert.function', 'path': '/__export__policy.assert.summary_check_id', 'params': ['subject', 'expected_check_id'], 'required': True}, {'as': 'policy.assert.scan_pass', 'from': 'assert.function', 'path': '/__export__policy.assert.scan_pass', 'params': ['subject', 'expected_check_id'], 'required': True}]}"
+services:
+  defaults:
+    profile: default
+    config: {}
+  entries:
+  - id: svc.exports_as_policy_assert_no_violations_from_assert_function_path_export_policy_assert_no_violations_params_subject_required_true_as_policy_assert_summary_passed_from_assert_function_path_export_policy_assert_summary_passed_params_subject_required_true_as_policy_assert_summary_check_id_from_assert_function_path_export_policy_assert_summary_check_id_params_subject_expected_check_id_required_true_as_policy_assert_scan_pass_from_assert_function_path_export_policy_assert_scan_pass_params_subject_expected_check_id_required_true.default.1
+    type: legacy.exports_as_policy_assert_no_violations_from_assert_function_path_export_policy_assert_no_violations_params_subject_required_true_as_policy_assert_summary_passed_from_assert_function_path_export_policy_assert_summary_passed_params_subject_required_true_as_policy_assert_summary_check_id_from_assert_function_path_export_policy_assert_summary_check_id_params_subject_expected_check_id_required_true_as_policy_assert_scan_pass_from_assert_function_path_export_policy_assert_scan_pass_params_subject_expected_check_id_required_true
+  - id: svc.check_profile_text_file_config_use_ref_lib_policy_assert_001_as_lib_policy_assertions_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    type: legacy.check_profile_text_file_config_use_ref_lib_policy_assert_001_as_lib_policy_assertions_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
 contracts:
 - id: LIB-POLICY-ASSERT-001
-  type: contract.export
   title: reusable scan envelope assertions
   clauses:
     predicates:
@@ -53,8 +68,8 @@ contracts:
     tags:
     - policy
     - assertions
+  type: contract.export
 - id: LIB-POLICY-ASSERT-900
-  type: contract.check
   title: assertions policy library smoke
   clauses:
     imports:
@@ -114,36 +129,7 @@ contracts:
                 passed: true
                 check_id: docs.reference_manifest_sync
           - docs.reference_manifest_sync
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-ASSERT-001',
-      'as': 'lib_policy_assertions', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
-      'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
-    - "{'exports': [{'as': 'policy.assert.no_violations', 'from': 'assert.function',
-      'path': '/__export__policy.assert.no_violations', 'params': ['subject'], 'required':
-      True}, {'as': 'policy.assert.summary_passed', 'from': 'assert.function', 'path':
-      '/__export__policy.assert.summary_passed', 'params': ['subject'], 'required':
-      True}, {'as': 'policy.assert.summary_check_id', 'from': 'assert.function', 'path':
-      '/__export__policy.assert.summary_check_id', 'params': ['subject', 'expected_check_id'],
-      'required': True}, {'as': 'policy.assert.scan_pass', 'from': 'assert.function',
-      'path': '/__export__policy.assert.scan_pass', 'params': ['subject', 'expected_check_id'],
-      'required': True}]}"
-services:
-  defaults:
-    profile: default
-    config: {}
-  entries:
-  - id: 
-      svc.exports_as_policy_assert_no_violations_from_assert_function_path_export_policy_assert_no_violations_params_subject_required_true_as_policy_assert_summary_passed_from_assert_function_path_export_policy_assert_summary_passed_params_subject_required_true_as_policy_assert_summary_check_id_from_assert_function_path_export_policy_assert_summary_check_id_params_subject_expected_check_id_required_true_as_policy_assert_scan_pass_from_assert_function_path_export_policy_assert_scan_pass_params_subject_expected_check_id_required_true.default.1
-    type: 
-      legacy.exports_as_policy_assert_no_violations_from_assert_function_path_export_policy_assert_no_violations_params_subject_required_true_as_policy_assert_summary_passed_from_assert_function_path_export_policy_assert_summary_passed_params_subject_required_true_as_policy_assert_summary_check_id_from_assert_function_path_export_policy_assert_summary_check_id_params_subject_expected_check_id_required_true_as_policy_assert_scan_pass_from_assert_function_path_export_policy_assert_scan_pass_params_subject_expected_check_id_required_true
-  - id: 
-      svc.check_profile_text_file_config_use_ref_lib_policy_assert_001_as_lib_policy_assertions_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: 
-      legacy.check_profile_text_file_config_use_ref_lib_policy_assert_001_as_lib_policy_assertions_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  type: contract.check
 ```
 
 

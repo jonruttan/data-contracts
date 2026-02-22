@@ -1,6 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.assert_check.text_file.1
+    type: assert.check
+    io: input
+    profile: text.file
+    config:
+      path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
 contracts:
 - id: DCCONF-STDLIB-001
   title: core numeric and set operators evaluate deterministically
@@ -38,8 +51,7 @@ contracts:
         - 0
 - id: DCCONF-STDLIB-002
   title: core collection and object operators evaluate deterministically
-  purpose: Validates representative object and json operators in the stdlib 
-    profile.
+  purpose: Validates representative object and json operators in the stdlib profile.
   expect:
     portable:
       status: pass
@@ -118,8 +130,7 @@ contracts:
         - a/b
 - id: DCCONF-STDLIB-004
   title: ops fs file metadata helpers evaluate deterministically
-  purpose: Validates metadata-only file predicates and getters under 
-    ops.fs.file.
+  purpose: Validates metadata-only file predicates and getters under ops.fs.file.
   expect:
     portable:
       status: pass
@@ -497,19 +508,6 @@ contracts:
             - 7
         - lit:
           - "/a/b"
-defaults:
-  harness: check
-harness:
-  type: unit.test
-  profile: check
-services:
-  entries:
-  - id: svc.assert_check.text_file.1
-    type: assert.check
-    io: input
-    profile: text.file
-    config:
-      path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
 ```
 
 

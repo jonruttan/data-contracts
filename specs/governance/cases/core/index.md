@@ -236,6 +236,7 @@ Canonical domain index for executable specs in this subtree.
 - /specs/governance/cases/core/spec_core/library_single_public_symbol_per_case_required.spec.md
 - /specs/governance/cases/core/spec_core/library_verb_first_schema_keys_required.spec.md
 - /specs/governance/cases/core/spec_core/naming_filename_policy.spec.md
+- /specs/governance/cases/core/spec_core/normalization_contract_spec_key_order_v2.spec.md
 - /specs/governance/cases/core/spec_core/normalization_docs_token_sync.spec.md
 - /specs/governance/cases/core/spec_core/normalization_library_mapping_ast_only.spec.md
 - /specs/governance/cases/core/spec_core/normalization_mapping_ast_only.spec.md
@@ -256,6 +257,7 @@ Canonical domain index for executable specs in this subtree.
 - /specs/governance/cases/core/spec_core/reference_token_anchors_exist.spec.md
 - /specs/governance/cases/core/spec_core/regex_doc_sync.spec.md
 - /specs/governance/cases/core/spec_core/runtime_chain_entry_cases_present.spec.md
+- /specs/governance/cases/core/spec_core/runtime_contract_spec_formatter_contract_sync.spec.md
 - /specs/governance/cases/core/spec_core/runtime_core_script_allowlist_enforced.spec.md
 - /specs/governance/cases/core/spec_core/runtime_governance_catalog_pipeline_chain.spec.md
 - /specs/governance/cases/core/spec_core/runtime_non_core_scripts_not_in_active_policy_traceability.spec.md

@@ -1,30 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-contracts:
-- id: DCCONF-SCHEMA-REG-001
-  title: schema docs include generated registry snapshot markers
-  purpose: Ensures generated schema registry snapshot markers and section header
-    are present in schema_v1 documentation.
-  expect:
-    portable:
-      status: pass
-      category:
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - text
-    predicates:
-    - id: assert_1
-      assert:
-      - call:
-        - var: policy.text.contains_all
-        - var: text
-        - lit:
-          - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-          - 'END GENERATED: SCHEMA_REGISTRY_V1'
-          - Generated Registry Snapshot
 harness:
   type: unit.test
   profile: check
@@ -44,4 +20,27 @@ services:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
+contracts:
+- id: DCCONF-SCHEMA-REG-001
+  title: schema docs include generated registry snapshot markers
+  purpose: Ensures generated schema registry snapshot markers and section header are present in schema_v1 documentation.
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - text
+    predicates:
+    - id: assert_1
+      assert:
+      - call:
+        - var: policy.text.contains_all
+        - var: text
+        - lit:
+          - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
+          - 'END GENERATED: SCHEMA_REGISTRY_V1'
+          - Generated Registry Snapshot
 ```

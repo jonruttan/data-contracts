@@ -3,11 +3,26 @@ spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
   type: contract.check
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/implementation_bundle_build_lock_v1.yaml'}}}"
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
+services:
+  defaults:
+    profile: default
+    config: {}
+  entries:
+  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
+    type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-006
   title: implementation overlay schemas are indexed and include integrity fields
-  purpose: Ensures schema index and implementation build lock schema define 
-    deterministic integrity fields for overlay bundle builds.
+  purpose: Ensures schema index and implementation build lock schema define deterministic integrity fields for overlay bundle builds.
   clauses:
     imports:
     - from: artifact
@@ -26,8 +41,7 @@ contracts:
         - "/specs/schema/implementation_bundle_build_lock_v1.yaml"
 - id: DCGOV-RUNTIME-BUNDLE-007
   title: implementation build lock schema defines deterministic integrity fields
-  purpose: Ensures implementation build lock includes base/overlay/result hashes
-    and resolved_files hash.
+  purpose: Ensures implementation build lock includes base/overlay/result hashes and resolved_files hash.
   clauses:
     imports:
     - from: artifact
@@ -54,22 +68,4 @@ contracts:
         std.string.contains:
         - var: text
         - resolved_files_sha256
-harness:
-  type: unit.test
-  profile: check
-  config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/implementation_bundle_build_lock_v1.yaml'}}}"
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
-services:
-  defaults:
-    profile: default
-    config: {}
-  entries:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-  - id: 
-      svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
-    type: 
-      legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
 ```

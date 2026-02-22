@@ -1,11 +1,100 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+services:
+  defaults:
+    type: assert.check
+    io: input
+    profile: text.file
+  entries:
+  - id: svc.assert_check.text_file.1
+    config:
+      path: "/specs/libraries/domain/http_core.spec.md"
+      use:
+      - ref: "/specs/libraries/domain/http_core.spec.md"
+        as: lib_http_core_spec
+        symbols:
+        - domain.http.auth_is_oauth
+        - domain.http.body_json
+        - domain.http.body_json_has_key
+        - domain.http.body_json_type_is
+        - domain.http.body_text
+        - domain.http.has_bearer_header
+        - domain.http.header_contains
+        - domain.http.header_get
+        - domain.http.oauth_scope_requested
+        - domain.http.oauth_token_source_is
+        - domain.http.ok_2xx
+        - domain.http.status
+        - domain.http.status_in
+        - domain.http.status_is
+        - domain.http.status_is_forbidden
+        - domain.http.status_is_unauthorized
+  - id: svc.assert_check.text_file.2
+    config:
+      path: "/specs/libraries/domain/index.md"
+      use:
+      - ref: "/specs/libraries/domain/make_core.spec.md"
+        as: lib_make_core_spec
+        symbols:
+        - make.has_target
+      - ref: "/specs/libraries/domain/markdown_core.spec.md"
+        as: lib_markdown_core_spec
+        symbols:
+        - domain.markdown.code_fence_language_exists
+        - domain.markdown.has_broken_links
+        - domain.markdown.has_heading
+        - domain.markdown.has_yaml_spec_test_fence
+        - domain.markdown.heading_level_exists
+        - domain.markdown.link_targets_all_resolve
+        - domain.markdown.required_sections_present
+        - domain.markdown.section_order_valid
+        - domain.markdown.token_dependencies_resolved
+        - domain.markdown.token_ownership_unique
+        - domain.markdown.token_present
+        - domain.markdown.tokens_all_present
+      - ref: "/specs/libraries/domain/fs_core.spec.md"
+        as: lib_fs_core_spec
+        symbols:
+        - domain.fs.file_ext_eq
+        - domain.fs.glob_all
+        - domain.fs.glob_any_spec_files
+        - domain.fs.glob_filter
+        - domain.fs.is_docs_spec_file
+        - domain.fs.json_get_text
+        - domain.fs.json_get_or_text
+        - domain.fs.json_has_path_text
+        - domain.fs.json_path_eq_text
+        - domain.fs.sort_spec_files
+      - ref: "/specs/libraries/domain/path_core.spec.md"
+        as: lib_path_core_spec
+        symbols:
+        - domain.path.normalize
+        - domain.path.eq
+        - domain.path.is_spec_md
+        - domain.path.is_in_docs
+        - domain.path.sorted
+        - domain.file.is_existing_file
+        - domain.file.is_existing_dir
+        - domain.file.has_ext
+        - domain.file.name
+      - ref: "/specs/libraries/domain/python_core.spec.md"
+        as: lib_python_core_spec
+        symbols:
+        - py.is_tuple_projection
+      - ref: "/specs/libraries/domain/php_core.spec.md"
+        as: lib_php_core_spec
+        symbols:
+        - php.is_assoc_projection
 contracts:
 - id: DCCONF-DOMAIN-LIB-001
   title: domain http library defines status helper
-  purpose: Ensures domain HTTP library exports reusable status-based assertion 
-    helper.
+  purpose: Ensures domain HTTP library exports reusable status-based assertion helper.
   expect:
     portable:
       status: pass
@@ -168,8 +257,7 @@ contracts:
         - 'type: spec.export'
 - id: DCCONF-DOMAIN-LIB-002
   title: domain library index references all domain library files
-  purpose: Ensures domain index remains synchronized with all domain library 
-    spec files.
+  purpose: Ensures domain index remains synchronized with all domain library spec files.
   expect:
     portable:
       status: pass
@@ -341,96 +429,6 @@ contracts:
       - std.string.contains:
         - var: text
         - "/specs/libraries/domain/python_core.spec.md"
-defaults:
-  harness: check
-harness:
-  type: unit.test
-  profile: check
-services:
-  defaults:
-    type: assert.check
-    io: input
-    profile: text.file
-  entries:
-  - id: svc.assert_check.text_file.1
-    config:
-      path: "/specs/libraries/domain/http_core.spec.md"
-      use:
-      - ref: "/specs/libraries/domain/http_core.spec.md"
-        as: lib_http_core_spec
-        symbols:
-        - domain.http.auth_is_oauth
-        - domain.http.body_json
-        - domain.http.body_json_has_key
-        - domain.http.body_json_type_is
-        - domain.http.body_text
-        - domain.http.has_bearer_header
-        - domain.http.header_contains
-        - domain.http.header_get
-        - domain.http.oauth_scope_requested
-        - domain.http.oauth_token_source_is
-        - domain.http.ok_2xx
-        - domain.http.status
-        - domain.http.status_in
-        - domain.http.status_is
-        - domain.http.status_is_forbidden
-        - domain.http.status_is_unauthorized
-  - id: svc.assert_check.text_file.2
-    config:
-      path: "/specs/libraries/domain/index.md"
-      use:
-      - ref: "/specs/libraries/domain/make_core.spec.md"
-        as: lib_make_core_spec
-        symbols:
-        - make.has_target
-      - ref: "/specs/libraries/domain/markdown_core.spec.md"
-        as: lib_markdown_core_spec
-        symbols:
-        - domain.markdown.code_fence_language_exists
-        - domain.markdown.has_broken_links
-        - domain.markdown.has_heading
-        - domain.markdown.has_yaml_spec_test_fence
-        - domain.markdown.heading_level_exists
-        - domain.markdown.link_targets_all_resolve
-        - domain.markdown.required_sections_present
-        - domain.markdown.section_order_valid
-        - domain.markdown.token_dependencies_resolved
-        - domain.markdown.token_ownership_unique
-        - domain.markdown.token_present
-        - domain.markdown.tokens_all_present
-      - ref: "/specs/libraries/domain/fs_core.spec.md"
-        as: lib_fs_core_spec
-        symbols:
-        - domain.fs.file_ext_eq
-        - domain.fs.glob_all
-        - domain.fs.glob_any_spec_files
-        - domain.fs.glob_filter
-        - domain.fs.is_docs_spec_file
-        - domain.fs.json_get_text
-        - domain.fs.json_get_or_text
-        - domain.fs.json_has_path_text
-        - domain.fs.json_path_eq_text
-        - domain.fs.sort_spec_files
-      - ref: "/specs/libraries/domain/path_core.spec.md"
-        as: lib_path_core_spec
-        symbols:
-        - domain.path.normalize
-        - domain.path.eq
-        - domain.path.is_spec_md
-        - domain.path.is_in_docs
-        - domain.path.sorted
-        - domain.file.is_existing_file
-        - domain.file.is_existing_dir
-        - domain.file.has_ext
-        - domain.file.name
-      - ref: "/specs/libraries/domain/python_core.spec.md"
-        as: lib_python_core_spec
-        symbols:
-        - py.is_tuple_projection
-      - ref: "/specs/libraries/domain/php_core.spec.md"
-        as: lib_php_core_spec
-        symbols:
-        - php.is_assoc_projection
 ```
 
 

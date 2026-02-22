@@ -1,11 +1,27 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.assert_check.text_file.1
+    type: assert.check
+    io: input
+    profile: text.file
+    config:
+      use:
+      - ref: "/specs/libraries/policy/policy_text.spec.md"
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_pair
 contracts:
 - id: DCCONF-RCERT-001
   title: runner execution certificate v2 schema is declared
-  purpose: Ensures the v2 runner execution certificate schema is present with 
-    core sections.
+  purpose: Ensures the v2 runner execution certificate schema is present with core sections.
   clauses:
     imports:
     - from: artifact
@@ -26,8 +42,7 @@ contracts:
         - '2'
 - id: DCCONF-RCERT-002
   title: runner execution certificate v2 includes intent equivalence and proof
-  purpose: Ensures v2 schema defines deterministic intent and payload proof 
-    fields.
+  purpose: Ensures v2 schema defines deterministic intent and payload proof fields.
   clauses:
     imports:
     - from: artifact
@@ -51,22 +66,5 @@ contracts:
         - var: text
         - proof
         - payload_sha256
-defaults:
-  harness: check
-harness:
-  type: unit.test
-  profile: check
-services:
-  entries:
-  - id: svc.assert_check.text_file.1
-    type: assert.check
-    io: input
-    profile: text.file
-    config:
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
 ```
 

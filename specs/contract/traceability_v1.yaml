@@ -3936,14 +3936,44 @@ links:
   - DCCONF-RCLI-003
   - DCCONF-RCLI-004
   - DCCONF-RCLI-005
+  - DCCONF-RCLI-006
+  - DCCONF-RCLI-007
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/runner_cli/runner_cli_required_help.spec.md
   - specs/conformance/cases/runner_cli/runner_cli_required_governance.spec.md
   - specs/conformance/cases/runner_cli/runner_cli_required_conformance.spec.md
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_check.spec.md
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md
   - specs/conformance/cases/runner_cli/runner_cli_unknown_command.spec.md
   - specs/conformance/cases/runner_cli/runner_cli_optional_capability_negotiation.spec.md
   notes: Portable CLI interface is required while runtime-specific subcommands remain optional.
+- rule_id: CONTRACT_SPEC_FORMATTER_COMMAND_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_SPEC_FORMATTER_COMMAND_REQUIRED
+  contract_refs:
+  - specs/contract/29_runner_cli_interface.md
+  schema_refs:
+  - specs/schema/runner_cli_contract_v1.yaml
+  conformance_case_ids:
+  - DCCONF-RCLI-006
+  - DCCONF-RCLI-007
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_check.spec.md
+  - specs/conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md
+  notes: Portable formatter command contract covers both check and write modes.
+- rule_id: CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
+  contract_refs:
+  - specs/contract/29_runner_cli_interface.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/style.md
+  - specs/governance/cases/core/spec_core/normalization_contract_spec_key_order_v2.spec.md
+  notes: Phase-in governance check starts report-only before blocking rollout.
 - rule_id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   contract_refs:

@@ -49,6 +49,11 @@ Portable CLI surface is defined by:
 - `/specs/contract/29_runner_cli_interface.md`
 - `/specs/schema/runner_cli_contract_v1.yaml`
 
+Rust-first required-lane formatter implementation ownership:
+
+- `dc-runner-rust` MUST implement `contract-spec-format` (`--check`, `--write`)
+  for v2 contract-spec key-order normalization.
+
 Bundle package management surface is defined by:
 
 - `/specs/contract/33_bundle_package_management.md`

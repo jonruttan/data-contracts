@@ -88,6 +88,50 @@ level in:
 - `specs/schema/implementation_bundle_overlay_v1.yaml`
 - `specs/schema/implementation_bundle_build_lock_v1.yaml`
 
+## v2 Canonical Key Order (Formatter Scope)
+
+`contract-spec-format` v2 scope is intentionally narrow:
+
+- suite root mapping keys
+- each `contracts[]` mapping item
+
+No recursive nested-map sorting and no array-item reordering are performed.
+
+Suite root canonical order:
+
+1. `spec_version`
+2. `schema_ref`
+3. `title`
+4. `purpose`
+5. `docs`
+6. `domain`
+7. `defaults`
+8. `harness`
+9. `services`
+10. `artifact`
+11. `bindings`
+12. `exports`
+13. `contracts`
+
+`contracts[]` canonical order:
+
+1. `id`
+2. `title`
+3. `purpose`
+4. `docs`
+5. `domain`
+6. `expect`
+7. `requires`
+8. `clauses`
+9. `library`
+10. `when`
+
+Ordering rules:
+
+- known keys are emitted in canonical order
+- unknown keys are preserved after known keys in stable original order
+- list item order is preserved as-authored
+
 Each `contracts[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`

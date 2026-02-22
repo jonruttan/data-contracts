@@ -1,6 +1,18 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.assert_check.text_file.1
+    type: assert.check
+    io: input
+    profile: text.file
+    config: {}
 contracts:
 - id: DCCONF-PHP-TEXT-001
   title: text.file contain assertion passes in php bootstrap
@@ -148,8 +160,7 @@ contracts:
             - "(?!)"
 - id: DCCONF-PHP-TEXT-008
   title: nested mixed groups with inherited target passes
-  purpose: Covers mixed nested must/may/must_not evaluation with inherited 
-    targets.
+  purpose: Covers mixed nested must/may/must_not evaluation with inherited targets.
   expect:
     portable:
       status: pass
@@ -177,8 +188,7 @@ contracts:
           - "\\A\\Z"
 - id: DCCONF-PHP-TEXT-009
   title: evaluate regex remains pass
-  purpose: Confirms evaluate regex assertions can pass on the baseline text 
-    fixture.
+  purpose: Confirms evaluate regex assertions can pass on the baseline text fixture.
   expect:
     portable:
       status: pass
@@ -232,8 +242,7 @@ contracts:
         - ".*"
 - id: DCCONF-PHP-TEXT-012
   title: mixed contains with unmet sibling fails assertion
-  purpose: Confirms sibling contains predicates fail when one branch does not 
-    match.
+  purpose: Confirms sibling contains predicates fail when one branch does not match.
   expect:
     portable:
       status: fail
@@ -289,18 +298,6 @@ contracts:
         std.string.contains:
         - var: text
         - ''
-defaults:
-  harness: check
-harness:
-  type: unit.test
-  profile: check
-services:
-  entries:
-  - id: svc.assert_check.text_file.1
-    type: assert.check
-    io: input
-    profile: text.file
-    config: {}
 ```
 
 

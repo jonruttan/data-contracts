@@ -34,6 +34,8 @@ Use tooling to enforce/normalize:
 
 - lint: `./scripts/runner_bin.sh spec-lang-lint --cases specs`
 - format: `./scripts/runner_bin.sh spec-lang-format --write --cases specs`
+- contract-spec format check: `./scripts/runner_bin.sh contract-spec-format --check specs`
+- contract-spec format write: `./scripts/runner_bin.sh contract-spec-format --write specs`
 - docs sync: `./scripts/runner_bin.sh docs-generate-check`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
