@@ -10,8 +10,7 @@ services:
     io: input
     profile: request.http
     imports:
-    - names:
-      - pipe_identity
+    - pipe_identity
   actions:
   - id: svc.assert_check.api_http.1
     config:
