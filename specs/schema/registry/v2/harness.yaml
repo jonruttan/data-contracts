@@ -24,9 +24,9 @@ fields:
     description: Harness runtime configuration mapping.
   services:
     type: mapping
-    required: true
+    required: false
     since: v2
-    description: Suite-level service bindings with defaults and entries.
+    description: Optional suite-level service bindings with defaults and entries; required when service imports or bindings are used.
   services.defaults:
     type: mapping
     required: false

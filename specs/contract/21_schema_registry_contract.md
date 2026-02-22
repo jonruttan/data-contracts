@@ -15,7 +15,8 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   content and stay synchronized.
 - Runtime expectation overrides MUST use `expect.overrides[]` (no `expect.impl.*` wildcard keys).
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
-- Suite runtime services MUST define non-empty root `services.entries[]`.
+- Suite runtime services are optional at root.
+- When `services` is present, it MUST define non-empty `services.entries[]`.
 - Suite MAY declare root `bindings[]` to bind services to contracts for
   predicate piping.
 - Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
@@ -29,6 +30,8 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   `bindings[].outputs[].to` MUST resolve to `artifact.exports[].id`.
 - Omitted `bindings[].service` MUST resolve to a single sane default service
   or hard-fail.
+- If `bindings[]` or any `from: service` assertion import is present,
+  `services` MUST be declared and valid.
 - Suite artifact references MUST be declared only under
   `artifact.imports[]`/`artifact.exports[]`.
 - Root `exports[]` MUST be function-only declarations using
@@ -50,7 +53,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 
 Runtime catalog entries define service additions over common suite/contract keys:
 
-- required suite runtime fields (`harness`, `services.entries[]`)
+- required suite runtime fields (`harness`; `services.entries[]` when services are used)
 - optional service-contract binding field (`bindings[]`)
 - service type/profile/io compatibility
 - allowed function operation prefixes per service type

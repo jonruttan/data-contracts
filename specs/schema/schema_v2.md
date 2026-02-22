@@ -101,7 +101,7 @@ Suite runtime surfaces:
   - `harness.type` (string, required)
   - `harness.profile` (string, required)
   - `harness.config` (mapping, optional)
-- `services` (mapping, required): suite system service bindings with defaults and concrete entries (effective type/io/profile/config)
+- `services` (mapping, optional): suite system service bindings with defaults and concrete entries (effective type/io/profile/config)
   - `services.entries[].id` (string, required; unique in suite)
   - `services.entries[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
   - `services.entries[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
@@ -138,7 +138,8 @@ Parser behavior:
 - `schema_ref` is required
 - each `contracts[]` item requires `id`
 - suite `harness` mapping is required
-- suite `services.entries[]` list is required and must be non-empty via `services.entries`
+- suite `services` is optional
+- when `services` is present, `services.entries[]` must be non-empty
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
@@ -157,6 +158,9 @@ Parser behavior:
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
 - unknown `services.entries[].type` MUST hard-fail during schema validation
 - invalid `services.entries[].io` MUST hard-fail during schema validation
+- if `bindings[]` is present, `services` MUST be present and valid
+- if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
+  `from: service`, `services` MUST be present and valid
 - bindings execute once per contract before predicate evaluation
 - `bindings[].contract` MUST reference an existing `contracts[].id`
 - `bindings[].service` (when present) MUST reference an existing `services.entries[].id`
@@ -757,7 +761,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples` | `list` | `false` | `v2` |
 | `harness.docs[].examples[].title` | `string` | `true` | `v2` |
 | `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
-| `services` | `mapping` | `true` | `v2` |
+| `services` | `mapping` | `false` | `v2` |
 | `services.entries[].id` | `string` | `true` | `v2` |
 | `services.entries[].type` | `string` | `false` | `v2` |
 | `services.entries[].io` | `string` | `false` | `v2` |
@@ -971,7 +975,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.entries[]` | `services.entries[].id` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
@@ -1014,7 +1018,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples` | `list` | false | `v2` |
 | `harness.docs[].examples[].title` | `string` | true | `v2` |
 | `harness.docs[].examples[].ref` | `string` | true | `v2` |
-| `services` | `mapping` | true | `v2` |
+| `services` | `mapping` | false | `v2` |
 | `services.entries[].id` | `string` | true | `v2` |
 | `services.entries[].type` | `string` | false | `v2` |
 | `services.entries[].io` | `string` | false | `v2` |
@@ -1228,6 +1232,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required_keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.entries[]` | `services.entries[].id` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

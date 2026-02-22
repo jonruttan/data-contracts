@@ -134,7 +134,7 @@ fields:
     since: v2
   services:
     type: mapping
-    required: true
+    required: false
     since: v2
   services.defaults:
     type: mapping

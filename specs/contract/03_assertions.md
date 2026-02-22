@@ -43,6 +43,8 @@ Import binding shape:
 - `imports` is a list of mapping items
 - each item must be `{from, names, as?}`
 - canonical sources are `artifact` and `service`
+- when any item uses `from: service`, suite-root `services` MUST be present and
+  valid
 - when `from: service`, `service` key is required and must reference suite `services.entries[].id`
 - `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`

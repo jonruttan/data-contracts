@@ -394,6 +394,42 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+- id: DCCONF-SCHEMA-CASE-023
+  title: service import with declared service is accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    imports:
+    - from: service
+      service: svc.check.default.1
+      names:
+      - pipe_identity
+      as:
+        pipe_identity: subject
+    predicates:
+    - id: assert_1
+      assert:
+        std.logic.eq:
+        - var: subject
+        - pipe_identity
+- id: DCCONF-SCHEMA-CASE-024
+  title: service import with unknown service id is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    imports:
+    - from: service
+      service: svc.unknown
+      names:
+      - pipe_identity
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
 harness:
   type: unit.test
   profile: export
