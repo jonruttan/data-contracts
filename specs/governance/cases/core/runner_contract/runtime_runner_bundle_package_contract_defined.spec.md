@@ -18,13 +18,10 @@ services:
   - id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
     mode: default
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-001
     title: runner bundle package management contract is defined
-    purpose: Ensures bundle package management contract describes release-asset and
-      checksum requirements.
+    purpose: Ensures bundle package management contract describes release-asset and checksum requirements.
     asserts:
       imports:
       - from: artifact
@@ -68,8 +65,7 @@ contracts:
           - dc-runner-rust-specs
   - id: DCGOV-RUNTIME-BUNDLE-003
     title: runner build tool schema declares bundle sync tasks
-    purpose: Ensures runner build tool schema uses bundle-sync task ids and does not
-      include legacy spec-sync task ids.
+    purpose: Ensures runner build tool schema uses bundle-sync task ids and does not include legacy spec-sync task ids.
     asserts:
       imports:
       - from: artifact

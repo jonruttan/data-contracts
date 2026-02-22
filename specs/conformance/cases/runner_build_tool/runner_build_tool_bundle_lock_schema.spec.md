@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-008
     title: project bundle lock schema defines canonical multi-bundle fields
-    purpose: Project bundle lock schema must define bundles array, install directories,
-      and source checksums.
+    purpose: Project bundle lock schema must define bundles array, install directories, and source checksums.
     asserts:
       imports:
       - from: artifact

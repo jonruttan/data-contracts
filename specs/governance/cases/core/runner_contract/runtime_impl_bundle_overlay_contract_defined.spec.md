@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-005
     title: implementation overlay bundle contract is defined
-    purpose: Ensures implementation overlay bundle contract documents canonical base
-      source, checksum requirements, and patch-based semantics.
+    purpose: Ensures implementation overlay bundle contract documents canonical base source, checksum requirements, and patch-based semantics.
     asserts:
       imports:
       - from: artifact

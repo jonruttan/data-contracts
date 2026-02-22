@@ -6,9 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'schema_pin_validator': {'path': '/scripts/spec_schema_pin_validate.sh',
-      'required_tokens': ['mismatched_version_count']}, 'check': {'profile': 'governance.scan',
-      'config': {'check': 'schema.spec_case_version_matches_schema_ref'}}}"
+    - "{'root': '.', 'schema_pin_validator': {'path': '/scripts/spec_schema_pin_validate.sh', 'required_tokens': ['mismatched_version_count']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.spec_case_version_matches_schema_ref'}}}"
 services:
 - type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref
   operations:
@@ -16,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-SCHEMA-PIN-004
     title: spec_version matches schema_ref major
-    purpose: Ensures schema pin validator rejects mismatched spec_version and schema_ref
-      major values.
+    purpose: Ensures schema pin validator rejects mismatched spec_version and schema_ref major values.
     asserts:
       imports:
       - from: artifact

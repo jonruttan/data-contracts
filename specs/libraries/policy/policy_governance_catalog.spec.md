@@ -6,19 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-GOV-CATALOG-001',
-      'as': 'lib_policy_gov_catalog', 'symbols': ['policy.catalog.duplicate_ids_zero',
-      'policy.catalog.unmapped_checks_zero', 'policy.catalog.multi_tier_collisions_zero',
-      'policy.catalog.check_field_presence_zero']}]}"
-    - "{'exports': [{'as': 'policy.catalog.duplicate_ids_zero', 'from': 'assert.function',
-      'path': '/__export__policy.catalog.duplicate_ids_zero', 'params': ['subject'],
-      'required': True}, {'as': 'policy.catalog.unmapped_checks_zero', 'from': 'assert.function',
-      'path': '/__export__policy.catalog.unmapped_checks_zero', 'params': ['subject'],
-      'required': True}, {'as': 'policy.catalog.multi_tier_collisions_zero', 'from':
-      'assert.function', 'path': '/__export__policy.catalog.multi_tier_collisions_zero',
-      'params': ['subject'], 'required': True}, {'as': 'policy.catalog.check_field_presence_zero',
-      'from': 'assert.function', 'path': '/__export__policy.catalog.check_field_presence_zero',
-      'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-GOV-CATALOG-001', 'as': 'lib_policy_gov_catalog', 'symbols': ['policy.catalog.duplicate_ids_zero', 'policy.catalog.unmapped_checks_zero', 'policy.catalog.multi_tier_collisions_zero', 'policy.catalog.check_field_presence_zero']}]}"
+    - "{'exports': [{'as': 'policy.catalog.duplicate_ids_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.duplicate_ids_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.unmapped_checks_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.unmapped_checks_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.multi_tier_collisions_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.multi_tier_collisions_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.check_field_presence_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.check_field_presence_zero', 'params': ['subject'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_catalog_duplicate_ids_zero_from_assert_function_path_export_policy_catalog_duplicate_ids_zero_params_subject_required_true_as_policy_catalog_unmapped_checks_zero_from_assert_function_path_export_policy_catalog_unmapped_checks_zero_params_subject_required_true_as_policy_catalog_multi_tier_collisions_zero_from_assert_function_path_export_policy_catalog_multi_tier_collisions_zero_params_subject_required_true_as_policy_catalog_check_field_presence_zero_from_assert_function_path_export_policy_catalog_check_field_presence_zero_params_subject_required_true
   operations:

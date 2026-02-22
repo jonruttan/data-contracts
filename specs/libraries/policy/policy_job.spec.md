@@ -6,16 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-JOB-001',
-      'as': 'lib_policy_job', 'symbols': ['policy.job.dispatch_ok', 'policy.job.written_path_contains',
-      'policy.job.hooks_present']}]}"
-    - "{'exports': [{'as': 'policy.job.dispatch_ok', 'from': 'assert.function', 'path':
-      '/__export__policy.job.dispatch_ok', 'params': ['summary_json'], 'required':
-      True}, {'as': 'policy.job.written_path_contains', 'from': 'assert.function',
-      'path': '/__export__policy.job.written_path_contains', 'params': ['summary_json',
-      'expected_path'], 'required': True}, {'as': 'policy.job.hooks_present', 'from':
-      'assert.function', 'path': '/__export__policy.job.hooks_present', 'params':
-      ['job_map'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-JOB-001', 'as': 'lib_policy_job', 'symbols': ['policy.job.dispatch_ok', 'policy.job.written_path_contains', 'policy.job.hooks_present']}]}"
+    - "{'exports': [{'as': 'policy.job.dispatch_ok', 'from': 'assert.function', 'path': '/__export__policy.job.dispatch_ok', 'params': ['summary_json'], 'required': True}, {'as': 'policy.job.written_path_contains', 'from': 'assert.function', 'path': '/__export__policy.job.written_path_contains', 'params': ['summary_json', 'expected_path'], 'required': True}, {'as': 'policy.job.hooks_present', 'from': 'assert.function', 'path': '/__export__policy.job.hooks_present', 'params': ['job_map'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true
   operations:

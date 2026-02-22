@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-CERT-003
     title: runner certification artifacts follow contract shape

@@ -6,19 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001',
-      'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero',
-      'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero',
-      'policy.schema_pin.version_match_zero']}]}"
-    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from':
-      'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero',
-      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero',
-      'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero',
-      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero',
-      'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero',
-      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero',
-      'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero',
-      'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001', 'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero', 'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero', 'policy.schema_pin.version_match_zero']}]}"
+    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero', 'params': ['subject'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true
   operations:

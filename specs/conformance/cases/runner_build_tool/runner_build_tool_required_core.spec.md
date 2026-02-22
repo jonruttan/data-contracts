@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-001
     title: runner build tool contract defines required core tasks
-    purpose: Portable build tool contract must define build, test, and verify required
-      tasks.
+    purpose: Portable build tool contract must define build, test, and verify required tasks.
     asserts:
       imports:
       - from: artifact

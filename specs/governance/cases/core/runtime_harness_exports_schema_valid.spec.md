@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-003
     title: harness exports schema is valid
-    purpose: Ensures harness.exports entries enforce as/from/path/params/required
-      schema requirements.
+    purpose: Ensures harness.exports entries enforce as/from/path/params/required schema requirements.
     asserts:
       imports:
       - from: artifact

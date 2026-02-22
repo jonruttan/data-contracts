@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-010
     title: implementation bundle contract defines build and package command surface
-    purpose: Runner implementation spec bundle contract must expose build-impl, package-impl,
-      and package-check command vocabulary.
+    purpose: Runner implementation spec bundle contract must expose build-impl, package-impl, and package-check command vocabulary.
     asserts:
       imports:
       - from: artifact

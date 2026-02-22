@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-CONTRACT-SPEC-001
     title: executable case fences must use contract-spec

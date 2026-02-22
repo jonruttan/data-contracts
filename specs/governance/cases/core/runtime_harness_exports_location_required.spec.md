@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-001
     title: producer exports are declared at harness.exports
-    purpose: Ensures producer symbol declarations are declared at harness.exports
-      and non-canonical harness.chain.exports is rejected.
+    purpose: Ensures producer symbol declarations are declared at harness.exports and non-canonical harness.chain.exports is rejected.
     asserts:
       imports:
       - from: artifact

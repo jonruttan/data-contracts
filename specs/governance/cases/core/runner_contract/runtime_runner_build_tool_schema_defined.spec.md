@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BTOOL-002
     title: runner build tool contract schema is defined

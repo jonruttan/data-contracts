@@ -6,12 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'purpose_quality': {'cases': 'specs/conformance/cases', 'max_total_warnings':
-      0, 'fail_on_policy_errors': True, 'fail_on_severity': 'warn'}, 'check': {'profile':
-      'governance.scan', 'config': {'check': 'conformance.purpose_quality_gate'}},
-      'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
-      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
-      'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'purpose_quality': {'cases': 'specs/conformance/cases', 'max_total_warnings': 0, 'fail_on_policy_errors': True, 'fail_on_severity': 'warn'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'conformance.purpose_quality_gate'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
 - type: legacy.root_purpose_quality_cases_specs_conformance_cases_max_total_warnings_0_fail_on_policy_errors_true_fail_on_severity_warn_check_profile_governance_scan_config_check_conformance_purpose_quality_gate_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
   operations:
@@ -19,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-CONF-PURPOSE-002
     title: conformance purpose quality remains warning free
-    purpose: Ensures conformance purpose lint policy and case purpose text stay clean
-      with no accumulated warning debt.
+    purpose: Ensures conformance purpose lint policy and case purpose text stay clean with no accumulated warning debt.
     asserts:
       imports:
       - from: artifact

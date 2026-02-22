@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-011
     title: project bundle lock schema supports additional role entries
-    purpose: Project lock schema must allow role additional for implementation-specific
-      bundles.
+    purpose: Project lock schema must allow role additional for implementation-specific bundles.
     asserts:
       imports:
       - from: artifact

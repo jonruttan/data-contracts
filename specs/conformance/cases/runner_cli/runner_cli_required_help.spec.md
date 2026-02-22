@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-RCLI-001
     title: runner cli exposes help command

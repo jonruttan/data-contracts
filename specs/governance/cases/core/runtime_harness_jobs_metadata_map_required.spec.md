@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-JOB-DISPATCH-002
     title: contract.job harness uses jobs metadata list
-    purpose: Ensures contract.job cases declare helper metadata under harness.jobs
-      entries.
+    purpose: Ensures contract.job cases declare helper metadata under harness.jobs entries.
     asserts:
       imports:
       - from: artifact

@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-003
     title: runner build tool contract defines required compat task

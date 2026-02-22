@@ -39,7 +39,6 @@ contracts:
         service: svc.alias.harmonize.1
         import: pipe_identity
         mode: merge
-      rows: []
     asserts:
       imports:
       - from: service
@@ -83,10 +82,8 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-ALIAS-004
-    title: terminology contract for accepted preferred canonical normalized forms
-      is aligned
-    purpose: Captures harmonized terminology contract between alias registry and v2
-      schema docs.
+    title: terminology contract for accepted preferred canonical normalized forms is aligned
+    purpose: Captures harmonized terminology contract between alias registry and v2 schema docs.
     expect:
       portable:
         status: pass

@@ -6,11 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'python_dependency': {}, 'check': {'profile': 'governance.scan',
-      'config': {'check': 'runtime.non_python_lane_no_python_exec'}}, 'use': [{'ref':
-      '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
-      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
-      'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'python_dependency': {}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.non_python_lane_no_python_exec'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
 - type: legacy.root_python_dependency_check_profile_governance_scan_config_check_runtime_non_python_lane_no_python_exec_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
   operations:
@@ -18,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-PYDEP-003
     title: non-python lanes avoid direct python execution tokens
-    purpose: Ensures default gate/orchestration and rust adapter lane files do not
-      contain python execution tokens.
+    purpose: Ensures default gate/orchestration and rust adapter lane files do not contain python execution tokens.
     asserts:
       imports:
       - from: artifact

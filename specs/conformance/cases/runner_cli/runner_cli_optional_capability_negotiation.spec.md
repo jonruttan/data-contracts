@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-RCLI-005
     title: runner cli supports optional capability negotiation
-    purpose: Portable CLI contract allows optional capability flags such as structured
-      output mode.
+    purpose: Portable CLI contract allows optional capability flags such as structured output mode.
     asserts:
       imports:
       - from: artifact

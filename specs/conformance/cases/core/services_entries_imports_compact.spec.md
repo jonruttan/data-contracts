@@ -54,7 +54,6 @@ contracts:
     bindings:
       defaults:
         service: svc.check.compact.6
-      rows: []
     asserts:
       imports:
       - from: service
@@ -93,7 +92,6 @@ contracts:
     bindings:
       defaults:
         service: svc.check.compact.7
-      rows: []
     asserts:
       checks:
       - id: assert_1
@@ -167,7 +165,6 @@ contracts:
     bindings:
       defaults:
         service: svc.check.missing
-      rows: []
     asserts:
       imports:
       - from: service
@@ -206,7 +203,6 @@ contracts:
     bindings:
       defaults:
         service: svc.check.compact.10
-      rows: []
     asserts:
       imports:
       - from: service

@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-DOCS-CANON-001
     title: specs index links all canonical spec entrypoints
-    purpose: Ensures /specs/index.md links every canonical spec subtree and current
-      snapshot.
+    purpose: Ensures /specs/index.md links every canonical spec subtree and current snapshot.
     asserts:
       imports:
       - from: artifact

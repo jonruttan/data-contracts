@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-DOCS-CANON-003
     title: docs freshness strict checker passes
-    purpose: Ensures specs freshness checks are strict, deterministic, and currently
-      clean.
+    purpose: Ensures specs freshness checks are strict, deterministic, and currently clean.
     asserts:
       imports:
       - from: artifact

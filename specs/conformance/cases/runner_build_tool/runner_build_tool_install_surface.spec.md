@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-007
     title: bundle tooling exposes install command surface
-    purpose: Bundle CLI must expose install and install-check commands for multi-bundle
-      project workflows.
+    purpose: Bundle CLI must expose install and install-check commands for multi-bundle project workflows.
     asserts:
       imports:
       - from: artifact

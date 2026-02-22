@@ -20,8 +20,7 @@ contracts:
   asserts:
   - id: DCCONF-RCERT-001
     title: runner execution certificate v2 schema is declared
-    purpose: Ensures the v2 runner execution certificate schema is present with core
-      sections.
+    purpose: Ensures the v2 runner execution certificate schema is present with core sections.
     asserts:
       imports:
       - from: artifact

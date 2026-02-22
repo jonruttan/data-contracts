@@ -626,8 +626,7 @@ contracts:
   asserts:
   - id: DCCONF-JOB-REP-001
     title: conformance purpose json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -654,8 +653,7 @@ contracts:
           - ".artifacts/conformance-purpose.json"
   - id: DCCONF-JOB-REP-002
     title: conformance purpose markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -682,8 +680,7 @@ contracts:
           - ".artifacts/conformance-purpose-summary.md"
   - id: DCCONF-JOB-REP-003
     title: spec portability json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -710,8 +707,7 @@ contracts:
           - ".artifacts/spec-portability.json"
   - id: DCCONF-JOB-REP-004
     title: spec portability markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -738,8 +734,7 @@ contracts:
           - ".artifacts/spec-portability-summary.md"
   - id: DCCONF-JOB-REP-005
     title: contract assertions json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -766,8 +761,7 @@ contracts:
           - ".artifacts/contract-assertions.json"
   - id: DCCONF-JOB-REP-006
     title: contract assertions markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -794,8 +788,7 @@ contracts:
           - ".artifacts/contract-assertions-summary.md"
   - id: DCCONF-JOB-REP-007
     title: spec lang adoption json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -822,8 +815,7 @@ contracts:
           - ".artifacts/spec-lang-adoption.json"
   - id: DCCONF-JOB-REP-008
     title: spec lang adoption markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -850,8 +842,7 @@ contracts:
           - ".artifacts/spec-lang-adoption-summary.md"
   - id: DCCONF-JOB-REP-009
     title: runner independence json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -878,8 +869,7 @@ contracts:
           - ".artifacts/runner-independence.json"
   - id: DCCONF-JOB-REP-010
     title: runner independence markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -906,8 +896,7 @@ contracts:
           - ".artifacts/runner-independence-summary.md"
   - id: DCCONF-JOB-REP-011
     title: python dependency json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -934,8 +923,7 @@ contracts:
           - ".artifacts/python-dependency.json"
   - id: DCCONF-JOB-REP-012
     title: python dependency markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -962,8 +950,7 @@ contracts:
           - ".artifacts/python-dependency-summary.md"
   - id: DCCONF-JOB-REP-013
     title: docs operability json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -990,8 +977,7 @@ contracts:
           - ".artifacts/docs-operability.json"
   - id: DCCONF-JOB-REP-014
     title: docs operability markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -1018,8 +1004,7 @@ contracts:
           - ".artifacts/docs-operability-summary.md"
   - id: DCCONF-JOB-REP-015
     title: objective scorecard json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -1046,8 +1031,7 @@ contracts:
           - ".artifacts/objective-scorecard.json"
   - id: DCCONF-JOB-REP-016
     title: objective scorecard markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -1074,8 +1058,7 @@ contracts:
           - ".artifacts/objective-scorecard-summary.md"
   - id: DCCONF-JOB-REP-017
     title: spec lang stdlib json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -1102,8 +1085,7 @@ contracts:
           - ".artifacts/spec-lang-stdlib.json"
   - id: DCCONF-JOB-REP-018
     title: spec lang stdlib markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact
-      output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
     when:
       fail:
       - ops.job.dispatch:

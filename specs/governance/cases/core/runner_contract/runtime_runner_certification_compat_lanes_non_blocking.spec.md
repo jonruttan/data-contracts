@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-CERT-005
     title: compatibility lanes remain non-blocking in certification
-    purpose: Ensures compatibility lanes are classified and emitted as non-blocking
-      in certification artifacts.
+    purpose: Ensures compatibility lanes are classified and emitted as non-blocking in certification artifacts.
     asserts:
       imports:
       - from: artifact

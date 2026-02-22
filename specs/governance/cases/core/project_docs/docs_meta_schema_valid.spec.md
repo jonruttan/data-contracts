@@ -6,11 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml'},
-      'check': {'profile': 'governance.scan', 'config': {'check': 'docs.meta_schema_valid'}},
-      'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
-      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
-      'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.meta_schema_valid'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
 - type: legacy.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_meta_schema_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
   operations:
@@ -18,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-DOCS-QUAL-001
     title: docs metadata schema is valid for canonical reference chapters
-    purpose: Ensures each canonical reference chapter contains valid machine-checkable
-      doc metadata.
+    purpose: Ensures each canonical reference chapter contains valid machine-checkable doc metadata.
     asserts:
       imports:
       - from: artifact

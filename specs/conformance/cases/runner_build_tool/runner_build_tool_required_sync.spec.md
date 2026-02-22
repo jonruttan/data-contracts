@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-002
     title: runner build tool contract defines required bundle sync tasks
-    purpose: Portable build tool contract must define bundle-sync and bundle-sync-check
-      required tasks.
+    purpose: Portable build tool contract must define bundle-sync and bundle-sync-check required tasks.
     asserts:
       imports:
       - from: artifact

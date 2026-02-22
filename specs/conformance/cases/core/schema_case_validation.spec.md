@@ -36,8 +36,7 @@ contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-001
     title: valid core shape compiles and runs
-    purpose: Ensures standard top-level keys accepted by registry validation continue
-      to execute successfully.
+    purpose: Ensures standard top-level keys accepted by registry validation continue to execute successfully.
     expect:
       portable:
         status: pass
@@ -101,8 +100,7 @@ contracts:
     - summary: schema export invalid imports case
       audience: spec-authors
       status: active
-      description: Deprecated contract.export top-level imports must hard-fail in
-        v2.
+      description: Deprecated contract.export top-level imports must hard-fail in v2.
       since: v2
       tags:
       - contract.export

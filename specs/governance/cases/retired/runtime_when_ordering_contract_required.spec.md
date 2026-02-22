@@ -8,11 +8,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - '{''root'': ''.'', ''when_ordering'': {''path'': ''/dc-runner-python'', ''required_tokens'':
-      [''def _on_clause_pass'', ''event_map = {"MUST": "must", "MAY": "may", "MUST_NOT":
-      "must_not"}'', ''event = event_map.get(cls)'', ''_run_event('', ''def _on_complete'',
-      ''"complete"'']}, ''check'': {''profile'': ''governance.scan'', ''config'':
-      {''check'': ''runtime.when_ordering_contract_required''}}}'
+    - '{''root'': ''.'', ''when_ordering'': {''path'': ''/dc-runner-python'', ''required_tokens'': [''def _on_clause_pass'', ''event_map = {"MUST": "must", "MAY": "may", "MUST_NOT": "must_not"}'', ''event = event_map.get(cls)'', ''_run_event('', ''def _on_complete'', ''"complete"'']}, ''check'': {''profile'': ''governance.scan'', ''config'': {''check'': ''runtime.when_ordering_contract_required''}}}'
 services:
   actions:
   - id: svc.root_when_ordering_path_dc_runner_python_required_tokens_def_on_clause_pass_event_map_must_must_may_may_must_not_must_not_event_event_map_get_cls_run_event_def_on_complete_complete_check_profile_governance_scan_config_check_runtime_when_ordering_contract_required.default.1

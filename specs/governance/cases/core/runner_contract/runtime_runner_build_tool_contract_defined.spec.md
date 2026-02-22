@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BTOOL-001
     title: runner build tool contract document is defined
-    purpose: Ensures tool-agnostic build tool contract document is present in the
-      portable contract index.
+    purpose: Ensures tool-agnostic build tool contract document is present in the portable contract index.
     asserts:
       imports:
       - from: artifact

@@ -14,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-004
     title: chain imports consumer surface remains unchanged

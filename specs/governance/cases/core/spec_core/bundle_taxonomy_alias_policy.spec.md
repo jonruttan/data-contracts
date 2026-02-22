@@ -1,9 +1,7 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: /specs/schema/schema_v2.md
+schema_ref: "/specs/schema/schema_v2.md"
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-BUNDLE-TAXONOMY-001
     title: bundle taxonomy contract defines canonical metadata names
@@ -12,7 +10,7 @@ contracts:
       check:
         profile: read.text
         config:
-          path: /specs/contract/32_contract_bundle_taxonomy.md
+          path: "/specs/contract/32_contract_bundle_taxonomy.md"
     asserts:
       imports:
       - from: artifact
@@ -22,16 +20,16 @@ contracts:
       - id: assert_1
         assert:
         - std.string.contains:
-          - {var: text}
+          - var: text
           - bundle_version
         - std.string.contains:
-          - {var: text}
+          - var: text
           - maintainers
         - std.string.contains:
-          - {var: text}
+          - var: text
           - contract_set
         - std.string.contains:
-          - {var: text}
+          - var: text
           - pack
   - id: DCGOV-BUNDLE-TAXONOMY-002
     title: schema v2 docs keep bundle semantics outside contract-spec suite shape
@@ -40,7 +38,7 @@ contracts:
       check:
         profile: read.text
         config:
-          path: /specs/schema/schema_v2.md
+          path: "/specs/schema/schema_v2.md"
     asserts:
       imports:
       - from: artifact
@@ -52,9 +50,9 @@ contracts:
           std.logic.and:
           - std.logic.not:
             - std.string.contains:
-              - {var: text}
+              - var: text
               - "- `bundle` (mapping, optional)"
           - std.string.contains:
-            - {var: text}
+            - var: text
             - Bundle/package management is not part of `contract-spec` suite shape in v2.
 ```

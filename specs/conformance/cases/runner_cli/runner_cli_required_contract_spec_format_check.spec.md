@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-RCLI-006
     title: runner cli exposes contract spec format check command
-    purpose: Portable CLI contract requires the check mode for contract-spec key order
-      formatting.
+    purpose: Portable CLI contract requires the check mode for contract-spec key order formatting.
     asserts:
       imports:
       - from: artifact

@@ -18,13 +18,10 @@ services:
   - id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
     mode: default
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-RCLI-006
     title: contract spec formatter command contract is synchronized
-    purpose: Ensures runner CLI contract docs and schema include the contract-spec-format
-      command surface and mode metadata.
+    purpose: Ensures runner CLI contract docs and schema include the contract-spec-format command surface and mode metadata.
     asserts:
       imports:
       - from: artifact

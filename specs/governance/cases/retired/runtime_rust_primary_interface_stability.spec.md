@@ -8,16 +8,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'runner_interface_subcommands': {'path': '/dc-runner-rust', 'required_subcommands':
-      ['governance', 'style-check', 'normalize-check', 'normalize-fix', 'schema-registry-check',
-      'schema-registry-build', 'schema-docs-check', 'schema-docs-build', 'lint', 'typecheck',
-      'compilecheck', 'conformance-purpose-json', 'conformance-purpose-md', 'spec-portability-json',
-      'spec-portability-md', 'runner-independence-json', 'runner-independence-md',
-      'python-dependency-json', 'python-dependency-md', 'ci-gate-summary', 'docs-build',
-      'docs-build-check', 'docs-lint', 'docs-graph', 'conformance-parity', 'runner-certify',
-      'test-core', 'test-full']}, 'check': {'profile': 'governance.scan', 'config':
-      {'check': 'runtime.runner_interface_subcommands'}}, 'use': [{'ref': '/specs/libraries/policy/policy_core.spec.md',
-      'as': 'lib_policy_core_spec', 'symbols': ['policy.pass_when_no_violations']}]}"
+    - "{'root': '.', 'runner_interface_subcommands': {'path': '/dc-runner-rust', 'required_subcommands': ['governance', 'style-check', 'normalize-check', 'normalize-fix', 'schema-registry-check', 'schema-registry-build', 'schema-docs-check', 'schema-docs-build', 'lint', 'typecheck', 'compilecheck', 'conformance-purpose-json', 'conformance-purpose-md', 'spec-portability-json', 'spec-portability-md', 'runner-independence-json', 'runner-independence-md', 'python-dependency-json', 'python-dependency-md', 'ci-gate-summary', 'docs-build', 'docs-build-check', 'docs-lint', 'docs-graph', 'conformance-parity', 'runner-certify', 'test-core', 'test-full']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_interface_subcommands'}}, 'use': [{'ref': '/specs/libraries/policy/policy_core.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.pass_when_no_violations']}]}"
 services:
   actions:
   - id: svc.root_runner_interface_subcommands_path_dc_runner_rust_required_subcommands_governance_style_check_normalize_check_normalize_fix_schema_registry_check_schema_registry_build_schema_docs_check_schema_docs_build_lint_typecheck_compilecheck_conformance_purpose_json_conformance_purpose_md_spec_portability_json_spec_portability_md_runner_independence_json_runner_independence_md_python_dependency_json_python_dependency_md_ci_gate_summary_docs_build_docs_build_check_docs_lint_docs_graph_conformance_parity_runner_certify_test_core_test_full_check_profile_governance_scan_config_check_runtime_runner_interface_subcommands_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations.default.1
@@ -27,8 +18,7 @@ services:
 contracts:
 - id: DCGOV-RUST-PRIMARY-003
   title: rust-primary adapter keeps required runner-interface subcommands
-  purpose: Ensures Rust-primary operation preserves required runner-interface subcommand
-    compatibility.
+  purpose: Ensures Rust-primary operation preserves required runner-interface subcommand compatibility.
   clauses:
     imports:
     - artifact:

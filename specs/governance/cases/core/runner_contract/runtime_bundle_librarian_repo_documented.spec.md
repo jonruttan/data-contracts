@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-004
     title: canonical bundle librarian repository is documented
-    purpose: Ensures canonical bundle source points to data-contracts-bundles and
-      not local specs/bundles manifests.
+    purpose: Ensures canonical bundle source points to data-contracts-bundles and not local specs/bundles manifests.
     asserts:
       imports:
       - from: artifact

@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-JOB-DISPATCH-001
     title: contract.job dispatch must be declared in contract
-    purpose: Ensures contract.job cases dispatch jobs via ops.job.dispatch in contract
-      assertions.
+    purpose: Ensures contract.job cases dispatch jobs via ops.job.dispatch in contract assertions.
     asserts:
       imports:
       - from: artifact

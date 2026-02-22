@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-009
     title: implementation overlay schema defines patch overlay fields
-    purpose: Implementation overlay schema must define add/replace/delete patch surfaces
-      and output bundle metadata.
+    purpose: Implementation overlay schema must define add/replace/delete patch surfaces and output bundle metadata.
     asserts:
       imports:
       - from: artifact

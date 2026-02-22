@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-RCLI-004
     title: runner cli unknown commands fail non-zero
-    purpose: Portable CLI contract requires unknown commands to fail with non-zero
-      status.
+    purpose: Portable CLI contract requires unknown commands to fail with non-zero status.
     asserts:
       imports:
       - from: artifact

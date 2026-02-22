@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCCONF-BTOOL-006
     title: bundle package contract defines canonical data-contract-bundle asset naming
-    purpose: Ensures bundle package contract uses the canonical data-contract-bundle
-      prefix and version token format.
+    purpose: Ensures bundle package contract uses the canonical data-contract-bundle prefix and version token format.
     asserts:
       imports:
       - from: artifact

@@ -6,16 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-CI-001',
-      'as': 'lib_policy_ci', 'symbols': ['policy.ci.required_profiles_pass', 'policy.ci.optional_profile_report_only',
-      'policy.ci.artifacts_present']}]}"
-    - "{'exports': [{'as': 'policy.ci.required_profiles_pass', 'from': 'assert.function',
-      'path': '/__export__policy.ci.required_profiles_pass', 'params': ['subject'],
-      'required': True}, {'as': 'policy.ci.optional_profile_report_only', 'from':
-      'assert.function', 'path': '/__export__policy.ci.optional_profile_report_only',
-      'params': ['subject'], 'required': True}, {'as': 'policy.ci.artifacts_present',
-      'from': 'assert.function', 'path': '/__export__policy.ci.artifacts_present',
-      'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-CI-001', 'as': 'lib_policy_ci', 'symbols': ['policy.ci.required_profiles_pass', 'policy.ci.optional_profile_report_only', 'policy.ci.artifacts_present']}]}"
+    - "{'exports': [{'as': 'policy.ci.required_profiles_pass', 'from': 'assert.function', 'path': '/__export__policy.ci.required_profiles_pass', 'params': ['subject'], 'required': True}, {'as': 'policy.ci.optional_profile_report_only', 'from': 'assert.function', 'path': '/__export__policy.ci.optional_profile_report_only', 'params': ['subject'], 'required': True}, {'as': 'policy.ci.artifacts_present', 'from': 'assert.function', 'path': '/__export__policy.ci.artifacts_present', 'params': ['subject'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_ci_required_profiles_pass_from_assert_function_path_export_policy_ci_required_profiles_pass_params_subject_required_true_as_policy_ci_optional_profile_report_only_from_assert_function_path_export_policy_ci_optional_profile_report_only_params_subject_required_true_as_policy_ci_artifacts_present_from_assert_function_path_export_policy_ci_artifacts_present_params_subject_required_true
   operations:

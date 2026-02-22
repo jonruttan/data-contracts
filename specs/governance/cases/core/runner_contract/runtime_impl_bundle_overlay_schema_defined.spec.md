@@ -18,13 +18,10 @@ services:
   - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
     mode: default
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-006
     title: implementation overlay schemas are indexed and include integrity fields
-    purpose: Ensures schema index and implementation build lock schema define deterministic
-      integrity fields for overlay bundle builds.
+    purpose: Ensures schema index and implementation build lock schema define deterministic integrity fields for overlay bundle builds.
     asserts:
       imports:
       - from: artifact
@@ -43,8 +40,7 @@ contracts:
           - "/specs/schema/implementation_bundle_build_lock_v1.yaml"
   - id: DCGOV-RUNTIME-BUNDLE-007
     title: implementation build lock schema defines deterministic integrity fields
-    purpose: Ensures implementation build lock includes base/overlay/result hashes
-      and resolved_files hash.
+    purpose: Ensures implementation build lock includes base/overlay/result hashes and resolved_files hash.
     asserts:
       imports:
       - from: artifact

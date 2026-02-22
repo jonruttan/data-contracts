@@ -6,12 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml',
-      'index_out': '/docs/book/reference_index.md', 'coverage_out': '/docs/book/reference_coverage.md',
-      'graph_out': '/docs/book/docs_graph.json'}, 'check': {'profile': 'governance.scan',
-      'config': {'check': 'docs.generated_files_clean'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md',
-      'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
-      'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml', 'index_out': '/docs/book/reference_index.md', 'coverage_out': '/docs/book/reference_coverage.md', 'graph_out': '/docs/book/docs_graph.json'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.generated_files_clean'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
 - type: legacy.root_docs_quality_manifest_docs_book_reference_manifest_yaml_index_out_docs_book_reference_index_md_coverage_out_docs_book_reference_coverage_md_graph_out_docs_book_docs_graph_json_check_profile_governance_scan_config_check_docs_generated_files_clean_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
   operations:
@@ -19,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-DOCS-QUAL-008
     title: generated docs artifacts are up-to-date
-    purpose: Ensures generated reference index, coverage, and docs graph artifacts
-      are kept fresh.
+    purpose: Ensures generated reference index, coverage, and docs graph artifacts are kept fresh.
     asserts:
       imports:
       - from: artifact

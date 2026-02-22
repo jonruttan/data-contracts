@@ -31,17 +31,10 @@ services:
       exit_code: 0
       entrypoint: spec_runner.conformance_fixtures:main
 contracts:
-  defaults:
-    requires:
-      capabilities:
-      - cli.run
-      - cli.run.entrypoint_conformance
-      when_missing: skip
   clauses:
   - id: DCCONF-CLI-001
     title: conformance fixture sets explicit cli.run harness.entrypoint
-    purpose: Defines portable behavior for explicit cli.run entrypoint when capability
-      is present.
+    purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
     expect:
       portable:
         status: skip

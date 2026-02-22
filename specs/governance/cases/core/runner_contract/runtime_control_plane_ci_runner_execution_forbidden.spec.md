@@ -6,9 +6,7 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'ci_runtime_exec': {'files': ['/.github/workflows/ci.yml', '/scripts/ci_gate.sh',
-      '/scripts/ci_gate.sh', '/scripts/ci_gate.sh'], 'forbidden_tokens': ['scripts/runner_bin.sh']},
-      'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.control_plane_ci_runner_execution_forbidden'}}}"
+    - "{'root': '.', 'ci_runtime_exec': {'files': ['/.github/workflows/ci.yml', '/scripts/ci_gate.sh', '/scripts/ci_gate.sh', '/scripts/ci_gate.sh'], 'forbidden_tokens': ['scripts/runner_bin.sh']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.control_plane_ci_runner_execution_forbidden'}}}"
 services:
 - type: legacy.root_ci_runtime_exec_files_github_workflows_ci_yml_scripts_ci_gate_sh_scripts_ci_gate_sh_scripts_ci_gate_sh_forbidden_tokens_scripts_runner_bin_sh_check_profile_governance_scan_config_check_runtime_control_plane_ci_runner_execution_forbidden
   operations:
@@ -16,8 +14,6 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-CI-001
     title: control-plane ci forbids runtime runner execution

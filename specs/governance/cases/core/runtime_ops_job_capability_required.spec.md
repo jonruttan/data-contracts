@@ -14,13 +14,10 @@ services:
     mode: default
     direction: bidirectional
 contracts:
-  defaults:
-    type: contract.check
   clauses:
   - id: DCGOV-RUNTIME-JOB-DISPATCH-004
     title: ops.job.dispatch requires ops.job capability
-    purpose: Ensures cases that call ops.job.dispatch declare harness.spec_lang.capabilities
-      including ops.job.
+    purpose: Ensures cases that call ops.job.dispatch declare harness.spec_lang.capabilities including ops.job.
     asserts:
       imports:
       - from: artifact

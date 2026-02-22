@@ -6,16 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-TEXT-001',
-      'as': 'lib_policy_text', 'symbols': ['policy.text.contains_all', 'policy.text.contains_none',
-      'policy.text.contains_pair']}]}"
-    - "{'exports': [{'as': 'policy.text.contains_all', 'from': 'assert.function',
-      'path': '/__export__policy.text.contains_all', 'params': ['text', 'required_tokens'],
-      'required': True}, {'as': 'policy.text.contains_none', 'from': 'assert.function',
-      'path': '/__export__policy.text.contains_none', 'params': ['text', 'forbidden_tokens'],
-      'required': True}, {'as': 'policy.text.contains_pair', 'from': 'assert.function',
-      'path': '/__export__policy.text.contains_pair', 'params': ['text', 'token_a',
-      'token_b'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-TEXT-001', 'as': 'lib_policy_text', 'symbols': ['policy.text.contains_all', 'policy.text.contains_none', 'policy.text.contains_pair']}]}"
+    - "{'exports': [{'as': 'policy.text.contains_all', 'from': 'assert.function', 'path': '/__export__policy.text.contains_all', 'params': ['text', 'required_tokens'], 'required': True}, {'as': 'policy.text.contains_none', 'from': 'assert.function', 'path': '/__export__policy.text.contains_none', 'params': ['text', 'forbidden_tokens'], 'required': True}, {'as': 'policy.text.contains_pair', 'from': 'assert.function', 'path': '/__export__policy.text.contains_pair', 'params': ['text', 'token_a', 'token_b'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_text_contains_all_from_assert_function_path_export_policy_text_contains_all_params_text_required_tokens_required_true_as_policy_text_contains_none_from_assert_function_path_export_policy_text_contains_none_params_text_forbidden_tokens_required_true_as_policy_text_contains_pair_from_assert_function_path_export_policy_text_contains_pair_params_text_token_a_token_b_required_true
   operations:

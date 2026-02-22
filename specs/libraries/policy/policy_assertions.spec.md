@@ -6,18 +6,8 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-ASSERT-001',
-      'as': 'lib_policy_assertions', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
-      'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
-    - "{'exports': [{'as': 'policy.assert.no_violations', 'from': 'assert.function',
-      'path': '/__export__policy.assert.no_violations', 'params': ['subject'], 'required':
-      True}, {'as': 'policy.assert.summary_passed', 'from': 'assert.function', 'path':
-      '/__export__policy.assert.summary_passed', 'params': ['subject'], 'required':
-      True}, {'as': 'policy.assert.summary_check_id', 'from': 'assert.function', 'path':
-      '/__export__policy.assert.summary_check_id', 'params': ['subject', 'expected_check_id'],
-      'required': True}, {'as': 'policy.assert.scan_pass', 'from': 'assert.function',
-      'path': '/__export__policy.assert.scan_pass', 'params': ['subject', 'expected_check_id'],
-      'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-ASSERT-001', 'as': 'lib_policy_assertions', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    - "{'exports': [{'as': 'policy.assert.no_violations', 'from': 'assert.function', 'path': '/__export__policy.assert.no_violations', 'params': ['subject'], 'required': True}, {'as': 'policy.assert.summary_passed', 'from': 'assert.function', 'path': '/__export__policy.assert.summary_passed', 'params': ['subject'], 'required': True}, {'as': 'policy.assert.summary_check_id', 'from': 'assert.function', 'path': '/__export__policy.assert.summary_check_id', 'params': ['subject', 'expected_check_id'], 'required': True}, {'as': 'policy.assert.scan_pass', 'from': 'assert.function', 'path': '/__export__policy.assert.scan_pass', 'params': ['subject', 'expected_check_id'], 'required': True}]}"
 services:
 - type: legacy.exports_as_policy_assert_no_violations_from_assert_function_path_export_policy_assert_no_violations_params_subject_required_true_as_policy_assert_summary_passed_from_assert_function_path_export_policy_assert_summary_passed_params_subject_required_true_as_policy_assert_summary_check_id_from_assert_function_path_export_policy_assert_summary_check_id_params_subject_expected_check_id_required_true_as_policy_assert_scan_pass_from_assert_function_path_export_policy_assert_scan_pass_params_subject_expected_check_id_required_true
   operations:
