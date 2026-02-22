@@ -13,7 +13,7 @@ services:
     io: input
     profile: text.file
     config:
-      path: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
 contracts:
 - id: DCCONF-STDLIB-001
   title: core numeric and set operators evaluate deterministically
@@ -508,6 +508,10 @@ contracts:
             - 7
         - lit:
           - "/a/b"
+artifacts:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
+  io: input
 ```
 
 

@@ -143,18 +143,41 @@ services:
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
   io_transport: artifact_ids_only
-  default_service_resolution:
-  - match_services_defaults_type_profile
-  - fallback_single_services_entry
-  - hard_fail_on_ambiguity
+  binding_service_requirement: bindings[].service is required; no implicit/default
+    service resolution
   required_mappings:
-    inputs: bindings[].inputs[].from -> artifact.imports[].id
-    outputs: bindings[].outputs[].to -> artifact.exports[].id
+    inputs: bindings[].inputs[].from -> artifacts[].id (io=input|io)
+    outputs: bindings[].outputs[].to -> artifacts[].id (io=output|io)
   service_config_usage: static_only_no_runtime_payload_transport
   bound_symbol_format: service_id.import_name
   binding_import_validation:
   - binding_import_must_be_declared_on_service_entry
   - declared_import_must_exist_in_available_imports_by_profile
+service_locator_contract_v2:
+  direct_locator_keys_forbidden:
+  - path
+  - url
+  - token_url
+  - template_path
+  - output_path
+  - ref
+  locator_reference_rule: service config external locators must route through
+    artifacts ids using `*_artifact_id` fields.
+  profile_locator_fields:
+    text.file:
+    - services.entries[].config.source_artifact_id
+    api.http:
+    - services.entries[].config.request.artifact_id
+    - services.entries[].config.requests[].artifact_id
+    - services.entries[].config.api_http.auth.oauth.token_artifact_id
+    - services.entries[].config.use[].artifact_id
+    docs.generate:
+    - services.entries[].config.docs_generate.template_artifact_id
+    - services.entries[].config.docs_generate.output_artifact_id
+    - services.entries[].config.docs_generate.data_sources[].artifact_id
+  artifact_resolution:
+  - every *_artifact_id resolves to artifacts[].id (io=input|io)
+  - every *_artifact_ids[] entry resolves to artifacts[].id (io=input|io)
 import_declaration_shape_v2:
   services.entries[].imports: list[mapping]|list[string]
   services.entries[].imports[].names: list[string]

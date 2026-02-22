@@ -16,13 +16,13 @@ Cases MAY configure library loading via `clauses.config.spec_lang`:
 
 Suite-level external references:
 
-- executable suite docs may declare `artifact.imports[]` /
-  `artifact.exports[]` entries for external references and URLs outside
+- executable suite docs may declare `artifacts[]` entries for external
+  references and URLs outside
   per-contract assertion/harness blocks.
 - these suite-root declarations are metadata/coordination surfaces and are
   distinct from `clauses.imports`, `clauses.config.spec_lang.imports`,
   suite-root `bindings[]`, and suite-root `exports[]` function declarations.
-- `artifact.imports[].ref` / `artifact.exports[].ref` support moustache
+- `artifacts[].ref` supports moustache
   (`{{...}}`) template expressions resolved from suite context only.
 - documentation metadata for suite/function/artifact surfaces uses `docs[]`
   entries; singular `doc` is non-canonical in v2.

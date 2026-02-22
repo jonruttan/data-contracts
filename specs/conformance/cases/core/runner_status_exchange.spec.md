@@ -14,10 +14,10 @@ services:
     profile: text.file
     config:
       use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
+      - as: lib_policy_text
         symbols:
         - policy.text.contains_pair
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
 contracts:
 - id: DCCONF-RSTAT-001
   title: runner status report schema is declared
@@ -99,6 +99,10 @@ contracts:
         - var: text
         - lane_class
         - blocking_fail
+artifacts:
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/libraries/policy/policy_text.spec.md"
+  io: input
 ```
 
 

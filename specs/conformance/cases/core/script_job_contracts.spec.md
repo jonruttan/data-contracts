@@ -37,11 +37,11 @@ services:
           format: json
           report_name: DCCONF-JOB-004.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.1.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -71,11 +71,11 @@ services:
           format: json
           report_name: DCCONF-JOB-005.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.2.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -102,11 +102,11 @@ services:
           format: json
           report_name: DCCONF-JOB-006.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.3.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -134,11 +134,11 @@ services:
           format: json
           report_name: DCCONF-JOB-007.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.4.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -166,11 +166,11 @@ services:
           format: json
           report_name: DCCONF-JOB-008.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.5.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -199,11 +199,11 @@ services:
           format: json
           report_name: DCCONF-JOB-009.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.6.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -232,11 +232,11 @@ services:
           format: json
           report_name: DCCONF-JOB-010.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.7.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -265,11 +265,11 @@ services:
           format: json
           report_name: DCCONF-JOB-011.complete
       use:
-      - ref: "/specs/libraries/policy/policy_job.spec.md"
-        as: lib_policy_job
+      - as: lib_policy_job
         symbols:
         - policy.job.dispatch_ok
         - policy.job.written_path_contains
+        artifact_id: art.svc.assert_check.default.8.use_1.1
       spec_lang:
         capabilities:
         - ops.helper
@@ -459,6 +459,31 @@ contracts:
     complete:
     - ops.job.dispatch:
       - on_complete
+artifacts:
+- id: art.svc.assert_check.default.1.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.2.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.3.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.4.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.5.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.6.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.7.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
+- id: art.svc.assert_check.default.8.use_1.1
+  ref: "/specs/libraries/policy/policy_job.spec.md"
+  io: input
 ```
 
 

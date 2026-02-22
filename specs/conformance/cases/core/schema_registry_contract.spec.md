@@ -14,12 +14,12 @@ services:
     io: input
     profile: text.file
     config:
-      path: "/specs/schema/schema_v2.md"
       use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
+      - as: lib_policy_text
         symbols:
         - policy.text.contains_all
+        artifact_id: art.svc.check.text_file.1.use_1.1
+      source_artifact_id: art.svc.check.text_file.1.source.1
 contracts:
 - id: DCCONF-SCHEMA-REG-001
   title: schema docs include generated registry snapshot markers
@@ -43,4 +43,11 @@ contracts:
           - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
           - 'END GENERATED: SCHEMA_REGISTRY_V1'
           - Generated Registry Snapshot
+artifacts:
+- id: art.svc.check.text_file.1.source.1
+  ref: "/specs/schema/schema_v2.md"
+  io: input
+- id: art.svc.check.text_file.1.use_1.1
+  ref: "/specs/libraries/policy/policy_text.spec.md"
+  io: input
 ```

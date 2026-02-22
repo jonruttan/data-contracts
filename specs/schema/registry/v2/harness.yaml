@@ -38,6 +38,13 @@ fields:
     required: true
     since: v2
     description: Non-empty service entries for concrete runtime hooks.
+  services.entries[].config:
+    type: mapping
+    required: false
+    since: v2
+    description: Service runtime configuration. External locators must be routed
+      through artifact ids (`*_artifact_id`/`*_artifact_ids`); direct locator
+      keys are invalid.
   services.entries[].id:
     type: string
     required: true

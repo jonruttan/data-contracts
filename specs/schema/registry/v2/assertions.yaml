@@ -21,7 +21,7 @@ fields:
     since: v2
     description: Clause-level default import bindings inherited by predicates.
       For from=artifact, every imported name must be explicitly declared at suite
-      root (artifact.imports[].id or artifact.exports[].id) and wired through
+      root (`artifacts[].id`) and wired through
       bindings when runtime-produced.
   contracts[].clauses.imports[].from:
     type: string

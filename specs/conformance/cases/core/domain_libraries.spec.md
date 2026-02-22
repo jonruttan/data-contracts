@@ -14,10 +14,8 @@ services:
   entries:
   - id: svc.assert_check.text_file.1
     config:
-      path: "/specs/libraries/domain/http_core.spec.md"
       use:
-      - ref: "/specs/libraries/domain/http_core.spec.md"
-        as: lib_http_core_spec
+      - as: lib_http_core_spec
         symbols:
         - domain.http.auth_is_oauth
         - domain.http.body_json
@@ -35,16 +33,16 @@ services:
         - domain.http.status_is
         - domain.http.status_is_forbidden
         - domain.http.status_is_unauthorized
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
-      path: "/specs/libraries/domain/index.md"
       use:
-      - ref: "/specs/libraries/domain/make_core.spec.md"
-        as: lib_make_core_spec
+      - as: lib_make_core_spec
         symbols:
         - make.has_target
-      - ref: "/specs/libraries/domain/markdown_core.spec.md"
-        as: lib_markdown_core_spec
+        artifact_id: art.svc.assert_check.text_file.2.use_1.1
+      - as: lib_markdown_core_spec
         symbols:
         - domain.markdown.code_fence_language_exists
         - domain.markdown.has_broken_links
@@ -58,8 +56,8 @@ services:
         - domain.markdown.token_ownership_unique
         - domain.markdown.token_present
         - domain.markdown.tokens_all_present
-      - ref: "/specs/libraries/domain/fs_core.spec.md"
-        as: lib_fs_core_spec
+        artifact_id: art.svc.assert_check.text_file.2.use_2.1
+      - as: lib_fs_core_spec
         symbols:
         - domain.fs.file_ext_eq
         - domain.fs.glob_all
@@ -71,8 +69,8 @@ services:
         - domain.fs.json_has_path_text
         - domain.fs.json_path_eq_text
         - domain.fs.sort_spec_files
-      - ref: "/specs/libraries/domain/path_core.spec.md"
-        as: lib_path_core_spec
+        artifact_id: art.svc.assert_check.text_file.2.use_3.1
+      - as: lib_path_core_spec
         symbols:
         - domain.path.normalize
         - domain.path.eq
@@ -83,14 +81,16 @@ services:
         - domain.file.is_existing_dir
         - domain.file.has_ext
         - domain.file.name
-      - ref: "/specs/libraries/domain/python_core.spec.md"
-        as: lib_python_core_spec
+        artifact_id: art.svc.assert_check.text_file.2.use_4.1
+      - as: lib_python_core_spec
         symbols:
         - py.is_tuple_projection
-      - ref: "/specs/libraries/domain/php_core.spec.md"
-        as: lib_php_core_spec
+        artifact_id: art.svc.assert_check.text_file.2.use_5.1
+      - as: lib_php_core_spec
         symbols:
         - php.is_assoc_projection
+        artifact_id: art.svc.assert_check.text_file.2.use_6.1
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
 - id: DCCONF-DOMAIN-LIB-001
   title: domain http library defines status helper
@@ -429,6 +429,34 @@ contracts:
       - std.string.contains:
         - var: text
         - "/specs/libraries/domain/python_core.spec.md"
+artifacts:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/libraries/domain/http_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/libraries/domain/http_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/libraries/domain/index.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_1.1
+  ref: "/specs/libraries/domain/make_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_2.1
+  ref: "/specs/libraries/domain/markdown_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_3.1
+  ref: "/specs/libraries/domain/fs_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_4.1
+  ref: "/specs/libraries/domain/path_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_5.1
+  ref: "/specs/libraries/domain/python_core.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_6.1
+  ref: "/specs/libraries/domain/php_core.spec.md"
+  io: input
 ```
 
 

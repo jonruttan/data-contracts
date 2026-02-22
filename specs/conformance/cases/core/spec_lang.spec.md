@@ -19,10 +19,10 @@ services:
   - id: svc.assert_check.text_file.1
     config:
       use:
-      - ref: "/specs/libraries/conformance/assertion_core.spec.md"
-        as: lib_assertion_core_spec
+      - as: lib_assertion_core_spec
         symbols:
         - conf.pass_when_text_contains
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
   - id: svc.assert_check.text_file.2
   - id: svc.assert_check.text_file.3
     config:
@@ -1163,6 +1163,10 @@ contracts:
       assert:
         std.logic.compare:
         - 1
+artifacts:
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/libraries/conformance/assertion_core.spec.md"
+  io: input
 ```
 
 

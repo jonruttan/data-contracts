@@ -32,16 +32,22 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Effective declared service import names MUST be unique per service entry and
   MUST exist in catalog `available_imports_by_profile` for resolved
   `type/profile`.
+- `services.entries[].config` MUST NOT include direct locator keys (`path`,
+  `url`, `token_url`, `template_path`, `output_path`, `ref`).
+- Any external locator consumed by service config MUST be declared in
+  `artifacts[]` and referenced by `*_artifact_id` (or
+  `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
 - `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
   MUST resolve to `services.entries[].id`.
-- `bindings[].inputs[].from` MUST resolve to `artifact.imports[].id` and
-  `bindings[].outputs[].to` MUST resolve to `artifact.exports[].id`.
+- `bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
+  `input` or `io`.
+- `bindings[].outputs[].to` MUST resolve to `artifacts[].id` where `io` is
+  `output` or `io`.
 - `from: artifact` imported names MUST resolve to suite-declared artifact ids
   and MUST NOT rely on implicit runtime target injection.
 - If `bindings[]` or any `from: service` assertion import is present,
   `services` MUST be declared and valid.
-- Suite artifact references MUST be declared only under
-  `artifact.imports[]`/`artifact.exports[]`.
+- Suite artifact references MUST be declared only under `artifacts[]`.
 - Root `exports[]` MUST be function-only declarations using
   `as` + `from: assert.function` + `path`.
 - Documentation metadata surfaces MUST use `docs[]` entry arrays with required

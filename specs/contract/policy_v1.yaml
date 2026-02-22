@@ -8,7 +8,8 @@ rules:
   norm: MUST
   requirement: service_binding_runtime_payloads_use_declared_artifact_ids
   description: 'Service-to-contract bindings must source runtime inputs from
-    `artifact.imports[].id` and sink outputs to `artifact.exports[].id`.
+    `artifacts[].id` with direction `input|io` and sink outputs to `artifacts[].id`
+    with direction `output|io`.
 
     '
   rationale: Keeps service I/O and import binding explicit, portable, and traceable.
@@ -24,7 +25,7 @@ rules:
   norm: MUST
   requirement: imported_artifact_symbols_must_be_declared_and_wired
   description: 'Any `from: artifact` import name must be explicitly declared in
-    suite `artifact.imports[]` or `artifact.exports[]`; runtime-produced symbols
+    suite `artifacts[]`; runtime-produced symbols
     must be explicitly wired through `bindings[].outputs`.
 
     '
@@ -45,6 +46,23 @@ rules:
   rationale: Keeps service selection explicit and auditable.
   risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
   references:
+  - specs/contract/21_schema_registry_contract.md
+  - specs/schema/schema_v2.md
+- id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
+  introduced_in: v2
+  scope: case
+  applies_to: services.entries[].config
+  norm: MUST
+  requirement: service_config_locators_use_artifact_import_ids_only
+  description: Service config must not embed direct locator values (`path`,
+    `url`, `token_url`, `template_path`, `output_path`, `ref`); external
+    locators must be declared at `artifacts[]` and referenced using
+    profile-specific `*_artifact_id` / `*_artifact_ids` fields.
+  rationale: Keeps all service-consumed external references explicit, validated,
+    and auditable through a single artifact declaration system.
+  risk_if_violated: Hidden I/O channels and non-portable runner behavior.
+  references:
+  - specs/contract/04_harness.md
   - specs/contract/21_schema_registry_contract.md
   - specs/schema/schema_v2.md
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
@@ -1506,7 +1524,7 @@ rules:
   norm: MUST
   requirement: governance_triage_entrypoint_must_exist_with_required_modes
   description: 'Canonical governance triage entrypoint must exist with auto/targeted/broad-first
-    modes and deterministic triage artifact outputs.
+    modes and deterministic triage artifacts outputs.
 
     '
   rationale: Enforces failure-ID-first triage as the canonical debugging path.
@@ -1682,7 +1700,7 @@ rules:
   applies_to: runtime.ci.artifact_upload_paths
   norm: MUST
   requirement: ci_workflow_uploads_artifacts_from_recursive_artifacts_path
-  description: 'CI workflows must upload artifact outputs from recursive .artifacts
+  description: 'CI workflows must upload artifacts outputs from recursive .artifacts
     paths for failure diagnosis.
 
     '
@@ -3063,7 +3081,7 @@ rules:
   applies_to: docs.layout.artifact_files
   norm: MUST
   requirement: docs_tree_must_not_track_os_editor_artifact_files
-  description: 'OS/editor artifact files (for example `.DS_Store`) must not be tracked
+  description: 'OS/editor artifacts files (for example `.DS_Store`) must not be tracked
     under docs.
 
     '
@@ -3751,7 +3769,7 @@ rules:
   requirement: profiling_artifacts_must_not_contain_raw_secrets
   description: Profiling artifacts must redact secret-like data and avoid raw env
     value emission.
-  rationale: Profiling diagnostics must remain safe for CI artifact publication.
+  rationale: Profiling diagnostics must remain safe for CI artifacts publication.
   risk_if_violated: Sensitive data leakage in logs and artifacts.
   references:
   - specs/contract/24_runtime_profiling_contract.md

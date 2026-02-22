@@ -12,7 +12,7 @@ links:
   - DCCONF-SCHEMA-CASE-022
   unit_test_refs: []
   implementation_refs: []
-  notes: Suite bindings must transport runtime service payloads only through declared artifact import/export ids.
+  notes: Suite bindings must transport runtime service payloads only through declared artifacts import/export ids.
 - rule_id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   policy_ref: specs/contract/policy_v1.yaml#ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   contract_refs:
@@ -36,6 +36,17 @@ links:
   unit_test_refs: []
   implementation_refs: []
   notes: bindings[].service is required; default service fallback is forbidden.
+- rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Service config locators must route through artifacts IDs only.
 - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
   contract_refs:
@@ -1350,7 +1361,7 @@ links:
   implementation_refs:
   - scripts/governance_triage.sh
   - specs/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md
-  notes: Triage artifact includes selected prefixes, source, and broad-required flags.
+  notes: Triage artifacts includes selected prefixes, source, and broad-required flags.
 - rule_id: RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID
   contract_refs:
@@ -1761,7 +1772,7 @@ links:
   - scripts/runner_bin.sh
   - dc-runner-python
   - specs/governance/cases/core/objective_scorecard_metric.spec.md
-  notes: Objective scorecard is generated as JSON/Markdown artifact.
+  notes: Objective scorecard is generated as JSON/Markdown artifacts.
 - rule_id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -2769,7 +2780,7 @@ links:
   - scripts/normalize_docs_layout.py
   - dc-runner-python
   - specs/governance/cases/core/project_docs/docs_no_os_artifact_files.spec.md
-  notes: Hard-fails tracked OS/editor artifact files under docs.
+  notes: Hard-fails tracked OS/editor artifacts files under docs.
 - rule_id: DOCS_BOOK_CHAPTER_ORDER_CANONICAL
   policy_ref: specs/contract/policy_v1.yaml#DOCS_BOOK_CHAPTER_ORDER_CANONICAL
   contract_refs:

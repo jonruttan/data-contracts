@@ -42,22 +42,16 @@ Related docs/reference schemas:
 - `defaults` (mapping, optional): shallow defaults merged into each contract
   item; defaults should be used only for measurable duplication reduction and
   empty defaults mappings are non-canonical
-- `artifact` (mapping, optional): suite-level artifact reference declarations
-  - `artifact.imports` (list, optional): artifact import declarations
-    - `id` (string, required)
-    - `ref` (string, required): supports moustache template expressions (`{{...}}`)
-      resolved from suite context
-    - `type` (string, optional): expected MIME type for resolved `ref`
-    - `inputs` (mapping, optional)
-    - `options` (mapping, optional)
-    - `docs` (list, optional): documentation metadata entries
-  - `artifact.exports` (list, optional): artifact export declarations
-    - `id` (string, required)
-    - `ref` (string, required): supports moustache template expressions (`{{...}}`)
-      resolved from suite context
-    - `type` (string, optional): expected MIME type for resolved `ref`
-    - `options` (mapping, optional)
-    - `docs` (list, optional): documentation metadata entries
+- `artifacts` (list, optional): suite-level artifact reference declarations
+  - `id` (string, required)
+  - `ref` (string, required): supports moustache template expressions (`{{...}}`)
+    resolved from suite context
+  - `io` (string, required): `input|output|io`
+  - `type` (string, optional): expected MIME type for resolved `ref`
+  - `inputs` (mapping, optional)
+  - `outputs` (mapping, optional)
+  - `options` (mapping, optional)
+  - `docs` (list, optional): documentation metadata entries
 - `exports` (list, optional): function export declarations only
   - `exports[].as` (string, required): exported function symbol name
   - `exports[].from` (string, required): must be `assert.function`
@@ -110,7 +104,7 @@ Suite root canonical order:
 7. `defaults`
 8. `harness`
 9. `services`
-10. `artifact`
+10. `artifacts`
 11. `bindings`
 12. `exports`
 13. `contracts`
@@ -152,7 +146,9 @@ Suite runtime surfaces:
   - `services.entries[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
   - `services.entries[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
   - `services.entries[].profile` (string, optional)
-  - `services.entries[].config` (mapping, optional)
+  - `services.entries[].config` (mapping, optional): service config values that
+    reference external locations MUST use artifact-id fields (`*_artifact_id`)
+    and must not embed direct locators
   - `services.entries[].imports` (list, optional): declarative callable service-import surface
     - canonical: list of mappings with `names` and optional `as`
     - compact alias: list of strings (`imports: [pipe_identity, get_json]`)
@@ -165,8 +161,8 @@ Suite runtime surfaces:
   - `bindings[].contract` (string, required; references `contracts[].id`)
   - `bindings[].service` (string, required; references `services.entries[].id`)
   - `bindings[].import` (string, required; declared service import name)
-  - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact import ids
-  - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact export ids
+  - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact ids
+  - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact ids
   - `bindings[].predicates` (list[string], optional; predicate allowlist)
   - `bindings[].mode` (string, optional): `merge|override` (default `merge`)
 
@@ -194,10 +190,10 @@ Parser behavior:
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
-- `artifact.imports[].ref` and `artifact.exports[].ref` MUST be strings
-- `artifact.imports[].ref` and `artifact.exports[].ref` template expressions
+- `artifacts[].ref` MUST be strings
+- `artifacts[].ref` template expressions
   use moustache syntax and resolve from suite context only
-- unresolved `artifact.imports[].ref`/`artifact.exports[].ref` template
+- unresolved `artifacts[].ref` template
   expressions are schema/runtime failures
 - root `exports[]` is function-only:
   - `exports[].from` MUST be `assert.function`
@@ -222,12 +218,21 @@ Parser behavior:
 - bindings execute once per contract before predicate evaluation
 - `bindings[].contract` MUST reference an existing `contracts[].id`
 - `bindings[].service` MUST reference an existing `services.entries[].id`
-- `bindings[].inputs[].from` MUST reference `artifact.imports[].id`
-- `bindings[].outputs[].to` MUST reference `artifact.exports[].id`
-- binding runtime payload transport MUST use artifact ids only (`artifact.imports`/`artifact.exports`)
+- `bindings[].inputs[].from` MUST reference `artifacts[].id` where artifact
+  entry `io` is `input` or `io`
+- `bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
+  entry `io` is `output` or `io`
+- binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
+- direct external locator keys in `services.entries[].config` are invalid:
+  `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
+- every `*_artifact_id` in service config MUST resolve to
+  `artifacts[].id` where artifact entry `io` is `input` or `io`
+- every `*_artifact_ids[]` entry in service config MUST resolve to
+  `artifacts[].id` where artifact entry `io` is `input` or `io`
+- mixed direct-locator and artifact-id forms for the same semantic field are
+  invalid
 - `clauses.imports[].from=artifact` and `clauses.predicates[].imports[].from=artifact`
-  names MUST resolve to suite-declared artifact ids only (`artifact.imports[].id`
-  or `artifact.exports[].id`)
+  names MUST resolve to suite-declared artifact ids (`artifacts[].id`)
 - implicit harness/service target symbol injection is invalid; artifact symbols are
   declaration-and-binding derived only
 - synthetic labels may be emitted for reporting when optional docs/docs-owner ids
@@ -277,17 +282,14 @@ Normative contract details:
 
 `text.file` asserts against file content.
 
-- If `path` is omitted, the runner asserts against the spec document that
-  contains the `yaml contract-spec` block.
-- If `path` is provided, it MUST be a relative path and is resolved relative to
-  contract root (virtual `/`) and normalized to canonical `/...`.
-- Resolved `path` MUST remain within the implementation's configured contract
-  root/workspace boundary (path traversal outside that boundary is invalid).
+- External file locators must be declared in `artifacts[]` and referenced
+  by id from service config.
+- Direct `config.path` is invalid in v2.
 
 Fields:
 
-- `path` (string, optional): virtual-root path (`/docs/...`) or root-relative
-  path string normalized to `/...`
+- `source_artifact_id` (string, required): id referencing
+  `artifacts[].id` for the text/file source payload.
 
 Assertion targets for `text.file`:
 
@@ -364,7 +366,7 @@ For `harness.type: unit.test` with `services.entries[].profile: api.http`, suppo
   - `fail_fast` (bool, default `true`)
 - `api_http.auth.oauth` (mapping):
   - `grant_type`: `client_credentials`
-  - `token_url`: token endpoint URL or contract path
+  - `token_artifact_id`: artifacts import id for token endpoint locator
   - `client_id_env`: env var name for OAuth client id
   - `client_secret_env`: env var name for OAuth client secret
   - `scope` (optional)
@@ -386,7 +388,7 @@ OAuth and execution rules:
 - `request` (mapping) for single-request cases, or `requests` (non-empty list) for scenario cases
 - request fields:
   - `method`: `GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`
-  - `url`
+  - `artifact_id`: artifact id for request locator
   - `headers` (optional mapping)
   - `query` (optional mapping; merged into URL deterministically)
   - `body_text` / `body_json` (mutually exclusive)
@@ -406,13 +408,13 @@ For `harness.type: unit.test` with `services.entries[].profile: docs.generate`, 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
 - `docs_generate.output_mode` (required): `markers|full_file`
-- `docs_generate.template_path` (required): virtual-root path
-- `docs_generate.output_path` (required): virtual-root path
+- `docs_generate.template_artifact_id` (required): artifacts import id
+- `docs_generate.output_artifact_id` (required): artifacts import id
 - `docs_generate.marker_surface_id` (required when `output_mode=markers`)
 - `docs_generate.data_sources` (required list):
   - `id`
   - `source_type`: `json_file|yaml_file|generated_artifact|command_output`
-  - `path` for file/artifact source types
+  - `artifact_id` for file/artifacts source types
   - `command` for `command_output` source type
 - `docs_generate.strict` (optional bool, default `true`)
 
@@ -867,58 +869,58 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `bindings[].outputs[].path` | `string` | `false` | `v2` |
 | `bindings[].predicates` | `list` | `false` | `v2` |
 | `bindings[].mode` | `string` | `false` | `v2` |
-| `artifact` | `mapping` | `false` | `v2` |
-| `artifact.imports` | `list` | `false` | `v2` |
-| `artifact.imports[].id` | `string` | `true` | `v2` |
-| `artifact.imports[].ref` | `string` | `true` | `v2` |
-| `artifact.imports[].type` | `string` | `false` | `v2` |
-| `artifact.imports[].inputs` | `mapping` | `false` | `v2` |
-| `artifact.imports[].options` | `mapping` | `false` | `v2` |
-| `artifact.imports[].docs` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].id` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].summary` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].audience` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].status` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].description` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].type` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].since` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].updated_at` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].tags` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].owners` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].owners[].id` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].owners[].role` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].links` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].links[].rel` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].links[].ref` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].links[].title` | `string` | `false` | `v2` |
-| `artifact.imports[].docs[].examples` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].examples[].title` | `string` | `true` | `v2` |
-| `artifact.imports[].docs[].examples[].ref` | `string` | `true` | `v2` |
-| `artifact.exports` | `list` | `false` | `v2` |
-| `artifact.exports[].id` | `string` | `true` | `v2` |
-| `artifact.exports[].ref` | `string` | `true` | `v2` |
-| `artifact.exports[].type` | `string` | `false` | `v2` |
-| `artifact.exports[].options` | `mapping` | `false` | `v2` |
-| `artifact.exports[].docs` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].id` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].summary` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].audience` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].status` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].description` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].type` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].since` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].updated_at` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].tags` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].owners` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].owners[].id` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].owners[].role` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].links` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].links[].rel` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].links[].ref` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].links[].title` | `string` | `false` | `v2` |
-| `artifact.exports[].docs[].examples` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].examples[].title` | `string` | `true` | `v2` |
-| `artifact.exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `artifacts` | `mapping` | `false` | `v2` |
+| `artifacts` | `list` | `false` | `v2` |
+| `artifacts[].id` | `string` | `true` | `v2` |
+| `artifacts[].ref` | `string` | `true` | `v2` |
+| `artifacts[].type` | `string` | `false` | `v2` |
+| `artifacts[].inputs` | `mapping` | `false` | `v2` |
+| `artifacts[].options` | `mapping` | `false` | `v2` |
+| `artifacts[].docs` | `list` | `false` | `v2` |
+| `artifacts[].docs[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].summary` | `string` | `true` | `v2` |
+| `artifacts[].docs[].audience` | `string` | `true` | `v2` |
+| `artifacts[].docs[].status` | `string` | `true` | `v2` |
+| `artifacts[].docs[].description` | `string` | `false` | `v2` |
+| `artifacts[].docs[].type` | `string` | `false` | `v2` |
+| `artifacts[].docs[].since` | `string` | `false` | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifacts[].docs[].tags` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links` | `list` | `false` | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifacts[].docs[].examples` | `list` | `false` | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `artifacts` | `list` | `false` | `v2` |
+| `artifacts[].id` | `string` | `true` | `v2` |
+| `artifacts[].ref` | `string` | `true` | `v2` |
+| `artifacts[].type` | `string` | `false` | `v2` |
+| `artifacts[].options` | `mapping` | `false` | `v2` |
+| `artifacts[].docs` | `list` | `false` | `v2` |
+| `artifacts[].docs[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].summary` | `string` | `true` | `v2` |
+| `artifacts[].docs[].audience` | `string` | `true` | `v2` |
+| `artifacts[].docs[].status` | `string` | `true` | `v2` |
+| `artifacts[].docs[].description` | `string` | `false` | `v2` |
+| `artifacts[].docs[].type` | `string` | `false` | `v2` |
+| `artifacts[].docs[].since` | `string` | `false` | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifacts[].docs[].tags` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links` | `list` | `false` | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifacts[].docs[].examples` | `list` | `false` | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `exports` | `list` | `false` | `v2` |
 | `exports[].as` | `string` | `true` | `v2` |
 | `exports[].from` | `string` | `true` | `v2` |
@@ -1102,58 +1104,58 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `bindings[].outputs[].path` | `string` | false | `v2` |
 | `bindings[].predicates` | `list` | false | `v2` |
 | `bindings[].mode` | `string` | false | `v2` |
-| `artifact` | `mapping` | false | `v2` |
-| `artifact.imports` | `list` | false | `v2` |
-| `artifact.imports[].id` | `string` | true | `v2` |
-| `artifact.imports[].ref` | `string` | true | `v2` |
-| `artifact.imports[].type` | `string` | false | `v2` |
-| `artifact.imports[].inputs` | `mapping` | false | `v2` |
-| `artifact.imports[].options` | `mapping` | false | `v2` |
-| `artifact.imports[].docs` | `list` | false | `v2` |
-| `artifact.imports[].docs[].id` | `string` | false | `v2` |
-| `artifact.imports[].docs[].summary` | `string` | true | `v2` |
-| `artifact.imports[].docs[].audience` | `string` | true | `v2` |
-| `artifact.imports[].docs[].status` | `string` | true | `v2` |
-| `artifact.imports[].docs[].description` | `string` | false | `v2` |
-| `artifact.imports[].docs[].type` | `string` | false | `v2` |
-| `artifact.imports[].docs[].since` | `string` | false | `v2` |
-| `artifact.imports[].docs[].updated_at` | `string` | false | `v2` |
-| `artifact.imports[].docs[].tags` | `list` | false | `v2` |
-| `artifact.imports[].docs[].owners` | `list` | false | `v2` |
-| `artifact.imports[].docs[].owners[].id` | `string` | false | `v2` |
-| `artifact.imports[].docs[].owners[].role` | `string` | true | `v2` |
-| `artifact.imports[].docs[].links` | `list` | false | `v2` |
-| `artifact.imports[].docs[].links[].rel` | `string` | true | `v2` |
-| `artifact.imports[].docs[].links[].ref` | `string` | true | `v2` |
-| `artifact.imports[].docs[].links[].title` | `string` | false | `v2` |
-| `artifact.imports[].docs[].examples` | `list` | false | `v2` |
-| `artifact.imports[].docs[].examples[].title` | `string` | true | `v2` |
-| `artifact.imports[].docs[].examples[].ref` | `string` | true | `v2` |
-| `artifact.exports` | `list` | false | `v2` |
-| `artifact.exports[].id` | `string` | true | `v2` |
-| `artifact.exports[].ref` | `string` | true | `v2` |
-| `artifact.exports[].type` | `string` | false | `v2` |
-| `artifact.exports[].options` | `mapping` | false | `v2` |
-| `artifact.exports[].docs` | `list` | false | `v2` |
-| `artifact.exports[].docs[].id` | `string` | false | `v2` |
-| `artifact.exports[].docs[].summary` | `string` | true | `v2` |
-| `artifact.exports[].docs[].audience` | `string` | true | `v2` |
-| `artifact.exports[].docs[].status` | `string` | true | `v2` |
-| `artifact.exports[].docs[].description` | `string` | false | `v2` |
-| `artifact.exports[].docs[].type` | `string` | false | `v2` |
-| `artifact.exports[].docs[].since` | `string` | false | `v2` |
-| `artifact.exports[].docs[].updated_at` | `string` | false | `v2` |
-| `artifact.exports[].docs[].tags` | `list` | false | `v2` |
-| `artifact.exports[].docs[].owners` | `list` | false | `v2` |
-| `artifact.exports[].docs[].owners[].id` | `string` | false | `v2` |
-| `artifact.exports[].docs[].owners[].role` | `string` | true | `v2` |
-| `artifact.exports[].docs[].links` | `list` | false | `v2` |
-| `artifact.exports[].docs[].links[].rel` | `string` | true | `v2` |
-| `artifact.exports[].docs[].links[].ref` | `string` | true | `v2` |
-| `artifact.exports[].docs[].links[].title` | `string` | false | `v2` |
-| `artifact.exports[].docs[].examples` | `list` | false | `v2` |
-| `artifact.exports[].docs[].examples[].title` | `string` | true | `v2` |
-| `artifact.exports[].docs[].examples[].ref` | `string` | true | `v2` |
+| `artifacts` | `mapping` | false | `v2` |
+| `artifacts` | `list` | false | `v2` |
+| `artifacts[].id` | `string` | true | `v2` |
+| `artifacts[].ref` | `string` | true | `v2` |
+| `artifacts[].type` | `string` | false | `v2` |
+| `artifacts[].inputs` | `mapping` | false | `v2` |
+| `artifacts[].options` | `mapping` | false | `v2` |
+| `artifacts[].docs` | `list` | false | `v2` |
+| `artifacts[].docs[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].summary` | `string` | true | `v2` |
+| `artifacts[].docs[].audience` | `string` | true | `v2` |
+| `artifacts[].docs[].status` | `string` | true | `v2` |
+| `artifacts[].docs[].description` | `string` | false | `v2` |
+| `artifacts[].docs[].type` | `string` | false | `v2` |
+| `artifacts[].docs[].since` | `string` | false | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | false | `v2` |
+| `artifacts[].docs[].tags` | `list` | false | `v2` |
+| `artifacts[].docs[].owners` | `list` | false | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifacts[].docs[].links` | `list` | false | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | false | `v2` |
+| `artifacts[].docs[].examples` | `list` | false | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | true | `v2` |
+| `artifacts` | `list` | false | `v2` |
+| `artifacts[].id` | `string` | true | `v2` |
+| `artifacts[].ref` | `string` | true | `v2` |
+| `artifacts[].type` | `string` | false | `v2` |
+| `artifacts[].options` | `mapping` | false | `v2` |
+| `artifacts[].docs` | `list` | false | `v2` |
+| `artifacts[].docs[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].summary` | `string` | true | `v2` |
+| `artifacts[].docs[].audience` | `string` | true | `v2` |
+| `artifacts[].docs[].status` | `string` | true | `v2` |
+| `artifacts[].docs[].description` | `string` | false | `v2` |
+| `artifacts[].docs[].type` | `string` | false | `v2` |
+| `artifacts[].docs[].since` | `string` | false | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | false | `v2` |
+| `artifacts[].docs[].tags` | `list` | false | `v2` |
+| `artifacts[].docs[].owners` | `list` | false | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifacts[].docs[].links` | `list` | false | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | false | `v2` |
+| `artifacts[].docs[].examples` | `list` | false | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | true | `v2` |
 | `exports` | `list` | false | `v2` |
 | `exports[].as` | `string` | true | `v2` |
 | `exports[].from` | `string` | true | `v2` |

@@ -14,20 +14,20 @@ services:
   entries:
   - id: svc.assert_check.text_file.1
     config:
-      path: "/specs/libraries/conformance/chain_export_validation.spec.md"
       use:
-      - ref: "/specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH"
-        as: bad_export_path_fixture
+      - as: bad_export_path_fixture
         symbols:
         - bad.path.symbol
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
-      path: "/specs/libraries/conformance/chain_export_validation.spec.md"
       use:
-      - ref: "/specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS"
-        as: bad_export_class_fixture
+      - as: bad_export_class_fixture
         symbols:
         - bad.class.symbol
+        artifact_id: art.svc.assert_check.text_file.2.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
 - id: DCCONF-CHAIN-EXPORT-002
   title: producer export path must resolve to producer assert step id
@@ -47,6 +47,19 @@ contracts:
       category: schema
   clauses:
     steps: []
+artifacts:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/libraries/conformance/chain_export_validation.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH"
+  io: input
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/libraries/conformance/chain_export_validation.spec.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.use_1.1
+  ref: "/specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS"
+  io: input
 ```
 
 

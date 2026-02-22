@@ -11,22 +11,29 @@
   canonical mapping rows.
 - Mixed string/mapping item kinds in one `services.entries[].imports` list are
   invalid.
-- Suite-root `bindings[]` connects `contract` + optional `service` + artifact
-  ids so service results are piped into predicate contexts.
+- Suite-root `bindings[]` connects `contract` + `service` + artifact ids so
+  service results are piped into predicate contexts.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
 
 Suite-root external references:
 
-- executable suites MAY declare `artifact.imports[]` and `artifact.exports[]`
+- executable suites MAY declare `artifacts[]`
   to model artifact references external to per-contract harness/assertion
   blocks.
 - root `exports[]` is reserved for function symbol exports only.
-- `artifact.imports[].ref` / `artifact.exports[].ref` template expressions use
+- `artifacts[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
-  `artifact.imports[]` and `artifact.exports[]` through `bindings[]` mappings.
+  `artifacts[]` through `bindings[]` mappings.
+- services MUST NOT reference external locations directly in
+  `services.entries[].config`; direct locator keys (`path`, `url`, `token_url`,
+  `template_path`, `output_path`, `ref`) are invalid.
+- service config locators MUST be routed via artifact IDs using
+  profile-specific `*_artifact_id` fields (for example
+  `source_artifact_id`, `artifact_id`, `token_artifact_id`,
+  `template_artifact_id`, `output_artifact_id`, `use[].artifact_id`).
 - services/harnesses define execution capabilities only; they do not implicitly
   inject predicate symbols.
 - artifact symbols are available to predicates only when explicitly declared
@@ -34,7 +41,7 @@ Suite-root external references:
 - when `bindings[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
-  contract, artifact import/export, and root function export surfaces.
+  contract, artifacts import/export, and root function export surfaces.
 - docs entry and docs-owner ids are optional metadata keys; when omitted,
   runtimes may emit deterministic report labels only for diagnostics.
 - report labels are not schema identity and must not be accepted as reference
@@ -95,7 +102,8 @@ For `api.http`:
   - `fail_fast` (default `true`)
 - `harness.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
-  - `token_url` (required)
+  - `token_artifact_id` (required): artifacts import id containing token endpoint
+    locator payload
   - `client_id_env` / `client_secret_env` (required): env var names only
   - `scope` / `audience` (optional)
   - `auth_style`: `basic` (default) or `body`
@@ -258,8 +266,8 @@ Subject profile envelope contract:
 - spec-authored contract paths use virtual-root semantics:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
-- `text.file` `path` MUST resolve within contract root; `..` escapes are
-  invalid.
+- `text.file` locator payloads MUST be declared under `artifacts[]` and
+  referenced through `services.entries[].config.source_artifact_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 

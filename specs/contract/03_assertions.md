@@ -36,10 +36,13 @@ Scope separation:
 
 - assertion import bindings are declared only under `clauses.imports` and
   `clauses.predicates[].imports`.
-- suite-root `artifact.imports[]` / `artifact.exports[]` are external
+- suite-root `artifacts[]` are external
   reference declarations and do not implicitly bind assertion symbols.
 - suite-root `bindings[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
+- service locator values consumed by bindings/imports must be declared in
+  `artifacts[]`; assertion/runtime surfaces must not rely on direct
+  service config locators.
 - suite/contract/artifact/function documentation metadata is declared through
   `docs[]` entries and is not part of assertion symbol binding.
 
@@ -49,7 +52,7 @@ Import binding shape:
 - each item must be `{from, names, as?}`
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
-  root (`artifact.imports[].id` or `artifact.exports[].id`)
+  root (`artifacts[].id`)
 - runtime-produced artifact symbols MUST be explicitly wired through
   `bindings[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and

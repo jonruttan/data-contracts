@@ -87,11 +87,6 @@ services:
   - id: svc.default.4
     imports:
     - pipe_identity
-artifact:
-  exports:
-  - id: out_json
-    ref: artifact://implicit_ids/out_json
-    type: application/json
 bindings:
 - id: bind.invalid.synthetic
   contract: contracts[DCCONF-IMPLICIT-ID-004]
@@ -111,4 +106,9 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+artifacts:
+- id: out_json
+  ref: artifact://implicit_ids/out_json
+  type: application/json
+  io: output
 ```

@@ -14,10 +14,10 @@ services:
   entries:
   - id: svc.assert_check.text_file.1
     config:
-      path: "/specs/schema/schema_v2.md"
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
-      path: "/specs/schema/registry/v2/core.yaml"
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
 - id: DCCONF-BUNDLE-001
   title: v2 schema docs forbid bundle suite metadata in contract-spec shape
@@ -75,4 +75,11 @@ contracts:
           - std.string.contains:
             - var: text
             - 'bundle.domains[].modules[].artifacts[].kind:'
+artifacts:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/schema/schema_v2.md"
+  io: input
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/schema/registry/v2/core.yaml"
+  io: input
 ```

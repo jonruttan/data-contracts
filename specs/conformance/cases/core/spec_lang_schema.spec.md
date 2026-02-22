@@ -13,7 +13,7 @@ services:
     io: input
     profile: text.file
     config:
-      path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
 contracts:
 - id: DCCONF-SCHEMA-STDLIB-003
   title: json parsing and type predicates stay deterministic
@@ -73,6 +73,10 @@ contracts:
                 - '{"id":"x"}'
               - id
             - 1
+artifacts:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
+  io: input
 ```
 
 

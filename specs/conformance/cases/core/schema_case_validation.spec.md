@@ -27,30 +27,6 @@ services:
     profile: text.file
     imports:
     - pipe_identity
-artifact:
-  imports:
-  - id: schema_ref_doc
-    ref: "{{schema_ref}}"
-    type: application/yaml
-    docs:
-    - summary: schema reference import
-      audience: spec-authors
-      status: active
-  exports:
-  - id: schema_ref_export
-    ref: "{{schema_ref}}"
-    type: application/json
-    docs:
-    - summary: schema reference export
-      audience: spec-authors
-      status: active
-  - id: text
-    ref: "{{schema_ref}}"
-    type: text/plain
-    docs:
-    - summary: schema text export
-      audience: spec-authors
-      status: active
 bindings:
 - id: bind_schema_case_022
   contract: DCCONF-SCHEMA-CASE-022
@@ -284,7 +260,7 @@ contracts:
     from: custom.function
     path: "/__export__schema.validation.ok"
 - id: DCCONF-SCHEMA-CASE-013
-  title: artifact import missing ref is rejected as schema
+  title: artifacts entry missing ref is rejected as schema
   expect:
     portable:
       status: fail
@@ -294,11 +270,11 @@ contracts:
     - id: assert_1
       assert:
         lit: true
-  artifact:
-    imports:
-    - id: missing_ref
+  artifacts:
+  - id: missing_ref
+    io: input
 - id: DCCONF-SCHEMA-CASE-014
-  title: artifact export forbids inputs and outputs keys
+  title: artifacts entry missing io is rejected as schema
   expect:
     portable:
       status: fail
@@ -308,14 +284,11 @@ contracts:
     - id: assert_1
       assert:
         lit: true
-  artifact:
-    exports:
-    - id: invalid_artifact_export
-      ref: "/specs/schema/schema_v2.md"
-      inputs: {}
-      outputs: {}
+  artifacts:
+  - id: invalid_artifact
+    ref: "/specs/schema/schema_v2.md"
 - id: DCCONF-SCHEMA-CASE-015
-  title: artifact export missing id is rejected as schema
+  title: artifacts entry invalid io enum is rejected as schema
   expect:
     portable:
       status: fail
@@ -325,9 +298,10 @@ contracts:
     - id: assert_1
       assert:
         lit: true
-  artifact:
-    exports:
-    - ref: "/specs/schema/schema_v2.md"
+  artifacts:
+  - id: bad_io
+    ref: "/specs/schema/schema_v2.md"
+    io: inbound
 - id: DCCONF-SCHEMA-CASE-016
   title: unresolved artifact template reference fails
   expect:
@@ -339,10 +313,10 @@ contracts:
     - id: assert_1
       assert:
         lit: true
-  artifact:
-    imports:
-    - id: unresolved_template
-      ref: "{{unknown_suite_var}}"
+  artifacts:
+  - id: unresolved_template
+    ref: "{{unknown_suite_var}}"
+    io: input
 - id: DCCONF-SCHEMA-CASE-017
   title: legacy singular doc is rejected as schema
   expect:
@@ -493,4 +467,29 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+artifacts:
+- id: schema_ref_doc
+  ref: "{{schema_ref}}"
+  type: application/yaml
+  docs:
+  - summary: schema reference import
+    audience: spec-authors
+    status: active
+  io: input
+- id: schema_ref_export
+  ref: "{{schema_ref}}"
+  type: application/json
+  docs:
+  - summary: schema reference export
+    audience: spec-authors
+    status: active
+  io: output
+- id: text
+  ref: "{{schema_ref}}"
+  type: text/plain
+  docs:
+  - summary: schema text export
+    audience: spec-authors
+    status: active
+  io: output
 ```
