@@ -11,6 +11,7 @@ Runtime execution ownership lives in runner repositories:
 - `dc-runner-rust`
 - `dc-runner-python`
 - `dc-runner-php`
+- `dc-runner-spec` (runner-owned executable spec suite contracts)
 
 `data-contracts` owns:
 
@@ -36,6 +37,13 @@ must not depend on runtime-lane execution through that boundary.
 Shared governance semantics MUST be sourced from spec surfaces (`specs/04_governance/**`
 `specs/05_libraries/policy/**`) and executed by runners; shell scripts are transport
 entrypoints and artifact emitters only.
+
+Runner-owned executable spec suites MUST use canonical v1 case shape:
+
+- `spec_version: 1`
+- `schema_ref: /specs/01_schema/schema_v1.md`
+- `harness` mapping
+- `contracts.clauses[]` with `asserts.checks[]`
 
 ## Status Exchange Boundary
 

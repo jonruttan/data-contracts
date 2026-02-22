@@ -42,5 +42,8 @@ contract keys in `/specs/01_schema/runner_cli_contract_v1.yaml`.
 - `--write` rewrites canonical v1 block key order in place
 - non-v1 blocks are skipped (no rewrite)
 
+Canonical executable case payload shape for formatting and execution is
+`spec_version/schema_ref/harness/contracts.clauses[].asserts.checks[]`.
+
 Implementation-specific additions MUST be capability-gated and MUST NOT weaken
 the required portable command semantics.

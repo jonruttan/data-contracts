@@ -18,6 +18,10 @@ Implementation repositories MUST define overlay intent using:
 
 - `/specs/01_schema/implementation_bundle_overlay_v1.yaml`
 
+Runner-owned spec repositories (for example `dc-runner-spec`) MUST keep
+executable `.spec.md` cases in canonical v1 suite shape so overlay consumers
+can parse and validate them deterministically.
+
 Overlay operations are patch-based and file-scoped:
 
 - `overlay.delete_paths[]`
