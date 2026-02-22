@@ -10,60 +10,12 @@ ensure_artifacts_dir() {
 
 run_governance() {
   ensure_artifacts_dir
-
   ./scripts/governance_interface_validate.sh
   ./scripts/governance_boundary_validate.sh
-
-  # Governance verdicts are runner-executed from executable spec check sets.
-  DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full
-
-  # Compatibility artifact emitters are thin wrappers around runner execution.
+  DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full "$@"
   ./scripts/governance_catalog_validate.sh
   ./scripts/spec_schema_pin_validate.sh
   ./scripts/governance_optional_report.sh
-}
-
-run_docs_generate_check() {
-  ensure_artifacts_dir
-  DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh docs-generate-check "$@"
-}
-
-run_critical_gate() {
-  run_governance
-  run_docs_generate_check
-  ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
-
-  jq -n '{status:"pass", mode:"critical", steps:["governance","docs-generate-check","runner-status-ingest"]}' > .artifacts/critical-gate-summary.json
-  echo "OK: critical gate checks passed"
-}
-
-run_ci_gate_summary() {
-  ensure_artifacts_dir
-  local out=".artifacts/gate-summary.json"
-  local trace_out=".artifacts/gate-exec-trace.json"
-
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      --out)
-        out="$2"
-        shift 2
-        ;;
-      --trace-out)
-        trace_out="$2"
-        shift 2
-        ;;
-      --runner-bin|--runner-impl)
-        shift 2
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done
-
-  jq -n '{status:"pass", control_plane_only:true, timestamp:now|todate}' > "${out}"
-  jq -n '{events:[{"step":"ci-gate-summary","status":"pass"}]}' > "${trace_out}"
-  echo "OK: ci gate summary written"
 }
 
 cmd="${1:-}"
@@ -74,17 +26,32 @@ cmd="${1:-}"
 shift || true
 
 case "${cmd}" in
-  critical-gate)
-    run_critical_gate "$@"
-    ;;
-  governance|governance-broad-native|style-check)
+  governance)
     run_governance "$@"
     ;;
+  governance-broad-native)
+    ensure_artifacts_dir
+    ./scripts/governance_interface_validate.sh
+    ./scripts/governance_boundary_validate.sh
+    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance-broad-native "$@"
+    ;;
+  style-check)
+    ensure_artifacts_dir
+    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh style-check "$@"
+    ;;
   docs-generate-check)
-    run_docs_generate_check "$@"
+    ensure_artifacts_dir
+    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh docs-generate-check "$@"
+    ;;
+  critical-gate)
+    ensure_artifacts_dir
+    ./scripts/governance_interface_validate.sh
+    ./scripts/governance_boundary_validate.sh
+    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh critical-gate "$@"
     ;;
   ci-gate-summary)
-    run_ci_gate_summary "$@"
+    ensure_artifacts_dir
+    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh ci-gate-summary "$@"
     ;;
   *)
     echo "unknown control-plane command: ${cmd}" >&2

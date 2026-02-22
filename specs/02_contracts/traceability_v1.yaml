@@ -4379,3 +4379,31 @@ links:
   - scripts/governance_boundary_validate.sh
   - scripts/control_plane.sh
   notes: Governance enforces forbidden runner tree tokens across canonical docs/spec trees.
+- rule_id: ACTIVE_SHELL_SCRIPTS_WRAPPER_ONLY
+  policy_ref: specs/02_contracts/policy_v1.yaml#ACTIVE_SHELL_SCRIPTS_WRAPPER_ONLY
+  contract_refs:
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/29_runner_cli_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/control_plane.sh
+  - scripts/ci_gate.sh
+  - scripts/governance_catalog_validate.sh
+  - scripts/spec_schema_pin_validate.sh
+  - scripts/governance_optional_report.sh
+  - scripts/governance_boundary_validate.sh
+  - scripts/runner_status_ingest.sh
+  notes: Active shell scripts delegate to runner command/spec execution surfaces only.
+- rule_id: RETIRED_SCRIPT_TREE_REMOVED
+  policy_ref: specs/02_contracts/policy_v1.yaml#RETIRED_SCRIPT_TREE_REMOVED
+  contract_refs:
+  - specs/00_core/repo_boundary_charter.md
+  schema_refs:
+  - specs/01_schema/core_script_allowlist_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/04_governance/check_sets_v1.yaml
+  notes: Retired script tree removed and no longer represented in canonical allowlist.

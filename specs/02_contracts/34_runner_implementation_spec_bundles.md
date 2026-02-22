@@ -23,6 +23,8 @@ executable `.spec.md` cases in canonical v1 suite shape so overlay consumers
 can parse and validate them deterministically.
 Canonical schema docs in `data-contracts` must reference runner-owned trees
 through explicit external repository paths only.
+Runner-side shell tooling must remain wrapper-only around runner command/spec
+surfaces for deterministic cross-repo behavior.
 
 Overlay operations are patch-based and file-scoped:
 

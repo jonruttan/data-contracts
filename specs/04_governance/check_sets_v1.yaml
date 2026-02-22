@@ -29,17 +29,15 @@ profiles:
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - --max-age-hours
-          - --enforce-freshness
-          - compatibility_stale_or_missing_count
-          - 72
+          - --check-id runtime.compatibility_status_freshness_within_slo
+          - --out .artifacts/runner-status-matrix.json
+          - --summary-out .artifacts/runner-status-matrix.md
       - id: runtime.compatibility_missing_status_visibility_required
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - freshness_state
-          - missing
-          - policy_effect
+          - --check-id runtime.compatibility_missing_status_visibility_required
+          - --trace-out .artifacts/runner-status-ingest-log.json
       - id: docs.readme_task_usage_paths_present
         kind: file_tokens
         path: /README.md
@@ -60,17 +58,17 @@ profiles:
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - missing_spec_version_count
+          - --check-id schema.spec_case_version_present
       - id: schema.spec_case_schema_ref_present
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - missing_schema_ref_count
+          - --check-id schema.spec_case_schema_ref_present
       - id: schema.spec_case_schema_ref_known
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - unknown_schema_ref_count
+          - --check-id schema.spec_case_schema_ref_known
       - id: schema.pin_pipeline_chain_valid
         kind: file_tokens
         path: /specs/04_governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md
@@ -116,6 +114,12 @@ profiles:
           - /scripts/ci_gate.sh
           - /scripts/runner_status_ingest.sh
           - /scripts/runner_bin.sh
+      - id: runtime.retired_scripts_root_absent
+        kind: file_tokens
+        path: /specs/01_schema/core_script_allowlist_v1.yaml
+        must_not_contain:
+          - retired_root
+          - /scripts/retired
       - id: runtime.repo_boundary_tokens_forbidden
         kind: file_tokens
         path: /scripts/control_plane.sh
@@ -125,9 +129,9 @@ profiles:
         kind: file_tokens
         path: /scripts/governance_boundary_validate.sh
         must_contain:
-          - FORBIDDEN=(
-          - SCAN_PATHS=(
-          - boundary enforcement failed
+          - --check-id runtime.repo_boundary_tokens_forbidden
+          - --check-id runtime.repo_boundary_validator_tokens_configured
+          - governance-boundary-validate.json
   full:
     checks:
       - id: runtime.full_check_set_manifest_required
@@ -158,7 +162,7 @@ profiles:
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - release_api_url
+          - --profile full
           - runner-status-matrix.json
           - runner-status-matrix.md
           - runner-status-ingest-log.json
@@ -214,7 +218,7 @@ profiles:
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - mismatched_version_count
+          - --check-id schema.spec_case_version_matches_schema_ref
       - id: schema.catalog_contains_active_schema_v2
         kind: file_tokens
         path: /specs/01_schema/schema_catalog_v1.yaml
@@ -241,15 +245,14 @@ profiles:
         path: /scripts/governance_catalog_validate.sh
         must_contain:
           - .artifacts/governance-catalog-validate.json
-          - duplicate_case_id_count
-          - unmapped_case_check_count
+          - --check-id governance.catalog_pipeline_chain_valid
+          - --check-id runtime.chain_entry_cases_present
       - id: runtime.infra_script_boundary_enforced
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - require_tool curl
-          - require_tool jq
-          - require_tool shasum
+          - ./scripts/runner_bin.sh governance
+          - --check-id runtime.status_ingest_pipeline_chain_valid
         must_not_contain:
           - specs/02_contracts/policy_v1.yaml
           - check_sets_v1.yaml
@@ -278,7 +281,7 @@ profiles:
         kind: file_tokens
         path: /scripts/governance_catalog_validate.sh
         must_not_contain:
-          - exit 1
+          - jq -n
       - id: runtime.ingest_policy_branches_forbidden
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh

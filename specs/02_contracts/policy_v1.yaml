@@ -4701,3 +4701,30 @@ rules:
   - specs/00_core/repo_boundary_charter.md
   - scripts/governance_boundary_validate.sh
   - specs/02_contracts/12_runner_interface.md
+- id: ACTIVE_SHELL_SCRIPTS_WRAPPER_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: scripts.active
+  norm: MUST
+  requirement: active_shell_scripts_must_delegate_to_runner_commands_only
+  description: Active shell scripts are transport wrappers only and must delegate
+    behavior to runner command/spec execution surfaces.
+  rationale: Keeps shared behavior in executable specs and prevents shell policy drift.
+  risk_if_violated: Script-level business logic diverges from spec-defined semantics.
+  references:
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/29_runner_cli_interface.md
+  - specs/04_governance/check_sets_v1.yaml
+- id: RETIRED_SCRIPT_TREE_REMOVED
+  introduced_in: v1
+  scope: governance
+  applies_to: scripts.retired
+  norm: MUST
+  requirement: retired_script_tree_must_not_exist_in_active_surface
+  description: Retired shell script tree is removed from active surface and must
+    not be referenced by canonical manifests or governance contracts.
+  rationale: Eliminates stale operational entrypoints and ambiguity in control-plane usage.
+  risk_if_violated: Users can invoke unsupported legacy flows and bypass canonical wrappers.
+  references:
+  - specs/01_schema/core_script_allowlist_v1.yaml
+  - specs/04_governance/check_sets_v1.yaml

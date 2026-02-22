@@ -37,6 +37,8 @@ must not depend on runtime-lane execution through that boundary.
 Shared governance semantics MUST be sourced from spec surfaces (`specs/04_governance/**`
 `specs/05_libraries/policy/**`) and executed by runners; shell scripts are transport
 entrypoints and artifact emitters only.
+Active shell scripts in canonical repos are wrapper-only command boundaries and
+must not embed policy or schema decision logic.
 
 Runner-owned executable spec suites MUST use canonical v1 case shape:
 

@@ -47,6 +47,7 @@ rules:
   DCGOV-RUNTIME-CORE-001: runtime.core_script_allowlist_enforced
   DCGOV-RUNTIME-CORE-002: runtime.non_core_scripts_not_in_active_docs
   DCGOV-RUNTIME-CORE-003: runtime.non_core_scripts_not_in_active_policy_traceability
+  DCGOV-RUNTIME-CORE-004: runtime.retired_scripts_root_absent
   DCGOV-RUNTIME-BOUNDARY-001: runtime.repo_boundary_tokens_forbidden
   DCGOV-RUNTIME-BOUNDARY-002: runtime.repo_boundary_validator_tokens_configured
   DCGOV-DOCS-: docs.
