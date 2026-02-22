@@ -142,24 +142,24 @@ Suite runtime surfaces:
   - `harness.profile` (string, required)
   - `harness.config` (mapping, optional)
 - `services` (mapping, optional): suite system service bindings with defaults and concrete entries (effective type/io/profile/config)
-  - `services.entries[].id` (string, required; unique in suite)
-  - `services.entries[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
-  - `services.entries[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
-  - `services.entries[].profile` (string, optional)
-  - `services.entries[].config` (mapping, optional): service config values that
+  - `services.actions[].id` (string, required; unique in suite)
+  - `services.actions[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
+  - `services.actions[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
+  - `services.actions[].profile` (string, optional)
+  - `services.actions[].config` (mapping, optional): service config values that
     reference external locations MUST use artifact-id fields (`*_artifact_id`)
     and must not embed direct locators
-  - `services.entries[].imports` (list, optional): declarative callable service-import surface
+  - `services.actions[].imports` (list, optional): declarative callable service-import surface
     - canonical: list of mappings with `names` and optional `as`
     - compact alias: list of strings (`imports: [pipe_identity, get_json]`)
       expands to one canonical row `{names:[...]}`; compact form does not support aliasing
     - mixed item kinds (string + mapping) in one `imports` list are invalid
-  - `services.entries[].imports[].names` (list, required)
-  - `services.entries[].imports[].as` (mapping, optional)
+  - `services.actions[].imports[].names` (list, required)
+  - `services.actions[].imports[].as` (mapping, optional)
 - `bindings` (list, optional): suite-root service-to-contract binding declarations
   - `bindings[].id` (string, required; unique in suite)
   - `bindings[].contract` (string, required; references `contracts[].id`)
-  - `bindings[].service` (string, required; references `services.entries[].id`)
+  - `bindings[].service` (string, required; references `services.actions[].id`)
   - `bindings[].import` (string, required; declared service import name)
   - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact ids
   - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact ids
@@ -186,7 +186,7 @@ Parser behavior:
 - each `contracts[]` item requires `id`
 - suite `harness` mapping is required
 - suite `services` is optional
-- when `services` is present, `services.entries[]` must be non-empty
+- when `services` is present, `services.actions[]` must be non-empty
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
@@ -204,26 +204,26 @@ Parser behavior:
 - `contracts[].harness` is invalid in v2 (hard cut)
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
 - `contracts[].clauses.predicates[].id` is required
-- unknown `services.entries[].type` MUST hard-fail during schema validation
-- invalid `services.entries[].io` MUST hard-fail during schema validation
-- `services.entries[].imports` supports canonical list[mapping] and compact
+- unknown `services.actions[].type` MUST hard-fail during schema validation
+- invalid `services.actions[].io` MUST hard-fail during schema validation
+- `services.actions[].imports` supports canonical list[mapping] and compact
   list[string] alias forms
-- mixed item kinds in one `services.entries[].imports` list are invalid
-- compact `services.entries[].imports` names MUST be unique per service entry
-  and valid for resolved `services.entries[].type/profile` in
+- mixed item kinds in one `services.actions[].imports` list are invalid
+- compact `services.actions[].imports` names MUST be unique per service entry
+  and valid for resolved `services.actions[].type/profile` in
   `/specs/schema/service_contract_catalog_v1.yaml`
 - if `bindings[]` is present, `services` MUST be present and valid
 - if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
   `from: service`, `services` MUST be present and valid
 - bindings execute once per contract before predicate evaluation
 - `bindings[].contract` MUST reference an existing `contracts[].id`
-- `bindings[].service` MUST reference an existing `services.entries[].id`
+- `bindings[].service` MUST reference an existing `services.actions[].id`
 - `bindings[].inputs[].from` MUST reference `artifacts[].id` where artifact
   entry `io` is `input` or `io`
 - `bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
   entry `io` is `output` or `io`
 - binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
-- direct external locator keys in `services.entries[].config` are invalid:
+- direct external locator keys in `services.actions[].config` are invalid:
   `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
 - every `*_artifact_id` in service config MUST resolve to
   `artifacts[].id` where artifact entry `io` is `input` or `io`
@@ -278,7 +278,7 @@ Normative contract details:
 
 ## Harness-Profile Fields
 
-### `harness.type: unit.test` with `services.entries[].profile: text.file`
+### `harness.type: unit.test` with `services.actions[].profile: text.file`
 
 `text.file` asserts against file content.
 
@@ -308,7 +308,7 @@ Markdown library authoring guidance:
 
 ## Harness Dispatch
 
-Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services.entries[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services.entries[].profile`/`services.entries[].config`.
+Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services.actions[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services.actions[].profile`/`services.actions[].config`.
 
 Governance assertion contract:
 
@@ -336,7 +336,7 @@ Security model:
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `harness.type: unit.test` with `services.entries[].profile: cli.run`, supported `services.entries[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: cli.run`, supported `services.actions[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -352,7 +352,7 @@ For `harness.type: unit.test` with `services.entries[].profile: cli.run`, suppor
 - `orchestration` (mapping): orchestration tool dispatch contract for
   orchestration profiles
 
-For `harness.type: unit.test` with `services.entries[].profile: api.http`, supported `services.entries[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: api.http`, supported `services.actions[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -403,7 +403,7 @@ OAuth and execution rules:
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `harness.type: unit.test` with `services.entries[].profile: docs.generate`, supported `services.entries[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: docs.generate`, supported `services.actions[].config` keys include:
 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
@@ -546,7 +546,7 @@ Assertion targets for `cli.run`:
 
 ## Profiles
 
-Currently supported `services.entries[].profile` values include:
+Currently supported `services.actions[].profile` values include:
 
 - `cli.run` (core)
 - `text.file` (core)
@@ -760,9 +760,9 @@ Lifecycle order:
 - `fail` runs once on first blocking step or hook failure
 - `complete` runs only after all steps and hooks pass
 
-`services.entries[].type: ops.job` executable profile (v2):
+`services.actions[].type: ops.job` executable profile (v2):
 
-- `harness.type: unit.test` + `services.entries[].type: ops.job`
+- `harness.type: unit.test` + `services.actions[].type: ops.job`
 - required:
   - `clauses.config.jobs` (metadata list)
   - `clauses`
@@ -827,34 +827,34 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | `true` | `v2` |
 | `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
 | `services` | `mapping` | `false` | `v2` |
-| `services.entries[].id` | `string` | `true` | `v2` |
-| `services.entries[].type` | `string` | `false` | `v2` |
-| `services.entries[].io` | `string` | `false` | `v2` |
-| `services.entries[].profile` | `string` | `false` | `v2` |
-| `services.entries[].config` | `mapping` | `false` | `v2` |
-| `services.entries[].imports` | `list` | `false` | `v2` |
-| `services.entries[].imports[].names` | `list` | `true` | `v2` |
-| `services.entries[].imports[].as` | `mapping` | `false` | `v2` |
-| `services.entries[].docs` | `list` | `false` | `v2` |
-| `services.entries[].docs[].id` | `string` | `false` | `v2` |
-| `services.entries[].docs[].summary` | `string` | `true` | `v2` |
-| `services.entries[].docs[].audience` | `string` | `true` | `v2` |
-| `services.entries[].docs[].status` | `string` | `true` | `v2` |
-| `services.entries[].docs[].description` | `string` | `false` | `v2` |
-| `services.entries[].docs[].type` | `string` | `false` | `v2` |
-| `services.entries[].docs[].since` | `string` | `false` | `v2` |
-| `services.entries[].docs[].updated_at` | `string` | `false` | `v2` |
-| `services.entries[].docs[].tags` | `list` | `false` | `v2` |
-| `services.entries[].docs[].owners` | `list` | `false` | `v2` |
-| `services.entries[].docs[].owners[].id` | `string` | `false` | `v2` |
-| `services.entries[].docs[].owners[].role` | `string` | `true` | `v2` |
-| `services.entries[].docs[].links` | `list` | `false` | `v2` |
-| `services.entries[].docs[].links[].rel` | `string` | `true` | `v2` |
-| `services.entries[].docs[].links[].ref` | `string` | `true` | `v2` |
-| `services.entries[].docs[].links[].title` | `string` | `false` | `v2` |
-| `services.entries[].docs[].examples` | `list` | `false` | `v2` |
-| `services.entries[].docs[].examples[].title` | `string` | `true` | `v2` |
-| `services.entries[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `services.actions[].id` | `string` | `true` | `v2` |
+| `services.actions[].type` | `string` | `false` | `v2` |
+| `services.actions[].io` | `string` | `false` | `v2` |
+| `services.actions[].profile` | `string` | `false` | `v2` |
+| `services.actions[].config` | `mapping` | `false` | `v2` |
+| `services.actions[].imports` | `list` | `false` | `v2` |
+| `services.actions[].imports[].names` | `list` | `true` | `v2` |
+| `services.actions[].imports[].as` | `mapping` | `false` | `v2` |
+| `services.actions[].docs` | `list` | `false` | `v2` |
+| `services.actions[].docs[].id` | `string` | `false` | `v2` |
+| `services.actions[].docs[].summary` | `string` | `true` | `v2` |
+| `services.actions[].docs[].audience` | `string` | `true` | `v2` |
+| `services.actions[].docs[].status` | `string` | `true` | `v2` |
+| `services.actions[].docs[].description` | `string` | `false` | `v2` |
+| `services.actions[].docs[].type` | `string` | `false` | `v2` |
+| `services.actions[].docs[].since` | `string` | `false` | `v2` |
+| `services.actions[].docs[].updated_at` | `string` | `false` | `v2` |
+| `services.actions[].docs[].tags` | `list` | `false` | `v2` |
+| `services.actions[].docs[].owners` | `list` | `false` | `v2` |
+| `services.actions[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `services.actions[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `services.actions[].docs[].links` | `list` | `false` | `v2` |
+| `services.actions[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `services.actions[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `services.actions[].docs[].links[].title` | `string` | `false` | `v2` |
+| `services.actions[].docs[].examples` | `list` | `false` | `v2` |
+| `services.actions[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `services.actions[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `bindings` | `list` | `false` | `v2` |
 | `bindings[].id` | `string` | `true` | `v2` |
 | `bindings[].contract` | `string` | `true` | `v2` |
@@ -1018,7 +1018,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
@@ -1062,34 +1062,34 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | true | `v2` |
 | `harness.docs[].examples[].ref` | `string` | true | `v2` |
 | `services` | `mapping` | false | `v2` |
-| `services.entries[].id` | `string` | true | `v2` |
-| `services.entries[].type` | `string` | false | `v2` |
-| `services.entries[].io` | `string` | false | `v2` |
-| `services.entries[].profile` | `string` | false | `v2` |
-| `services.entries[].config` | `mapping` | false | `v2` |
-| `services.entries[].imports` | `list` | false | `v2` |
-| `services.entries[].imports[].names` | `list` | true | `v2` |
-| `services.entries[].imports[].as` | `mapping` | false | `v2` |
-| `services.entries[].docs` | `list` | false | `v2` |
-| `services.entries[].docs[].id` | `string` | false | `v2` |
-| `services.entries[].docs[].summary` | `string` | true | `v2` |
-| `services.entries[].docs[].audience` | `string` | true | `v2` |
-| `services.entries[].docs[].status` | `string` | true | `v2` |
-| `services.entries[].docs[].description` | `string` | false | `v2` |
-| `services.entries[].docs[].type` | `string` | false | `v2` |
-| `services.entries[].docs[].since` | `string` | false | `v2` |
-| `services.entries[].docs[].updated_at` | `string` | false | `v2` |
-| `services.entries[].docs[].tags` | `list` | false | `v2` |
-| `services.entries[].docs[].owners` | `list` | false | `v2` |
-| `services.entries[].docs[].owners[].id` | `string` | false | `v2` |
-| `services.entries[].docs[].owners[].role` | `string` | true | `v2` |
-| `services.entries[].docs[].links` | `list` | false | `v2` |
-| `services.entries[].docs[].links[].rel` | `string` | true | `v2` |
-| `services.entries[].docs[].links[].ref` | `string` | true | `v2` |
-| `services.entries[].docs[].links[].title` | `string` | false | `v2` |
-| `services.entries[].docs[].examples` | `list` | false | `v2` |
-| `services.entries[].docs[].examples[].title` | `string` | true | `v2` |
-| `services.entries[].docs[].examples[].ref` | `string` | true | `v2` |
+| `services.actions[].id` | `string` | true | `v2` |
+| `services.actions[].type` | `string` | false | `v2` |
+| `services.actions[].io` | `string` | false | `v2` |
+| `services.actions[].profile` | `string` | false | `v2` |
+| `services.actions[].config` | `mapping` | false | `v2` |
+| `services.actions[].imports` | `list` | false | `v2` |
+| `services.actions[].imports[].names` | `list` | true | `v2` |
+| `services.actions[].imports[].as` | `mapping` | false | `v2` |
+| `services.actions[].docs` | `list` | false | `v2` |
+| `services.actions[].docs[].id` | `string` | false | `v2` |
+| `services.actions[].docs[].summary` | `string` | true | `v2` |
+| `services.actions[].docs[].audience` | `string` | true | `v2` |
+| `services.actions[].docs[].status` | `string` | true | `v2` |
+| `services.actions[].docs[].description` | `string` | false | `v2` |
+| `services.actions[].docs[].type` | `string` | false | `v2` |
+| `services.actions[].docs[].since` | `string` | false | `v2` |
+| `services.actions[].docs[].updated_at` | `string` | false | `v2` |
+| `services.actions[].docs[].tags` | `list` | false | `v2` |
+| `services.actions[].docs[].owners` | `list` | false | `v2` |
+| `services.actions[].docs[].owners[].id` | `string` | false | `v2` |
+| `services.actions[].docs[].owners[].role` | `string` | true | `v2` |
+| `services.actions[].docs[].links` | `list` | false | `v2` |
+| `services.actions[].docs[].links[].rel` | `string` | true | `v2` |
+| `services.actions[].docs[].links[].ref` | `string` | true | `v2` |
+| `services.actions[].docs[].links[].title` | `string` | false | `v2` |
+| `services.actions[].docs[].examples` | `list` | false | `v2` |
+| `services.actions[].docs[].examples[].title` | `string` | true | `v2` |
+| `services.actions[].docs[].examples[].ref` | `string` | true | `v2` |
 | `bindings` | `list` | false | `v2` |
 | `bindings[].id` | `string` | true | `v2` |
 | `bindings[].contract` | `string` | true | `v2` |
@@ -1253,6 +1253,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required_keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

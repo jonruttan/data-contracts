@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'purpose_quality': {'cases': 'specs/conformance/cases', 'max_total_warnings': 0, 'fail_on_policy_errors': True, 'fail_on_severity': 'warn'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'conformance.purpose_quality_gate'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
-  entries:
+  actions:
   - id: svc.root_purpose_quality_cases_specs_conformance_cases_max_total_warnings_0_fail_on_policy_errors_true_fail_on_severity_warn_check_profile_governance_scan_config_check_conformance_purpose_quality_gate_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
     type: legacy.root_purpose_quality_cases_specs_conformance_cases_max_total_warnings_0_fail_on_policy_errors_true_fail_on_severity_warn_check_profile_governance_scan_config_check_conformance_purpose_quality_gate_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io

@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.when_hooks_schema_valid'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_runtime_when_hooks_schema_valid.default.1
     type: legacy.root_check_profile_governance_scan_config_check_runtime_when_hooks_schema_valid
     io: io

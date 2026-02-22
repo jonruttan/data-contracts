@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'freshness_policy': {'files': ['/scripts/runner_status_ingest.sh', '/scripts/ci_gate.sh'], 'required_tokens': ['--max-age-hours', '72', '--enforce-freshness', 'compatibility_stale_or_missing_count']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.compatibility_status_freshness_within_slo'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo.default.1
     type: legacy.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo
     io: io

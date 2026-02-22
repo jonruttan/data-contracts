@@ -32,7 +32,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services.entries[].id.
+    description: Required when from=service; references services.actions[].id.
   contracts[].clauses.imports[].names:
     type: list
     required: true
@@ -69,7 +69,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services.entries[].id.
+    description: Required when from=service; references services.actions[].id.
   contracts[].clauses.predicates[].imports[].names:
     type: list
     required: true

@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_certification_artifacts_contract_sync'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_runtime_runner_certification_artifacts_contract_sync.default.1
     type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_artifacts_contract_sync
     io: io

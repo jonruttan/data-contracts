@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_spec_fence_required'}}}"
 services:
-  entries:
+  actions:
   - id: svc.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required.default.1
     type: legacy.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required
     io: io

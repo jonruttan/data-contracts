@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/schema_v2.md'}}}"
 services:
-  entries:
+  actions:
   - id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
     type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
     io: io

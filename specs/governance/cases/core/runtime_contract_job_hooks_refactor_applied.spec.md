@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_job_hooks_refactor_applied'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
     type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied
     io: io

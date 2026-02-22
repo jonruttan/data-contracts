@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/project_bundle_lock_v1.yaml'}}}"
 services:
-  entries:
+  actions:
   - id: svc.check_profile_text_file_config_path_specs_schema_project_bundle_lock_v1_yaml.default.1
     type: legacy.check_profile_text_file_config_path_specs_schema_project_bundle_lock_v1_yaml
     io: io

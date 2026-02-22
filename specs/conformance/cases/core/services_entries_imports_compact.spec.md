@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.check.compact.1
     type: assert.check
     io: input
@@ -33,7 +33,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.check.compact.2
     type: assert.check
     io: input
@@ -62,7 +62,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.check.compact.3
     type: assert.check
     io: input
@@ -92,7 +92,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.check.compact.4
     type: assert.check
     io: input
@@ -121,7 +121,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.check.compact.5
     type: assert.check
     io: input

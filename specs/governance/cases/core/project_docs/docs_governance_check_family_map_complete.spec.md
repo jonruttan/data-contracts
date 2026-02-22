@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.governance_check_family_map_complete'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete.default.1
     type: legacy.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete
     io: io

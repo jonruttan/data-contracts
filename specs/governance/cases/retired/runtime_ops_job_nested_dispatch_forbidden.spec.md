@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'ops_job_nested_dispatch': {'path': '/dc-runner-rust', 'required_tokens': ['runtime.dispatch.nested_forbidden']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.ops_job_nested_dispatch_forbidden'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_ops_job_nested_dispatch_path_dc_runner_rust_required_tokens_runtime_dispatch_nested_forbidden_check_profile_governance_scan_config_check_runtime_ops_job_nested_dispatch_forbidden.default.1
     type: legacy.root_ops_job_nested_dispatch_path_dc_runner_rust_required_tokens_runtime_dispatch_nested_forbidden_check_profile_governance_scan_config_check_runtime_ops_job_nested_dispatch_forbidden
     io: io

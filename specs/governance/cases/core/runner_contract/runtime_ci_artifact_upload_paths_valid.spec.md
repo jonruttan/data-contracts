@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'ci_artifact_upload': {'path': '/.github/workflows/ci.yml', 'required_tokens': ['actions/upload-artifact@v4', '.artifacts/**', 'if: always()']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.ci_artifact_upload_paths_valid'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
-  entries:
+  actions:
   - id: svc.root_ci_artifact_upload_path_github_workflows_ci_yml_required_tokens_actions_upload_artifact_v4_artifacts_if_always_check_profile_governance_scan_config_check_runtime_ci_artifact_upload_paths_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
     type: legacy.root_ci_artifact_upload_path_github_workflows_ci_yml_required_tokens_actions_upload_artifact_v4_artifacts_if_always_check_profile_governance_scan_config_check_runtime_ci_artifact_upload_paths_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io

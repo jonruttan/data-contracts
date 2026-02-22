@@ -51,7 +51,7 @@ rules:
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
   scope: case
-  applies_to: services.entries[].config
+  applies_to: services.actions[].config
   norm: MUST
   requirement: service_config_locators_use_artifact_import_ids_only
   description: Service config must not embed direct locator values (`path`,
@@ -4287,7 +4287,7 @@ rules:
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.entries.imports
+  applies_to: schema.v2.services.actions.imports
   norm: MUST
   requirement: services_entries_imports_accepts_compact_string_list_alias
   description: Service import declarations must accept canonical list mappings
@@ -4304,11 +4304,11 @@ rules:
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.entries.imports.validation
+  applies_to: schema.v2.services.actions.imports.validation
   norm: MUST
   requirement: services_import_alias_mixed_duplicate_catalog_checks_enforced
   description: Mixed compact/mapping item kinds in one
-    `services.entries[].imports` list, duplicate effective import names, and
+    `services.actions[].imports` list, duplicate effective import names, and
     catalog-invalid import names must hard-fail schema validation.
   rationale: Keeps compact alias behavior deterministic and machine-checkable.
   risk_if_violated: Compact import declarations become ambiguous and drift across

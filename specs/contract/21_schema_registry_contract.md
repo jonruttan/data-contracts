@@ -16,29 +16,29 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Runtime expectation overrides MUST use `expect.overrides[]` (no `expect.impl.*` wildcard keys).
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime services are optional at root.
-- When `services` is present, it MUST define non-empty `services.entries[]`.
+- When `services` is present, it MUST define non-empty `services.actions[]`.
 - Suite MAY declare root `bindings[]` to bind service imports to contracts for
   predicate piping (`service_id.import_name`).
-- Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
+- Contract-job metadata MUST use `services.actions[].config.jobs[]` rows keyed by explicit `id`.
 - `contracts[].harness` is invalid in v2 (hard cut).
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
-- `services.entries[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
+- `services.actions[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
-- `services.entries[].imports` MUST accept canonical list[mapping] rows and
+- `services.actions[].imports` MUST accept canonical list[mapping] rows and
   compact list[string] aliases, normalized to canonical mapping rows before
   runtime evaluation.
-- Mixed string/mapping item kinds in one `services.entries[].imports` list are
+- Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
 - Effective declared service import names MUST be unique per service entry and
   MUST exist in catalog `available_imports_by_profile` for resolved
   `type/profile`.
-- `services.entries[].config` MUST NOT include direct locator keys (`path`,
+- `services.actions[].config` MUST NOT include direct locator keys (`path`,
   `url`, `token_url`, `template_path`, `output_path`, `ref`).
 - Any external locator consumed by service config MUST be declared in
   `artifacts[]` and referenced by `*_artifact_id` (or
   `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
 - `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
-  MUST resolve to `services.entries[].id`.
+  MUST resolve to `services.actions[].id`.
 - `bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
   `input` or `io`.
 - `bindings[].outputs[].to` MUST resolve to `artifacts[].id` where `io` is
@@ -74,7 +74,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 
 Runtime catalog entries define service additions over common suite/contract keys:
 
-- required suite runtime fields (`harness`; `services.entries[]` when services are used)
+- required suite runtime fields (`harness`; `services.actions[]` when services are used)
 - optional service-contract binding field (`bindings[]`)
 - service type/profile/io compatibility and available function names
 - allowed function operation prefixes per service type

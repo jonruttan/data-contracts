@@ -17,7 +17,7 @@ services:
     imports:
     - names:
       - pipe_identity
-  entries:
+  actions:
   - id: svc.assert_check.api_http.1
     config:
       request:

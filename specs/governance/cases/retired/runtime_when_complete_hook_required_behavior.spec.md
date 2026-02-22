@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - '{''root'': ''.'', ''when_complete'': {''path'': ''/dc-runner-python'', ''required_tokens'': [''def _on_complete'', ''"complete"'', ''on_complete=_on_complete'']}, ''check'': {''profile'': ''governance.scan'', ''config'': {''check'': ''runtime.when_complete_hook_required_behavior''}}}'
 services:
-  entries:
+  actions:
   - id: svc.root_when_complete_path_dc_runner_python_required_tokens_def_on_complete_complete_on_complete_on_complete_check_profile_governance_scan_config_check_runtime_when_complete_hook_required_behavior.default.1
     type: legacy.root_when_complete_path_dc_runner_python_required_tokens_def_on_complete_complete_on_complete_on_complete_check_profile_governance_scan_config_check_runtime_when_complete_hook_required_behavior
     io: io

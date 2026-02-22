@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.chain_imports_consumer_surface_unchanged'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
     type: legacy.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged
     io: io

@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'schema_catalog': {'path': '/specs/schema/schema_catalog_v1.yaml', 'required_tokens': [{'schema_id': 'contract_spec'}, {'major': 2}, {'path': '/specs/schema/schema_v2.md'}, {'status': 'active'}]}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.catalog_contains_active_schema_v2'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
     type: legacy.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2
     io: io

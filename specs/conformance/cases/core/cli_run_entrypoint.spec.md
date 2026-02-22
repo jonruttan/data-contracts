@@ -24,7 +24,7 @@ services:
     type: assert.check
     io: input
     profile: cli.run
-  entries:
+  actions:
   - id: svc.assert_check.cli_run.1
     config:
       argv:

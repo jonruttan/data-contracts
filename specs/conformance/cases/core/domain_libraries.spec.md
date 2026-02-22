@@ -11,7 +11,7 @@ services:
     type: assert.check
     io: input
     profile: text.file
-  entries:
+  actions:
   - id: svc.assert_check.text_file.1
     config:
       use:

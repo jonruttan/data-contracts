@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'assert_decision_authority': {'path': '/dc-runner-python', 'required_tokens': ['governance.scan forbids harness.evaluate', 'eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)'], 'forbidden_tokens': ['run_governance_policy(']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.assert_block_decision_authority_required'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_assert_decision_authority_path_dc_runner_python_required_tokens_governance_scan_forbids_harness_evaluate_eval_assert_tree_assert_spec_eval_leaf_eval_leaf_forbidden_tokens_run_governance_policy_check_profile_governance_scan_config_check_runtime_assert_block_decision_authority_required.default.1
     type: legacy.root_assert_decision_authority_path_dc_runner_python_required_tokens_governance_scan_forbids_harness_evaluate_eval_assert_tree_assert_spec_eval_leaf_eval_leaf_forbidden_tokens_run_governance_policy_check_profile_governance_scan_config_check_runtime_assert_block_decision_authority_required
     io: io

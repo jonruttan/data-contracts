@@ -11,7 +11,7 @@ services:
     type: assert.check
     io: input
     profile: default
-  entries:
+  actions:
   - id: svc.assert_check.default.1
     config:
       jobs:

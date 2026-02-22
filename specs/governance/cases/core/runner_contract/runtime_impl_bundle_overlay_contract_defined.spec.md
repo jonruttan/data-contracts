@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/34_runner_implementation_spec_bundles.md'}}}"
 services:
-  entries:
+  actions:
   - id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
     type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
     io: io

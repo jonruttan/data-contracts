@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'ci_matrix_artifacts': {'path': '/.github/workflows/ci.yml', 'required_tokens': ['.artifacts/runner-status-matrix.json', '.artifacts/runner-status-matrix.md', '.artifacts/runner-status-ingest-log.json']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.matrix_artifacts_emitted'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted.default.1
     type: legacy.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted
     io: io

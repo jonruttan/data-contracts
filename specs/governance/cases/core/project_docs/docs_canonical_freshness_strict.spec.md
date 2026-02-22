@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.canonical_freshness_strict'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict.default.1
     type: legacy.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict
     io: io

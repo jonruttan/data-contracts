@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'public_runner_default': {'path': '/scripts/runner_bin.sh', 'required_tokens': ['dc-runner-rust', 'unsupported platform', 'dc-runner-rust release artifact'], 'forbidden_tokens': ['dc-runner-python']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.public_runner_default_rust'}}, 'use': [{'ref': '/specs/libraries/policy/policy_core.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.pass_when_no_violations']}]}"
 services:
-  entries:
+  actions:
   - id: svc.root_public_runner_default_path_scripts_runner_bin_sh_required_tokens_dc_runner_rust_unsupported_platform_dc_runner_rust_release_artifact_forbidden_tokens_dc_runner_python_check_profile_governance_scan_config_check_runtime_public_runner_default_rust_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations.default.1
     type: legacy.root_public_runner_default_path_scripts_runner_bin_sh_required_tokens_dc_runner_rust_unsupported_platform_dc_runner_rust_release_artifact_forbidden_tokens_dc_runner_python_check_profile_governance_scan_config_check_runtime_public_runner_default_rust_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io

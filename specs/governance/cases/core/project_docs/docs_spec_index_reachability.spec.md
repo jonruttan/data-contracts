@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.spec_index_reachability'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_check_profile_governance_scan_config_check_docs_spec_index_reachability.default.1
     type: legacy.root_check_profile_governance_scan_config_check_docs_spec_index_reachability
     io: io

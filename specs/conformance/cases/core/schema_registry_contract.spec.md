@@ -8,7 +8,7 @@ harness:
     legacy_contract_harnesses:
     - check
 services:
-  entries:
+  actions:
   - id: svc.check.text_file.1
     type: assert.check
     io: input

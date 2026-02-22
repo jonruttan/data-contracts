@@ -4,12 +4,12 @@
 
 - Runner dispatches by suite-root `harness` mapping.
 - Harness receives parsed suite/case data and execution context.
-- Optional suite-root `services.entries[]` provides concrete system hook
+- Optional suite-root `services.actions[]` provides concrete system hook
   bindings (I/O and callable service import names).
-- `services.entries[].imports` supports canonical list mappings
+- `services.actions[].imports` supports canonical list mappings
   (`names` + optional `as`) and compact list string aliases that normalize to
   canonical mapping rows.
-- Mixed string/mapping item kinds in one `services.entries[].imports` list are
+- Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
 - Suite-root `bindings[]` connects `contract` + `service` + artifact ids so
   service results are piped into predicate contexts.
@@ -28,7 +28,7 @@ Suite-root external references:
 - service runtime payload transport MUST use artifact ids declared in
   `artifacts[]` through `bindings[]` mappings.
 - services MUST NOT reference external locations directly in
-  `services.entries[].config`; direct locator keys (`path`, `url`, `token_url`,
+  `services.actions[].config`; direct locator keys (`path`, `url`, `token_url`,
   `template_path`, `output_path`, `ref`) are invalid.
 - service config locators MUST be routed via artifact IDs using
   profile-specific `*_artifact_id` fields (for example
@@ -49,9 +49,9 @@ Suite-root external references:
 
 ## Entrypoint
 
-For `harness.type: unit.test` with `services.entries[].profile: cli.run`:
+For `harness.type: unit.test` with `services.actions[].profile: cli.run`:
 
-- `services.entries[].config.entrypoint` MUST be provided by the spec.
+- `services.actions[].config.entrypoint` MUST be provided by the spec.
 - Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).
@@ -267,7 +267,7 @@ Subject profile envelope contract:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
 - `text.file` locator payloads MUST be declared under `artifacts[]` and
-  referenced through `services.entries[].config.source_artifact_id`.
+  referenced through `services.actions[].config.source_artifact_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 

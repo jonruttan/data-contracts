@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.default.1
 contracts:
 - id: DCCONF-IMPLICIT-ID-001
@@ -38,7 +38,7 @@ harness:
     owners:
     - role: owner
 services:
-  entries:
+  actions:
   - id: svc.default.2
 contracts:
 - id: DCCONF-IMPLICIT-ID-002
@@ -61,7 +61,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.default.3
 contracts:
 - id: DCCONF-IMPLICIT-ID-003
@@ -83,7 +83,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.default.4
     imports:
     - pipe_identity

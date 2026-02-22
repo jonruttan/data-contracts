@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/README.md'}}}"
 services:
-  entries:
+  actions:
   - id: svc.check_profile_text_file_config_path_readme_md.default.1
     type: legacy.check_profile_text_file_config_path_readme_md
     io: io

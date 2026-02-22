@@ -10,7 +10,7 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'schema_pin_validator': {'path': '/scripts/spec_schema_pin_validate.sh', 'required_tokens': ['missing_spec_version_count']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.spec_case_version_present'}}}"
 services:
-  entries:
+  actions:
   - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present.default.1
     type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present
     io: io

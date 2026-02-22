@@ -7,7 +7,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  entries:
+  actions:
   - id: svc.assert_check.text_file.1
     type: assert.check
     io: input

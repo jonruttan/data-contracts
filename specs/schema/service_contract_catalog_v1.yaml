@@ -165,24 +165,24 @@ service_locator_contract_v2:
     artifacts ids using `*_artifact_id` fields.
   profile_locator_fields:
     text.file:
-    - services.entries[].config.source_artifact_id
+    - services.actions[].config.source_artifact_id
     api.http:
-    - services.entries[].config.request.artifact_id
-    - services.entries[].config.requests[].artifact_id
-    - services.entries[].config.api_http.auth.oauth.token_artifact_id
-    - services.entries[].config.use[].artifact_id
+    - services.actions[].config.request.artifact_id
+    - services.actions[].config.requests[].artifact_id
+    - services.actions[].config.api_http.auth.oauth.token_artifact_id
+    - services.actions[].config.use[].artifact_id
     docs.generate:
-    - services.entries[].config.docs_generate.template_artifact_id
-    - services.entries[].config.docs_generate.output_artifact_id
-    - services.entries[].config.docs_generate.data_sources[].artifact_id
+    - services.actions[].config.docs_generate.template_artifact_id
+    - services.actions[].config.docs_generate.output_artifact_id
+    - services.actions[].config.docs_generate.data_sources[].artifact_id
   artifact_resolution:
   - every *_artifact_id resolves to artifacts[].id (io=input|io)
   - every *_artifact_ids[] entry resolves to artifacts[].id (io=input|io)
 import_declaration_shape_v2:
-  services.entries[].imports: list[mapping]|list[string]
-  services.entries[].imports[].names: list[string]
-  services.entries[].imports[].as: mapping(optional)
-  services.entries[].imports_compact: list[string] expands to one canonical
+  services.actions[].imports: list[mapping]|list[string]
+  services.actions[].imports[].names: list[string]
+  services.actions[].imports[].as: mapping(optional)
+  services.actions[].imports_compact: list[string] expands to one canonical
     row `{names:[...]}` (no aliasing support in compact form)
-  services.entries[].imports_mixed_item_kinds: invalid
+  services.actions[].imports_mixed_item_kinds: invalid
   legacy_object_form: invalid

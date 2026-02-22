@@ -163,19 +163,19 @@ fields:
     type: mapping
     required: false
     since: v2
-  services.entries:
+  services.actions:
     type: list
     required: true
     since: v2
-  services.entries[].id:
+  services.actions[].id:
     type: string
     required: true
     since: v2
-  services.entries[].type:
+  services.actions[].type:
     type: string
     required: false
     since: v2
-  services.entries[].io:
+  services.actions[].io:
     type: string
     required: false
     since: v2
@@ -183,11 +183,11 @@ fields:
     - input
     - output
     - io
-  services.entries[].profile:
+  services.actions[].profile:
     type: string
     required: false
     since: v2
-  services.entries[].config:
+  services.actions[].config:
     type: mapping
     required: false
     since: v2
@@ -195,89 +195,89 @@ fields:
       declared in `artifacts[]` and referenced by artifact id fields;
       direct locator keys (`path`, `url`, `token_url`, `template_path`,
       `output_path`, `ref`) are invalid.
-  services.entries[].config.source_artifact_id:
+  services.actions[].config.source_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for text/file source payloads; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.request.artifact_id:
+  services.actions[].config.request.artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for api.http single request url; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.requests[].artifact_id:
+  services.actions[].config.requests[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for api.http scenario request url; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.api_http.auth.oauth.token_artifact_id:
+  services.actions[].config.api_http.auth.oauth.token_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for oauth token endpoint locator; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.use[].artifact_id:
+  services.actions[].config.use[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for config.use dependency locator; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.docs_generate.template_artifact_id:
+  services.actions[].config.docs_generate.template_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs template input; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].config.docs_generate.output_artifact_id:
+  services.actions[].config.docs_generate.output_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs output target.
-  services.entries[].config.docs_generate.data_sources[].artifact_id:
+  services.actions[].config.docs_generate.data_sources[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs data source payload; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
-  services.entries[].imports:
+  services.actions[].imports:
     type: list
     required: false
     since: v2
     description: Service import declarations. Accepts either canonical list[mapping]
       rows (`names`, optional `as`) or compact list[string] alias. Mixed list
       item kinds in one `imports` list are invalid.
-  services.entries[].imports[].names:
+  services.actions[].imports[].names:
     type: list
     required: true
     since: v2
     description: Declared service import names; each name must be unique per
       service entry after alias resolution and available for resolved
       type+profile in service catalog.
-  services.entries[].imports[].as:
+  services.actions[].imports[].as:
     type: mapping
     required: false
     since: v2
-  services.entries[].docs:
+  services.actions[].docs:
     type: list
     required: false
     since: v2
-  services.entries[].docs[].id:
+  services.actions[].docs[].id:
     type: string
     required: false
     since: v2
     description: Optional metadata id for documentation entry. Not reference identity.
-  services.entries[].docs[].summary:
+  services.actions[].docs[].summary:
     type: string
     required: true
     since: v2
-  services.entries[].docs[].audience:
+  services.actions[].docs[].audience:
     type: string
     required: true
     since: v2
-  services.entries[].docs[].status:
+  services.actions[].docs[].status:
     type: string
     required: true
     since: v2
@@ -286,11 +286,11 @@ fields:
     - active
     - deprecated
     - retired
-  services.entries[].docs[].description:
+  services.actions[].docs[].description:
     type: string
     required: false
     since: v2
-  services.entries[].docs[].type:
+  services.actions[].docs[].type:
     type: string
     required: false
     since: v2
@@ -301,28 +301,28 @@ fields:
     - policy
     - contract
     - changelog
-  services.entries[].docs[].since:
+  services.actions[].docs[].since:
     type: string
     required: false
     since: v2
-  services.entries[].docs[].updated_at:
+  services.actions[].docs[].updated_at:
     type: string
     required: false
     since: v2
-  services.entries[].docs[].tags:
+  services.actions[].docs[].tags:
     type: list
     required: false
     since: v2
-  services.entries[].docs[].owners:
+  services.actions[].docs[].owners:
     type: list
     required: false
     since: v2
-  services.entries[].docs[].owners[].id:
+  services.actions[].docs[].owners[].id:
     type: string
     required: false
     since: v2
     description: Optional metadata id for docs owner entry. Not reference identity.
-  services.entries[].docs[].owners[].role:
+  services.actions[].docs[].owners[].role:
     type: string
     required: true
     since: v2
@@ -330,11 +330,11 @@ fields:
     - owner
     - reviewer
     - approver
-  services.entries[].docs[].links:
+  services.actions[].docs[].links:
     type: list
     required: false
     since: v2
-  services.entries[].docs[].links[].rel:
+  services.actions[].docs[].links[].rel:
     type: string
     required: true
     since: v2
@@ -344,23 +344,23 @@ fields:
     - implements
     - supersedes
     - replaced_by
-  services.entries[].docs[].links[].ref:
+  services.actions[].docs[].links[].ref:
     type: string
     required: true
     since: v2
-  services.entries[].docs[].links[].title:
+  services.actions[].docs[].links[].title:
     type: string
     required: false
     since: v2
-  services.entries[].docs[].examples:
+  services.actions[].docs[].examples:
     type: list
     required: false
     since: v2
-  services.entries[].docs[].examples[].title:
+  services.actions[].docs[].examples[].title:
     type: string
     required: true
     since: v2
-  services.entries[].docs[].examples[].ref:
+  services.actions[].docs[].examples[].ref:
     type: string
     required: true
     since: v2

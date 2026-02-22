@@ -12,7 +12,7 @@ harness:
     - unknown_harness
 services:
   defaults: {}
-  entries:
+  actions:
   - id: svc.check.text_file.1
     type: assert.check
     io: input

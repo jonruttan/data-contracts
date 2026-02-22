@@ -57,7 +57,7 @@ Import binding shape:
   `bindings[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
-- when `from: service`, `service` key is required and must reference suite `services.entries[].id`
+- when `from: service`, `service` key is required and must reference suite `services.actions[].id`
 - `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`
 - when `as` is omitted, local symbol defaults to each `names[]` entry

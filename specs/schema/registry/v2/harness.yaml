@@ -32,29 +32,29 @@ fields:
     type: mapping
     required: false
     since: v2
-    description: Optional defaults merged into each services.entries[] row.
-  services.entries:
+    description: Optional defaults merged into each services.actions[] row.
+  services.actions:
     type: list
     required: true
     since: v2
     description: Non-empty service entries for concrete runtime hooks.
-  services.entries[].config:
+  services.actions[].config:
     type: mapping
     required: false
     since: v2
     description: Service runtime configuration. External locators must be routed
       through artifact ids (`*_artifact_id`/`*_artifact_ids`); direct locator
       keys are invalid.
-  services.entries[].id:
+  services.actions[].id:
     type: string
     required: true
     since: v2
-  services.entries[].type:
+  services.actions[].type:
     type: string
     required: false
     since: v2
     description: Service type resolved by service_contract_catalog_v1.
-  services.entries[].imports:
+  services.actions[].imports:
     type: list
     required: false
     description: Service callable imports. Supports canonical list[mapping] (`names`,
@@ -82,12 +82,12 @@ fields:
     type: string
     required: true
     since: v2
-  services.entries[].imports[].names:
+  services.actions[].imports[].names:
     type: list
     required: true
     since: v2
     description: Service import names bound as service_id.import_name.
-  services.entries[].imports[].as:
+  services.actions[].imports[].as:
     type: mapping
     required: false
     since: v2

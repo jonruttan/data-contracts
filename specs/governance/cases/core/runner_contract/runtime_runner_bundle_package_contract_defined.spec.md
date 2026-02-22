@@ -13,7 +13,7 @@ harness:
 services:
   defaults:
     profile: default
-  entries:
+  actions:
   - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
     type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
   - id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
