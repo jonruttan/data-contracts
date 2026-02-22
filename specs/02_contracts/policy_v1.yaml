@@ -114,6 +114,23 @@ rules:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   - specs/01_schema/schema_v2.md
+- id: SHARED_RUNNER_LOGIC_SPEC_OWNED
+  introduced_in: v2
+  scope: governance
+  applies_to: governance.shared_logic.execution
+  norm: MUST
+  requirement: shared_governance_logic_must_be_spec_defined_and_runner_executed
+  description: Shared governance/check semantics across runners must be encoded
+    in executable `.spec.md` cases and reusable policy libraries. Shell scripts
+    in `data-contracts` are transport entrypoints and compatibility artifact emitters
+    only, not sources of policy decision logic.
+  rationale: Keeps cross-runner behavior deterministic, auditable, and portable.
+  risk_if_violated: Divergent shell-side logic can drift from spec-defined governance behavior.
+  references:
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/21_schema_registry_contract.md
+  - specs/02_contracts/28_spec_lang_policy_execution.md
+  - specs/04_governance/index.md
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
   introduced_in: v1
   scope: case

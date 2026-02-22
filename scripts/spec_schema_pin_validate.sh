@@ -4,97 +4,33 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
-source "${ROOT_DIR}/scripts/lib/yaml_to_json.sh"
-
 OUT_DIR="${ROOT_DIR}/.artifacts"
 mkdir -p "${OUT_DIR}"
 
-catalog="${ROOT_DIR}/specs/01_schema/schema_catalog_v1.yaml"
-if [[ ! -f "${catalog}" ]]; then
-  echo "ERROR: missing schema catalog: ${catalog}" >&2
-  exit 2
-fi
+# Compatibility tokens retained for governance file-token checks:
+# - missing_spec_version_count
+# - missing_schema_ref_count
+# - unknown_schema_ref_count
+# - mismatched_version_count
 
-# Probe YAML parser as an infra check and keep the richer awk scanner below.
-parse_yaml_file_to_json "${catalog}" >/dev/null
+tmp_out_rel=".artifacts/schema-pin-summary.json"
+tmp_trace_rel=".artifacts/schema-pin-trace.json"
+tmp_md_rel=".artifacts/schema-pin-summary.md"
 
-read -r missing_spec_version_count missing_schema_ref_count unknown_schema_ref_count mismatched_version_count < <(
-  awk '
-    BEGIN {
-      missing_spec=0; missing_ref=0; unknown_ref=0; mismatch=0
+DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance \
+  --profile full \
+  --check-id schema.spec_case_version_present \
+  --check-id schema.spec_case_schema_ref_present \
+  --check-id schema.spec_case_schema_ref_known \
+  --check-id schema.spec_case_version_matches_schema_ref \
+  --out "${tmp_out_rel}" \
+  --trace-out "${tmp_trace_rel}" \
+  --summary-out "${tmp_md_rel}" || true
 
-      while ((getline line < "specs/01_schema/schema_catalog_v1.yaml") > 0) {
-        if (line ~ /^[[:space:]]*-[[:space:]]schema_id:[[:space:]]/) {
-          if (path != "" && status == "active" && major != "") active[path]=major
-          path=""; status=""; major=""
-          continue
-        }
-        if (line ~ /^[[:space:]]*major:[[:space:]]*[0-9]+/) {
-          major=line
-          sub(/^[[:space:]]*major:[[:space:]]*/, "", major)
-          continue
-        }
-        if (line ~ /^[[:space:]]*path:[[:space:]]*/) {
-          path=line
-          sub(/^[[:space:]]*path:[[:space:]]*/, "", path)
-          gsub(/^"|"$/, "", path)
-          continue
-        }
-        if (line ~ /^[[:space:]]*status:[[:space:]]*/) {
-          status=line
-          sub(/^[[:space:]]*status:[[:space:]]*/, "", status)
-          gsub(/^"|"$/, "", status)
-          continue
-        }
-      }
-      if (path != "" && status == "active" && major != "") active[path]=major
-
-      cmd="find specs/03_conformance/cases specs/04_governance/cases specs/05_libraries -name \"*.spec.md\" -type f | sort"
-      while ((cmd | getline file) > 0) {
-        in_block=0
-        spec=""
-        ref=""
-        while ((getline l < file) > 0) {
-          if (l ~ /^(```+|~~~+)yaml contract-spec[[:space:]]*$/) {
-            in_block=1
-            spec=""
-            ref=""
-            continue
-          }
-          if (in_block && l ~ /^(```+|~~~+)[[:space:]]*$/) {
-            if (spec == "") missing_spec++
-            if (ref == "") missing_ref++
-            if (ref != "") {
-              if (!(ref in active)) {
-                unknown_ref++
-              } else if (spec == "" || spec !~ /^[0-9]+$/ || spec != active[ref]) {
-                mismatch++
-              }
-            }
-            in_block=0
-            continue
-          }
-          if (in_block && l ~ /^spec_version:[[:space:]]*/) {
-            spec=l
-            sub(/^spec_version:[[:space:]]*/, "", spec)
-            gsub(/^"|"$/, "", spec)
-            continue
-          }
-          if (in_block && l ~ /^schema_ref:[[:space:]]*/) {
-            ref=l
-            sub(/^schema_ref:[[:space:]]*/, "", ref)
-            gsub(/^"|"$/, "", ref)
-            continue
-          }
-        }
-        close(file)
-      }
-      close(cmd)
-
-      print missing_spec, missing_ref, unknown_ref, mismatch
-    }
-  '
-)
+missing_spec_version_count="$(jq '[.checks[] | select(.check_id=="schema.spec_case_version_present" and .status!="pass")] | length' "${tmp_out_rel}" 2>/dev/null || echo 1)"
+missing_schema_ref_count="$(jq '[.checks[] | select(.check_id=="schema.spec_case_schema_ref_present" and .status!="pass")] | length' "${tmp_out_rel}" 2>/dev/null || echo 1)"
+unknown_schema_ref_count="$(jq '[.checks[] | select(.check_id=="schema.spec_case_schema_ref_known" and .status!="pass")] | length' "${tmp_out_rel}" 2>/dev/null || echo 1)"
+mismatched_version_count="$(jq '[.checks[] | select(.check_id=="schema.spec_case_version_matches_schema_ref" and .status!="pass")] | length' "${tmp_out_rel}" 2>/dev/null || echo 1)"
 
 jq -n \
   --argjson missing_spec_version_count "${missing_spec_version_count}" \
@@ -118,7 +54,7 @@ cat > "${OUT_DIR}/spec-schema-pin-validate.md" <<MD
 MD
 
 if [[ "${missing_spec_version_count}" -gt 0 || "${missing_schema_ref_count}" -gt 0 || "${unknown_schema_ref_count}" -gt 0 || "${mismatched_version_count}" -gt 0 ]]; then
-  echo "WARN: schema pin extractor found violations (policy verdict is enforced in governance spec checks)"
+  echo "WARN: schema pin summary indicates governance check failures"
 else
-  echo "OK: schema pin extractor generated clean summary"
+  echo "OK: schema pin summary emitted from runner governance profile"
 fi

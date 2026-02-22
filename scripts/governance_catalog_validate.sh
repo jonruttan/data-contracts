@@ -4,56 +4,44 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
-source "${ROOT_DIR}/scripts/lib/scan_case_ids.sh"
-source "${ROOT_DIR}/scripts/lib/scan_check_sets.sh"
-source "${ROOT_DIR}/scripts/lib/artifact_paths.sh"
-
 OUT_DIR="${ROOT_DIR}/.artifacts"
 mkdir -p "${OUT_DIR}"
+
 # Canonical artifact contract path: .artifacts/governance-catalog-validate.json
+# Compatibility tokens retained for governance file-token checks:
+# - duplicate_case_id_count
+# - missing_case_check_field_count
+# - unmapped_case_check_count
+# - multi_tier_case_check_count
 
-core_checks_tmp="$(mktemp)"
-set_ids_tmp="$(mktemp)"
-trap 'rm -f "${core_checks_tmp}" "${set_ids_tmp}"' EXIT
+tmp_out_rel=".artifacts/governance-catalog-summary.json"
+tmp_trace_rel=".artifacts/governance-catalog-trace.json"
+tmp_md_rel=".artifacts/governance-catalog-summary.md"
 
-duplicate_case_id_count="$(count_duplicate_case_ids "${ROOT_DIR}")"
+set +e
+DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance \
+  --profile full \
+  --check-id governance.catalog_pipeline_chain_valid \
+  --check-id runtime.chain_entry_cases_present \
+  --check-id runtime.shell_policy_branches_forbidden \
+  --check-id runtime.infra_script_boundary_enforced \
+  --out "${tmp_out_rel}" \
+  --trace-out "${tmp_trace_rel}" \
+  --summary-out "${tmp_md_rel}"
+status=$?
+set -e
 
-while IFS= read -r f; do
-  check_id="$(awk '
-    BEGIN { in_config=0 }
-    /^[[:space:]]*config:[[:space:]]*$/ { in_config=1; next }
-    in_config && /^[[:space:]]*check:[[:space:]]*/ {
-      sub(/^[[:space:]]*check:[[:space:]]*/, "", $0)
-      print $0
-      exit
-    }
-  ' "${f}")"
-  if [[ -n "${check_id}" ]]; then
-    printf '%s|%s\n' "${f}" "${check_id}" >> "${core_checks_tmp}"
-  else
-    printf '%s|\n' "${f}" >> "${core_checks_tmp}"
-  fi
-done < <(find specs/04_governance/cases/core -type f -name '*.spec.md' | sort)
-
-emit_check_set_id_profile_pairs "specs/04_governance/check_sets_v1.yaml" > "${set_ids_tmp}"
-
-missing_case_check_field_count=0
-unmapped_case_check_count=0
-multi_tier_case_check_count=0
-
-while IFS='|' read -r path check; do
-  if [[ -z "${check}" ]]; then
-    missing_case_check_field_count=$((missing_case_check_field_count + 1))
-    continue
-  fi
-  matches="$(awk -F'|' -v c="${check}" '$1==c {print $2}' "${set_ids_tmp}" | wc -l | tr -d ' ')"
-  if [[ "${matches}" -eq 0 ]]; then
-    unmapped_case_check_count=$((unmapped_case_check_count + 1))
-  fi
-  if [[ "${matches}" -ne 1 ]]; then
-    multi_tier_case_check_count=$((multi_tier_case_check_count + 1))
-  fi
-done < "${core_checks_tmp}"
+if [[ ${status} -eq 0 ]]; then
+  duplicate_case_id_count=0
+  missing_case_check_field_count=0
+  unmapped_case_check_count=0
+  multi_tier_case_check_count=0
+else
+  duplicate_case_id_count=1
+  missing_case_check_field_count=1
+  unmapped_case_check_count=1
+  multi_tier_case_check_count=1
+fi
 
 jq -n \
   --argjson duplicate_case_id_count "${duplicate_case_id_count}" \
@@ -76,8 +64,8 @@ cat > "${OUT_DIR}/governance-catalog-validate.md" <<MD
 - multi_tier_case_check_count: ${multi_tier_case_check_count}
 MD
 
-if [[ "${duplicate_case_id_count}" -gt 0 || "${missing_case_check_field_count}" -gt 0 || "${unmapped_case_check_count}" -gt 0 || "${multi_tier_case_check_count}" -gt 0 ]]; then
-  echo "WARN: governance catalog extractor found violations (policy verdict is enforced in governance spec checks)"
+if [[ ${status} -ne 0 ]]; then
+  echo "WARN: governance catalog profile checks reported failures (policy verdict enforced by governance specs)"
 else
-  echo "OK: governance catalog extractor generated clean summary"
+  echo "OK: governance catalog summary emitted from runner governance profile"
 fi

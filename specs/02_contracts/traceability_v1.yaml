@@ -4344,3 +4344,24 @@ links:
   - specs/04_governance/cases/core/project_docs/runtime_non_core_scripts_not_in_active_docs.spec.md
   - specs/04_governance/cases/core/spec_core/runtime_non_core_scripts_not_in_active_policy_traceability.spec.md
   notes: Active entrypoints are restricted to the canonical 8-script core set.
+- rule_id: SHARED_RUNNER_LOGIC_SPEC_OWNED
+  policy_ref: specs/02_contracts/policy_v1.yaml#SHARED_RUNNER_LOGIC_SPEC_OWNED
+  contract_refs:
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/21_schema_registry_contract.md
+  - specs/02_contracts/28_spec_lang_policy_execution.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/04_governance/cases/core/spec_core/runtime_governance_catalog_pipeline_chain.spec.md
+  - specs/04_governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md
+  - specs/04_governance/cases/core/runtime_optional_report_pipeline_chain.spec.md
+  - specs/05_libraries/policy/policy_governance_catalog.spec.md
+  - specs/05_libraries/policy/policy_schema_pin.spec.md
+  - specs/05_libraries/policy/policy_ci_gate.spec.md
+  - scripts/control_plane.sh
+  - scripts/governance_catalog_validate.sh
+  - scripts/spec_schema_pin_validate.sh
+  - scripts/governance_optional_report.sh
+  notes: Shared governance semantics are spec-defined and runner-executed; shell scripts remain thin transport emitters.

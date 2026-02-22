@@ -35,6 +35,10 @@ Executable governance checks for canonical contract enforcement.
 ./scripts/control_plane.sh governance
 ```
 
+Governance decision logic is sourced from executable spec cases and policy
+libraries. Shell scripts in `/scripts/` are transport entrypoints and artifact
+emitters only.
+
 ## Canonical Checks
 
 - Governance check catalog is generated into `/docs/book/96_appendix_governance_checks_reference.md`.

@@ -21,6 +21,8 @@ Runtime execution ownership lives in runner repositories:
 - docs and reference integrity
 - runner-ingestible pack manifests under `/specs/00_core/packs/`
 - portable runner CLI contract definitions
+- shared governance/check semantics expressed as executable `.spec.md` cases and
+  reusable policy libraries
 
 ## Stable Boundary
 
@@ -30,6 +32,10 @@ The public command boundary remains:
 
 This boundary is retained for compatibility, but control-plane CI in this repo
 must not depend on runtime-lane execution through that boundary.
+
+Shared governance semantics MUST be sourced from spec surfaces (`specs/04_governance/**`
+`specs/05_libraries/policy/**`) and executed by runners; shell scripts are transport
+entrypoints and artifact emitters only.
 
 ## Status Exchange Boundary
 
