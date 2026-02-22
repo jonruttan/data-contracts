@@ -17,8 +17,9 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime services are optional at root.
 - When `services` is present, it MUST define non-empty `services.actions[]`.
-- Suite MAY declare root `bindings[]` to bind service imports to contracts for
+- Contracts MAY declare `contracts[].bindings[]` to bind service imports for
   predicate piping (`service_id.import_name`).
+- Root `bindings` is invalid in v2 (hard cut).
 - Contract-job metadata MUST use `services.actions[].config.jobs[]` rows keyed by explicit `id`.
 - `contracts[].harness` is invalid in v2 (hard cut).
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
@@ -37,20 +38,22 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Any external locator consumed by service config MUST be declared in
   `artifacts[]` and referenced by `*_artifact_id` (or
   `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
-- `bindings` supports canonical list rows (`bindings[]`) and additive mapping
-  form (`bindings.defaults` + `bindings.rows[]`), normalized to effective rows.
+- `contracts[].bindings` supports canonical list rows (`contracts[].bindings[]`)
+  and additive mapping form (`contracts[].bindings.defaults` +
+  `contracts[].bindings.rows[]`), normalized to effective rows.
+- Mixed list-form and mapping-form bindings in the same contract are invalid.
 - Effective binding row = shallow merge(defaults, row), with row values
   overriding defaults.
-- Effective binding rows MUST include `id`, `contract`, `service`, and `import`.
-- `bindings[].contract` MUST resolve to `contracts[].id`; effective `service`
-  MUST resolve to `services.actions[].id`.
-- `bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
+- Effective binding rows MUST include `id`, `service`, and `import`.
+- Effective `service` MUST resolve to `services.actions[].id`.
+- Legacy binding row key `contract` is invalid in v2.
+- `contracts[].bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
   `input` or `io`.
-- `bindings[].outputs[].to` MUST resolve to `artifacts[].id` where `io` is
+- `contracts[].bindings[].outputs[].to` MUST resolve to `artifacts[].id` where `io` is
   `output` or `io`.
 - `from: artifact` imported names MUST resolve to suite-declared artifact ids
   and MUST NOT rely on implicit runtime target injection.
-- If `bindings[]` or any `from: service` assertion import is present,
+- If any `contracts[].bindings[]` or any `from: service` assertion import is present,
   `services` MUST be declared and valid.
 - Suite artifact references MUST be declared only under `artifacts[]`.
 - Root `exports[]` MUST be function-only declarations using
@@ -80,7 +83,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 Runtime catalog entries define service additions over common suite/contract keys:
 
 - required suite runtime fields (`harness`; `services.actions[]` when services are used)
-- optional service-contract binding field (`bindings[]`)
+- optional contract-local binding field (`contracts[].bindings[]`)
 - service type/profile/io compatibility and available function names
 - allowed function operation prefixes per service type
 

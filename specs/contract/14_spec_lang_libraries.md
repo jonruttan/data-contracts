@@ -21,7 +21,7 @@ Suite-level external references:
   per-contract assertion/harness blocks.
 - these suite-root declarations are metadata/coordination surfaces and are
   distinct from `clauses.imports`, `clauses.config.spec_lang.imports`,
-  suite-root `bindings[]`, and suite-root `exports[]` function declarations.
+  `contracts[].bindings[]`, and suite-root `exports[]` function declarations.
 - `artifacts[].ref` supports moustache
   (`{{...}}`) template expressions resolved from suite context only.
 - documentation metadata for suite/function/artifact surfaces uses `docs[]`

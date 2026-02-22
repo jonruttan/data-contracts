@@ -158,117 +158,6 @@ services:
         - domain.http.step_by_id
         - domain.http.step_status_is
         artifact_id: art.svc.assert_check.api_http.16.use_1.1
-bindings:
-  defaults:
-    import: pipe_identity
-    mode: merge
-  rows:
-  - id: bind.api_http.1
-    contract: DCCONF-API-001
-    service: svc.assert_check.api_http.1
-    outputs:
-    - to: body_json
-      as: body_json
-    - to: status
-      as: status
-  - id: bind.api_http.2
-    contract: DCCONF-API-002
-    service: svc.assert_check.api_http.2
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.3
-    contract: DCCONF-API-003
-    service: svc.assert_check.api_http.3
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.4
-    contract: DCCONF-API-004
-    service: svc.assert_check.api_http.4
-    outputs:
-    - to: body_json
-      as: body_json
-  - id: bind.api_http.5
-    contract: DCCONF-API-005
-    service: svc.assert_check.api_http.5
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.6
-    contract: DCCONF-API-006
-    service: svc.assert_check.api_http.6
-    outputs:
-    - to: body_text
-      as: body_text
-  - id: bind.api_http.7
-    contract: DCCONF-API-007
-    service: svc.assert_check.api_http.7
-    outputs:
-    - to: body_json
-      as: body_json
-  - id: bind.api_http.8
-    contract: DCCONF-API-008
-    service: svc.assert_check.api_http.8
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.9
-    contract: DCCONF-API-009
-    service: svc.assert_check.api_http.9
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.10
-    contract: DCCONF-API-010
-    service: svc.assert_check.api_http.10
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.11
-    contract: DCCONF-API-011
-    service: svc.assert_check.api_http.11
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.12
-    contract: DCCONF-API-012
-    service: svc.assert_check.api_http.12
-    outputs:
-    - to: status
-      as: status
-    - to: steps_json
-      as: steps_json
-  - id: bind.api_http.13
-    contract: DCCONF-API-013
-    service: svc.assert_check.api_http.13
-    outputs:
-    - to: context_json
-      as: context_json
-  - id: bind.api_http.14
-    contract: DCCONF-API-014
-    service: svc.assert_check.api_http.14
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.15
-    contract: DCCONF-API-015
-    service: svc.assert_check.api_http.15
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.16
-    contract: DCCONF-API-016
-    service: svc.assert_check.api_http.16
-    outputs:
-    - to: status
-      as: status
-  - id: bind.api_http.17
-    contract: DCCONF-API-017
-    service: svc.assert_check.api_http.16
-    outputs:
-    - to: status
-      as: status
 contracts:
 - id: DCCONF-API-001
   title: api.http GET reads relative fixture and exposes body assertions
@@ -277,6 +166,18 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.1
+      service: svc.assert_check.api_http.1
+      outputs:
+      - to: body_json
+        as: body_json
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -304,6 +205,16 @@ contracts:
       category: schema
       message_tokens:
       - api.http request.url is required
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.2
+      service: svc.assert_check.api_http.2
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -326,6 +237,16 @@ contracts:
     - api.http
     - api.http.missing
     when_missing: skip
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.3
+      service: svc.assert_check.api_http.3
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -343,6 +264,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.4
+      service: svc.assert_check.api_http.4
+      outputs:
+      - to: body_json
+        as: body_json
   clauses:
     imports:
     - artifact:
@@ -360,6 +291,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.5
+      service: svc.assert_check.api_http.5
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -377,6 +318,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.6
+      service: svc.assert_check.api_http.6
+      outputs:
+      - to: body_text
+        as: body_text
   clauses:
     imports:
     - artifact:
@@ -394,6 +345,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.7
+      service: svc.assert_check.api_http.7
+      outputs:
+      - to: body_json
+        as: body_json
   clauses:
     imports:
     - artifact:
@@ -413,6 +374,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.8
+      service: svc.assert_check.api_http.8
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -430,6 +401,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.9
+      service: svc.assert_check.api_http.9
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -449,6 +430,16 @@ contracts:
       category: schema
       message_tokens:
       - request.method must be one of
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.10
+      service: svc.assert_check.api_http.10
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -468,6 +459,16 @@ contracts:
       category: schema
       message_tokens:
       - request.cors.preflight requires request.method OPTIONS
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.11
+      service: svc.assert_check.api_http.11
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -485,6 +486,18 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.12
+      service: svc.assert_check.api_http.12
+      outputs:
+      - to: status
+        as: status
+      - to: steps_json
+        as: steps_json
   clauses:
     imports:
     - artifact:
@@ -511,6 +524,16 @@ contracts:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.13
+      service: svc.assert_check.api_http.13
+      outputs:
+      - to: context_json
+        as: context_json
   clauses:
     imports:
     - artifact:
@@ -541,6 +564,16 @@ contracts:
       category: schema
       message_tokens:
       - oauth env var is required
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.14
+      service: svc.assert_check.api_http.14
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -560,6 +593,16 @@ contracts:
       category: schema
       message_tokens:
       - auth_style
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.15
+      service: svc.assert_check.api_http.15
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -582,6 +625,16 @@ contracts:
     - api.http
     - api.http.oauth.live
     when_missing: skip
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.16
+      service: svc.assert_check.api_http.16
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:
@@ -604,6 +657,16 @@ contracts:
     - api.http
     - api.http.domain_lib_refs
     when_missing: skip
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind.api_http.17
+      service: svc.assert_check.api_http.16
+      outputs:
+      - to: status
+        as: status
   clauses:
     imports:
     - artifact:

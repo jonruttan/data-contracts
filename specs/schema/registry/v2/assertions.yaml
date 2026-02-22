@@ -22,7 +22,7 @@ fields:
     description: Clause-level default import bindings inherited by predicates.
       For from=artifact, every imported name must be explicitly declared at suite
       root (`artifacts[].id`) and wired through
-      bindings when runtime-produced. Supports canonical rows (`from`, `names`,
+      `contracts[].bindings` when runtime-produced. Supports canonical rows (`from`, `names`,
       optional `service`, optional `as`) and grouped compact alias rows.
   contracts[].clauses.imports[].artifact:
     type: list

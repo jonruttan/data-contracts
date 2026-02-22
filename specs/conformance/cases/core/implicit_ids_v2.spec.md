@@ -87,13 +87,6 @@ services:
   - id: svc.default.4
     imports:
     - pipe_identity
-bindings:
-- id: bind.invalid.synthetic
-  contract: contracts[DCCONF-IMPLICIT-ID-004]
-  service: svc.default.4
-  import: pipe_identity
-  outputs:
-  - to: out_json
 contracts:
 - id: DCCONF-IMPLICIT-ID-004
   title: synthetic report label is invalid as reference identity
@@ -101,6 +94,12 @@ contracts:
     portable:
       status: fail
       category: schema
+  bindings:
+  - id: bind.invalid.synthetic
+    service: svc.default.4
+    import: pipe_identity
+    outputs:
+    - to: out_json
   clauses:
     predicates:
     - id: assert_1

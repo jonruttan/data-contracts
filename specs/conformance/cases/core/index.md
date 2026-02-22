@@ -13,6 +13,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/conformance/cases/core/php_text_file_subset.spec.md`
 - `/specs/conformance/cases/core/runner_certification_core.spec.md`
 - `/specs/conformance/cases/core/runner_status_exchange.spec.md`
+- `/specs/conformance/cases/core/root_bindings_forbidden.spec.md`
 - `/specs/conformance/cases/core/schema_case_validation.spec.md`
 - `/specs/conformance/cases/core/schema_registry_contract.spec.md`
 - `/specs/conformance/cases/core/spec_lang.spec.md`

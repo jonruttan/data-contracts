@@ -105,9 +105,8 @@ Suite root canonical order:
 8. `harness`
 9. `services`
 10. `artifacts`
-11. `bindings`
-12. `exports`
-13. `contracts`
+11. `exports`
+12. `contracts`
 
 `contracts[]` canonical order:
 
@@ -118,9 +117,10 @@ Suite root canonical order:
 5. `domain`
 6. `expect`
 7. `requires`
-8. `clauses`
-9. `library`
-10. `when`
+8. `bindings`
+9. `clauses`
+10. `library`
+11. `when`
 
 Ordering rules:
 
@@ -134,6 +134,15 @@ Each `contracts[]` item:
 - `clauses` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
 - `expect`/`requires`/`when` (optional)
+- `contracts[].bindings` (list|mapping, optional): contract-local service
+  binding declarations
+  - list form (canonical): `contracts[].bindings[]` rows
+  - mapping form (additive compaction):
+    `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`
+  - defaults keys (optional): `service`, `import`, `mode`, `predicates`
+  - row keys: `id`, optional `service`, optional `import`, `inputs`, `outputs`,
+    `predicates`, `mode`
+  - effective row = shallow merge(defaults, row), row overrides defaults
 
 Suite runtime surfaces:
 
@@ -156,13 +165,6 @@ Suite runtime surfaces:
     - mixed item kinds (string + mapping) in one `imports` list are invalid
   - `services.actions[].imports[].names` (list, required)
   - `services.actions[].imports[].as` (mapping, optional)
-- `bindings` (list|mapping, optional): suite-root service-to-contract binding declarations
-  - list form (canonical): `bindings[]` rows
-  - mapping form (additive compaction): `bindings.defaults` + `bindings.rows[]`
-  - defaults keys (optional): `service`, `import`, `mode`, `predicates`
-  - row keys: `id`, `contract`, optional `service`, optional `import`, `inputs`, `outputs`, `predicates`, `mode`
-  - effective row = shallow merge(defaults, row), row overrides defaults
-
 Parser behavior:
 
 - discovery scans files matching case-file pattern (default `*.spec.md`) in
@@ -187,6 +189,7 @@ Parser behavior:
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
+- root `bindings` is invalid in v2
 - `artifacts[].ref` MUST be strings
 - `artifacts[].ref` template expressions
   use moustache syntax and resolve from suite context only
@@ -209,18 +212,20 @@ Parser behavior:
 - compact `services.actions[].imports` names MUST be unique per service entry
   and valid for resolved `services.actions[].type/profile` in
   `/specs/schema/service_contract_catalog_v1.yaml`
-- if `bindings[]` is present, `services` MUST be present and valid
+- if any contract declares `contracts[].bindings[]`, `services` MUST be present and valid
 - if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
   `from: service`, `services` MUST be present and valid
 - bindings execute once per contract before predicate evaluation
-- bindings support canonical list form (`bindings[]`) and additive mapping form (`bindings.defaults` + `bindings.rows[]`)
-- each effective binding row MUST include `id`, `contract`, `service`, and `import` after defaults merge
-- effective row = shallow merge(`bindings.defaults`, row), row values override defaults
-- `bindings[].contract` MUST reference an existing `contracts[].id`
+- bindings support canonical list form (`contracts[].bindings[]`) and additive mapping form (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`)
+- legacy row key `contract` under `contracts[].bindings[]` is invalid
+- mixed `contracts[].bindings[]` list-form and `contracts[].bindings.rows[]`
+  mapping-form in the same contract is invalid
+- each effective binding row MUST include `id`, `service`, and `import` after defaults merge
+- effective row = shallow merge(`contracts[].bindings.defaults`, row), row values override defaults
 - effective `service` MUST reference an existing `services.actions[].id`
-- `bindings[].inputs[].from` MUST reference `artifacts[].id` where artifact
+- `contracts[].bindings[].inputs[].from` MUST reference `artifacts[].id` where artifact
   entry `io` is `input` or `io`
-- `bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
+- `contracts[].bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
   entry `io` is `output` or `io`
 - binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
 - direct external locator keys in `services.actions[].config` are invalid:
@@ -238,15 +243,17 @@ Parser behavior:
 - synthetic labels may be emitted for reporting when optional docs/docs-owner ids
   are omitted, but these labels are diagnostics-only and must not be accepted as
   schema reference identities
-- `bindings[].mode` supports `merge|override` on effective rows:
+- `contracts[].bindings[].mode` supports `merge|override` on effective rows:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
 - legacy `type` on contract items is invalid in v2
 
 Binding defaults semantics:
 
-- mapping-form `bindings.defaults` applies only to rows in `bindings.rows[]`
-- list-form `bindings[]` may also inherit from `bindings.defaults` when both are present
+- mapping-form `contracts[].bindings.defaults` applies only to rows in
+  `contracts[].bindings.rows[]`
+- list-form `contracts[].bindings[]` may also inherit from
+  `contracts[].bindings.defaults` when both are present
 - row conflicts with defaults resolve in favor of row values
 - missing effective `service` or `import` is schema failure
 
@@ -630,7 +637,7 @@ Import merge behavior:
   `clauses.predicates[].imports`
 - predicate imports override defaults on key collision
 - binding-piped symbols are then merged into effective predicate context
-  according to `bindings[].mode`:
+  according to `contracts[].bindings[].mode`:
   - `merge`: existing explicit import symbols are preserved
   - `override`: binding symbols replace same-name explicit imports
 
@@ -873,20 +880,37 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.actions[].docs[].examples` | `list` | `false` | `v2` |
 | `services.actions[].docs[].examples[].title` | `string` | `true` | `v2` |
 | `services.actions[].docs[].examples[].ref` | `string` | `true` | `v2` |
-| `bindings` | `list` | `false` | `v2` |
-| `bindings[].id` | `string` | `true` | `v2` |
-| `bindings[].contract` | `string` | `true` | `v2` |
-| `bindings[].service` | `string` | `true` | `v2` |
-| `bindings[].import` | `string` | `true` | `v2` |
-| `bindings[].inputs` | `list` | `false` | `v2` |
-| `bindings[].inputs[].from` | `string` | `true` | `v2` |
-| `bindings[].inputs[].as` | `string` | `true` | `v2` |
-| `bindings[].outputs` | `list` | `false` | `v2` |
-| `bindings[].outputs[].to` | `string` | `true` | `v2` |
-| `bindings[].outputs[].as` | `string` | `false` | `v2` |
-| `bindings[].outputs[].path` | `string` | `false` | `v2` |
-| `bindings[].predicates` | `list` | `false` | `v2` |
-| `bindings[].mode` | `string` | `false` | `v2` |
+| `contracts[].bindings` | `any` | `false` | `v2` |
+| `contracts[].bindings.defaults` | `mapping` | `false` | `v2` |
+| `contracts[].bindings.defaults.service` | `string` | `false` | `v2` |
+| `contracts[].bindings.defaults.import` | `string` | `false` | `v2` |
+| `contracts[].bindings.defaults.mode` | `string` | `false` | `v2` |
+| `contracts[].bindings.defaults.predicates` | `list` | `false` | `v2` |
+| `contracts[].bindings.rows` | `list` | `false` | `v2` |
+| `contracts[].bindings.rows[].id` | `string` | `true` | `v2` |
+| `contracts[].bindings.rows[].service` | `string` | `false` | `v2` |
+| `contracts[].bindings.rows[].import` | `string` | `false` | `v2` |
+| `contracts[].bindings.rows[].inputs` | `list` | `false` | `v2` |
+| `contracts[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts[].bindings.rows[].outputs` | `list` | `false` | `v2` |
+| `contracts[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts[].bindings.rows[].predicates` | `list` | `false` | `v2` |
+| `contracts[].bindings.rows[].mode` | `string` | `false` | `v2` |
+| `contracts[].bindings[].id` | `string` | `true` | `v2` |
+| `contracts[].bindings[].service` | `string` | `false` | `v2` |
+| `contracts[].bindings[].import` | `string` | `false` | `v2` |
+| `contracts[].bindings[].inputs` | `list` | `false` | `v2` |
+| `contracts[].bindings[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts[].bindings[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts[].bindings[].outputs` | `list` | `false` | `v2` |
+| `contracts[].bindings[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts[].bindings[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts[].bindings[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts[].bindings[].predicates` | `list` | `false` | `v2` |
+| `contracts[].bindings[].mode` | `string` | `false` | `v2` |
 | `artifacts` | `mapping` | `false` | `v2` |
 | `artifacts` | `list` | `false` | `v2` |
 | `artifacts[].id` | `string` | `true` | `v2` |
@@ -1036,8 +1060,8 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `contracts[].bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `contracts[].bindings[]` | `contracts[].bindings[].id`, `contracts[].bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
@@ -1108,20 +1132,37 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.actions[].docs[].examples` | `list` | false | `v2` |
 | `services.actions[].docs[].examples[].title` | `string` | true | `v2` |
 | `services.actions[].docs[].examples[].ref` | `string` | true | `v2` |
-| `bindings` | `list` | false | `v2` |
-| `bindings[].id` | `string` | true | `v2` |
-| `bindings[].contract` | `string` | true | `v2` |
-| `bindings[].service` | `string` | true | `v2` |
-| `bindings[].import` | `string` | true | `v2` |
-| `bindings[].inputs` | `list` | false | `v2` |
-| `bindings[].inputs[].from` | `string` | true | `v2` |
-| `bindings[].inputs[].as` | `string` | true | `v2` |
-| `bindings[].outputs` | `list` | false | `v2` |
-| `bindings[].outputs[].to` | `string` | true | `v2` |
-| `bindings[].outputs[].as` | `string` | false | `v2` |
-| `bindings[].outputs[].path` | `string` | false | `v2` |
-| `bindings[].predicates` | `list` | false | `v2` |
-| `bindings[].mode` | `string` | false | `v2` |
+| `contracts[].bindings` | `any` | false | `v2` |
+| `contracts[].bindings.defaults` | `mapping` | false | `v2` |
+| `contracts[].bindings.defaults.service` | `string` | false | `v2` |
+| `contracts[].bindings.defaults.import` | `string` | false | `v2` |
+| `contracts[].bindings.defaults.mode` | `string` | false | `v2` |
+| `contracts[].bindings.defaults.predicates` | `list` | false | `v2` |
+| `contracts[].bindings.rows` | `list` | false | `v2` |
+| `contracts[].bindings.rows[].id` | `string` | true | `v2` |
+| `contracts[].bindings.rows[].service` | `string` | false | `v2` |
+| `contracts[].bindings.rows[].import` | `string` | false | `v2` |
+| `contracts[].bindings.rows[].inputs` | `list` | false | `v2` |
+| `contracts[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
+| `contracts[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
+| `contracts[].bindings.rows[].outputs` | `list` | false | `v2` |
+| `contracts[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
+| `contracts[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
+| `contracts[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
+| `contracts[].bindings.rows[].predicates` | `list` | false | `v2` |
+| `contracts[].bindings.rows[].mode` | `string` | false | `v2` |
+| `contracts[].bindings[].id` | `string` | true | `v2` |
+| `contracts[].bindings[].service` | `string` | false | `v2` |
+| `contracts[].bindings[].import` | `string` | false | `v2` |
+| `contracts[].bindings[].inputs` | `list` | false | `v2` |
+| `contracts[].bindings[].inputs[].from` | `string` | true | `v2` |
+| `contracts[].bindings[].inputs[].as` | `string` | true | `v2` |
+| `contracts[].bindings[].outputs` | `list` | false | `v2` |
+| `contracts[].bindings[].outputs[].to` | `string` | true | `v2` |
+| `contracts[].bindings[].outputs[].as` | `string` | false | `v2` |
+| `contracts[].bindings[].outputs[].path` | `string` | false | `v2` |
+| `contracts[].bindings[].predicates` | `list` | false | `v2` |
+| `contracts[].bindings[].mode` | `string` | false | `v2` |
 | `artifacts` | `mapping` | false | `v2` |
 | `artifacts` | `list` | false | `v2` |
 | `artifacts[].id` | `string` | true | `v2` |
@@ -1271,6 +1312,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required_keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services.actions[]` | `services.actions[].id` (required when `services` is present, or when `contracts[].bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `contracts[].bindings[]` | `contracts[].bindings[].id`, `contracts[].bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

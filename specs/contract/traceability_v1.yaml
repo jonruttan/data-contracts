@@ -12,7 +12,7 @@ links:
   - DCCONF-SCHEMA-CASE-022
   unit_test_refs: []
   implementation_refs: []
-  notes: Suite bindings must transport runtime service payloads only through declared artifacts import/export ids.
+  notes: Contract bindings must transport runtime service payloads only through declared artifacts import/export ids.
 - rule_id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   policy_ref: specs/contract/policy_v1.yaml#ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   contract_refs:
@@ -37,6 +37,17 @@ links:
   implementation_refs: []
   notes: Effective binding service is required after defaults merge; default
     runtime service fallback is forbidden.
+- rule_id: ROOT_BINDINGS_FORBIDDEN
+  policy_ref: specs/contract/policy_v1.yaml#ROOT_BINDINGS_FORBIDDEN
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-BIND-ROOT-001
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Root bindings are forbidden in v2; bindings must be declared per contract.
 - rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   contract_refs:

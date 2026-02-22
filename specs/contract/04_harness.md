@@ -11,9 +11,10 @@
   canonical mapping rows.
 - Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
-- Suite-root `bindings` connects contracts to services and artifact channels.
-  It supports canonical `bindings[]` rows and additive compaction form
-  `bindings.defaults` + `bindings.rows[]`.
+- Contract-scoped `contracts[].bindings` connects contracts to services and artifact channels.
+  It supports canonical `contracts[].bindings[]` rows and additive compaction form
+  `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`.
+- root `bindings` is invalid in v2.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
@@ -27,7 +28,7 @@ Suite-root external references:
 - `artifacts[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
-  `artifacts[]` through `bindings[]` mappings.
+  `artifacts[]` through `contracts[].bindings[]` mappings.
 - services MUST NOT reference external locations directly in
   `services.actions[].config`; direct locator keys (`path`, `url`, `token_url`,
   `template_path`, `output_path`, `ref`) are invalid.
@@ -39,7 +40,7 @@ Suite-root external references:
   inject predicate symbols.
 - artifact symbols are available to predicates only when explicitly declared
   and wired.
-- when `bindings[]` or `from: service` imports are present, `services` MUST be
+- when `contracts[].bindings[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
 - binding defaults are additive only: explicit row values override defaults.
 - `service` and `import` are effective-required after defaults merge.

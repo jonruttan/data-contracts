@@ -364,157 +364,6 @@ fields:
     type: string
     required: true
     since: v2
-  bindings:
-    type: any
-    required: false
-    since: v2
-    description: Supports either canonical list form (`bindings[]`) or additive
-      mapping form (`bindings.defaults` + `bindings.rows[]`), normalized to
-      effective binding rows before validation.
-  bindings.defaults:
-    type: mapping
-    required: false
-    since: v2
-  bindings.defaults.service:
-    type: string
-    required: false
-    since: v2
-    description: Optional default binding service id.
-  bindings.defaults.import:
-    type: string
-    required: false
-    since: v2
-    description: Optional default binding import name.
-  bindings.defaults.mode:
-    type: string
-    required: false
-    since: v2
-    enum:
-    - merge
-    - override
-  bindings.defaults.predicates:
-    type: list
-    required: false
-    since: v2
-  bindings.rows:
-    type: list
-    required: false
-    since: v2
-    description: Binding rows when using mapping-form bindings.
-  bindings.rows[].id:
-    type: string
-    required: true
-    since: v2
-  bindings.rows[].contract:
-    type: string
-    required: true
-    since: v2
-  bindings.rows[].service:
-    type: string
-    required: false
-    since: v2
-  bindings.rows[].import:
-    type: string
-    required: false
-    since: v2
-  bindings.rows[].inputs:
-    type: list
-    required: false
-    since: v2
-  bindings.rows[].inputs[].from:
-    type: string
-    required: true
-    since: v2
-  bindings.rows[].inputs[].as:
-    type: string
-    required: true
-    since: v2
-  bindings.rows[].outputs:
-    type: list
-    required: false
-    since: v2
-  bindings.rows[].outputs[].to:
-    type: string
-    required: true
-    since: v2
-  bindings.rows[].outputs[].as:
-    type: string
-    required: false
-    since: v2
-  bindings.rows[].outputs[].path:
-    type: string
-    required: false
-    since: v2
-  bindings.rows[].predicates:
-    type: list
-    required: false
-    since: v2
-  bindings.rows[].mode:
-    type: string
-    required: false
-    since: v2
-    enum:
-    - merge
-    - override
-  bindings[].id:
-    type: string
-    required: true
-    since: v2
-  bindings[].contract:
-    type: string
-    required: true
-    since: v2
-  bindings[].service:
-    type: string
-    required: false
-    since: v2
-    description: Optional when inherited from `bindings.defaults.service`; effective
-      binding service is required after defaults merge.
-  bindings[].import:
-    type: string
-    required: false
-    since: v2
-    description: Optional when inherited from `bindings.defaults.import`; effective
-      binding import is required after defaults merge.
-  bindings[].inputs:
-    type: list
-    required: false
-    since: v2
-  bindings[].inputs[].from:
-    type: string
-    required: true
-    since: v2
-  bindings[].inputs[].as:
-    type: string
-    required: true
-    since: v2
-  bindings[].outputs:
-    type: list
-    required: false
-    since: v2
-  bindings[].outputs[].to:
-    type: string
-    required: true
-    since: v2
-  bindings[].outputs[].as:
-    type: string
-    required: false
-    since: v2
-  bindings[].outputs[].path:
-    type: string
-    required: false
-    since: v2
-  bindings[].predicates:
-    type: list
-    required: false
-    since: v2
-  bindings[].mode:
-    type: string
-    required: false
-    since: v2
-    enum:
-    - merge
-    - override
   artifacts:
     type: list
     required: false
@@ -1033,6 +882,150 @@ fields:
     type: list
     required: false
     since: v2
+  contracts[].bindings:
+    type: any
+    required: false
+    since: v2
+    description: Supports either canonical list form (`contracts[].bindings[]`)
+      or additive mapping form (`contracts[].bindings.defaults` +
+      `contracts[].bindings.rows[]`), normalized to effective binding rows before
+      validation.
+  contracts[].bindings.defaults:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].bindings.defaults.service:
+    type: string
+    required: false
+    since: v2
+    description: Optional default binding service id.
+  contracts[].bindings.defaults.import:
+    type: string
+    required: false
+    since: v2
+    description: Optional default binding import name.
+  contracts[].bindings.defaults.mode:
+    type: string
+    required: false
+    since: v2
+    enum:
+    - merge
+    - override
+  contracts[].bindings.defaults.predicates:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings.rows:
+    type: list
+    required: false
+    since: v2
+    description: Binding rows when using mapping-form contract bindings.
+  contracts[].bindings.rows[].id:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings.rows[].service:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings.rows[].import:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings.rows[].inputs:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings.rows[].inputs[].from:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings.rows[].inputs[].as:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings.rows[].outputs:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings.rows[].outputs[].to:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings.rows[].outputs[].as:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings.rows[].outputs[].path:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings.rows[].predicates:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings.rows[].mode:
+    type: string
+    required: false
+    since: v2
+    enum:
+    - merge
+    - override
+  contracts[].bindings[].id:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings[].service:
+    type: string
+    required: false
+    since: v2
+    description: Optional when inherited from `contracts[].bindings.defaults.service`;
+      effective binding service is required after defaults merge.
+  contracts[].bindings[].import:
+    type: string
+    required: false
+    since: v2
+    description: Optional when inherited from `contracts[].bindings.defaults.import`;
+      effective binding import is required after defaults merge.
+  contracts[].bindings[].inputs:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings[].inputs[].from:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings[].inputs[].as:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings[].outputs:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings[].outputs[].to:
+    type: string
+    required: true
+    since: v2
+  contracts[].bindings[].outputs[].as:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings[].outputs[].path:
+    type: string
+    required: false
+    since: v2
+  contracts[].bindings[].predicates:
+    type: list
+    required: false
+    since: v2
+  contracts[].bindings[].mode:
+    type: string
+    required: false
+    since: v2
+    enum:
+    - merge
+    - override
   contracts[].clauses:
     type: mapping
     required: true

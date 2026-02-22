@@ -38,7 +38,7 @@ Scope separation:
   `clauses.predicates[].imports`.
 - suite-root `artifacts[]` are external
   reference declarations and do not implicitly bind assertion symbols.
-- suite-root `bindings[]` materializes service-produced symbols into predicate
+- `contracts[].bindings[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
 - service locator values consumed by bindings/imports must be declared in
   `artifacts[]`; assertion/runtime surfaces must not rely on direct
@@ -58,7 +58,7 @@ Import binding shape:
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)
 - runtime-produced artifact symbols MUST be explicitly wired through
-  `bindings[].outputs` before predicate import use
+  `contracts[].bindings[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
 - when `from: service`, `service` key is required and must reference suite `services.actions[].id`
@@ -72,7 +72,7 @@ Import merge semantics:
 - predicate imports override same-name defaults
 - `clauses.defaults` may provide inherited clause-level defaults; explicit row
   values always override inherited defaults
-- binding-piped symbols from `bindings[]` are applied after import merge:
+- binding-piped symbols from `contracts[].bindings[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
 - implicit harness/service symbol injection is forbidden

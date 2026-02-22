@@ -4,7 +4,7 @@ rules:
 - id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
   introduced_in: v2
   scope: case
-  applies_to: runtime.bindings.imports
+  applies_to: contracts[].bindings.imports
   norm: MUST
   requirement: service_binding_runtime_payloads_use_declared_artifact_ids
   description: 'Service-to-contract bindings must source runtime inputs from
@@ -26,7 +26,7 @@ rules:
   requirement: imported_artifact_symbols_must_be_declared_and_wired
   description: 'Any `from: artifact` import name must be explicitly declared in
     suite `artifacts[]`; runtime-produced symbols
-    must be explicitly wired through `bindings[].outputs`.
+    must be explicitly wired through `contracts[].bindings[].outputs`.
 
     '
   rationale: Eliminates implicit symbol magic and keeps predicate dataflow explicit.
@@ -38,14 +38,28 @@ rules:
 - id: BINDINGS_SERVICE_REQUIRED
   introduced_in: v2
   scope: case
-  applies_to: runtime.bindings.imports
+  applies_to: contracts[].bindings.imports
   norm: MUST
   requirement: bindings_service_is_required
-  description: Effective suite bindings must resolve `service` after defaults
-    merge (`bindings.defaults` + row). Implicit runtime service resolution is
+  description: Effective contract bindings must resolve `service` after defaults
+    merge (`contracts[].bindings.defaults` + row). Implicit runtime service resolution is
     forbidden.
   rationale: Keeps service selection explicit and auditable.
   risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
+  references:
+  - specs/contract/21_schema_registry_contract.md
+  - specs/schema/schema_v2.md
+- id: ROOT_BINDINGS_FORBIDDEN
+  introduced_in: v2
+  scope: case
+  applies_to: schema.v2.top_level
+  norm: MUST
+  requirement: root_bindings_are_invalid
+  description: Legacy root `bindings` is invalid in v2; bindings must be declared
+    under `contracts[].bindings`.
+  rationale: Keeps service wiring owned by each contract and removes suite-level
+    contract-dispatch coupling.
+  risk_if_violated: Ambiguous ownership and legacy shape drift.
   references:
   - specs/contract/21_schema_registry_contract.md
   - specs/schema/schema_v2.md

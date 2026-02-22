@@ -26,27 +26,6 @@ services:
     profile: text.file
     imports:
     - pipe_identity
-bindings:
-  defaults:
-    import: pipe_identity
-    mode: merge
-  rows:
-  - id: bind_schema_case_022
-    contract: DCCONF-SCHEMA-CASE-022
-    service: svc.check.default.1
-    inputs:
-    - from: schema_ref_doc
-      as: source_text
-    outputs:
-    - to: schema_ref_export
-      as: piped_text
-    predicates:
-    - assert_1
-  - id: bind_schema_case_025_missing_service
-    contract: DCCONF-SCHEMA-CASE-025
-    outputs:
-    - to: schema_ref_export
-      as: piped_text
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -392,11 +371,26 @@ contracts:
       assert:
         lit: true
 - id: DCCONF-SCHEMA-CASE-022
-  title: valid suite binding entry is accepted
+  title: valid contract binding entry is accepted
   expect:
     portable:
       status: pass
       category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_022
+      service: svc.check.default.1
+      inputs:
+      - from: schema_ref_doc
+        as: source_text
+      outputs:
+      - to: schema_ref_export
+        as: piped_text
+      predicates:
+      - assert_1
   clauses:
     predicates:
     - id: assert_1
@@ -444,6 +438,15 @@ contracts:
     portable:
       status: fail
       category: schema
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_025_missing_service
+      outputs:
+      - to: schema_ref_export
+        as: piped_text
   clauses:
     predicates:
     - id: assert_1

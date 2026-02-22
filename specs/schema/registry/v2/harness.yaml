@@ -27,7 +27,7 @@ fields:
     required: false
     since: v2
     description: Optional suite-level service bindings with defaults and 
-      entries; required when service imports or bindings are used.
+      entries; required when service imports or contract bindings are used.
   services.defaults:
     type: mapping
     required: false
@@ -59,28 +59,6 @@ fields:
     required: false
     description: Service callable imports. Supports canonical list[mapping] (`names`,
       optional `as`) and compact list[string] alias. Mixed item kinds are invalid.
-    since: v2
-  bindings:
-    type: list
-    required: false
-    since: v2
-    description: Optional suite bindings that connect contracts to service calls
-      via artifact-id I/O.
-  bindings[].id:
-    type: string
-    required: true
-    since: v2
-  bindings[].contract:
-    type: string
-    required: true
-    since: v2
-  bindings[].service:
-    type: string
-    required: true
-    since: v2
-  bindings[].import:
-    type: string
-    required: true
     since: v2
   services.actions[].imports[].names:
     type: list
