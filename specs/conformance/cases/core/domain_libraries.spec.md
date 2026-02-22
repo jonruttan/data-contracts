@@ -4,7 +4,8 @@ schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-DOMAIN-LIB-001
   title: domain http library defines status helper
-  purpose: Ensures domain HTTP library exports reusable status-based assertion helper.
+  purpose: Ensures domain HTTP library exports reusable status-based assertion 
+    helper.
   expect:
     portable:
       status: pass
@@ -165,32 +166,10 @@ contracts:
       - std.string.contains:
         - var: text
         - 'type: spec.export'
-    profile: text.file
-    config:
-      path: "/specs/libraries/domain/http_core.spec.md"
-      use:
-      - ref: "/specs/libraries/domain/http_core.spec.md"
-        as: lib_http_core_spec
-        symbols:
-        - domain.http.auth_is_oauth
-        - domain.http.body_json
-        - domain.http.body_json_has_key
-        - domain.http.body_json_type_is
-        - domain.http.body_text
-        - domain.http.has_bearer_header
-        - domain.http.header_contains
-        - domain.http.header_get
-        - domain.http.oauth_scope_requested
-        - domain.http.oauth_token_source_is
-        - domain.http.ok_2xx
-        - domain.http.status
-        - domain.http.status_in
-        - domain.http.status_is
-        - domain.http.status_is_forbidden
-        - domain.http.status_is_unauthorized
 - id: DCCONF-DOMAIN-LIB-002
   title: domain library index references all domain library files
-  purpose: Ensures domain index remains synchronized with all domain library spec files.
+  purpose: Ensures domain index remains synchronized with all domain library 
+    spec files.
   expect:
     portable:
       status: pass
@@ -362,7 +341,43 @@ contracts:
       - std.string.contains:
         - var: text
         - "/specs/libraries/domain/python_core.spec.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  defaults:
+    type: assert.check
+    io: input
     profile: text.file
+  entries:
+  - id: svc.assert_check.text_file.1
+    config:
+      path: "/specs/libraries/domain/http_core.spec.md"
+      use:
+      - ref: "/specs/libraries/domain/http_core.spec.md"
+        as: lib_http_core_spec
+        symbols:
+        - domain.http.auth_is_oauth
+        - domain.http.body_json
+        - domain.http.body_json_has_key
+        - domain.http.body_json_type_is
+        - domain.http.body_text
+        - domain.http.has_bearer_header
+        - domain.http.header_contains
+        - domain.http.header_get
+        - domain.http.oauth_scope_requested
+        - domain.http.oauth_token_source_is
+        - domain.http.ok_2xx
+        - domain.http.status
+        - domain.http.status_in
+        - domain.http.status_is
+        - domain.http.status_is_forbidden
+        - domain.http.status_is_unauthorized
+    default: true
+  - id: svc.assert_check.text_file.2
     config:
       path: "/specs/libraries/domain/index.md"
       use:
@@ -418,8 +433,6 @@ contracts:
         as: lib_php_core_spec
         symbols:
         - php.is_assoc_projection
-defaults:
-  harness: check
 ```
 
 

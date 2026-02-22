@@ -4,7 +4,8 @@ schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-JOB-004
   title: schema registry build via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
   clauses:
     imports:
     - from: artifact
@@ -18,6 +19,194 @@ contracts:
       - call:
         - var: policy.job.dispatch_ok
         - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-005
+  title: schema registry check via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-006
+  title: docs lint via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-007
+  title: docs generate build via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-008
+  title: docs generate check via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-009
+  title: docs build reference book via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-010
+  title: docs build check reference book via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+- id: DCCONF-JOB-011
+  title: docs graph export via contract.job
+  purpose: Ensures script command contracts dispatch and return deterministic 
+    success state.
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - summary_json
+    predicates:
+    - id: assert_1
+      assert:
+      - ops.job.dispatch:
+        - main
+      - call:
+        - var: policy.job.dispatch_ok
+        - var: summary_json
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
+defaults:
+  harness: job
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  defaults:
+    type: assert.check
+    io: input
+    profile: default
+  entries:
+  - id: svc.assert_check.default.1
     config:
       jobs:
       - id: main
@@ -51,29 +240,8 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-005
-  title: schema registry check via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+    default: true
+  - id: svc.assert_check.default.2
     config:
       jobs:
       - id: main
@@ -107,29 +275,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-006
-  title: docs lint via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.3
     config:
       jobs:
       - id: main
@@ -160,29 +306,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-007
-  title: docs generate build via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.4
     config:
       jobs:
       - id: main
@@ -214,29 +338,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-008
-  title: docs generate check via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.5
     config:
       jobs:
       - id: main
@@ -268,29 +370,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-009
-  title: docs build reference book via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.6
     config:
       jobs:
       - id: main
@@ -323,29 +403,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-010
-  title: docs build check reference book via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.7
     config:
       jobs:
       - id: main
@@ -378,29 +436,7 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-- id: DCCONF-JOB-011
-  title: docs graph export via contract.job
-  purpose: Ensures script command contracts dispatch and return deterministic success state.
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - summary_json
-    predicates:
-    - id: assert_1
-      assert:
-      - ops.job.dispatch:
-        - main
-      - call:
-        - var: policy.job.dispatch_ok
-        - var: summary_json
+  - id: svc.assert_check.default.8
     config:
       jobs:
       - id: main
@@ -433,15 +469,6 @@ contracts:
         capabilities:
         - ops.helper
         - ops.job
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
-defaults:
-  harness: job
 ```
 
 

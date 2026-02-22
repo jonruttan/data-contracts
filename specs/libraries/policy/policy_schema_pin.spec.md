@@ -35,32 +35,6 @@ contracts:
           - var: subject
           - mismatched_version_count
         - 0
-  harness:
-    exports:
-    - as: policy.schema_pin.missing_spec_version_zero
-      from: assert.function
-      path: "/__export__policy.schema_pin.missing_spec_version_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.schema_pin.missing_schema_ref_zero
-      from: assert.function
-      path: "/__export__policy.schema_pin.missing_schema_ref_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.schema_pin.unknown_schema_ref_zero
-      from: assert.function
-      path: "/__export__policy.schema_pin.unknown_schema_ref_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.schema_pin.version_match_zero
-      from: assert.function
-      path: "/__export__policy.schema_pin.version_match_zero"
-      params:
-      - subject
-      required: true
   library:
     id: policy.schema.pin
     module: policy
@@ -72,18 +46,6 @@ contracts:
 - id: LIB-POLICY-SCHEMA-PIN-900
   type: contract.check
   title: schema pin policy library smoke
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: "#LIB-POLICY-SCHEMA-PIN-001"
-      as: lib_policy_schema_pin
-      symbols:
-      - policy.schema_pin.missing_spec_version_zero
-      - policy.schema_pin.missing_schema_ref_zero
-      - policy.schema_pin.unknown_schema_ref_zero
-      - policy.schema_pin.version_match_zero
   clauses:
     imports:
     - from: artifact
@@ -108,6 +70,39 @@ contracts:
         - var: policy.schema_pin.version_match_zero
         - lit:
             mismatched_version_count: 0
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001',
+      'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero',
+      'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero',
+      'policy.schema_pin.version_match_zero']}]}"
+    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from':
+      'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero',
+      'params': ['subject'], 'required': True}]}"
+services:
+  defaults:
+    io: io
+    profile: default
+    config: {}
+  entries:
+  - id: 
+      svc.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true.default.1
+    type: 
+      legacy.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true
+    default: true
+  - id: 
+      svc.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero.default.1
+    type: 
+      legacy.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero
 ```
 
 

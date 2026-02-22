@@ -7,12 +7,6 @@ contracts:
 - id: DCGOV-RUNTIME-CERT-004
   title: required rust runner certification lane passes
   purpose: Ensures rust required lane certification passes and remains blocking.
-  harness:
-    root: "."
-    check:
-      profile: governance.scan
-      config:
-        check: runtime.runner_certification_required_lane_passes
   clauses:
     imports:
     - from: artifact
@@ -27,4 +21,20 @@ contracts:
           - violation_count
           - var: violation_count
           - lit: {}
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_certification_required_lane_passes'}}}"
+services:
+  entries:
+  - id: 
+      svc.root_check_profile_governance_scan_config_check_runtime_runner_certification_required_lane_passes.default.1
+    type: 
+      legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_required_lane_passes
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

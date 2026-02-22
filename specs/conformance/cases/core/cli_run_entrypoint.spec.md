@@ -12,7 +12,8 @@ schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-CLI-001
   title: conformance fixture sets explicit cli.run harness.entrypoint
-  purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
+  purpose: Defines portable behavior for explicit cli.run entrypoint when 
+    capability is present.
   expect:
     portable:
       status: skip
@@ -23,15 +24,10 @@ contracts:
       category:
   clauses:
     steps: []
-    profile: cli.run
-    config:
-      argv:
-      - "--help"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
 - id: DCCONF-CLI-002
   title: explicit entrypoint drives cli.run behavior deterministically
-  purpose: Pins deterministic behavior for explicit harness entrypoint execution.
+  purpose: Pins deterministic behavior for explicit harness entrypoint 
+    execution.
   expect:
     portable:
       status: skip
@@ -51,12 +47,6 @@ contracts:
         std.string.contains:
         - var: stdout
         - '"ok": true'
-    profile: cli.run
-    config:
-      argv:
-      - "--json"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
 defaults:
   harness: check
   requires:
@@ -64,6 +54,29 @@ defaults:
     - cli.run
     - cli.run.entrypoint_conformance
     when_missing: skip
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  defaults:
+    type: assert.check
+    io: input
+    profile: cli.run
+  entries:
+  - id: svc.assert_check.cli_run.1
+    config:
+      argv:
+      - "--help"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
+    default: true
+  - id: svc.assert_check.cli_run.2
+    config:
+      argv:
+      - "--json"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
 ```
 
 

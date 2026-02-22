@@ -40,8 +40,9 @@ Import binding shape:
 
 - `imports` is a list of mapping items
 - each item must be `{from, names, as?}`
-- assertion imports are artifact-only in canonical v1 (`from: artifact`)
-- `names` is a non-empty list of artifact keys
+- canonical sources are `artifact` and `service`
+- when `from: service`, `service` key is required and must reference suite `services.entries[].id`
+- `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`
 - when `as` is omitted, local symbol defaults to each `names[]` entry
 

@@ -6,11 +6,8 @@ defaults:
 contracts:
 - id: DCCONF-BTOOL-004
   title: runner build tool contract defines optional task catalog
-  purpose: Portable build tool contract should declare the MAY task catalog for optional capabilities.
-  harness:
-    check:
-      profile: text.file
-      config: {}
+  purpose: Portable build tool contract should declare the MAY task catalog for 
+    optional capabilities.
   clauses:
     imports:
     - from: artifact
@@ -53,4 +50,18 @@ contracts:
         std.string.contains:
         - var: text
         - typecheck
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}}"
+services:
+  entries:
+  - id: svc.check_profile_text_file_config.default.1
+    type: legacy.check_profile_text_file_config
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

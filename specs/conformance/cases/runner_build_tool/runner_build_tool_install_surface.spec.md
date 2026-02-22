@@ -6,12 +6,8 @@ defaults:
 contracts:
 - id: DCCONF-BTOOL-007
   title: bundle tooling exposes install command surface
-  purpose: Bundle CLI must expose install and install-check commands for multi-bundle project workflows.
-  harness:
-    check:
-      profile: text.file
-      config:
-        path: "/scripts/bundle"
+  purpose: Bundle CLI must expose install and install-check commands for 
+    multi-bundle project workflows.
   clauses:
     imports:
     - from: artifact
@@ -28,4 +24,18 @@ contracts:
         std.string.contains:
         - var: text
         - scripts/bundle install-check --project-lock
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/scripts/bundle'}}}"
+services:
+  entries:
+  - id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+    type: legacy.check_profile_text_file_config_path_scripts_bundle
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

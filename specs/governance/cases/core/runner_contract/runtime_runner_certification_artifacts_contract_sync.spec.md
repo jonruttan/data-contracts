@@ -6,13 +6,8 @@ defaults:
 contracts:
 - id: DCGOV-RUNTIME-CERT-003
   title: runner certification artifacts follow contract shape
-  purpose: Ensures runner-certify generates contract-shaped JSON and markdown artifacts.
-  harness:
-    root: "."
-    check:
-      profile: governance.scan
-      config:
-        check: runtime.runner_certification_artifacts_contract_sync
+  purpose: Ensures runner-certify generates contract-shaped JSON and markdown 
+    artifacts.
   clauses:
     imports:
     - from: artifact
@@ -27,4 +22,20 @@ contracts:
           - violation_count
           - var: violation_count
           - lit: {}
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_certification_artifacts_contract_sync'}}}"
+services:
+  entries:
+  - id: 
+      svc.root_check_profile_governance_scan_config_check_runtime_runner_certification_artifacts_contract_sync.default.1
+    type: 
+      legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_artifacts_contract_sync
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

@@ -38,7 +38,8 @@ exports:
 contracts:
 - id: DCCONF-SCHEMA-CASE-001
   title: valid core shape compiles and runs
-  purpose: Ensures standard top-level keys accepted by registry validation continue to execute successfully.
+  purpose: Ensures standard top-level keys accepted by registry validation 
+    continue to execute successfully.
   expect:
     portable:
       status: pass
@@ -54,9 +55,6 @@ contracts:
         std.string.contains:
         - var: text
         - Spec-Test Schema (v2)
-    profile: text.file
-    config: {}
-  harness: check
 - id: DCCONF-SCHEMA-CASE-002
   title: unknown evaluate symbol is rejected as schema
   purpose: Ensures unknown spec-lang symbols fail as schema in both runtimes.
@@ -75,11 +73,9 @@ contracts:
         lit:
           unknown_symbol_for_schema_case:
           - var: text
-    profile: text.file
-    config: {}
-  harness: check
 - id: DCCONF-SCHEMA-CASE-003
-  title: contract export without top-level imports remains valid
+  title: contract export without top-level imports remains valid under suite 
+    harness/services
   expect:
     portable:
       status: pass
@@ -89,7 +85,6 @@ contracts:
     - id: __export__schema.validation.ok
       assert:
         lit: true
-  harness: export
   library:
     id: schema.validation.core
     module: schema
@@ -100,7 +95,8 @@ contracts:
     summary: schema export validation case
     audience: spec-authors
     status: active
-    description: Valid contract.export shape without deprecated top-level imports.
+    description: Valid contract.export shape without deprecated top-level 
+      imports.
     since: v2
     tags:
     - contract.export
@@ -117,7 +113,6 @@ contracts:
     - id: __export__schema.validation.forbidden
       assert:
         lit: true
-  harness: export
   library:
     id: schema.validation.forbidden
     module: schema
@@ -128,29 +123,31 @@ contracts:
     summary: schema export invalid imports case
     audience: spec-authors
     status: active
-    description: Deprecated contract.export top-level imports must hard-fail in v2.
+    description: Deprecated contract.export top-level imports must hard-fail in 
+      v2.
     since: v2
     tags:
     - contract.export
 - id: DCCONF-SCHEMA-CASE-005
-  title: missing harness is rejected as schema
+  title: contract-level harness is rejected as schema
   expect:
     portable:
       status: fail
       category: schema
+  harness: check
   clauses:
     predicates:
     - id: assert_1
       assert:
         lit: true
 - id: DCCONF-SCHEMA-CASE-006
-  title: unknown harness is rejected as schema
+  title: contract-level clauses profile is rejected as schema
   expect:
     portable:
       status: fail
       category: schema
-  harness: unknown_harness
   clauses:
+    profile: text.file
     predicates:
     - id: assert_1
       assert:
@@ -162,7 +159,6 @@ contracts:
       status: fail
       category: schema
   type: contract.check
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -177,7 +173,6 @@ contracts:
   imports:
   - id: legacy_import
     ref: "/specs/schema/schema_v2.md"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -194,7 +189,6 @@ contracts:
     mode: function
     from: assert.function
     path: "/__export__schema.validation.ok"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -211,7 +205,6 @@ contracts:
     as: schema.validation.invalid_id
     from: assert.function
     path: "/__export__schema.validation.ok"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -228,7 +221,6 @@ contracts:
     from: assert.function
     path: "/__export__schema.validation.ok"
     ref: "/specs/schema/schema_v2.md"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -244,7 +236,6 @@ contracts:
   - as: schema.validation.invalid_from
     from: custom.function
     path: "/__export__schema.validation.ok"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -259,7 +250,6 @@ contracts:
   artifact:
     imports:
     - id: missing_ref
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -277,7 +267,6 @@ contracts:
       ref: "/specs/schema/schema_v2.md"
       inputs: {}
       outputs: {}
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -292,7 +281,6 @@ contracts:
   artifact:
     exports:
     - ref: "/specs/schema/schema_v2.md"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -308,7 +296,6 @@ contracts:
     imports:
     - id: unresolved_template
       ref: "{{unknown_suite_var}}"
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -322,7 +309,6 @@ contracts:
       category: schema
   doc:
     summary: legacy singular doc
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -338,7 +324,6 @@ contracts:
   - id: missing-status
     summary: missing status
     audience: spec-authors
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -356,7 +341,6 @@ contracts:
     audience: spec-authors
     status: active
     type: narrative
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -377,7 +361,6 @@ contracts:
     summary: docs entry two
     audience: spec-authors
     status: active
-  harness: check
   clauses:
     predicates:
     - id: assert_1
@@ -395,10 +378,34 @@ contracts:
     audience: spec-authors
     status: active
     unknown_field: true
-  harness: check
   clauses:
     predicates:
     - id: assert_1
       assert:
         lit: true
+harness:
+  type: unit.test
+  profile: export
+  config:
+    legacy_contract_harnesses:
+    - check
+    - export
+    - unknown_harness
+services:
+  defaults:
+    config: {}
+  entries:
+  - id: svc.check.text_file.1
+    type: assert.check
+    io: input
+    profile: text.file
+    default: true
+  - id: svc.export.default.1
+    type: assert.export
+    io: output
+    profile: default
+  - id: svc.check.default.1
+    type: assert.check
+    io: input
+    profile: default
 ```

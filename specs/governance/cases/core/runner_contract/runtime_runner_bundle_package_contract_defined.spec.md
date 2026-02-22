@@ -6,12 +6,8 @@ defaults:
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-001
   title: runner bundle package management contract is defined
-  purpose: Ensures bundle package management contract describes release-asset and checksum requirements.
-  harness:
-    check:
-      profile: text.file
-      config:
-        path: "/specs/contract/33_bundle_package_management.md"
+  purpose: Ensures bundle package management contract describes release-asset 
+    and checksum requirements.
   clauses:
     imports:
     - from: artifact
@@ -55,12 +51,8 @@ contracts:
         - dc-runner-rust-specs
 - id: DCGOV-RUNTIME-BUNDLE-003
   title: runner build tool schema declares bundle sync tasks
-  purpose: Ensures runner build tool schema uses bundle-sync task ids and does not include legacy spec-sync task ids.
-  harness:
-    check:
-      profile: text.file
-      config:
-        path: "/specs/schema/runner_build_tool_contract_v1.yaml"
+  purpose: Ensures runner build tool schema uses bundle-sync task ids and does 
+    not include legacy spec-sync task ids.
   clauses:
     imports:
     - from: artifact
@@ -83,4 +75,26 @@ contracts:
           std.string.contains:
           - var: text
           - spec-sync
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/33_bundle_package_management.md'}}}"
+    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_build_tool_contract_v1.yaml'}}}"
+services:
+  defaults:
+    io: io
+    profile: default
+    config: {}
+  entries:
+  - id: 
+      svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+    type: 
+      legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+    default: true
+  - id: 
+      svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
+    type: 
+      legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
 ```

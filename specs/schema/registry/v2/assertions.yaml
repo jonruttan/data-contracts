@@ -6,7 +6,8 @@ fields:
     type: mapping
     required: true
     since: v2
-    description: Canonical clause tree root mapping with defaults/predicates; leaves are direct spec-lang operator mappings.
+    description: Canonical clause tree root mapping with defaults/predicates; 
+      leaves are direct spec-lang operator mappings.
   contracts[].clauses.defaults:
     type: mapping
     required: false
@@ -17,6 +18,26 @@ fields:
     required: false
     since: v2
     description: Clause-level default import bindings inherited by predicates.
+  contracts[].clauses.imports[].from:
+    type: string
+    required: true
+    since: v2
+    description: 'Import source: artifact or service.'
+  contracts[].clauses.imports[].service:
+    type: string
+    required: false
+    since: v2
+    description: Required when from=service; references services.entries[].id.
+  contracts[].clauses.imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Imported symbol names.
+  contracts[].clauses.imports[].as:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional local alias map.
   contracts[].clauses.predicates:
     type: list
     required: true
@@ -32,6 +53,26 @@ fields:
     required: false
     since: v2
     description: Predicate-level imports merged over clauses.imports.
+  contracts[].clauses.predicates[].imports[].from:
+    type: string
+    required: true
+    since: v2
+    description: 'Import source: artifact or service.'
+  contracts[].clauses.predicates[].imports[].service:
+    type: string
+    required: false
+    since: v2
+    description: Required when from=service; references services.entries[].id.
+  contracts[].clauses.predicates[].imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Imported symbol names.
+  contracts[].clauses.predicates[].imports[].as:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional local alias map.
   contracts[].clauses.predicates[].purpose:
     type: string
     required: false

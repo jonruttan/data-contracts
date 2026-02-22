@@ -29,8 +29,8 @@ Suite-level external references:
 
 Governance policy reuse:
 
-- `harness: check` governance cases MUST load library symbols through
-  `harness.chain` library-symbol exports/imports and MUST call exported
+- `harness.type: unit.test` governance cases MUST load library symbols through
+  service/runtime chain exports/imports and MUST call exported
   library symbols from `evaluate`.
 
 Library paths:

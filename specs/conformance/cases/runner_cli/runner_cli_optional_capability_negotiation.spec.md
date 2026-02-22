@@ -6,11 +6,8 @@ defaults:
 contracts:
 - id: DCCONF-RCLI-005
   title: runner cli supports optional capability negotiation
-  purpose: Portable CLI contract allows optional capability flags such as structured output mode.
-  harness:
-    check:
-      profile: text.file
-      config: {}
+  purpose: Portable CLI contract allows optional capability flags such as 
+    structured output mode.
   clauses:
     imports:
     - from: artifact
@@ -23,4 +20,18 @@ contracts:
         std.string.contains:
         - var: text
         - "--json"
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}}"
+services:
+  entries:
+  - id: svc.check_profile_text_file_config.default.1
+    type: legacy.check_profile_text_file_config
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

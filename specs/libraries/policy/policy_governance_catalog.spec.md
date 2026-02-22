@@ -35,32 +35,6 @@ contracts:
           - var: subject
           - missing_case_check_field_count
         - 0
-  harness:
-    exports:
-    - as: policy.catalog.duplicate_ids_zero
-      from: assert.function
-      path: "/__export__policy.catalog.duplicate_ids_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.catalog.unmapped_checks_zero
-      from: assert.function
-      path: "/__export__policy.catalog.unmapped_checks_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.catalog.multi_tier_collisions_zero
-      from: assert.function
-      path: "/__export__policy.catalog.multi_tier_collisions_zero"
-      params:
-      - subject
-      required: true
-    - as: policy.catalog.check_field_presence_zero
-      from: assert.function
-      path: "/__export__policy.catalog.check_field_presence_zero"
-      params:
-      - subject
-      required: true
   library:
     id: policy.governance.catalog
     module: policy
@@ -72,18 +46,6 @@ contracts:
 - id: LIB-POLICY-GOV-CATALOG-900
   type: contract.check
   title: governance catalog policy library smoke
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: "#LIB-POLICY-GOV-CATALOG-001"
-      as: lib_policy_gov_catalog
-      symbols:
-      - policy.catalog.duplicate_ids_zero
-      - policy.catalog.unmapped_checks_zero
-      - policy.catalog.multi_tier_collisions_zero
-      - policy.catalog.check_field_presence_zero
   clauses:
     imports:
     - from: artifact
@@ -108,6 +70,39 @@ contracts:
         - var: policy.catalog.check_field_presence_zero
         - lit:
             missing_case_check_field_count: 0
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-GOV-CATALOG-001',
+      'as': 'lib_policy_gov_catalog', 'symbols': ['policy.catalog.duplicate_ids_zero',
+      'policy.catalog.unmapped_checks_zero', 'policy.catalog.multi_tier_collisions_zero',
+      'policy.catalog.check_field_presence_zero']}]}"
+    - "{'exports': [{'as': 'policy.catalog.duplicate_ids_zero', 'from': 'assert.function',
+      'path': '/__export__policy.catalog.duplicate_ids_zero', 'params': ['subject'],
+      'required': True}, {'as': 'policy.catalog.unmapped_checks_zero', 'from': 'assert.function',
+      'path': '/__export__policy.catalog.unmapped_checks_zero', 'params': ['subject'],
+      'required': True}, {'as': 'policy.catalog.multi_tier_collisions_zero', 'from':
+      'assert.function', 'path': '/__export__policy.catalog.multi_tier_collisions_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.catalog.check_field_presence_zero',
+      'from': 'assert.function', 'path': '/__export__policy.catalog.check_field_presence_zero',
+      'params': ['subject'], 'required': True}]}"
+services:
+  defaults:
+    io: io
+    profile: default
+    config: {}
+  entries:
+  - id: 
+      svc.exports_as_policy_catalog_duplicate_ids_zero_from_assert_function_path_export_policy_catalog_duplicate_ids_zero_params_subject_required_true_as_policy_catalog_unmapped_checks_zero_from_assert_function_path_export_policy_catalog_unmapped_checks_zero_params_subject_required_true_as_policy_catalog_multi_tier_collisions_zero_from_assert_function_path_export_policy_catalog_multi_tier_collisions_zero_params_subject_required_true_as_policy_catalog_check_field_presence_zero_from_assert_function_path_export_policy_catalog_check_field_presence_zero_params_subject_required_true.default.1
+    type: 
+      legacy.exports_as_policy_catalog_duplicate_ids_zero_from_assert_function_path_export_policy_catalog_duplicate_ids_zero_params_subject_required_true_as_policy_catalog_unmapped_checks_zero_from_assert_function_path_export_policy_catalog_unmapped_checks_zero_params_subject_required_true_as_policy_catalog_multi_tier_collisions_zero_from_assert_function_path_export_policy_catalog_multi_tier_collisions_zero_params_subject_required_true_as_policy_catalog_check_field_presence_zero_from_assert_function_path_export_policy_catalog_check_field_presence_zero_params_subject_required_true
+    default: true
+  - id: 
+      svc.check_profile_text_file_config_use_ref_lib_policy_gov_catalog_001_as_lib_policy_gov_catalog_symbols_policy_catalog_duplicate_ids_zero_policy_catalog_unmapped_checks_zero_policy_catalog_multi_tier_collisions_zero_policy_catalog_check_field_presence_zero.default.1
+    type: 
+      legacy.check_profile_text_file_config_use_ref_lib_policy_gov_catalog_001_as_lib_policy_gov_catalog_symbols_policy_catalog_duplicate_ids_zero_policy_catalog_unmapped_checks_zero_policy_catalog_multi_tier_collisions_zero_policy_catalog_check_field_presence_zero
 ```
 
 

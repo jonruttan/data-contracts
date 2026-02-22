@@ -6,21 +6,8 @@ defaults:
 contracts:
 - id: DCGOV-REF-EXTERNAL-001
   title: external refs require explicit policy and capability
-  purpose: Ensures external:// references are deny-by-default and must declare allow policy.
-  harness:
-    root: "."
-    check:
-      profile: governance.scan
-      config:
-        check: reference.external_refs_policy
-    use:
-    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
-      as: lib_policy_core_spec
-      symbols:
-      - policy.assert.no_violations
-      - policy.assert.summary_passed
-      - policy.assert.summary_check_id
-      - policy.assert.scan_pass
+  purpose: Ensures external:// references are deny-by-default and must declare 
+    allow policy.
   clauses:
     imports:
     - from: artifact
@@ -36,4 +23,23 @@ contracts:
           - var: summary_json
           - lit: {}
         - reference.external_refs_policy
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'reference.external_refs_policy'}},
+      'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
+      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
+      'policy.assert.scan_pass']}]}"
+services:
+  entries:
+  - id: 
+      svc.root_check_profile_governance_scan_config_check_reference_external_refs_policy_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    type: 
+      legacy.root_check_profile_governance_scan_config_check_reference_external_refs_policy_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

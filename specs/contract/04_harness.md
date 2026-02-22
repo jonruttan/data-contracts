@@ -2,8 +2,9 @@
 
 ## Dispatch
 
-- Runner dispatches by case `harness` string.
-- Harness receives parsed case and execution context.
+- Runner dispatches by suite-root `harness` mapping.
+- Harness receives parsed suite/case data and execution context.
+- Suite-root `services.entries[]` provides concrete system hook bindings (I/O and callable service functions).
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
@@ -21,9 +22,9 @@ Suite-root external references:
 
 ## Entrypoint
 
-For `harness: check` with `clauses.profile: cli.run`:
+For `harness.type: unit.test` with `services.entries[].profile: cli.run`:
 
-- `clauses.config.entrypoint` MUST be provided by the spec.
+- `services.entries[].config.entrypoint` MUST be provided by the spec.
 - Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).

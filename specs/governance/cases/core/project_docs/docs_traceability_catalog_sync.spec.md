@@ -6,21 +6,8 @@ defaults:
 contracts:
 - id: DCGOV-DOCS-GEN-008
   title: traceability catalog artifacts are synchronized
-  purpose: Ensures generated traceability catalog JSON and markdown artifacts are up-to-date.
-  harness:
-    root: "."
-    check:
-      profile: governance.scan
-      config:
-        check: docs.traceability_catalog_sync
-    use:
-    - ref: "/specs/libraries/policy/policy_assertions.spec.md"
-      as: lib_policy_core_spec
-      symbols:
-      - policy.assert.no_violations
-      - policy.assert.summary_passed
-      - policy.assert.summary_check_id
-      - policy.assert.scan_pass
+  purpose: Ensures generated traceability catalog JSON and markdown artifacts 
+    are up-to-date.
   clauses:
     imports:
     - from: artifact
@@ -42,4 +29,23 @@ contracts:
           - summary_json
           - var: summary_json
           - lit: {}
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.traceability_catalog_sync'}},
+      'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
+      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
+      'policy.assert.scan_pass']}]}"
+services:
+  entries:
+  - id: 
+      svc.root_check_profile_governance_scan_config_check_docs_traceability_catalog_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    type: 
+      legacy.root_check_profile_governance_scan_config_check_docs_traceability_catalog_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

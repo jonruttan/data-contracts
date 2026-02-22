@@ -18,13 +18,6 @@ contracts:
         - var: text
         - runtime.runner_status_report
         - command_results
-    profile: text.file
-    config:
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
 - id: DCCONF-RSTAT-002
   title: runner status matrix schema is declared
   purpose: Ensures the aggregate status matrix schema exists.
@@ -41,13 +34,6 @@ contracts:
         - var: text
         - runtime.runner_status_matrix
         - freshness_state
-    profile: text.file
-    config:
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
 - id: DCCONF-RSTAT-003
   title: ingest script enforces freshness threshold
   purpose: Ensures ingest includes max-age controls and enforcement flag.
@@ -64,16 +50,10 @@ contracts:
         - var: text
         - "--max-age-hours"
         - "--enforce-freshness"
-    profile: text.file
-    config:
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
 - id: DCCONF-RSTAT-004
   title: ingest tracks missing compatibility status visibility
-  purpose: Ensures missing compatibility status is represented and policy-scored.
+  purpose: Ensures missing compatibility status is represented and 
+    policy-scored.
   clauses:
     imports:
     - from: artifact
@@ -87,13 +67,6 @@ contracts:
         - var: text
         - freshness_state
         - non_blocking_fail
-    profile: text.file
-    config:
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
 - id: DCCONF-RSTAT-005
   title: required lane policy remains blocking
   purpose: Ensures required lane status maps to blocking policy effect.
@@ -110,6 +83,17 @@ contracts:
         - var: text
         - lane_class
         - blocking_fail
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  entries:
+  - id: svc.assert_check.text_file.1
+    type: assert.check
+    io: input
     profile: text.file
     config:
       use:
@@ -117,8 +101,7 @@ contracts:
         as: lib_policy_text
         symbols:
         - policy.text.contains_pair
-defaults:
-  harness: check
+    default: true
 ```
 
 

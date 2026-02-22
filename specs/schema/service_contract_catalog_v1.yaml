@@ -1,0 +1,85 @@
+version: 1
+title: service_contract_catalog_v1
+kind: service_contract_catalog
+unknown_service_type_behavior: hard_fail
+services:
+- type: assert.check
+  allowed_profiles:
+  - text.file
+  - cli.run
+  - api.http
+  - docs.generate
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.assert.
+  - assert.
+  allowed_io:
+  - input
+- type: assert.export
+  allowed_profiles:
+  - contract.export
+  - spec.export
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - assert.function
+  allowed_io:
+  - output
+- type: ops.job
+  allowed_profiles:
+  - job.dispatch
+  - report.generate
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.job.
+  allowed_io:
+  - input
+  - output
+  - io
+- type: io.http
+  allowed_profiles:
+  - api.http
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.http.
+  - domain.http.
+  allowed_io:
+  - input
+  - output
+  - io
+- type: io.mysql
+  allowed_profiles:
+  - mysql.query
+  - mysql.migrate
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.mysql.
+  - domain.mysql.
+  allowed_io:
+  - input
+  - output
+  - io
+- type: io.fs
+  allowed_profiles:
+  - fs.readwrite
+  - text.file
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.fs.
+  - domain.fs.
+  allowed_io:
+  - input
+  - output
+  - io
+- type: io.system
+  allowed_profiles:
+  - system.exec
+  - cli.run
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.proc.
+  - ops.time.
+  - domain.system.
+  allowed_io:
+  - input
+  - output
+  - io

@@ -39,30 +39,6 @@ contracts:
         - std.string.contains:
           - var: text
           - var: token_b
-  harness:
-    exports:
-    - as: policy.text.contains_all
-      from: assert.function
-      path: "/__export__policy.text.contains_all"
-      params:
-      - text
-      - required_tokens
-      required: true
-    - as: policy.text.contains_none
-      from: assert.function
-      path: "/__export__policy.text.contains_none"
-      params:
-      - text
-      - forbidden_tokens
-      required: true
-    - as: policy.text.contains_pair
-      from: assert.function
-      path: "/__export__policy.text.contains_pair"
-      params:
-      - text
-      - token_a
-      - token_b
-      required: true
   library:
     id: policy.text
     module: policy
@@ -74,17 +50,6 @@ contracts:
 - id: LIB-POLICY-TEXT-900
   type: contract.check
   title: text policy library smoke
-  harness:
-    check:
-      profile: text.file
-      config: {}
-    use:
-    - ref: "#LIB-POLICY-TEXT-001"
-      as: lib_policy_text
-      symbols:
-      - policy.text.contains_all
-      - policy.text.contains_none
-      - policy.text.contains_pair
   clauses:
     imports:
     - from: artifact
@@ -124,6 +89,36 @@ contracts:
           - lit:
             - delta
             - beta
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-TEXT-001',
+      'as': 'lib_policy_text', 'symbols': ['policy.text.contains_all', 'policy.text.contains_none',
+      'policy.text.contains_pair']}]}"
+    - "{'exports': [{'as': 'policy.text.contains_all', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_all', 'params': ['text', 'required_tokens'],
+      'required': True}, {'as': 'policy.text.contains_none', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_none', 'params': ['text', 'forbidden_tokens'],
+      'required': True}, {'as': 'policy.text.contains_pair', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_pair', 'params': ['text', 'token_a',
+      'token_b'], 'required': True}]}"
+services:
+  defaults:
+    io: io
+    profile: default
+    config: {}
+  entries:
+  - id: 
+      svc.exports_as_policy_text_contains_all_from_assert_function_path_export_policy_text_contains_all_params_text_required_tokens_required_true_as_policy_text_contains_none_from_assert_function_path_export_policy_text_contains_none_params_text_forbidden_tokens_required_true_as_policy_text_contains_pair_from_assert_function_path_export_policy_text_contains_pair_params_text_token_a_token_b_required_true.default.1
+    type: 
+      legacy.exports_as_policy_text_contains_all_from_assert_function_path_export_policy_text_contains_all_params_text_required_tokens_required_true_as_policy_text_contains_none_from_assert_function_path_export_policy_text_contains_none_params_text_forbidden_tokens_required_true_as_policy_text_contains_pair_from_assert_function_path_export_policy_text_contains_pair_params_text_token_a_token_b_required_true
+    default: true
+  - id: 
+      svc.check_profile_text_file_config_use_ref_lib_policy_text_001_as_lib_policy_text_symbols_policy_text_contains_all_policy_text_contains_none_policy_text_contains_pair.default.1
+    type: 
+      legacy.check_profile_text_file_config_use_ref_lib_policy_text_001_as_lib_policy_text_symbols_policy_text_contains_all_policy_text_contains_none_policy_text_contains_pair
 ```
 
 

@@ -7,12 +7,6 @@ contracts:
 - id: DCGOV-RUNTIME-HOOKS-001
   title: when hooks schema must be valid
   purpose: Enforces when shape and hook expression list requirements.
-  harness:
-    root: "."
-    check:
-      profile: governance.scan
-      config:
-        check: runtime.when_hooks_schema_valid
   clauses:
     imports:
     - from: artifact
@@ -27,4 +21,20 @@ contracts:
           - violation_count
           - var: violation_count
           - lit: {}
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.when_hooks_schema_valid'}}}"
+services:
+  entries:
+  - id: 
+      svc.root_check_profile_governance_scan_config_check_runtime_when_hooks_schema_valid.default.1
+    type: 
+      legacy.root_check_profile_governance_scan_config_check_runtime_when_hooks_schema_valid
+    io: io
+    profile: default
+    config: {}
+    default: true
 ```

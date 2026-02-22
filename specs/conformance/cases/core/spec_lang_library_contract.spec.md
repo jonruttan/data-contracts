@@ -4,7 +4,8 @@ schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-LIB-CONTRACT-001
   title: policy library uses producer harness exports
-  purpose: Ensures policy library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+  purpose: Ensures policy library authoring uses producer-owned root exports 
+    mode=function with assert.function source mappings.
   expect:
     portable:
       status: pass
@@ -29,18 +30,10 @@ contracts:
         - var: text
         - lit:
           - 'defines:'
-    profile: text.file
-    config:
-      path: "/specs/libraries/policy/policy_core.spec.md"
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        - policy.text.contains_none
 - id: DCCONF-LIB-CONTRACT-002
   title: path library uses producer harness exports
-  purpose: Ensures path library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+  purpose: Ensures path library authoring uses producer-owned root exports 
+    mode=function with assert.function source mappings.
   expect:
     portable:
       status: pass
@@ -65,18 +58,10 @@ contracts:
         - var: text
         - lit:
           - 'defines:'
-    profile: text.file
-    config:
-      path: "/specs/libraries/path/path_core.spec.md"
-      use:
-      - ref: "/specs/libraries/policy/policy_text.spec.md"
-        as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        - policy.text.contains_none
 - id: DCCONF-LIB-CONTRACT-003
   title: policy library index tracks canonical files
-  purpose: Ensures generated policy library index includes canonical file references.
+  purpose: Ensures generated policy library index includes canonical file 
+    references.
   expect:
     portable:
       status: pass
@@ -94,7 +79,38 @@ contracts:
         - lit:
           - "/specs/libraries/policy/policy_core.spec.md"
           - "/specs/libraries/policy/policy_metrics.spec.md"
+defaults:
+  harness: check
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  defaults:
+    type: assert.check
+    io: input
     profile: text.file
+  entries:
+  - id: svc.assert_check.text_file.1
+    config:
+      path: "/specs/libraries/policy/policy_core.spec.md"
+      use:
+      - ref: "/specs/libraries/policy/policy_text.spec.md"
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_all
+        - policy.text.contains_none
+    default: true
+  - id: svc.assert_check.text_file.2
+    config:
+      path: "/specs/libraries/path/path_core.spec.md"
+      use:
+      - ref: "/specs/libraries/policy/policy_text.spec.md"
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_all
+        - policy.text.contains_none
+  - id: svc.assert_check.text_file.3
     config:
       path: "/specs/libraries/policy/index.md"
       use:
@@ -102,8 +118,6 @@ contracts:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
-defaults:
-  harness: check
 ```
 
 

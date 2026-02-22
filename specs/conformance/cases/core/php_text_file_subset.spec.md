@@ -20,8 +20,6 @@ contracts:
         std.string.contains:
         - var: text
         - 'version: 1'
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-002
   title: text.file regex assertion can fail in php bootstrap
   purpose: Baseline failing regex check for the php text.file subset.
@@ -40,8 +38,6 @@ contracts:
         std.string.regex_match:
         - var: text
         - "\\A\\Z"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-003
   title: nested must group with inherited target passes
   purpose: Verifies nested must groups inherit target from parent nodes.
@@ -60,8 +56,6 @@ contracts:
         std.string.contains:
         - var: text
         - 'version: 1'
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-004
   title: can passes when at least one branch passes
   purpose: Verifies can succeeds when at least one branch succeeds.
@@ -84,8 +78,6 @@ contracts:
       - std.string.contains:
         - var: text
         - 'version: 1'
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-005
   title: can fails when all branches fail
   purpose: Verifies can fails when every branch assertion fails.
@@ -108,8 +100,6 @@ contracts:
       - std.string.regex_match:
         - var: text
         - "(?!)"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-006
   title: cannot passes when all branches fail
   purpose: Verifies cannot succeeds when every branch assertion fails.
@@ -133,8 +123,6 @@ contracts:
           - std.string.regex_match:
             - var: text
             - "(?!)"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-007
   title: cannot fails when any branch passes
   purpose: Verifies cannot fails when at least one branch succeeds.
@@ -158,11 +146,10 @@ contracts:
           - std.string.regex_match:
             - var: text
             - "(?!)"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-008
   title: nested mixed groups with inherited target passes
-  purpose: Covers mixed nested must/may/must_not evaluation with inherited targets.
+  purpose: Covers mixed nested must/may/must_not evaluation with inherited 
+    targets.
   expect:
     portable:
       status: pass
@@ -188,11 +175,10 @@ contracts:
         - std.string.regex_match:
           - var: text
           - "\\A\\Z"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-009
   title: evaluate regex remains pass
-  purpose: Confirms evaluate regex assertions can pass on the baseline text fixture.
+  purpose: Confirms evaluate regex assertions can pass on the baseline text 
+    fixture.
   expect:
     portable:
       status: pass
@@ -208,8 +194,6 @@ contracts:
         std.string.regex_match:
         - var: text
         - "(?<=version: )1"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-010
   title: evaluate empty contains remains pass
   purpose: Confirms evaluate contains with an empty string passes.
@@ -228,8 +212,6 @@ contracts:
         std.string.contains:
         - var: text
         - ''
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-011
   title: evaluate always-true regex remains pass
   purpose: Confirms evaluate regex assertions are evaluated directly.
@@ -248,11 +230,10 @@ contracts:
         std.string.regex_match:
         - var: text
         - ".*"
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-012
   title: mixed contains with unmet sibling fails assertion
-  purpose: Confirms sibling contains predicates fail when one branch does not match.
+  purpose: Confirms sibling contains predicates fail when one branch does not 
+    match.
   expect:
     portable:
       status: fail
@@ -268,8 +249,6 @@ contracts:
       - std.string.contains:
         - var: text
         - 'version: 2'
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-013
   title: evaluate sibling branches remain pass
   purpose: Confirms evaluate-only non-redundant sibling branches remain valid.
@@ -292,8 +271,6 @@ contracts:
       - std.string.contains:
         - var: text
         - 'version: 2'
-    profile: text.file
-    config: {}
 - id: DCCONF-PHP-TEXT-014
   title: empty contains baseline remains pass
   purpose: Confirms baseline contains behavior remains pass for this fixture.
@@ -312,10 +289,20 @@ contracts:
         std.string.contains:
         - var: text
         - ''
-    profile: text.file
-    config: {}
 defaults:
   harness: check
+harness:
+  type: unit.test
+  profile: check
+  config: {}
+services:
+  entries:
+  - id: svc.assert_check.text_file.1
+    type: assert.check
+    io: input
+    profile: text.file
+    config: {}
+    default: true
 ```
 
 

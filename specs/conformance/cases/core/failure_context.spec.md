@@ -8,7 +8,8 @@ schema_ref: "/specs/schema/schema_v2.md"
 contracts:
 - id: DCCONF-ERR-001
   title: failing assertion includes context tokens in message
-  purpose: Guarantees failure messages carry deterministic context tokens for debugging and parity.
+  purpose: Guarantees failure messages carry deterministic context tokens for 
+    debugging and parity.
   expect:
     portable:
       status: fail
@@ -29,7 +30,18 @@ contracts:
         std.string.regex_match:
         - var: text
         - "\\A\\Z"
+harness:
+  type: unit.test
+  profile: check
+  config:
+    legacy_contract_harnesses:
+    - check
+services:
+  entries:
+  - id: svc.check.text_file.1
+    type: assert.check
+    io: input
     profile: text.file
     config: {}
-  harness: check
+    default: true
 ```

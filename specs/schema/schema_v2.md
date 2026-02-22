@@ -91,12 +91,24 @@ level in:
 Each `contracts[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
-- `harness` (string, required): harness contract name resolved from `specs/schema/harness_contract_catalog_v1.yaml`
 - `clauses` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
 - `expect`/`requires`/`when` (optional)
-- `clauses.profile` (string, optional globally; requiredness is harness-specific)
-- `clauses.config` (mapping, optional globally; requiredness is harness-specific)
+
+Suite runtime surfaces:
+
+- `harness` (mapping, required): suite orchestration surface
+  - `harness.type` (string, required)
+  - `harness.profile` (string, required)
+  - `harness.config` (mapping, required)
+- `services` (mapping, required): suite system service bindings with defaults and concrete entries
+  - `services.entries[].id` (string, required; unique in suite)
+  - `services.entries[].type` (string, required; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
+  - `services.entries[].io` (string, required): `input|output|io`
+  - `services.entries[].profile` (string, required)
+  - `services.entries[].config` (mapping, required)
+  - `services.entries[].default` (bool, optional; at most one `true`)
+  - `services.entries[].functions` (list, optional): declarative callable function surface
 
 Parser behavior:
 
@@ -116,7 +128,8 @@ Parser behavior:
 - `spec_version` is required
 - `schema_ref` is required
 - each `contracts[]` item requires `id`
-- each `contracts[]` item requires `harness` (string)
+- suite `harness` mapping is required
+- suite `services.entries[]` list is required and must be non-empty via `services.entries`
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
@@ -131,7 +144,10 @@ Parser behavior:
   - `exports[].id` is invalid
   - `exports[].ref` is invalid
 - singular `doc` surfaces are invalid in v2; use `docs[]`
-- unknown harness names MUST hard-fail during schema validation
+- `contracts[].harness` is invalid in v2 (hard cut)
+- `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
+- unknown `services.entries[].type` MUST hard-fail during schema validation
+- invalid `services.entries[].io` MUST hard-fail during schema validation
 - legacy `type` on contract items is invalid in v2
 
 `expect` (conformance metadata):
@@ -169,7 +185,7 @@ Normative contract details:
 
 ## Harness-Profile Fields
 
-### `harness: check` with `clauses.profile: text.file`
+### `harness.type: unit.test` with `services.entries[].profile: text.file`
 
 `text.file` asserts against file content.
 
@@ -202,13 +218,13 @@ Markdown library authoring guidance:
 
 ## Harness Dispatch
 
-Harness dispatch is selected by `contracts[].harness` and validated against `specs/schema/harness_contract_catalog_v1.yaml`. Runtime profile/config data is declared in `clauses.profile` and `clauses.config`.
+Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services.entries[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services.entries[].profile`/`services.entries[].config`.
 
 Governance assertion contract:
 
 - For governance check profiles, decision obligations MUST be encoded in
   `clauses` blocks.
-- ad-hoc harness evaluate surfaces are forbidden.
+- ad-hoc service evaluate surfaces are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
@@ -230,7 +246,7 @@ Security model:
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `harness: check` with `clauses.profile: cli.run`, supported `clauses.config` keys include:
+For `harness.type: unit.test` with `services.entries[].profile: cli.run`, supported `services.entries[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -246,7 +262,7 @@ For `harness: check` with `clauses.profile: cli.run`, supported `clauses.config`
 - `orchestration` (mapping): orchestration tool dispatch contract for
   orchestration profiles
 
-For `harness: check` with `clauses.profile: api.http`, supported `clauses.config` keys include:
+For `harness.type: unit.test` with `services.entries[].profile: api.http`, supported `services.entries[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -297,7 +313,7 @@ OAuth and execution rules:
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `harness: check` with `clauses.profile: docs.generate`, supported `clauses.config` keys include:
+For `harness.type: unit.test` with `services.entries[].profile: docs.generate`, supported `services.entries[].config` keys include:
 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
@@ -440,7 +456,7 @@ Assertion targets for `cli.run`:
 
 ## Profiles
 
-Currently supported `clauses.profile` values include:
+Currently supported `services.entries[].profile` values include:
 
 - `cli.run` (core)
 - `text.file` (core)
@@ -649,9 +665,9 @@ Lifecycle order:
 - `fail` runs once on first blocking step or hook failure
 - `complete` runs only after all steps and hooks pass
 
-`harness: job` executable profile (v2):
+`services.entries[].type: ops.job` executable profile (v2):
 
-- `harness: job`
+- `harness.type: unit.test` + `services.entries[].type: ops.job`
 - required:
   - `clauses.config.jobs` (metadata list)
   - `clauses`
@@ -681,8 +697,8 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 - profile_count: 4
-- top_level_fields: 149
-- harness_catalog: `/specs/schema/harness_contract_catalog_v1.yaml`
+- top_level_fields: 221
+- service_catalog: `/specs/schema/service_contract_catalog_v1.yaml`
 
 ### Top-Level Keys
 
@@ -691,6 +707,81 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `spec_version` | `int` | `true` | `v2` |
 | `schema_ref` | `string` | `true` | `v2` |
 | `defaults` | `mapping` | `false` | `v2` |
+| `harness` | `mapping` | `true` | `v2` |
+| `harness.type` | `string` | `true` | `v2` |
+| `harness.profile` | `string` | `true` | `v2` |
+| `harness.config` | `mapping` | `true` | `v2` |
+| `harness.docs` | `list` | `false` | `v2` |
+| `harness.docs[].id` | `string` | `true` | `v2` |
+| `harness.docs[].summary` | `string` | `true` | `v2` |
+| `harness.docs[].audience` | `string` | `true` | `v2` |
+| `harness.docs[].status` | `string` | `true` | `v2` |
+| `harness.docs[].description` | `string` | `false` | `v2` |
+| `harness.docs[].type` | `string` | `false` | `v2` |
+| `harness.docs[].since` | `string` | `false` | `v2` |
+| `harness.docs[].updated_at` | `string` | `false` | `v2` |
+| `harness.docs[].tags` | `list` | `false` | `v2` |
+| `harness.docs[].owners` | `list` | `false` | `v2` |
+| `harness.docs[].owners[].id` | `string` | `true` | `v2` |
+| `harness.docs[].owners[].role` | `string` | `true` | `v2` |
+| `harness.docs[].links` | `list` | `false` | `v2` |
+| `harness.docs[].links[].rel` | `string` | `true` | `v2` |
+| `harness.docs[].links[].ref` | `string` | `true` | `v2` |
+| `harness.docs[].links[].title` | `string` | `false` | `v2` |
+| `harness.docs[].examples` | `list` | `false` | `v2` |
+| `harness.docs[].examples[].title` | `string` | `true` | `v2` |
+| `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
+| `services` | `list` | `true` | `v2` |
+| `services.entries[].id` | `string` | `true` | `v2` |
+| `services.entries[].type` | `string` | `true` | `v2` |
+| `services.entries[].io` | `string` | `true` | `v2` |
+| `services.entries[].profile` | `string` | `true` | `v2` |
+| `services.entries[].config` | `mapping` | `true` | `v2` |
+| `services.entries[].default` | `bool` | `false` | `v2` |
+| `services.entries[].functions` | `list` | `false` | `v2` |
+| `services.entries[].functions[].name` | `string` | `true` | `v2` |
+| `services.entries[].functions[].op` | `string` | `true` | `v2` |
+| `services.entries[].functions[].params` | `list` | `false` | `v2` |
+| `services.entries[].docs` | `list` | `false` | `v2` |
+| `services.entries[].docs[].id` | `string` | `true` | `v2` |
+| `services.entries[].docs[].summary` | `string` | `true` | `v2` |
+| `services.entries[].docs[].audience` | `string` | `true` | `v2` |
+| `services.entries[].docs[].status` | `string` | `true` | `v2` |
+| `services.entries[].docs[].description` | `string` | `false` | `v2` |
+| `services.entries[].docs[].type` | `string` | `false` | `v2` |
+| `services.entries[].docs[].since` | `string` | `false` | `v2` |
+| `services.entries[].docs[].updated_at` | `string` | `false` | `v2` |
+| `services.entries[].docs[].tags` | `list` | `false` | `v2` |
+| `services.entries[].docs[].owners` | `list` | `false` | `v2` |
+| `services.entries[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `services.entries[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `services.entries[].docs[].links` | `list` | `false` | `v2` |
+| `services.entries[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `services.entries[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `services.entries[].docs[].links[].title` | `string` | `false` | `v2` |
+| `services.entries[].docs[].examples` | `list` | `false` | `v2` |
+| `services.entries[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `services.entries[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs` | `list` | `false` | `v2` |
+| `services.entries[].functions[].docs[].id` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].summary` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].audience` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].status` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].description` | `string` | `false` | `v2` |
+| `services.entries[].functions[].docs[].type` | `string` | `false` | `v2` |
+| `services.entries[].functions[].docs[].since` | `string` | `false` | `v2` |
+| `services.entries[].functions[].docs[].updated_at` | `string` | `false` | `v2` |
+| `services.entries[].functions[].docs[].tags` | `list` | `false` | `v2` |
+| `services.entries[].functions[].docs[].owners` | `list` | `false` | `v2` |
+| `services.entries[].functions[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].links` | `list` | `false` | `v2` |
+| `services.entries[].functions[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].links[].title` | `string` | `false` | `v2` |
+| `services.entries[].functions[].docs[].examples` | `list` | `false` | `v2` |
+| `services.entries[].functions[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `services.entries[].functions[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `artifact` | `mapping` | `false` | `v2` |
 | `artifact.imports` | `list` | `false` | `v2` |
 | `artifact.imports[].id` | `string` | `true` | `v2` |
@@ -771,7 +862,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `contracts` | `list` | `true` | `v2` |
 | `contracts[].id` | `string` | `true` | `v2` |
-| `contracts[].harness` | `string` | `true` | `v2` |
 | `title` | `string` | `false` | `v2` |
 | `purpose` | `string` | `false` | `v2` |
 | `docs` | `list` | `false` | `v2` |
@@ -824,8 +914,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].when.fail` | `list` | `false` | `v2` |
 | `contracts[].when.complete` | `list` | `false` | `v2` |
 | `contracts[].clauses` | `mapping` | `true` | `v2` |
-| `contracts[].clauses.profile` | `string` | `false` | `v2` |
-| `contracts[].clauses.config` | `mapping` | `false` | `v2` |
 | `contracts[].expect` | `mapping` | `false` | `v2` |
 | `contracts[].expect.portable` | `mapping` | `false` | `v2` |
 | `contracts[].expect.portable.status` | `string` | `false` | `v2` |
@@ -838,22 +926,21 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].expect.overrides[].message_tokens` | `list` | `false` | `v2` |
 | `contracts[].requires` | `mapping` | `false` | `v2` |
 
-### Harness Catalog
+### Runtime Surfaces
 
-| harness | required keys | required clause keys |
+| surface | required keys | catalog |
 |---|---|---|
-| `check` | `harness`, `clauses` | `profile`, `config` |
-| `export` | `harness`, `clauses`, `docs` | `profile`, `config` |
-| `job` | `harness`, `clauses` | `profile`, `config` |
+| `harness` | `harness.type`, `harness.profile`, `harness.config` | n/a |
+| `services.entries[]` | `services.entries[].id`, `services.entries[].type`, `services.entries[].io`, `services.entries[].profile`, `services.entries[].config` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 149
-- harness_count: 3
-- deprecated_type_overlays: 3
+- top_level_field_count: 221
+- harness_surface: suite-root `harness`
+- service_catalog: `/specs/schema/service_contract_catalog_v1.yaml`
 
 ### Top-Level Fields
 
@@ -862,6 +949,81 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `spec_version` | `int` | true | `v2` |
 | `schema_ref` | `string` | true | `v2` |
 | `defaults` | `mapping` | false | `v2` |
+| `harness` | `mapping` | true | `v2` |
+| `harness.type` | `string` | true | `v2` |
+| `harness.profile` | `string` | true | `v2` |
+| `harness.config` | `mapping` | true | `v2` |
+| `harness.docs` | `list` | false | `v2` |
+| `harness.docs[].id` | `string` | true | `v2` |
+| `harness.docs[].summary` | `string` | true | `v2` |
+| `harness.docs[].audience` | `string` | true | `v2` |
+| `harness.docs[].status` | `string` | true | `v2` |
+| `harness.docs[].description` | `string` | false | `v2` |
+| `harness.docs[].type` | `string` | false | `v2` |
+| `harness.docs[].since` | `string` | false | `v2` |
+| `harness.docs[].updated_at` | `string` | false | `v2` |
+| `harness.docs[].tags` | `list` | false | `v2` |
+| `harness.docs[].owners` | `list` | false | `v2` |
+| `harness.docs[].owners[].id` | `string` | true | `v2` |
+| `harness.docs[].owners[].role` | `string` | true | `v2` |
+| `harness.docs[].links` | `list` | false | `v2` |
+| `harness.docs[].links[].rel` | `string` | true | `v2` |
+| `harness.docs[].links[].ref` | `string` | true | `v2` |
+| `harness.docs[].links[].title` | `string` | false | `v2` |
+| `harness.docs[].examples` | `list` | false | `v2` |
+| `harness.docs[].examples[].title` | `string` | true | `v2` |
+| `harness.docs[].examples[].ref` | `string` | true | `v2` |
+| `services` | `list` | true | `v2` |
+| `services.entries[].id` | `string` | true | `v2` |
+| `services.entries[].type` | `string` | true | `v2` |
+| `services.entries[].io` | `string` | true | `v2` |
+| `services.entries[].profile` | `string` | true | `v2` |
+| `services.entries[].config` | `mapping` | true | `v2` |
+| `services.entries[].default` | `bool` | false | `v2` |
+| `services.entries[].functions` | `list` | false | `v2` |
+| `services.entries[].functions[].name` | `string` | true | `v2` |
+| `services.entries[].functions[].op` | `string` | true | `v2` |
+| `services.entries[].functions[].params` | `list` | false | `v2` |
+| `services.entries[].docs` | `list` | false | `v2` |
+| `services.entries[].docs[].id` | `string` | true | `v2` |
+| `services.entries[].docs[].summary` | `string` | true | `v2` |
+| `services.entries[].docs[].audience` | `string` | true | `v2` |
+| `services.entries[].docs[].status` | `string` | true | `v2` |
+| `services.entries[].docs[].description` | `string` | false | `v2` |
+| `services.entries[].docs[].type` | `string` | false | `v2` |
+| `services.entries[].docs[].since` | `string` | false | `v2` |
+| `services.entries[].docs[].updated_at` | `string` | false | `v2` |
+| `services.entries[].docs[].tags` | `list` | false | `v2` |
+| `services.entries[].docs[].owners` | `list` | false | `v2` |
+| `services.entries[].docs[].owners[].id` | `string` | true | `v2` |
+| `services.entries[].docs[].owners[].role` | `string` | true | `v2` |
+| `services.entries[].docs[].links` | `list` | false | `v2` |
+| `services.entries[].docs[].links[].rel` | `string` | true | `v2` |
+| `services.entries[].docs[].links[].ref` | `string` | true | `v2` |
+| `services.entries[].docs[].links[].title` | `string` | false | `v2` |
+| `services.entries[].docs[].examples` | `list` | false | `v2` |
+| `services.entries[].docs[].examples[].title` | `string` | true | `v2` |
+| `services.entries[].docs[].examples[].ref` | `string` | true | `v2` |
+| `services.entries[].functions[].docs` | `list` | false | `v2` |
+| `services.entries[].functions[].docs[].id` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].summary` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].audience` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].status` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].description` | `string` | false | `v2` |
+| `services.entries[].functions[].docs[].type` | `string` | false | `v2` |
+| `services.entries[].functions[].docs[].since` | `string` | false | `v2` |
+| `services.entries[].functions[].docs[].updated_at` | `string` | false | `v2` |
+| `services.entries[].functions[].docs[].tags` | `list` | false | `v2` |
+| `services.entries[].functions[].docs[].owners` | `list` | false | `v2` |
+| `services.entries[].functions[].docs[].owners[].id` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].owners[].role` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].links` | `list` | false | `v2` |
+| `services.entries[].functions[].docs[].links[].rel` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].links[].ref` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].links[].title` | `string` | false | `v2` |
+| `services.entries[].functions[].docs[].examples` | `list` | false | `v2` |
+| `services.entries[].functions[].docs[].examples[].title` | `string` | true | `v2` |
+| `services.entries[].functions[].docs[].examples[].ref` | `string` | true | `v2` |
 | `artifact` | `mapping` | false | `v2` |
 | `artifact.imports` | `list` | false | `v2` |
 | `artifact.imports[].id` | `string` | true | `v2` |
@@ -942,7 +1104,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].examples[].ref` | `string` | true | `v2` |
 | `contracts` | `list` | true | `v2` |
 | `contracts[].id` | `string` | true | `v2` |
-| `contracts[].harness` | `string` | true | `v2` |
 | `title` | `string` | false | `v2` |
 | `purpose` | `string` | false | `v2` |
 | `docs` | `list` | false | `v2` |
@@ -995,8 +1156,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].when.fail` | `list` | false | `v2` |
 | `contracts[].when.complete` | `list` | false | `v2` |
 | `contracts[].clauses` | `mapping` | true | `v2` |
-| `contracts[].clauses.profile` | `string` | false | `v2` |
-| `contracts[].clauses.config` | `mapping` | false | `v2` |
 | `contracts[].expect` | `mapping` | false | `v2` |
 | `contracts[].expect.portable` | `mapping` | false | `v2` |
 | `contracts[].expect.portable.status` | `string` | false | `v2` |
@@ -1009,11 +1168,10 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].expect.overrides[].message_tokens` | `list` | false | `v2` |
 | `contracts[].requires` | `mapping` | false | `v2` |
 
-### Harness Contract Matrix
+### Runtime Surface Matrix
 
-| harness | required_top_level | required_clauses | allowed_export_modes |
-|---|---|---|---|
-| `check` | `harness`, `clauses` | `profile`, `config` | `function` |
-| `export` | `harness`, `clauses`, `docs` | `profile`, `config` | `function` |
-| `job` | `harness`, `clauses` | `profile`, `config` | `function` |
+| surface | required_keys | catalog |
+|---|---|---|
+| `harness` | `harness.type`, `harness.profile`, `harness.config` | n/a |
+| `services.entries[]` | `services.entries[].id`, `services.entries[].type`, `services.entries[].io`, `services.entries[].profile`, `services.entries[].config` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

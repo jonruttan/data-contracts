@@ -14,10 +14,13 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `specs/schema/schema_v2.md` MUST contain generated registry snapshot
   content and stay synchronized.
 - Runtime expectation overrides MUST use `expect.overrides[]` (no `expect.impl.*` wildcard keys).
-- Contract-job metadata MUST use `clauses.config.jobs[]` rows keyed by explicit `id`.
-- `contracts[].harness` MUST resolve to a catalog entry in
-  `/specs/schema/harness_contract_catalog_v1.yaml`; unknown harness names are
-  hard-fail schema errors.
+- Suite runtime metadata MUST define root `harness` (`type`, `profile`, `config`).
+- Suite runtime services MUST define non-empty root `services.entries[]`.
+- Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
+- `contracts[].harness` is invalid in v2 (hard cut).
+- `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
+- `services.entries[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
+  unknown service types are hard-fail schema errors.
 - Suite artifact references MUST be declared only under
   `artifact.imports[]`/`artifact.exports[]`.
 - Root `exports[]` MUST be function-only declarations using
@@ -35,13 +38,13 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `path_model`
 - `deprecated type overlays` (migration-only; non-normative)
 
-## Harness Catalog
+## Runtime Catalogs
 
-Harness catalog entries define per-harness additions over common case keys:
+Runtime catalog entries define service additions over common suite/contract keys:
 
-- required top-level companion keys
-- required and allowed clause keys
-- allowed export mode (`function`)
+- required suite runtime fields (`harness`, `services.entries[]`)
+- service type/profile/io compatibility
+- allowed function operation prefixes per service type
 
 ## Determinism
 

@@ -2,8 +2,47 @@ version: 2
 id: schema.registry.v2.harness
 type: harness
 fields:
-  contracts[].harness:
+  harness:
+    type: mapping
+    required: true
+    since: v2
+    description: Suite-level execution harness binding.
+  harness.type:
     type: string
     required: true
     since: v2
-    description: Harness contract key resolved by harness_contract_catalog_v1.
+    description: Harness type (for example unit.test).
+  harness.profile:
+    type: string
+    required: true
+    since: v2
+    description: Harness execution profile.
+  harness.config:
+    type: mapping
+    required: true
+    since: v2
+    description: Harness runtime configuration mapping.
+  services:
+    type: mapping
+    required: true
+    since: v2
+    description: Suite-level service bindings with defaults and entries.
+  services.defaults:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional defaults merged into each services.entries[] row.
+  services.entries:
+    type: list
+    required: true
+    since: v2
+    description: Non-empty service entries for concrete runtime hooks.
+  services.entries[].id:
+    type: string
+    required: true
+    since: v2
+  services.entries[].type:
+    type: string
+    required: false
+    since: v2
+    description: Service type resolved by service_contract_catalog_v1.
