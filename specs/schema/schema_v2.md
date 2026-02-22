@@ -38,15 +38,12 @@ Related docs/reference schemas:
 
 - `spec_version` (int, required): schema major used by this suite
 - `schema_ref` (string, required): canonical virtual-root schema path
-- `contracts` (list, required): non-empty list of executable contract items
-- `defaults` (mapping, optional): shallow defaults merged into each contract
-  item; defaults should be used only for measurable duplication reduction and
-  empty defaults mappings are non-canonical
+- `contracts` (mapping, required): contains `contracts.clauses[]` (non-empty list)
 - `artifacts` (list, optional): suite-level artifact reference declarations
   - `id` (string, required)
   - `ref` (string, required): supports moustache template expressions (`{{...}}`)
     resolved from suite context
-  - `bidirectional` (string, required): `input|output|bidirectional`
+  - `direction` (string, required): `input|output|bidirectional`
   - `type` (string, optional): expected MIME type for resolved `ref`
   - `inputs` (mapping, optional)
   - `outputs` (mapping, optional)
@@ -101,12 +98,11 @@ Suite root canonical order:
 4. `purpose`
 5. `docs`
 6. `domain`
-7. `defaults`
-8. `harness`
-9. `services`
-10. `artifacts`
-11. `exports`
-12. `contracts`
+7. `harness`
+8. `services`
+9. `artifacts`
+10. `exports`
+11. `contracts`
 
 `contracts.clauses[]` canonical order:
 
@@ -118,7 +114,7 @@ Suite root canonical order:
 6. `expect`
 7. `requires`
 8. `bindings`
-9. `clauses`
+9. `asserts`
 10. `library`
 11. `when`
 
@@ -132,8 +128,8 @@ Alias grammar source of truth:
 - `/specs/schema/registry/v2/core.yaml and /specs/schema/registry/v2/assertions.yaml` defines compact/short alias
   grammars, normalization targets, mixed-form rules, and collision/failure
   contracts.
-- core/assertions registries enumerate canonical fields only and reference the
-  alias registry for non-canonical authoring forms.
+- core/assertions registries enumerate canonical fields and accepted compact
+  aliases for v2 surfaces.
 - list item order is preserved as-authored
 
 Terminology contract (uniform across v2 docs/registry/policy):
@@ -146,14 +142,13 @@ Terminology contract (uniform across v2 docs/registry/policy):
 Each `contracts.clauses[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
-- `clauses` (mapping, required)
+- `asserts` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
 - `expect`/`requires`/`when` (optional)
-- `contracts.clauses[].bindings` (list|mapping, optional): contract-local service
+- `contracts.clauses[].bindings` (mapping, optional): contract-local service
   binding declarations
   - mapping form (preferred compaction):
     `contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`
-  - list form: `contracts.clauses[].bindings.rows[]` rows
   - defaults keys (optional): `service`, `import`, `mode`, `predicates`
   - row keys: `id`, optional `service`, optional `import`, `inputs`, `outputs`,
     `predicates`, `mode`
@@ -208,6 +203,8 @@ Parser behavior:
 - suite `harness` mapping is required
 - suite `services` is optional
 - when `services` is present, `services[]` must be non-empty
+- `contracts.defaults` is invalid in v2 (hard cut)
+- `contracts.clauses[].asserts.defaults` is invalid in v2 (hard cut)
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2
@@ -233,8 +230,8 @@ Parser behavior:
   orchestration logic
 - runtime-loaded service implementations MUST pass lock + digest + signature
   verification before invocation
-- `services[].operations[].imports` requires canonical list[mapping] rows; compact list[string] aliases are invalid
-- services[].operations[].imports must use canonical mapping rows only
+- `services[].operations[].imports` accepts canonical list[mapping] rows and compact
+  list[string] aliases
 - compact `services[].operations[].imports` names MUST be unique per service entry
   and valid for resolved `services[].type/mode` in
   `/specs/schema/service_contract_catalog_v1.yaml`
@@ -257,8 +254,6 @@ Parser behavior:
 - binding shape/alias grammar source:
   `/specs/schema/registry/v2/core.yaml and /specs/schema/registry/v2/assertions.yaml`
 - legacy row key `contract` under `contracts.clauses[].bindings.rows[]` is invalid
-- mixed `contracts.clauses[].bindings.rows[]` list-form and `contracts.clauses[].bindings.rows[]`
-  mapping-form in the same contract is invalid
 - each effective binding row MUST include `id`, `service`, and `import` after defaults merge
 - effective row = shallow merge(`contracts.clauses[].bindings.defaults`, row), row values override defaults
 - effective `service` MUST reference an existing `services[].operations[].id`
@@ -682,10 +677,10 @@ Universal core assertion model:
 
 ## Assertion Predicate Shape
 
-`clauses` is a mapping with:
+`asserts` is a mapping with:
 
-- `defaults` (optional mapping)
-- `predicates` (required list)
+- `imports` (optional list)
+- `checks` (required list)
 
 Each `checks[]` entry requires:
 
@@ -699,8 +694,7 @@ Each `checks[]` entry requires:
 
 Forbidden prior forms:
 
-- `clauses` list form
-- predicate key `asserts`
+- `asserts` list form
 - predicate keys `target` and `on`
 
 Import binding shape:
@@ -723,9 +717,9 @@ Import binding shape:
 
 Import merge behavior:
 
-- effective predicate imports = `asserts.imports` merged with
+- effective check imports = `asserts.imports` merged with
   `asserts.checks[].imports`
-- predicate imports override defaults on key collision
+- check imports override assertion-level imports on key collision
 - binding-piped symbols are then merged into effective predicate context
   according to `contracts.clauses[].bindings.rows[].mode`:
   - `merge`: existing explicit import symbols are preserved
@@ -795,20 +789,20 @@ Step metadata constraints:
 - `asserts.checks[].priority` is optional integer metadata (`>=1`, default `1`)
 - `asserts.checks[].severity` is optional integer metadata (`>=1`, default `1`)
 - `asserts.checks[].purpose` is optional human-readable text
-- optional predicates (`required: false`) are non-blocking for overall case verdict
+- optional checks (`required: false`) are non-blocking for overall case verdict
 - prohibition intent is expressed directly with negation operators
   (for example `std.logic.not`)
 
 Canonical negation form:
 
 ```yaml
-clauses:
+asserts:
   imports:
   - from: artifact
     names: [text]
     as:
       text: subject
-  predicates:
+  checks:
   - id: assert_no_error
     required: true
     assert:
@@ -826,16 +820,16 @@ Author in canonical form:
 - use direct operator mappings in `assert` (no `evaluate` wrapper)
 - put every operator value in a list
 
-Example with defaults + step override imports:
+Example with check-level import override:
 
 ```yaml
-clauses:
+asserts:
   imports:
   - from: artifact
     names: [summary_json]
     as:
       summary_json: subject
-  predicates:
+  checks:
   - id: assert_passed
     assert:
       std.logic.eq:
@@ -896,7 +890,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 |---|---|---|---|
 | `spec_version` | `int` | `true` | `v2` |
 | `schema_ref` | `string` | `true` | `v2` |
-| `defaults` | `mapping` | `false` | `v2` |
 | `harness` | `mapping` | `true` | `v2` |
 | `harness.type` | `string` | `true` | `v2` |
 | `harness.profile` | `string` | `true` | `v2` |
@@ -1148,7 +1141,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 |---|---|---|---|
 | `spec_version` | `int` | true | `v2` |
 | `schema_ref` | `string` | true | `v2` |
-| `defaults` | `mapping` | false | `v2` |
 | `harness` | `mapping` | true | `v2` |
 | `harness.type` | `string` | true | `v2` |
 | `harness.profile` | `string` | true | `v2` |

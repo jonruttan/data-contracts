@@ -8,8 +8,8 @@ rules:
   norm: MUST
   requirement: service_binding_runtime_payloads_use_declared_artifact_ids
   description: 'Service-to-contract bindings must source runtime inputs from
-    `artifacts[].id` with direction `input|io` and sink outputs to `artifacts[].id`
-    with direction `output|io`.
+    `artifacts[].id` with direction `input|bidirectional` and sink outputs to
+    `artifacts[].id` with direction `output|bidirectional`.
 
     '
   rationale: Keeps service I/O and import binding explicit, portable, and traceable.
@@ -62,6 +62,23 @@ rules:
   risk_if_violated: Ambiguous ownership and legacy shape drift.
   references:
   - specs/contract/21_schema_registry_contract.md
+  - specs/schema/schema_v2.md
+- id: V2_DEFAULTS_SURFACE_NARROWED
+  introduced_in: v2
+  scope: case
+  applies_to: schema.v2.defaults
+  norm: MUST
+  requirement: only_services_and_bindings_defaults_surfaces_are_allowed
+  description: In v2, only `services[].defaults` and
+    `contracts.clauses[].bindings.defaults` are allowed defaults surfaces.
+    `contracts.defaults`, `contracts.clauses[].asserts.defaults`, and any other
+    defaults surfaces are hard-fail.
+  rationale: Reduces hidden inheritance and keeps merge behavior unsurprising.
+  risk_if_violated: Authors must reason about implicit values across too many
+    scopes, increasing ambiguity.
+  references:
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/assertions.yaml
   - specs/schema/schema_v2.md
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
@@ -4464,10 +4481,10 @@ rules:
   scope: governance
   applies_to: schema.v2.registry.aliases
   norm: MUST
-  requirement: v2_alias_grammar_must_be_defined_in_aliases_registry
+  requirement: v2_alias_grammar_must_be_defined_in_core_and_assertions_registries
   description: Alias grammar for compact/short forms must be defined in
-    `/specs/schema/registry/v2/core.yaml`, with core/assertion registries
-    containing canonical fields only.
+    `/specs/schema/registry/v2/core.yaml` and `/specs/schema/registry/v2/assertions.yaml`
+    with one deterministic normalization contract.
   rationale: Eliminates duplicated alias semantics and reduces ambiguity.
   risk_if_violated: Alias behavior drifts between registry surfaces and docs.
   references:

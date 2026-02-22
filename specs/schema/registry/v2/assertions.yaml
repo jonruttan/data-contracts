@@ -6,21 +6,17 @@ fields:
     type: mapping
     required: true
     since: v2
-    description: Canonical assertion tree root mapping with defaults/checks; 
+    description: Canonical assertion tree root mapping with checks; 
       leaves are direct spec-lang operator mappings. Binding-piped symbols are 
       merged into effective check import context after assertion/check 
       import merge.
-  contracts.clauses[].asserts.defaults:
-    type: mapping
-    required: false
-    since: v2
-    description: Optional assertion-level defaults mapping.
   contracts.clauses[].asserts.imports:
     type: list
     required: false
     since: v2
     description: 'Assertion-level default import bindings inherited by checks.
-      Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
+      Supports canonical rows (`{from, names, service?, as?}`) and compact
+      aliases (bare-string/service/artifact grouping). For `from: artifact`,
       imported names must resolve to suite-declared `artifacts[].id` and be
       explicitly wired when runtime-produced.'
   contracts.clauses[].asserts.imports[].from:
@@ -58,9 +54,10 @@ fields:
     type: list
     required: false
     since: v2
-    description: 'Check-level imports merged over asserts.imports.
-      Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
-      names must resolve to suite-declared `artifacts[].id`.'
+    description: 'Check-level imports merged over asserts.imports. Supports
+      canonical rows (`{from, names, service?, as?}`) and compact aliases
+      (bare-string/service/artifact grouping). For `from: artifact`, names
+      must resolve to suite-declared `artifacts[].id`.'
   contracts.clauses[].asserts.checks[].imports[].from:
     type: string
     required: true

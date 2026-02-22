@@ -4,7 +4,7 @@
 
 `asserts` uses mapping form:
 
-- `defaults` (optional mapping)
+- `imports` (optional list)
 - `checks` (required non-empty list)
 
 Each check has:
@@ -52,7 +52,8 @@ Import binding shape:
 
 - `imports` is a list of canonical mapping rows
 - canonical row form is `{from, names, service?, as?}`
-- compact/short alias rows are invalid in v2
+- compact/short alias rows are supported in v2 where defined by
+  `/specs/schema/registry/v2/assertions.yaml`
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)
@@ -80,9 +81,7 @@ Uniform terminology:
 Import merge semantics:
 
 - effective imports = `asserts.imports` + `asserts.checks[].imports`
-- predicate imports override same-name defaults
-- `asserts.defaults` may provide inherited assertion-level defaults; explicit row
-  values always override inherited defaults
+- check imports override same-name assertion-level imports
 - binding-piped symbols from `contracts.clauses[].bindings.rows[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
@@ -114,7 +113,6 @@ Example:
 
 ```yaml
 asserts:
-  defaults: {}
   imports:
   - from: artifact
     names: [violation_count]

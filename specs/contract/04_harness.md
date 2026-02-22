@@ -11,15 +11,15 @@
   `assert.export`, `ops.job`) are invalid as service types.
 - `services[].operations[].mode` is a mode token validated per integration type
   (`read.text`, `request.http`, `exec.command`, `generate.docs`, etc.).
-- `services[].operations[].imports` uses canonical list mappings (`names` + optional `as`).
-- compact service import aliases are invalid in v2.
+- `services[].operations[].imports` supports canonical list mappings (`names` + optional `as`)
+  and compact list[string] aliases.
 - Contract-scoped `contracts.clauses[].bindings` connects contracts to services and
   artifact channels using `contracts.clauses[].bindings.defaults + contracts.clauses[].bindings.rows[]`.
-- Binding I/O uses canonical mapping rows:
+- Binding I/O supports canonical mapping rows and compact endpoint aliases:
   - `outputs`: `{to, as?, path?}`
   - `inputs`: `{from, as?}`
-- compact binding I/O aliases are invalid in v2.
-- clause/predicate imports use canonical rows only (`{from, names, service?, as?}`).
+- clause/predicate imports support canonical rows (`{from, names, service?, as?}`)
+  and supported compact aliases.
 - root `bindings` is invalid in v2.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,

@@ -48,6 +48,20 @@ links:
   unit_test_refs: []
   implementation_refs: []
   notes: Root bindings are forbidden in v2; bindings must be declared per contract.
+- rule_id: V2_DEFAULTS_SURFACE_NARROWED
+  policy_ref: specs/contract/policy_v1.yaml#V2_DEFAULTS_SURFACE_NARROWED
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-001
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Only services and contract-binding defaults surfaces are allowed in v2.
 - rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   contract_refs:
@@ -4157,7 +4171,6 @@ links:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
   - specs/schema/registry/v2/core.yaml
-  - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/assertions.yaml
   - specs/schema/schema_v2.md
   conformance_case_ids:
@@ -4166,7 +4179,7 @@ links:
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
-  notes: Alias grammar is centralized in v2 aliases registry and consumed by core/assertion surfaces.
+  notes: Alias grammar is centralized in the v2 core/assertions registries with one deterministic normalization contract.
 - rule_id: REQUIREDNESS_MODEL_HARMONIZED_V2
   policy_ref: specs/contract/policy_v1.yaml#REQUIREDNESS_MODEL_HARMONIZED_V2
   contract_refs:

@@ -395,6 +395,8 @@ fields:
     type: list
     required: false
     since: v2
+    description: Supports canonical mapping rows (`names`, optional `as`) and
+      compact list[string] aliases. Mixed item kinds in one list are invalid.
   services[].operations[].imports[].names:
     type: list
     required: true
@@ -785,10 +787,6 @@ fields:
     type: mapping
     required: true
     since: v2
-  contracts.defaults:
-    type: mapping
-    required: false
-    since: v2
   contracts.clauses:
     type: list
     required: true
@@ -1083,7 +1081,9 @@ fields:
     type: list
     required: false
     since: v2
-    description: Canonical mapping rows (`from`, optional `as`).
+    description: Supports canonical mapping rows (`from`, optional `as`) and
+      compact list[string] aliases normalized to `{from: <id>}`. Mixed item
+      kinds in one list are invalid.
   contracts.clauses[].bindings.rows[].inputs[].from:
     type: string
     required: true
@@ -1096,7 +1096,9 @@ fields:
     type: list
     required: false
     since: v2
-    description: Canonical mapping rows (`to`, optional `as`, optional `path`).
+    description: Supports canonical mapping rows (`to`, optional `as`,
+      optional `path`) and compact list[string] aliases normalized to
+      `{to: <id>}`. Mixed item kinds in one list are invalid.
   contracts.clauses[].bindings.rows[].outputs[].to:
     type: string
     required: true
