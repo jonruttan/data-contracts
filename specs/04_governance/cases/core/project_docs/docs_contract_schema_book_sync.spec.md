@@ -1,17 +1,39 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'doc_sync': {'files': ['docs/book/30_assertion_model.md', 'specs/02_contracts/03_assertions.md', 'specs/01_schema/schema_v1.md'], 'tokens': ['MUST', 'MAY', 'MUST_NOT', 'contract.imports']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.contract_schema_book_sync'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    doc_sync:
+      files:
+      - docs/book/30_assertion_model.md
+      - specs/02_contracts/03_assertions.md
+      - specs/01_schema/schema_v1.md
+      tokens:
+      - MUST
+      - MAY
+      - MUST_NOT
+      - contract.imports
+    check:
+      profile: governance.scan
+      config:
+        check: docs.contract_schema_book_sync
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-DOCS-REF-006
     title: assertion tokens stay aligned across book contract and schema docs
-    purpose: Ensures core assertion terminology remains synchronized across author-facing and normative specification documents.
+    purpose: Ensures core assertion terminology remains synchronized across author-facing
+      and normative specification documents.
     asserts:
       imports:
       - from: artifact
@@ -46,13 +68,13 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.root_doc_sync_files_docs_book_30_assertion_model_md_specs_contract_03_assertions_md_specs_schema_schema_v1_md_tokens_must_may_must_not_contract_imports_check_profile_governance_scan_config_check_docs_contract_schema_book_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_doc_sync_files_docs_book_30_assertion_model_md_specs_contract_03_assertions_md_specs_schema_schema_v1_md_tokens_must_may_must_not_contract_imports_check_profile_governance_scan_config_check_docs_contract_schema_book_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.docs.contract.schema.boo.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_doc_sync_files_docs_book_30_assertion_model_md_specs_contract_03_assertions_md_specs_schema_schema_v1_md_tokens_must_may_must_not_contract_imports_check_profile_governance_scan_config_check_docs_contract_schema_book_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.docs.contract.schema.boo.1
   consumes:
-  - svc.root_doc_sync_files_docs_book_30_assertion_model_md_specs_contract_03_assertions_md_specs_schema_schema_v1_md_tokens_must_may_must_not_contract_imports_check_profile_governance_scan_config_check_docs_contract_schema_book_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.docs.contract.schema.boo.1
 ```

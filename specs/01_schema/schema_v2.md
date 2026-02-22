@@ -160,6 +160,11 @@ Suite runtime surfaces:
   - `harness.type` (string, required)
   - `harness.profile` (string, required)
   - `harness.config` (mapping, optional)
+  - scan-style structured config keys:
+    - `harness.config.root` (string, optional)
+    - `harness.config.check.profile` (string, optional)
+    - `harness.config.check.config.check` (string, optional)
+    - `harness.config.use[]` (`ref`, `as`, `symbols`) (optional)
 - `services` (list, optional): suite service type blocks
   - `adapters[].type` (string, required): service type token resolved by
     `/specs/01_schema/service_contract_catalog_v1.yaml` (for example `io.http`)
@@ -205,6 +210,7 @@ Parser behavior:
 - when `services` is present, `services[]` must be non-empty
 - `contracts.defaults` is invalid in v2 (hard cut)
 - `contracts.clauses[].asserts.defaults` is invalid in v2 (hard cut)
+- `harness.config.legacy_contract_harnesses` is invalid in v2 (hard cut)
 - `schema_ref` MUST resolve in `/specs/01_schema/schema_catalog_v2.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 - root `imports` is invalid in v2

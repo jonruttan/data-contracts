@@ -1,17 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/01_schema/index.md'}}}"
+    check:
+      profile: text.file
+      config:
+        path: /specs/01_schema/index.md
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-002
     title: project bundle lock schema is indexed
-    purpose: Ensures schema index includes project bundle lock schema for multi-bundle installs.
+    purpose: Ensures schema index includes project bundle lock schema for multi-bundle
+      installs.
     asserts:
       imports:
       - from: artifact
@@ -22,25 +25,25 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - "/specs/01_schema/bundle_manifest_v1.yaml"
+          - /specs/01_schema/bundle_manifest_v1.yaml
       - id: assert_2
         assert:
           std.string.contains:
           - var: text
-          - "/specs/01_schema/resolved_bundle_lock_v1.yaml"
+          - /specs/01_schema/resolved_bundle_lock_v1.yaml
       - id: assert_3
         assert:
           std.string.contains:
           - var: text
-          - "/specs/01_schema/project_bundle_lock_v1.yaml"
+          - /specs/01_schema/project_bundle_lock_v1.yaml
 adapters:
 - type: legacy.check_profile_text_file_config_path_specs_schema_index_md
   actions:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+  - id: act.gov.runtime.runner.bundle.lo.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+- id: svc.gov.runtime.runner.bundle.lo.1
   consumes:
-  - svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+  - act.gov.runtime.runner.bundle.lo.1
 ```

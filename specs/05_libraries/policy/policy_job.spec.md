@@ -1,13 +1,40 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-JOB-001', 'as': 'lib_policy_job', 'symbols': ['policy.job.dispatch_ok', 'policy.job.written_path_contains', 'policy.job.hooks_present']}]}"
-    - "{'exports': [{'as': 'policy.job.dispatch_ok', 'from': 'assert.function', 'path': '/__export__policy.job.dispatch_ok', 'params': ['summary_json'], 'required': True}, {'as': 'policy.job.written_path_contains', 'from': 'assert.function', 'path': '/__export__policy.job.written_path_contains', 'params': ['summary_json', 'expected_path'], 'required': True}, {'as': 'policy.job.hooks_present', 'from': 'assert.function', 'path': '/__export__policy.job.hooks_present', 'params': ['job_map'], 'required': True}]}"
+    check:
+      profile: text.file
+      config: {}
+    use:
+    - ref: '#LIB-POLICY-JOB-001'
+      as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      - policy.job.hooks_present
+    exports:
+    - as: policy.job.dispatch_ok
+      from: assert.function
+      path: /__export__policy.job.dispatch_ok
+      params:
+      - summary_json
+      required: true
+    - as: policy.job.written_path_contains
+      from: assert.function
+      path: /__export__policy.job.written_path_contains
+      params:
+      - summary_json
+      - expected_path
+      required: true
+    - as: policy.job.hooks_present
+      from: assert.function
+      path: /__export__policy.job.hooks_present
+      params:
+      - job_map
+      required: true
 contracts:
   asserts:
   - id: LIB-POLICY-JOB-001
@@ -69,14 +96,14 @@ contracts:
         - call:
           - var: policy.job.written_path_contains
           - lit:
-              written_path: ".artifacts/example.json"
-          - ".artifacts/example.json"
+              written_path: .artifacts/example.json
+          - .artifacts/example.json
         - std.logic.not:
           - call:
             - var: policy.job.written_path_contains
             - lit:
-                written_path: ".artifacts/example.json"
-            - ".artifacts/other.json"
+                written_path: .artifacts/example.json
+            - .artifacts/other.json
         - call:
           - var: policy.job.hooks_present
           - lit:
@@ -90,19 +117,19 @@ contracts:
 adapters:
 - type: legacy.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true
   actions:
-  - id: svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
+  - id: act.lib.policy.job.spec.1
     profile: default
 - type: legacy.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present
   actions:
-  - id: svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
+  - id: act.lib.policy.job.spec.2
     profile: default
 services:
-- id: svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
+- id: svc.lib.policy.job.spec.1
   consumes:
-  - svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
-- id: svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
+  - act.lib.policy.job.spec.1
+- id: svc.lib.policy.job.spec.2
   consumes:
-  - svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
+  - act.lib.policy.job.spec.2
 ```
 
 

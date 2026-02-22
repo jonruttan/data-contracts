@@ -1,21 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
-  config:
-    legacy_contract_harnesses:
-    - check
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-REG-001
     title: schema docs include generated registry snapshot markers
-    purpose: Ensures generated schema registry snapshot markers and section header are present in schema_v1 documentation.
+    purpose: Ensures generated schema registry snapshot markers and section header
+      are present in schema_v1 documentation.
     expect:
       portable:
         status: pass
-        category:
+        category: null
     asserts:
       imports:
       - from: artifact
@@ -33,10 +31,10 @@ contracts:
             - Generated Registry Snapshot
 artifacts:
 - id: art.svc.check.text_file.1.source.1
-  ref: "/specs/01_schema/schema_v2.md"
+  ref: /specs/01_schema/schema_v2.md
   direction: input
 - id: art.svc.check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
+  ref: /specs/05_libraries/policy/policy_text.spec.md
   direction: input
 adapters:
 - type: io.fs

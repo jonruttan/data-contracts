@@ -11,10 +11,10 @@ required_index_dirs:
 - /docs/book/guides
 - runner-owned implementation docs
 - /specs
-- /specs/contract
-- /specs/conformance
+- /specs/02_contracts
+- /specs/03_conformance
 - /specs/03_conformance/cases
-- /specs/governance
+- /specs/04_governance
 - runner-owned implementation specs
 forbidden_filenames:
 - README.md

@@ -47,8 +47,8 @@ Show the canonical topology of specification surfaces, governance, docs, and run
 
 ```mermaid
 flowchart TB
-  A[specs/schema] --> D[specs/contract]
-  D --> E[specs/governance]
+  A[specs/01_schema] --> D[specs/02_contracts]
+  D --> E[specs/04_governance]
   E --> F[scripts/runner_bin.sh]
   E --> G[docs/book narrative]
   E --> H[docs/book generated references]

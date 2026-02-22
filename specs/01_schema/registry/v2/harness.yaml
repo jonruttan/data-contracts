@@ -21,7 +21,47 @@ fields:
     type: mapping
     required: false
     since: v2
-    description: Harness runtime configuration mapping.
+    description: Harness runtime configuration mapping. Legacy
+      `harness.config.legacy_contract_harnesses` payload strings are invalid
+      in v2.
+  harness.config.root:
+    type: string
+    required: false
+    since: v2
+    description: Root path used by scan-style harness checks.
+  harness.config.check:
+    type: mapping
+    required: false
+    since: v2
+    description: Structured check dispatch payload.
+  harness.config.check.profile:
+    type: string
+    required: false
+    since: v2
+  harness.config.check.config:
+    type: mapping
+    required: false
+    since: v2
+  harness.config.check.config.check:
+    type: string
+    required: false
+    since: v2
+  harness.config.use:
+    type: list
+    required: false
+    since: v2
+  harness.config.use[].ref:
+    type: string
+    required: true
+    since: v2
+  harness.config.use[].as:
+    type: string
+    required: true
+    since: v2
+  harness.config.use[].symbols:
+    type: list
+    required: true
+    since: v2
   adapters:
     type: list
     required: false

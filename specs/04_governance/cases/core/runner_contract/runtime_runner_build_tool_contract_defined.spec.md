@@ -1,17 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}}"
+    check:
+      profile: text.file
+      config: {}
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-BTOOL-001
     title: runner build tool contract document is defined
-    purpose: Ensures tool-agnostic build tool contract document is present in the portable contract index.
+    purpose: Ensures tool-agnostic build tool contract document is present in the
+      portable contract index.
     asserts:
       imports:
       - from: artifact
@@ -22,7 +24,7 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - "/specs/02_contracts/30_build_tool_command_set.md"
+          - /specs/02_contracts/30_build_tool_command_set.md
 adapters:
 - type: legacy.check_profile_text_file_config
   actions:

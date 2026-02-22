@@ -1,17 +1,25 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'schema_pin_validator': {'path': '/scripts/spec_schema_pin_validate.sh', 'required_tokens': ['mismatched_version_count']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.spec_case_version_matches_schema_ref'}}}"
+    root: .
+    schema_pin_validator:
+      path: /scripts/spec_schema_pin_validate.sh
+      required_tokens:
+      - mismatched_version_count
+    check:
+      profile: governance.scan
+      config:
+        check: schema.spec_case_version_matches_schema_ref
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-PIN-004
     title: spec_version matches schema_ref major
-    purpose: Ensures schema pin validator rejects mismatched spec_version and schema_ref major values.
+    purpose: Ensures schema pin validator rejects mismatched spec_version and schema_ref
+      major values.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +35,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref
+- type: legacy.scan
   actions:
-  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
+  - id: act.gov.schema.spec.case.version.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
+- id: svc.gov.schema.spec.case.version.1
   consumes:
-  - svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
+  - act.gov.schema.spec.case.version.1
 ```

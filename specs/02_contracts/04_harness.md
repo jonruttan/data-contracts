@@ -58,6 +58,12 @@ Suite-root external references:
   `services` and `adapters` MUST be declared and valid.
 - binding defaults are additive only: explicit row values override defaults.
 - `service` and `import` are effective-required after defaults merge.
+- `harness.config.legacy_contract_harnesses` payload strings are invalid in v2.
+- scan-style harness config must use explicit structured keys:
+  - `harness.config.root`
+  - `harness.config.check.profile`
+  - `harness.config.check.config.check`
+  - `harness.config.use[]` (`ref`, `as`, `symbols`)
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
   contract, artifacts import/export, and root function export surfaces.
 - docs entry and docs-owner ids are optional metadata keys; when omitted,

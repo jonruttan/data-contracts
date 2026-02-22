@@ -1,17 +1,58 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'spec_lang_adoption_non_regression': {'baseline_path': '/specs/04_governance/metrics/spec_lang_adoption_baseline.json', 'summary_fields': {'overall_logic_self_contained_ratio': 'non_decrease', 'native_logic_escape_case_ratio': 'non_increase', 'governance_library_backed_policy_ratio': 'non_decrease', 'governance_symbol_resolution_ratio': 'non_decrease', 'library_public_surface_ratio': 'non_decrease'}, 'segment_fields': {'conformance': {'mean_logic_self_contained_ratio': 'non_decrease'}, 'governance': {'mean_logic_self_contained_ratio': 'non_decrease', 'library_backed_policy_ratio': 'non_decrease', 'governance_symbol_resolution_ratio': 'non_decrease'}}, 'epsilon': 1e-12, 'spec_lang_adoption': {'roots': ['/specs/03_conformance/cases', '/specs/04_governance/cases', 'runner-owned implementation specs'], 'segment_rules': [{'prefix': 'specs/03_conformance/cases', 'segment': 'conformance'}, {'prefix': 'specs/04_governance/cases', 'segment': 'governance'}, {'prefix': 'runner-owned implementation specs', 'segment': 'impl'}], 'recursive': True}}, 'check': {'profile': 'governance.scan', 'config': {'check': 'spec.spec_lang_adoption_non_regression'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    spec_lang_adoption_non_regression:
+      baseline_path: /specs/04_governance/metrics/spec_lang_adoption_baseline.json
+      summary_fields:
+        overall_logic_self_contained_ratio: non_decrease
+        native_logic_escape_case_ratio: non_increase
+        governance_library_backed_policy_ratio: non_decrease
+        governance_symbol_resolution_ratio: non_decrease
+        library_public_surface_ratio: non_decrease
+      segment_fields:
+        conformance:
+          mean_logic_self_contained_ratio: non_decrease
+        governance:
+          mean_logic_self_contained_ratio: non_decrease
+          library_backed_policy_ratio: non_decrease
+          governance_symbol_resolution_ratio: non_decrease
+      epsilon: 1.0e-12
+      spec_lang_adoption:
+        roots:
+        - /specs/03_conformance/cases
+        - /specs/04_governance/cases
+        - runner-owned implementation specs
+        segment_rules:
+        - prefix: specs/03_conformance/cases
+          segment: conformance
+        - prefix: specs/04_governance/cases
+          segment: governance
+        - prefix: runner-owned implementation specs
+          segment: impl
+        recursive: true
+    check:
+      profile: governance.scan
+      config:
+        check: spec.spec_lang_adoption_non_regression
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-SPEC-LANG-002
     title: spec-lang adoption metric is non-regressing
-    purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in baseline.
+    purpose: Enforces monotonic non-regression for spec-lang adoption metrics against
+      checked-in baseline.
     asserts:
       imports:
       - from: artifact
@@ -46,13 +87,13 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.root_spec_lang_adoption_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_summary_fields_overall_logic_self_contained_ratio_non_decrease_native_logic_escape_case_ratio_non_increase_governance_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_library_public_surface_ratio_non_decrease_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_governance_mean_logic_self_contained_ratio_non_decrease_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_recursive_true_check_profile_governance_scan_config_check_spec_spec_lang_adoption_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_spec_lang_adoption_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_summary_fields_overall_logic_self_contained_ratio_non_decrease_native_logic_escape_case_ratio_non_increase_governance_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_library_public_surface_ratio_non_decrease_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_governance_mean_logic_self_contained_ratio_non_decrease_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_recursive_true_check_profile_governance_scan_config_check_spec_spec_lang_adoption_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.spec.lang.adoption.non.r.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_spec_lang_adoption_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_summary_fields_overall_logic_self_contained_ratio_non_decrease_native_logic_escape_case_ratio_non_increase_governance_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_library_public_surface_ratio_non_decrease_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_governance_mean_logic_self_contained_ratio_non_decrease_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_recursive_true_check_profile_governance_scan_config_check_spec_spec_lang_adoption_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.spec.lang.adoption.non.r.1
   consumes:
-  - svc.root_spec_lang_adoption_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_summary_fields_overall_logic_self_contained_ratio_non_decrease_native_logic_escape_case_ratio_non_increase_governance_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_library_public_surface_ratio_non_decrease_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_governance_mean_logic_self_contained_ratio_non_decrease_library_backed_policy_ratio_non_decrease_governance_symbol_resolution_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_recursive_true_check_profile_governance_scan_config_check_spec_spec_lang_adoption_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.spec.lang.adoption.non.r.1
 ```

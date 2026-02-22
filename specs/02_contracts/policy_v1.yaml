@@ -80,6 +80,23 @@ rules:
   - specs/01_schema/registry/v2/core.yaml
   - specs/01_schema/registry/v2/assertions.yaml
   - specs/01_schema/schema_v2.md
+- id: HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
+  introduced_in: v2
+  scope: case
+  applies_to: harness.config
+  norm: MUST
+  requirement: harness_config_legacy_contract_harnesses_is_invalid
+  description: In v2, `harness.config.legacy_contract_harnesses` is forbidden.
+    Scan-style harness setup must use explicit structured keys (`root`,
+    `check.profile`, `check.config.check`, `use[]`).
+  rationale: Removes opaque serialized payloads and keeps harness behavior declarative.
+  risk_if_violated: Hidden config semantics, duplicated payload strings, and low-auditability
+    case setup.
+  references:
+  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v2/harness.yaml
+  - specs/01_schema/schema_v2.md
+  - specs/02_contracts/04_harness.md
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
   scope: case

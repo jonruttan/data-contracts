@@ -1,17 +1,28 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality_contract': {'path': '/specs/02_contracts/10_docs_quality.md', 'required_tokens': ['05_what_is_data_contracts.md', '15_spec_lifecycle.md', '25_system_topology.md', 'Mermaid diagram block']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.visual_aids_core_chapters_present'}}}"
+    root: .
+    docs_quality_contract:
+      path: /specs/02_contracts/10_docs_quality.md
+      required_tokens:
+      - 05_what_is_data_contracts.md
+      - 15_spec_lifecycle.md
+      - 25_system_topology.md
+      - Mermaid diagram block
+    check:
+      profile: governance.scan
+      config:
+        check: docs.visual_aids_core_chapters_present
 contracts:
   clauses:
   - id: DCGOV-DOCS-REF-022
     title: visual aids required in core chapters
-    purpose: Ensures docs quality contract enforces Mermaid visual aid requirements for core narrative chapters.
+    purpose: Ensures docs quality contract enforces Mermaid visual aid requirements
+      for core narrative chapters.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +38,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
+- type: legacy.scan
   actions:
-  - id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
+  - id: act.gov.docs.visual.aids.core.ch.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
+- id: svc.gov.docs.visual.aids.core.ch.1
   consumes:
-  - svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
+  - act.gov.docs.visual.aids.core.ch.1
 ```

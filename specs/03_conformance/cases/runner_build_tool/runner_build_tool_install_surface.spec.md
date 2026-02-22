@@ -1,17 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/scripts/bundle'}}}"
+    check:
+      profile: text.file
+      config:
+        path: /scripts/bundle
 contracts:
   clauses:
   - id: DCCONF-BTOOL-007
     title: bundle tooling exposes install command surface
-    purpose: Bundle CLI must expose install and install-check commands for multi-bundle project workflows.
+    purpose: Bundle CLI must expose install and install-check commands for multi-bundle
+      project workflows.
     asserts:
       imports:
       - from: artifact
@@ -31,11 +34,11 @@ contracts:
 adapters:
 - type: legacy.check_profile_text_file_config_path_scripts_bundle
   actions:
-  - id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+  - id: act.conf.runner.build.tool.instal.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+- id: svc.conf.runner.build.tool.instal.1
   consumes:
-  - svc.check_profile_text_file_config_path_scripts_bundle.default.1
+  - act.conf.runner.build.tool.instal.1
 ```

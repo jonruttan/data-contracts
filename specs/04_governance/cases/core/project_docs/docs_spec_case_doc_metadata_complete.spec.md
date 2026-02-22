@@ -1,17 +1,29 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.spec_case_doc_metadata_complete'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    check:
+      profile: governance.scan
+      config:
+        check: docs.spec_case_doc_metadata_complete
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-DOCS-SPECCASE-001
     title: spec case root docs metadata is complete
-    purpose: Ensures contract.export cases declare required root docs[] metadata entry fields.
+    purpose: Ensures contract.export cases declare required root docs[] metadata entry
+      fields.
     asserts:
       imports:
       - from: artifact
@@ -34,13 +46,13 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.root_check_profile_governance_scan_config_check_docs_spec_case_doc_metadata_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_check_profile_governance_scan_config_check_docs_spec_case_doc_metadata_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.docs.spec.case.doc.metad.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_check_profile_governance_scan_config_check_docs_spec_case_doc_metadata_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.docs.spec.case.doc.metad.1
   consumes:
-  - svc.root_check_profile_governance_scan_config_check_docs_spec_case_doc_metadata_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.docs.spec.case.doc.metad.1
 ```

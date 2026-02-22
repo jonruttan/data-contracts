@@ -1,17 +1,31 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'liveness_trace_tokens': {'trace_path': 'specs/04_governance/cases/fixtures/run_trace_liveness_sample.json'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.liveness_hard_cap_token_emitted'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    liveness_trace_tokens:
+      trace_path: specs/04_governance/cases/fixtures/run_trace_liveness_sample.json
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.liveness_hard_cap_token_emitted
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-LIVENESS-HARDCAP-001
     title: run trace includes hard-cap and kill escalation reason tokens
-    purpose: Ensures emergency hard-cap watchdog behavior is represented in trace token taxonomy.
+    purpose: Ensures emergency hard-cap watchdog behavior is represented in trace
+      token taxonomy.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +41,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_liveness_trace_tokens_trace_path_specs_governance_cases_fixtures_run_trace_liveness_sample_json_check_profile_governance_scan_config_check_runtime_liveness_hard_cap_token_emitted_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_liveness_trace_tokens_trace_path_specs_governance_cases_fixtures_run_trace_liveness_sample_json_check_profile_governance_scan_config_check_runtime_liveness_hard_cap_token_emitted_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.runtime.liveness.hard.ca.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_liveness_trace_tokens_trace_path_specs_governance_cases_fixtures_run_trace_liveness_sample_json_check_profile_governance_scan_config_check_runtime_liveness_hard_cap_token_emitted_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.runtime.liveness.hard.ca.1
   consumes:
-  - svc.root_liveness_trace_tokens_trace_path_specs_governance_cases_fixtures_run_trace_liveness_sample_json_check_profile_governance_scan_config_check_runtime_liveness_hard_cap_token_emitted_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.runtime.liveness.hard.ca.1
 ```

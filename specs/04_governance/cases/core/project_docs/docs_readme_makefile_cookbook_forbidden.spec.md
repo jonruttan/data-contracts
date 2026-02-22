@@ -1,12 +1,21 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'readme_makefile_tokens': {'path': '/README.md', 'forbidden_tokens': ['make setup', 'make prepush', 'hooks-install']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.readme_makefile_cookbook_forbidden'}}}"
+    root: .
+    readme_makefile_tokens:
+      path: /README.md
+      forbidden_tokens:
+      - make setup
+      - make prepush
+      - hooks-install
+    check:
+      profile: governance.scan
+      config:
+        check: docs.readme_makefile_cookbook_forbidden
 contracts:
   clauses:
   - id: DCGOV-DOCS-REF-026
@@ -27,13 +36,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_readme_makefile_tokens_path_readme_md_forbidden_tokens_make_setup_make_prepush_hooks_install_check_profile_governance_scan_config_check_docs_readme_makefile_cookbook_forbidden
+- type: legacy.scan
   actions:
-  - id: svc.root_readme_makefile_tokens_path_readme_md_forbidden_tokens_make_setup_make_prepush_hooks_install_check_profile_governance_scan_config_check_docs_readme_makefile_cookbook_forbidden.default.1
+  - id: act.gov.docs.readme.makefile.coo.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_readme_makefile_tokens_path_readme_md_forbidden_tokens_make_setup_make_prepush_hooks_install_check_profile_governance_scan_config_check_docs_readme_makefile_cookbook_forbidden.default.1
+- id: svc.gov.docs.readme.makefile.coo.1
   consumes:
-  - svc.root_readme_makefile_tokens_path_readme_md_forbidden_tokens_make_setup_make_prepush_hooks_install_check_profile_governance_scan_config_check_docs_readme_makefile_cookbook_forbidden.default.1
+  - act.gov.docs.readme.makefile.coo.1
 ```

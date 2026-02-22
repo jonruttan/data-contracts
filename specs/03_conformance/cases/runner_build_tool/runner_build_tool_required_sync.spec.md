@@ -1,17 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/02_contracts/30_build_tool_command_set.md'}}}"
+    check:
+      profile: text.file
+      config:
+        path: /specs/02_contracts/30_build_tool_command_set.md
 contracts:
   clauses:
   - id: DCCONF-BTOOL-002
     title: runner build tool contract defines required bundle sync tasks
-    purpose: Portable build tool contract must define bundle-sync and bundle-sync-check required tasks.
+    purpose: Portable build tool contract must define bundle-sync and bundle-sync-check
+      required tasks.
     asserts:
       imports:
       - from: artifact
@@ -33,21 +36,21 @@ contracts:
           std.logic.not:
             std.string.contains:
             - var: text
-            - "`spec-sync`"
+            - '`spec-sync`'
       - id: assert_4
         assert:
           std.logic.not:
             std.string.contains:
             - var: text
-            - "`spec-sync-check`"
+            - '`spec-sync-check`'
 adapters:
 - type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
   actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+  - id: act.conf.runner.build.tool.requir.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+- id: svc.conf.runner.build.tool.requir.1
   consumes:
-  - svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+  - act.conf.runner.build.tool.requir.1
 ```

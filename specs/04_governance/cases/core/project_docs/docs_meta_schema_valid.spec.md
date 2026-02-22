@@ -1,17 +1,31 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.meta_schema_valid'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    docs_quality:
+      manifest: docs/book/reference_manifest.yaml
+    check:
+      profile: governance.scan
+      config:
+        check: docs.meta_schema_valid
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-DOCS-QUAL-001
     title: docs metadata schema is valid for canonical reference chapters
-    purpose: Ensures each canonical reference chapter contains valid machine-checkable doc metadata.
+    purpose: Ensures each canonical reference chapter contains valid machine-checkable
+      doc metadata.
     asserts:
       imports:
       - from: artifact
@@ -46,13 +60,13 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_meta_schema_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_meta_schema_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.docs.meta.schema.valid.s.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_meta_schema_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.docs.meta.schema.valid.s.1
   consumes:
-  - svc.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_meta_schema_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.docs.meta.schema.valid.s.1
 ```

@@ -4,7 +4,7 @@ Source of truth: spec.contract.docs_architecture
 
 ## Canonical Ownership
 
-- `/specs/current.md` is the active model snapshot entrypoint.
+- `/specs/00_core/current.md` is the active model snapshot entrypoint.
 - `/specs/01_schema/**` owns case-shape, schema registry, and profile contracts.
 - `/specs/02_contracts/**` owns normative policy/traceability contracts.
 - `/specs/04_governance/**` owns executable governance checks.

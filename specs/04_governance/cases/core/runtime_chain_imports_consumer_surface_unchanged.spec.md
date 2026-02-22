@@ -1,12 +1,15 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.chain_imports_consumer_surface_unchanged'}}}"
+    root: .
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.chain_imports_consumer_surface_unchanged
 contracts:
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-004
@@ -27,13 +30,13 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged
+- type: legacy.scan
   actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
+  - id: act.gov.runtime.chain.imports.co.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
+- id: svc.gov.runtime.chain.imports.co.1
   consumes:
-  - svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
+  - act.gov.runtime.chain.imports.co.1
 ```

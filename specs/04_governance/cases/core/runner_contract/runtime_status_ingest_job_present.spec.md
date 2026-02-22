@@ -1,12 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'ci_ingest_job': {'path': '/.github/workflows/ci.yml', 'required_tokens': [{'runner-status-ingest': None}, './scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.status_ingest_job_present'}}}"
+    root: .
+    ci_ingest_job:
+      path: /.github/workflows/ci.yml
+      required_tokens:
+      - runner-status-ingest: null
+      - ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.status_ingest_job_present
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CI-002
@@ -27,13 +35,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present
+- type: legacy.scan
   actions:
-  - id: svc.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present.default.1
+  - id: act.gov.runtime.status.ingest.jo.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present.default.1
+- id: svc.gov.runtime.status.ingest.jo.1
   consumes:
-  - svc.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present.default.1
+  - act.gov.runtime.status.ingest.jo.1
 ```

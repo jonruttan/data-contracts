@@ -19,6 +19,8 @@ The schema registry under `specs/01_schema/registry/v2/` is the machine source o
 - Root `bindings` is invalid in v2.
 - `contracts.defaults` is invalid in v2.
 - `contracts.clauses[].asserts.defaults` is invalid in v2.
+- `harness.config.legacy_contract_harnesses` is invalid in v2; scan-style harness
+  config must be explicit (`root`, `check.profile`, `check.config.check`, `use[]`).
 - `contracts.clauses[].harness` is invalid in v2.
 - `contracts.clauses[].asserts.profile` and `contracts.clauses[].asserts.config` are invalid in v2 runtime ownership.
 - `adapters[].type` MUST resolve to an entry in `/specs/01_schema/service_contract_catalog_v1.yaml`; unknown service types are hard-fail schema errors.

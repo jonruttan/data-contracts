@@ -1,17 +1,21 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_job_hooks_refactor_applied'}}}"
+    root: .
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.contract_job_hooks_refactor_applied
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-JOB-HOOKS-001
     title: rust contract.job specs adopt fail and complete lifecycle hooks
-    purpose: Ensures Rust job contract-spec cases include when fail and complete dispatches with matching hook job metadata.
+    purpose: Ensures Rust job contract-spec cases include when fail and complete dispatches
+      with matching hook job metadata.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +31,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied
+- type: legacy.scan
   actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
+  - id: act.gov.runtime.contract.job.hoo.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
+- id: svc.gov.runtime.contract.job.hoo.1
   consumes:
-  - svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
+  - act.gov.runtime.contract.job.hoo.1
 ```

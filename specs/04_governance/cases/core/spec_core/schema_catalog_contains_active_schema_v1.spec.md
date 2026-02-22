@@ -1,12 +1,22 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'schema_catalog': {'path': '/specs/01_schema/schema_catalog_v1.yaml', 'required_tokens': [{'schema_id': 'contract_spec'}, {'major': 2}, {'path': '/specs/01_schema/schema_v2.md'}, {'status': 'active'}]}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.catalog_contains_active_schema_v2'}}}"
+    root: .
+    schema_catalog:
+      path: /specs/01_schema/schema_catalog_v1.yaml
+      required_tokens:
+      - schema_id: contract_spec
+      - major: 2
+      - path: /specs/01_schema/schema_v2.md
+      - status: active
+    check:
+      profile: governance.scan
+      config:
+        check: schema.catalog_contains_active_schema_v2
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-PIN-005
@@ -27,13 +37,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2
+- type: legacy.scan
   actions:
-  - id: svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
+  - id: act.gov.schema.catalog.contains.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
+- id: svc.gov.schema.catalog.contains.1
   consumes:
-  - svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
+  - act.gov.schema.catalog.contains.1
 ```

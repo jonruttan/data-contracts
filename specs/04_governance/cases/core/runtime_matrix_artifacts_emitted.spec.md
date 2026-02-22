@@ -1,12 +1,21 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'ci_matrix_artifacts': {'path': '/.github/workflows/ci.yml', 'required_tokens': ['.artifacts/runner-status-matrix.json', '.artifacts/runner-status-matrix.md', '.artifacts/runner-status-ingest-log.json']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.matrix_artifacts_emitted'}}}"
+    root: .
+    ci_matrix_artifacts:
+      path: /.github/workflows/ci.yml
+      required_tokens:
+      - .artifacts/runner-status-matrix.json
+      - .artifacts/runner-status-matrix.md
+      - .artifacts/runner-status-ingest-log.json
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.matrix_artifacts_emitted
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CI-003
@@ -27,13 +36,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted
+- type: legacy.scan
   actions:
-  - id: svc.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted.default.1
+  - id: act.gov.runtime.matrix.artifacts.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted.default.1
+- id: svc.gov.runtime.matrix.artifacts.1
   consumes:
-  - svc.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted.default.1
+  - act.gov.runtime.matrix.artifacts.1
 ```

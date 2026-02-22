@@ -62,6 +62,21 @@ links:
   unit_test_refs: []
   implementation_refs: []
   notes: Only services and contract-binding defaults surfaces are allowed in v2.
+- rule_id: HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
+  policy_ref: specs/02_contracts/policy_v1.yaml#HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
+  contract_refs:
+  - specs/02_contracts/04_harness.md
+  - specs/02_contracts/21_schema_registry_contract.md
+  schema_refs:
+  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v2/harness.yaml
+  - specs/01_schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-035
+  unit_test_refs: []
+  implementation_refs: []
+  notes: v2 forbids opaque `harness.config.legacy_contract_harnesses`; harness
+    scan config must use explicit structured keys.
 - rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   contract_refs:

@@ -1,17 +1,29 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'assert.sugar_compile_only_sync'}}, 'use': [{'ref': '/specs/05_libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    root: .
+    check:
+      profile: governance.scan
+      config:
+        check: assert.sugar_compile_only_sync
+    use:
+    - ref: /specs/05_libraries/policy/policy_assertions.spec.md
+      as: lib_policy_core_spec
+      symbols:
+      - policy.assert.no_violations
+      - policy.assert.summary_passed
+      - policy.assert.summary_check_id
+      - policy.assert.scan_pass
 contracts:
   clauses:
   - id: DCGOV-ASSERT-COMPILE-001
     title: compiler keeps sugar operators compile-only
-    purpose: Ensures compiler and runtime assertion path keep non-evaluate operators as compile-only sugar with spec-lang execution.
+    purpose: Ensures compiler and runtime assertion path keep non-evaluate operators
+      as compile-only sugar with spec-lang execution.
     asserts:
       imports:
       - from: artifact
@@ -46,13 +58,13 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.root_check_profile_governance_scan_config_check_assert_sugar_compile_only_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+- type: legacy.scan
   actions:
-  - id: svc.root_check_profile_governance_scan_config_check_assert_sugar_compile_only_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - id: act.gov.assert.sugar.compile.onl.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_check_profile_governance_scan_config_check_assert_sugar_compile_only_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+- id: svc.gov.assert.sugar.compile.onl.1
   consumes:
-  - svc.root_check_profile_governance_scan_config_check_assert_sugar_compile_only_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  - act.gov.assert.sugar.compile.onl.1
 ```

@@ -1,17 +1,30 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'docs_language': {'files': ['/README.md', '/docs/development.md', '/docs/book/index.md', '/docs/book/60_runner_and_gates.md'], 'required_tokens': ['implementation-agnostic control plane', 'runtime execution ownership lives in runner repositories']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.docs_no_required_lane_language'}}}"
+    root: .
+    docs_language:
+      files:
+      - /README.md
+      - /docs/development.md
+      - /docs/book/index.md
+      - /docs/book/60_runner_and_gates.md
+      required_tokens:
+      - implementation-agnostic control plane
+      - runtime execution ownership lives in runner repositories
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.docs_no_required_lane_language
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-DOCS-001
     title: docs use control-plane language
-    purpose: Ensures active docs describe this repository as implementation-agnostic control-plane.
+    purpose: Ensures active docs describe this repository as implementation-agnostic
+      control-plane.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +40,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language
+- type: legacy.scan
   actions:
-  - id: svc.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language.default.1
+  - id: act.gov.runtime.docs.no.required.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language.default.1
+- id: svc.gov.runtime.docs.no.required.1
   consumes:
-  - svc.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language.default.1
+  - act.gov.runtime.docs.no.required.1
 ```

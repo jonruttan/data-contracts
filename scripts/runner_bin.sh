@@ -117,6 +117,14 @@ resolve_runner_bin() {
 }
 
 main() {
+  if [[ "${DC_RUNNER_RUST_NATIVE_ONLY:-0}" != "1" ]]; then
+    case "${1:-}" in
+      critical-gate|governance|governance-broad-native|style-check|docs-generate-check|ci-gate-summary)
+        exec "${ROOT_DIR}/scripts/control_plane.sh" "$@"
+        ;;
+    esac
+  fi
+
   local bin
   bin="$(resolve_runner_bin)"
   exec "${bin}" "$@"

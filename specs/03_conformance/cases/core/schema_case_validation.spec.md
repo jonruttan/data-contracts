@@ -1,35 +1,31 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 title: schema case validation suite
 harness:
   type: unit.test
   profile: export
-  config:
-    legacy_contract_harnesses:
-    - check
-    - export
-    - unknown_harness
 exports:
 - as: schema.validation.ok
   from: assert.function
-  path: "/__export__schema.validation.ok"
+  path: /__export__schema.validation.ok
   params: []
   required: true
 - as: schema.validation.forbidden
   from: assert.function
-  path: "/__export__schema.validation.forbidden"
+  path: /__export__schema.validation.forbidden
   params: []
   required: true
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-001
     title: valid core shape compiles and runs
-    purpose: Ensures standard top-level keys accepted by registry validation continue to execute successfully.
+    purpose: Ensures standard top-level keys accepted by registry validation continue
+      to execute successfully.
     expect:
       portable:
         status: pass
-        category:
+        category: null
     asserts:
       imports:
       - from: artifact
@@ -72,7 +68,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category:
+        category: null
     library:
       id: schema.validation.core
       module: schema
@@ -89,7 +85,8 @@ contracts:
     - summary: schema export invalid imports case
       audience: spec-authors
       status: active
-      description: Deprecated contract.export top-level imports must hard-fail in v2.
+      description: Deprecated contract.export top-level imports must hard-fail in
+        v2.
       since: v2
       tags:
       - contract.export
@@ -103,7 +100,7 @@ contracts:
       stability: alpha
       owner: data-contracts
     imports:
-    - "/specs/05_libraries/domain/path_core.spec.md"
+    - /specs/05_libraries/domain/path_core.spec.md
     asserts:
       checks:
       - id: __export__schema.validation.forbidden
@@ -153,7 +150,7 @@ contracts:
         category: schema
     imports:
     - id: legacy_import
-      ref: "/specs/01_schema/schema_v2.md"
+      ref: /specs/01_schema/schema_v2.md
     asserts:
       checks:
       - id: assert_1
@@ -169,7 +166,7 @@ contracts:
     - as: schema.validation.invalid_mode
       mode: function
       from: assert.function
-      path: "/__export__schema.validation.ok"
+      path: /__export__schema.validation.ok
     asserts:
       checks:
       - id: assert_1
@@ -185,7 +182,7 @@ contracts:
     - id: schema.validation.invalid_id
       as: schema.validation.invalid_id
       from: assert.function
-      path: "/__export__schema.validation.ok"
+      path: /__export__schema.validation.ok
     asserts:
       checks:
       - id: assert_1
@@ -200,8 +197,8 @@ contracts:
     exports:
     - as: schema.validation.invalid_ref
       from: assert.function
-      path: "/__export__schema.validation.ok"
-      ref: "/specs/01_schema/schema_v2.md"
+      path: /__export__schema.validation.ok
+      ref: /specs/01_schema/schema_v2.md
     asserts:
       checks:
       - id: assert_1
@@ -216,7 +213,7 @@ contracts:
     exports:
     - as: schema.validation.invalid_from
       from: custom.function
-      path: "/__export__schema.validation.ok"
+      path: /__export__schema.validation.ok
     asserts:
       checks:
       - id: assert_1
@@ -244,7 +241,7 @@ contracts:
         category: schema
     artifacts:
     - id: invalid_artifact
-      ref: "/specs/01_schema/schema_v2.md"
+      ref: /specs/01_schema/schema_v2.md
     asserts:
       checks:
       - id: assert_1
@@ -258,7 +255,7 @@ contracts:
         category: schema
     artifacts:
     - id: bad_io
-      ref: "/specs/01_schema/schema_v2.md"
+      ref: /specs/01_schema/schema_v2.md
       io: inbound
     asserts:
       checks:
@@ -273,7 +270,7 @@ contracts:
         category: schema
     artifacts:
     - id: unresolved_template
-      ref: "{{unknown_suite_var}}"
+      ref: '{{unknown_suite_var}}'
       io: input
     asserts:
       checks:
@@ -362,7 +359,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category:
+        category: null
     bindings:
       defaults:
         import: pipe_identity
@@ -388,7 +385,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category:
+        category: null
     asserts:
       imports:
       - from: service
@@ -454,12 +451,29 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+  - id: DCCONF-SCHEMA-CASE-035
+    title: legacy harness config payload key is rejected as schema
+    expect:
+      portable:
+        status: fail
+        category: schema
+    harness:
+      type: unit.test
+      profile: check
+      config:
+        legacy_contract_harnesses:
+        - check
+    asserts:
+      checks:
+      - id: assert_1
+        assert:
+          lit: true
   - id: DCCONF-SCHEMA-CASE-037
     title: compact binding outputs are accepted
     expect:
       portable:
         status: pass
-        category:
+        category: null
     bindings:
       defaults:
         import: pipe_identity
@@ -479,7 +493,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category:
+        category: null
     bindings:
       defaults:
         import: pipe_identity
@@ -531,7 +545,7 @@ contracts:
       - id: bind_schema_case_040
         service: svc.check.default.1
         outputs:
-        - to: " "
+        - to: ' '
     asserts:
       checks:
       - id: assert_1
@@ -576,7 +590,7 @@ contracts:
           lit: true
 artifacts:
 - id: schema_ref_doc
-  ref: "{{schema_ref}}"
+  ref: '{{schema_ref}}'
   type: application/yaml
   docs:
   - summary: schema reference import
@@ -584,7 +598,7 @@ artifacts:
     status: active
   direction: input
 - id: schema_ref_export
-  ref: "{{schema_ref}}"
+  ref: '{{schema_ref}}'
   type: application/json
   docs:
   - summary: schema reference export
@@ -592,7 +606,7 @@ artifacts:
     status: active
   direction: output
 - id: text
-  ref: "{{schema_ref}}"
+  ref: '{{schema_ref}}'
   type: text/plain
   docs:
   - summary: schema text export

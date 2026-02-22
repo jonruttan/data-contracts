@@ -1,17 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/02_contracts/34_runner_implementation_spec_bundles.md'}}}"
+    check:
+      profile: text.file
+      config:
+        path: /specs/02_contracts/34_runner_implementation_spec_bundles.md
 contracts:
   clauses:
   - id: DCCONF-BTOOL-010
     title: implementation bundle contract defines build and package command surface
-    purpose: Runner implementation spec bundle contract must expose build-impl, package-impl, and package-check command vocabulary.
+    purpose: Runner implementation spec bundle contract must expose build-impl, package-impl,
+      and package-check command vocabulary.
     asserts:
       imports:
       - from: artifact
@@ -41,11 +44,11 @@ contracts:
 adapters:
 - type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
   actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
+  - id: act.conf.runner.build.tool.impl.b.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
+- id: svc.conf.runner.build.tool.impl.b.1
   consumes:
-  - svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
+  - act.conf.runner.build.tool.impl.b.1
 ```

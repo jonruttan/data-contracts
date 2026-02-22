@@ -1,17 +1,20 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/01_schema/implementation_bundle_overlay_v1.yaml'}}}"
+    check:
+      profile: text.file
+      config:
+        path: /specs/01_schema/implementation_bundle_overlay_v1.yaml
 contracts:
   clauses:
   - id: DCCONF-BTOOL-009
     title: implementation overlay schema defines patch overlay fields
-    purpose: Implementation overlay schema must define add/replace/delete patch surfaces and output bundle metadata.
+    purpose: Implementation overlay schema must define add/replace/delete patch surfaces
+      and output bundle metadata.
     asserts:
       imports:
       - from: artifact
@@ -41,11 +44,11 @@ contracts:
 adapters:
 - type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
   actions:
-  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
+  - id: act.conf.runner.build.tool.impl.o.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
+- id: svc.conf.runner.build.tool.impl.o.1
   consumes:
-  - svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
+  - act.conf.runner.build.tool.impl.o.1
 ```

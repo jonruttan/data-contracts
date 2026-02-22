@@ -1,13 +1,46 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001', 'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero', 'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero', 'policy.schema_pin.version_match_zero']}]}"
-    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero', 'params': ['subject'], 'required': True}]}"
+    check:
+      profile: text.file
+      config: {}
+    use:
+    - ref: '#LIB-POLICY-SCHEMA-PIN-001'
+      as: lib_policy_schema_pin
+      symbols:
+      - policy.schema_pin.missing_spec_version_zero
+      - policy.schema_pin.missing_schema_ref_zero
+      - policy.schema_pin.unknown_schema_ref_zero
+      - policy.schema_pin.version_match_zero
+    exports:
+    - as: policy.schema_pin.missing_spec_version_zero
+      from: assert.function
+      path: /__export__policy.schema_pin.missing_spec_version_zero
+      params:
+      - subject
+      required: true
+    - as: policy.schema_pin.missing_schema_ref_zero
+      from: assert.function
+      path: /__export__policy.schema_pin.missing_schema_ref_zero
+      params:
+      - subject
+      required: true
+    - as: policy.schema_pin.unknown_schema_ref_zero
+      from: assert.function
+      path: /__export__policy.schema_pin.unknown_schema_ref_zero
+      params:
+      - subject
+      required: true
+    - as: policy.schema_pin.version_match_zero
+      from: assert.function
+      path: /__export__policy.schema_pin.version_match_zero
+      params:
+      - subject
+      required: true
 contracts:
   asserts:
   - id: LIB-POLICY-SCHEMA-PIN-001
@@ -81,19 +114,19 @@ contracts:
 adapters:
 - type: legacy.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true
   actions:
-  - id: svc.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true.default.1
+  - id: act.lib.policy.schema.pin.spec.1
     profile: default
 - type: legacy.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero
   actions:
-  - id: svc.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero.default.1
+  - id: act.lib.policy.schema.pin.spec.2
     profile: default
 services:
-- id: svc.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true.default.1
+- id: svc.lib.policy.schema.pin.spec.1
   consumes:
-  - svc.exports_as_policy_schema_pin_missing_spec_version_zero_from_assert_function_path_export_policy_schema_pin_missing_spec_version_zero_params_subject_required_true_as_policy_schema_pin_missing_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_missing_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_unknown_schema_ref_zero_from_assert_function_path_export_policy_schema_pin_unknown_schema_ref_zero_params_subject_required_true_as_policy_schema_pin_version_match_zero_from_assert_function_path_export_policy_schema_pin_version_match_zero_params_subject_required_true.default.1
-- id: svc.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero.default.1
+  - act.lib.policy.schema.pin.spec.1
+- id: svc.lib.policy.schema.pin.spec.2
   consumes:
-  - svc.check_profile_text_file_config_use_ref_lib_policy_schema_pin_001_as_lib_policy_schema_pin_symbols_policy_schema_pin_missing_spec_version_zero_policy_schema_pin_missing_schema_ref_zero_policy_schema_pin_unknown_schema_ref_zero_policy_schema_pin_version_match_zero.default.1
+  - act.lib.policy.schema.pin.spec.2
 ```
 
 

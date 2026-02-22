@@ -4,18 +4,16 @@ debugging and parity checks remain deterministic.
 
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
-  config:
-    legacy_contract_harnesses:
-    - check
 contracts:
   asserts:
   - id: DCCONF-ERR-001
     title: failing assertion includes context tokens in message
-    purpose: Guarantees failure messages carry deterministic context tokens for debugging and parity.
+    purpose: Guarantees failure messages carry deterministic context tokens for debugging
+      and parity.
     expect:
       portable:
         status: fail
@@ -35,7 +33,7 @@ contracts:
         assert:
           std.string.regex_match:
           - var: text
-          - "\\A\\Z"
+          - \A\Z
 adapters:
 - type: io.fs
   actions:

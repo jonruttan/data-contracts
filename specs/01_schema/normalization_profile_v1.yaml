@@ -18,9 +18,9 @@ paths:
   specs:
   - specs
   contracts:
-  - specs/contract
-  - specs/schema
-  - specs/current.md
+  - specs/02_contracts
+  - specs/01_schema
+  - specs/00_core/current.md
   - docs/book
   tests:
   - tests
@@ -36,10 +36,10 @@ docs_layout:
   - /docs/book
   - runner-owned implementation docs
   - /specs
-  - /specs/contract
-  - /specs/conformance
+  - /specs/02_contracts
+  - /specs/03_conformance
   - /specs/03_conformance/cases
-  - /specs/governance
+  - /specs/04_governance
   - /dc-runner-php
   forbidden_filenames:
   - README.md

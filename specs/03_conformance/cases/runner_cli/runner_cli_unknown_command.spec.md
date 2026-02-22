@@ -1,17 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}}"
+    check:
+      profile: text.file
+      config: {}
 contracts:
   clauses:
   - id: DCCONF-RCLI-004
     title: runner cli unknown commands fail non-zero
-    purpose: Portable CLI contract requires unknown commands to fail with non-zero status.
+    purpose: Portable CLI contract requires unknown commands to fail with non-zero
+      status.
     asserts:
       imports:
       - from: artifact

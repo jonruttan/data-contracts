@@ -1,17 +1,21 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.harness_exports_schema_valid'}}}"
+    root: .
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.harness_exports_schema_valid
 contracts:
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-003
     title: harness exports schema is valid
-    purpose: Ensures harness.exports entries enforce as/from/path/params/required schema requirements.
+    purpose: Ensures harness.exports entries enforce as/from/path/params/required
+      schema requirements.
     asserts:
       imports:
       - from: artifact
@@ -27,13 +31,13 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_exports_schema_valid
+- type: legacy.scan
   actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_schema_valid.default.1
+  - id: act.gov.runtime.harness.exports.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_schema_valid.default.1
+- id: svc.gov.runtime.harness.exports.1
   consumes:
-  - svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_schema_valid.default.1
+  - act.gov.runtime.harness.exports.1
 ```

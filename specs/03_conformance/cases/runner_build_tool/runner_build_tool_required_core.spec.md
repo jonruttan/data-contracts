@@ -1,17 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}}"
+    check:
+      profile: text.file
+      config: {}
 contracts:
   clauses:
   - id: DCCONF-BTOOL-001
     title: runner build tool contract defines required core tasks
-    purpose: Portable build tool contract must define build, test, and verify required tasks.
+    purpose: Portable build tool contract must define build, test, and verify required
+      tasks.
     asserts:
       imports:
       - from: artifact

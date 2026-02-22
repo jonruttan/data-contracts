@@ -49,7 +49,7 @@ read -r missing_spec_version_count missing_schema_ref_count unknown_schema_ref_c
       }
       if (path != "" && status == "active" && major != "") active[path]=major
 
-      cmd="find specs/03_conformance/cases specs/04_governance/cases specs/libraries -name \"*.spec.md\" -type f | sort"
+      cmd="find specs/03_conformance/cases specs/04_governance/cases specs/05_libraries -name \"*.spec.md\" -type f | sort"
       while ((cmd | getline file) > 0) {
         in_block=0
         spec=""

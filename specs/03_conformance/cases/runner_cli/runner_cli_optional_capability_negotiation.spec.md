@@ -1,17 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}}"
+    check:
+      profile: text.file
+      config: {}
 contracts:
   clauses:
   - id: DCCONF-RCLI-005
     title: runner cli supports optional capability negotiation
-    purpose: Portable CLI contract allows optional capability flags such as structured output mode.
+    purpose: Portable CLI contract allows optional capability flags such as structured
+      output mode.
     asserts:
       imports:
       - from: artifact
@@ -23,7 +25,7 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - "--json"
+          - --json
 adapters:
 - type: legacy.check_profile_text_file_config
   actions:

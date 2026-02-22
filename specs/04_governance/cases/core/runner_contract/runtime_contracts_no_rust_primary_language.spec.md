@@ -1,12 +1,23 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'root': '.', 'contract_language': {'files': ['/specs/02_contracts/10_docs_quality.md', '/specs/02_contracts/12_runner_interface.md', '/specs/02_contracts/25_compatibility_matrix.md'], 'forbidden_tokens': ['implementation-agnostic', 'required lane']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contracts_no_rust_primary_language'}}}"
+    root: .
+    contract_language:
+      files:
+      - /specs/02_contracts/10_docs_quality.md
+      - /specs/02_contracts/12_runner_interface.md
+      - /specs/02_contracts/25_compatibility_matrix.md
+      forbidden_tokens:
+      - implementation-agnostic
+      - required lane
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.contracts_no_rust_primary_language
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CONTRACT-001
@@ -27,13 +38,13 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language
+- type: legacy.scan
   actions:
-  - id: svc.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language.default.1
+  - id: act.gov.runtime.contracts.no.rus.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language.default.1
+- id: svc.gov.runtime.contracts.no.rus.1
   consumes:
-  - svc.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language.default.1
+  - act.gov.runtime.contracts.no.rus.1
 ```

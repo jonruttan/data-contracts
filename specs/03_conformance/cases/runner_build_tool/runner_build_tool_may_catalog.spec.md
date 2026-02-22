@@ -1,17 +1,19 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}}"
+    check:
+      profile: text.file
+      config: {}
 contracts:
   clauses:
   - id: DCCONF-BTOOL-004
     title: runner build tool contract defines optional task catalog
-    purpose: Portable build tool contract should declare the MAY task catalog for optional capabilities.
+    purpose: Portable build tool contract should declare the MAY task catalog for
+      optional capabilities.
     asserts:
       imports:
       - from: artifact

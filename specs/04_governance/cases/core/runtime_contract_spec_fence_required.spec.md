@@ -1,12 +1,14 @@
 ```yaml contract-spec
 spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+schema_ref: /specs/01_schema/schema_v2.md
 harness:
   type: unit.test
   profile: check
   config:
-    legacy_contract_harnesses:
-    - "{'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_spec_fence_required'}}}"
+    check:
+      profile: governance.scan
+      config:
+        check: runtime.contract_spec_fence_required
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CONTRACT-SPEC-001
@@ -29,11 +31,11 @@ contracts:
 adapters:
 - type: legacy.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required
   actions:
-  - id: svc.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required.default.1
+  - id: act.gov.runtime.contract.spec.fe.1
     direction: bidirectional
     profile: default
 services:
-- id: svc.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required.default.1
+- id: svc.gov.runtime.contract.spec.fe.1
   consumes:
-  - svc.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required.default.1
+  - act.gov.runtime.contract.spec.fe.1
 ```
