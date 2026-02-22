@@ -86,7 +86,6 @@ services:
       - id: main
         mode: lint
         helper: helper.docs.lint
-        inputs: {}
       - id: on_fail
         helper: helper.report.emit
         mode: report

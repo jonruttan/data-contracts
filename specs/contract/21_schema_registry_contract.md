@@ -37,7 +37,12 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Any external locator consumed by service config MUST be declared in
   `artifacts[]` and referenced by `*_artifact_id` (or
   `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
-- `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
+- `bindings` supports canonical list rows (`bindings[]`) and additive mapping
+  form (`bindings.defaults` + `bindings.rows[]`), normalized to effective rows.
+- Effective binding row = shallow merge(defaults, row), with row values
+  overriding defaults.
+- Effective binding rows MUST include `id`, `contract`, `service`, and `import`.
+- `bindings[].contract` MUST resolve to `contracts[].id`; effective `service`
   MUST resolve to `services.actions[].id`.
 - `bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
   `input` or `io`.

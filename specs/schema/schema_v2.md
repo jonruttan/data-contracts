@@ -156,15 +156,12 @@ Suite runtime surfaces:
     - mixed item kinds (string + mapping) in one `imports` list are invalid
   - `services.actions[].imports[].names` (list, required)
   - `services.actions[].imports[].as` (mapping, optional)
-- `bindings` (list, optional): suite-root service-to-contract binding declarations
-  - `bindings[].id` (string, required; unique in suite)
-  - `bindings[].contract` (string, required; references `contracts[].id`)
-  - `bindings[].service` (string, required; references `services.actions[].id`)
-  - `bindings[].import` (string, required; declared service import name)
-  - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact ids
-  - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact ids
-  - `bindings[].predicates` (list[string], optional; predicate allowlist)
-  - `bindings[].mode` (string, optional): `merge|override` (default `merge`)
+- `bindings` (list|mapping, optional): suite-root service-to-contract binding declarations
+  - list form (canonical): `bindings[]` rows
+  - mapping form (additive compaction): `bindings.defaults` + `bindings.rows[]`
+  - defaults keys (optional): `service`, `import`, `mode`, `predicates`
+  - row keys: `id`, `contract`, optional `service`, optional `import`, `inputs`, `outputs`, `predicates`, `mode`
+  - effective row = shallow merge(defaults, row), row overrides defaults
 
 Parser behavior:
 
@@ -216,8 +213,11 @@ Parser behavior:
 - if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
   `from: service`, `services` MUST be present and valid
 - bindings execute once per contract before predicate evaluation
+- bindings support canonical list form (`bindings[]`) and additive mapping form (`bindings.defaults` + `bindings.rows[]`)
+- each effective binding row MUST include `id`, `contract`, `service`, and `import` after defaults merge
+- effective row = shallow merge(`bindings.defaults`, row), row values override defaults
 - `bindings[].contract` MUST reference an existing `contracts[].id`
-- `bindings[].service` MUST reference an existing `services.actions[].id`
+- effective `service` MUST reference an existing `services.actions[].id`
 - `bindings[].inputs[].from` MUST reference `artifacts[].id` where artifact
   entry `io` is `input` or `io`
 - `bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
@@ -238,10 +238,24 @@ Parser behavior:
 - synthetic labels may be emitted for reporting when optional docs/docs-owner ids
   are omitted, but these labels are diagnostics-only and must not be accepted as
   schema reference identities
-- `bindings[].mode` supports `merge|override`:
+- `bindings[].mode` supports `merge|override` on effective rows:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
 - legacy `type` on contract items is invalid in v2
+
+Binding defaults semantics:
+
+- mapping-form `bindings.defaults` applies only to rows in `bindings.rows[]`
+- list-form `bindings[]` may also inherit from `bindings.defaults` when both are present
+- row conflicts with defaults resolve in favor of row values
+- missing effective `service` or `import` is schema failure
+
+Clause import compact semantics:
+
+- canonical rows and compact alias rows may coexist in one imports list
+- compact artifact alias requires non-empty list of artifact ids
+- compact service alias requires `id` and non-empty `names`
+- unknown keys in compact alias rows are schema failures
 
 `expect` (conformance metadata):
 
@@ -601,6 +615,10 @@ Import binding shape:
 
 - `imports` is a list of mapping items
 - each item requires `from` and `names`, with optional `as`
+- compact grouped aliases are allowed per row:
+  - artifact alias: `{artifact: [id_a, id_b]}`
+  - service alias: `{service: {id: svc.x, names: [...], as?: {...}}}`
+- compact aliases normalize to canonical rows before validation/execution
 - canonical assertion imports may use `from: artifact` or `from: service`
 - when `from: artifact`, `names` must be a non-empty list of suite-declared
   artifact ids (and be explicitly wired when runtime-produced)

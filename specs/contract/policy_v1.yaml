@@ -41,8 +41,9 @@ rules:
   applies_to: runtime.bindings.imports
   norm: MUST
   requirement: bindings_service_is_required
-  description: Suite bindings must set `bindings[].service`; implicit default service
-    resolution is forbidden.
+  description: Effective suite bindings must resolve `service` after defaults
+    merge (`bindings.defaults` + row). Implicit runtime service resolution is
+    forbidden.
   rationale: Keeps service selection explicit and auditable.
   risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
   references:

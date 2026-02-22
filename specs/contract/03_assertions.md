@@ -49,7 +49,11 @@ Scope separation:
 Import binding shape:
 
 - `imports` is a list of mapping items
-- each item must be `{from, names, as?}`
+- canonical row form is `{from, names, service?, as?}`
+- compact grouped alias rows are allowed:
+  - `{artifact: [id_a, id_b]}`
+  - `{service: {id: svc.x, names: [...], as?: {...}}}`
+- compact alias rows normalize to canonical rows before validation/evaluation
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)
@@ -66,6 +70,8 @@ Import merge semantics:
 
 - effective imports = `clauses.imports` + `clauses.predicates[].imports`
 - predicate imports override same-name defaults
+- `clauses.defaults` may provide inherited clause-level defaults; explicit row
+  values always override inherited defaults
 - binding-piped symbols from `bindings[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions

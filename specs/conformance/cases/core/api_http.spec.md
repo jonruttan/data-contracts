@@ -159,146 +159,116 @@ services:
         - domain.http.step_status_is
         artifact_id: art.svc.assert_check.api_http.16.use_1.1
 bindings:
-- id: bind.api_http.1
-  contract: DCCONF-API-001
-  service: svc.assert_check.api_http.1
-  import: pipe_identity
-  outputs:
-  - to: body_json
-    as: body_json
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.2
-  contract: DCCONF-API-002
-  service: svc.assert_check.api_http.2
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.3
-  contract: DCCONF-API-003
-  service: svc.assert_check.api_http.3
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.4
-  contract: DCCONF-API-004
-  service: svc.assert_check.api_http.4
-  import: pipe_identity
-  outputs:
-  - to: body_json
-    as: body_json
-  mode: merge
-- id: bind.api_http.5
-  contract: DCCONF-API-005
-  service: svc.assert_check.api_http.5
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.6
-  contract: DCCONF-API-006
-  service: svc.assert_check.api_http.6
-  import: pipe_identity
-  outputs:
-  - to: body_text
-    as: body_text
-  mode: merge
-- id: bind.api_http.7
-  contract: DCCONF-API-007
-  service: svc.assert_check.api_http.7
-  import: pipe_identity
-  outputs:
-  - to: body_json
-    as: body_json
-  mode: merge
-- id: bind.api_http.8
-  contract: DCCONF-API-008
-  service: svc.assert_check.api_http.8
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.9
-  contract: DCCONF-API-009
-  service: svc.assert_check.api_http.9
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.10
-  contract: DCCONF-API-010
-  service: svc.assert_check.api_http.10
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.11
-  contract: DCCONF-API-011
-  service: svc.assert_check.api_http.11
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.12
-  contract: DCCONF-API-012
-  service: svc.assert_check.api_http.12
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  - to: steps_json
-    as: steps_json
-  mode: merge
-- id: bind.api_http.13
-  contract: DCCONF-API-013
-  service: svc.assert_check.api_http.13
-  import: pipe_identity
-  outputs:
-  - to: context_json
-    as: context_json
-  mode: merge
-- id: bind.api_http.14
-  contract: DCCONF-API-014
-  service: svc.assert_check.api_http.14
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.15
-  contract: DCCONF-API-015
-  service: svc.assert_check.api_http.15
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.16
-  contract: DCCONF-API-016
-  service: svc.assert_check.api_http.16
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
-- id: bind.api_http.17
-  contract: DCCONF-API-017
-  service: svc.assert_check.api_http.16
-  import: pipe_identity
-  outputs:
-  - to: status
-    as: status
-  mode: merge
+  defaults:
+    import: pipe_identity
+    mode: merge
+  rows:
+  - id: bind.api_http.1
+    contract: DCCONF-API-001
+    service: svc.assert_check.api_http.1
+    outputs:
+    - to: body_json
+      as: body_json
+    - to: status
+      as: status
+  - id: bind.api_http.2
+    contract: DCCONF-API-002
+    service: svc.assert_check.api_http.2
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.3
+    contract: DCCONF-API-003
+    service: svc.assert_check.api_http.3
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.4
+    contract: DCCONF-API-004
+    service: svc.assert_check.api_http.4
+    outputs:
+    - to: body_json
+      as: body_json
+  - id: bind.api_http.5
+    contract: DCCONF-API-005
+    service: svc.assert_check.api_http.5
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.6
+    contract: DCCONF-API-006
+    service: svc.assert_check.api_http.6
+    outputs:
+    - to: body_text
+      as: body_text
+  - id: bind.api_http.7
+    contract: DCCONF-API-007
+    service: svc.assert_check.api_http.7
+    outputs:
+    - to: body_json
+      as: body_json
+  - id: bind.api_http.8
+    contract: DCCONF-API-008
+    service: svc.assert_check.api_http.8
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.9
+    contract: DCCONF-API-009
+    service: svc.assert_check.api_http.9
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.10
+    contract: DCCONF-API-010
+    service: svc.assert_check.api_http.10
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.11
+    contract: DCCONF-API-011
+    service: svc.assert_check.api_http.11
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.12
+    contract: DCCONF-API-012
+    service: svc.assert_check.api_http.12
+    outputs:
+    - to: status
+      as: status
+    - to: steps_json
+      as: steps_json
+  - id: bind.api_http.13
+    contract: DCCONF-API-013
+    service: svc.assert_check.api_http.13
+    outputs:
+    - to: context_json
+      as: context_json
+  - id: bind.api_http.14
+    contract: DCCONF-API-014
+    service: svc.assert_check.api_http.14
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.15
+    contract: DCCONF-API-015
+    service: svc.assert_check.api_http.15
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.16
+    contract: DCCONF-API-016
+    service: svc.assert_check.api_http.16
+    outputs:
+    - to: status
+      as: status
+  - id: bind.api_http.17
+    contract: DCCONF-API-017
+    service: svc.assert_check.api_http.16
+    outputs:
+    - to: status
+      as: status
 contracts:
 - id: DCCONF-API-001
   title: api.http GET reads relative fixture and exposes body assertions
@@ -309,8 +279,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -324,8 +293,7 @@ contracts:
         - var: body_json
         - dict
       imports:
-      - from: artifact
-        names:
+      - artifact:
         - body_json
 - id: DCCONF-API-002
   title: api.http requires request.url
@@ -338,8 +306,7 @@ contracts:
       - api.http request.url is required
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -361,8 +328,7 @@ contracts:
     when_missing: skip
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -379,8 +345,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - body_json
     predicates:
     - id: assert_1
@@ -397,8 +362,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -415,8 +379,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - body_text
     predicates:
     - id: assert_1
@@ -433,8 +396,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - body_json
     predicates:
     - id: assert_1
@@ -453,8 +415,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -471,8 +432,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -491,8 +451,7 @@ contracts:
       - request.method must be one of
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -511,8 +470,7 @@ contracts:
       - request.cors.preflight requires request.method OPTIONS
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -529,8 +487,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -545,8 +502,7 @@ contracts:
           - var: steps_json
         - 3
       imports:
-      - from: artifact
-        names:
+      - artifact:
         - steps_json
 - id: DCCONF-API-013
   title: api.http oauth deterministic local token exchange
@@ -557,8 +513,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - context_json
     predicates:
     - id: assert_1
@@ -588,8 +543,7 @@ contracts:
       - oauth env var is required
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -608,8 +562,7 @@ contracts:
       - auth_style
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -631,8 +584,7 @@ contracts:
     when_missing: skip
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1
@@ -654,8 +606,7 @@ contracts:
     when_missing: skip
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - status
     predicates:
     - id: assert_1

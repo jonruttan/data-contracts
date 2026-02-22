@@ -35,7 +35,8 @@ links:
   - DCCONF-SCHEMA-CASE-025
   unit_test_refs: []
   implementation_refs: []
-  notes: bindings[].service is required; default service fallback is forbidden.
+  notes: Effective binding service is required after defaults merge; default
+    runtime service fallback is forbidden.
 - rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   contract_refs:

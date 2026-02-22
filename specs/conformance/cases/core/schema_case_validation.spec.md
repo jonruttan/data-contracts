@@ -11,7 +11,6 @@ harness:
     - export
     - unknown_harness
 services:
-  defaults: {}
   actions:
   - id: svc.check.text_file.1
     type: assert.check
@@ -28,26 +27,26 @@ services:
     imports:
     - pipe_identity
 bindings:
-- id: bind_schema_case_022
-  contract: DCCONF-SCHEMA-CASE-022
-  service: svc.check.default.1
-  import: pipe_identity
-  inputs:
-  - from: schema_ref_doc
-    as: source_text
-  outputs:
-  - to: schema_ref_export
-    as: piped_text
-  predicates:
-  - assert_1
-  mode: merge
-- id: bind_schema_case_025_missing_service
-  contract: DCCONF-SCHEMA-CASE-025
-  import: pipe_identity
-  outputs:
-  - to: schema_ref_export
-    as: piped_text
-  mode: merge
+  defaults:
+    import: pipe_identity
+    mode: merge
+  rows:
+  - id: bind_schema_case_022
+    contract: DCCONF-SCHEMA-CASE-022
+    service: svc.check.default.1
+    inputs:
+    - from: schema_ref_doc
+      as: source_text
+    outputs:
+    - to: schema_ref_export
+      as: piped_text
+    predicates:
+    - assert_1
+  - id: bind_schema_case_025_missing_service
+    contract: DCCONF-SCHEMA-CASE-025
+    outputs:
+    - to: schema_ref_export
+      as: piped_text
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -69,8 +68,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -87,8 +85,7 @@ contracts:
       category: schema
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -413,12 +410,12 @@ contracts:
       category:
   clauses:
     imports:
-    - from: service
-      service: svc.check.default.1
-      names:
-      - pipe_identity
-      as:
-        pipe_identity: subject
+    - service:
+        id: svc.check.default.1
+        names:
+        - pipe_identity
+        as:
+          pipe_identity: subject
     predicates:
     - id: assert_1
       assert:
@@ -433,10 +430,10 @@ contracts:
       category: schema
   clauses:
     imports:
-    - from: service
-      service: svc.unknown
-      names:
-      - pipe_identity
+    - service:
+        id: svc.unknown
+        names:
+        - pipe_identity
     predicates:
     - id: assert_1
       assert:
@@ -460,8 +457,7 @@ contracts:
       category: schema
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - undeclared_symbol
     predicates:
     - id: assert_1

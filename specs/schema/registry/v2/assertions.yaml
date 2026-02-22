@@ -22,7 +22,30 @@ fields:
     description: Clause-level default import bindings inherited by predicates.
       For from=artifact, every imported name must be explicitly declared at suite
       root (`artifacts[].id`) and wired through
-      bindings when runtime-produced.
+      bindings when runtime-produced. Supports canonical rows (`from`, `names`,
+      optional `service`, optional `as`) and grouped compact alias rows.
+  contracts[].clauses.imports[].artifact:
+    type: list
+    required: false
+    since: v2
+    description: Compact artifact import alias row (`artifact: [id_a, id_b]`)
+      normalized to canonical `{from: artifact, names: [...]}`.
+  contracts[].clauses.imports[].service.id:
+    type: string
+    required: false
+    since: v2
+    description: Compact service import alias service id (`service: {id: ...,
+      names: [...]}`).
+  contracts[].clauses.imports[].service.names:
+    type: list
+    required: false
+    since: v2
+    description: Compact service import alias names.
+  contracts[].clauses.imports[].service.as:
+    type: mapping
+    required: false
+    since: v2
+    description: Compact service import alias map.
   contracts[].clauses.imports[].from:
     type: string
     required: true
@@ -59,7 +82,29 @@ fields:
     required: false
     since: v2
     description: Predicate-level imports merged over clauses.imports. from=artifact
-      names must resolve to suite-declared artifact ids.
+      names must resolve to suite-declared artifact ids. Supports canonical
+      rows and grouped compact alias rows.
+  contracts[].clauses.predicates[].imports[].artifact:
+    type: list
+    required: false
+    since: v2
+    description: Compact artifact import alias row (`artifact: [id_a, id_b]`)
+      normalized to canonical `{from: artifact, names: [...]}`.
+  contracts[].clauses.predicates[].imports[].service.id:
+    type: string
+    required: false
+    since: v2
+    description: Compact service import alias service id.
+  contracts[].clauses.predicates[].imports[].service.names:
+    type: list
+    required: false
+    since: v2
+    description: Compact service import alias names.
+  contracts[].clauses.predicates[].imports[].service.as:
+    type: mapping
+    required: false
+    since: v2
+    description: Compact service import alias map.
   contracts[].clauses.predicates[].imports[].from:
     type: string
     required: true

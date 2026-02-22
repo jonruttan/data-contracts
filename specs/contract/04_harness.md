@@ -11,8 +11,9 @@
   canonical mapping rows.
 - Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
-- Suite-root `bindings[]` connects `contract` + `service` + artifact ids so
-  service results are piped into predicate contexts.
+- Suite-root `bindings` connects contracts to services and artifact channels.
+  It supports canonical `bindings[]` rows and additive compaction form
+  `bindings.defaults` + `bindings.rows[]`.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
@@ -40,6 +41,8 @@ Suite-root external references:
   and wired.
 - when `bindings[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
+- binding defaults are additive only: explicit row values override defaults.
+- `service` and `import` are effective-required after defaults merge.
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
   contract, artifacts import/export, and root function export surfaces.
 - docs entry and docs-owner ids are optional metadata keys; when omitted,
