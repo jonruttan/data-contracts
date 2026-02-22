@@ -7,6 +7,7 @@ Canonical specification root for `data-contracts`.
 ## Canonical Inputs
 
 - Active model snapshot: `/specs/00_core/current.md`
+- Repository boundary charter: `/specs/00_core/repo_boundary_charter.md`
 - Schema contracts: `/specs/01_schema/index.md`
 - Normative contracts: `/specs/02_contracts/index.md`
 - Runner governance interface (generated): `/specs/governance/index.md`

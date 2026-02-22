@@ -4670,3 +4670,34 @@ rules:
   - specs/04_governance/cases/core/spec_core/runtime_core_script_allowlist_enforced.spec.md
   - specs/04_governance/cases/core/project_docs/runtime_non_core_scripts_not_in_active_docs.spec.md
   - specs/04_governance/cases/core/spec_core/runtime_non_core_scripts_not_in_active_policy_traceability.spec.md
+- id: REPO_BOUNDARY_CANONICAL_SCHEMA_AUTHORITY
+  introduced_in: v1
+  scope: governance
+  applies_to: repository.boundary
+  norm: MUST
+  requirement: canonical_schema_authority_must_be_data_contracts_only
+  description: Canonical schema/contracts/governance authority is owned by
+    data-contracts. Runner repositories consume canonical schema by schema_ref
+    and must not redefine schema authority semantics.
+  rationale: Keeps schema semantics single-sourced and eliminates cross-repo
+    authority drift.
+  risk_if_violated: Runners can diverge on schema interpretation and contract validation behavior.
+  references:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  - specs/01_schema/schema_v1.md
+- id: REPO_BOUNDARY_RUNNER_TREE_TOKENS_FORBIDDEN_IN_CANONICAL_TREES
+  introduced_in: v1
+  scope: governance
+  applies_to: canonical.docs.specs
+  norm: MUST
+  requirement: canonical_trees_must_not_reference_internal_runner_tree_tokens
+  description: Canonical data-contracts trees must not contain internal runner
+    tree ownership tokens. External runner references must use explicit repository-qualified
+    paths.
+  rationale: Preserves strict separation of schema authority and runner behavior authority.
+  risk_if_violated: Canonical contract/docs surfaces leak runner implementation ownership.
+  references:
+  - specs/00_core/repo_boundary_charter.md
+  - scripts/governance_boundary_validate.sh
+  - specs/02_contracts/12_runner_interface.md

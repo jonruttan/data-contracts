@@ -3531,7 +3531,7 @@
       "type": "governance.check"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-001",
@@ -3543,7 +3543,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-002",
@@ -3555,7 +3555,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-003",
@@ -3567,7 +3567,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-004",
@@ -3579,7 +3579,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-005",
@@ -3591,7 +3591,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-006",
@@ -3603,7 +3603,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-007",
@@ -3615,7 +3615,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-008",
@@ -3627,7 +3627,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-009",
@@ -3639,7 +3639,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-010",
@@ -3651,7 +3651,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-011",
@@ -3663,7 +3663,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-012",
@@ -3675,7 +3675,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-013",
@@ -3687,7 +3687,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-014",
@@ -3699,7 +3699,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-015",
@@ -3711,7 +3711,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-016",
@@ -3723,7 +3723,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-017",
@@ -3735,7 +3735,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-018",
@@ -3747,7 +3747,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-019",
@@ -3759,7 +3759,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-020",
@@ -3771,7 +3771,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-021",
@@ -3783,7 +3783,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "runner-owned implementation specs/docs_generate/cases/surfaces.spec.md",
+      "file": "external runner spec repository specs/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-DOCGEN-022",
@@ -4237,7 +4237,7 @@
     "roots": [
       "specs/03_conformance/cases",
       "specs/04_governance/cases",
-      "runner-owned implementation specs"
+      "external runner spec repository specs"
     ],
     "segment_rules": [
       {
@@ -4249,7 +4249,7 @@
         "segment": "governance"
       },
       {
-        "prefix": "runner-owned implementation specs",
+        "prefix": "external runner spec repository specs",
         "segment": "impl"
       }
     ],

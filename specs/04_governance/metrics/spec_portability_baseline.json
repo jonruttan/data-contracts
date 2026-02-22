@@ -3340,7 +3340,7 @@
     "roots": [
       "specs/03_conformance/cases",
       "specs/04_governance/cases",
-      "runner-owned implementation specs"
+      "external runner spec repository specs"
     ],
     "runtime_capability_prefixes": [
       "runtime.",
@@ -3361,7 +3361,7 @@
         "segment": "governance"
       },
       {
-        "prefix": "runner-owned implementation specs",
+        "prefix": "external runner spec repository specs",
         "segment": "impl"
       }
     ],

@@ -4354,3 +4354,28 @@ links:
   - scripts/spec_schema_pin_validate.sh
   - scripts/governance_optional_report.sh
   notes: Shared governance semantics are spec-defined and runner-executed; shell scripts remain thin transport emitters.
+- rule_id: REPO_BOUNDARY_CANONICAL_SCHEMA_AUTHORITY
+  policy_ref: specs/02_contracts/policy_v1.yaml#REPO_BOUNDARY_CANONICAL_SCHEMA_AUTHORITY
+  contract_refs:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  schema_refs:
+  - specs/01_schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - ../dc-runner-spec/specs/index.md
+  - ../dc-runner-spec/README.md
+  notes: Canonical schema authority is data-contracts; runner specs consume schema via schema_ref.
+- rule_id: REPO_BOUNDARY_RUNNER_TREE_TOKENS_FORBIDDEN_IN_CANONICAL_TREES
+  policy_ref: specs/02_contracts/policy_v1.yaml#REPO_BOUNDARY_RUNNER_TREE_TOKENS_FORBIDDEN_IN_CANONICAL_TREES
+  contract_refs:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/governance_boundary_validate.sh
+  - scripts/control_plane.sh
+  notes: Governance enforces forbidden runner tree tokens across canonical docs/spec trees.

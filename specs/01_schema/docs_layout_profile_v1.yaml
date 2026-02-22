@@ -15,7 +15,7 @@ required_index_dirs:
 - /specs/03_conformance
 - /specs/03_conformance/cases
 - /specs/04_governance
-- runner-owned implementation specs
+- external runner spec repository specs
 forbidden_filenames:
 - README.md
 - .DS_Store

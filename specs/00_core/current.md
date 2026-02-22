@@ -31,7 +31,7 @@ Date: 2026-02-18
 - `/specs/02_contracts/index.md`
 - `/specs/04_governance/index.md`
 - `/specs/05_libraries/index.md`
-- `runner-owned implementation specs/index.md`
+- `external runner spec repository specs/index.md`
 
 ## Derived Docs
 

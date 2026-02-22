@@ -194,7 +194,7 @@ Parser behavior:
 - runners MAY opt in additional external case formats via explicit format
   selection (`yaml`, `json`)
 - canonical executable spec trees (`specs/03_conformance/cases`,
-  `specs/04_governance/cases`, `runner-owned implementation specs`) are markdown-only and must
+  `specs/04_governance/cases`, `external runner spec repository specs`) are markdown-only and must
   not include runnable `.spec.yaml`/`.spec.yml`/`.spec.json` files
 - fence extraction accepts Markdown fences using either backticks or tildes
   (3+), with info tokens including `contract-spec` and `yaml`/`yml`

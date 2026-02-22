@@ -10,7 +10,7 @@
 - Canonical executable case trees are markdown-only and MUST use `.spec.md`:
   - `specs/03_conformance/cases`
   - `specs/04_governance/cases`
-  - `runner-owned implementation specs`
+  - `external runner spec repository specs`
 - Canonical executable case trees MUST NOT include runnable
   `.spec.yaml`/`.spec.yml`/`.spec.json` files.
 

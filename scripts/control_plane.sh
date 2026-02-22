@@ -12,6 +12,7 @@ run_governance() {
   ensure_artifacts_dir
 
   ./scripts/governance_interface_validate.sh
+  ./scripts/governance_boundary_validate.sh
 
   # Governance verdicts are runner-executed from executable spec check sets.
   DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full

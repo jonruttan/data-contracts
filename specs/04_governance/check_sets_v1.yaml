@@ -116,6 +116,18 @@ profiles:
           - /scripts/ci_gate.sh
           - /scripts/runner_status_ingest.sh
           - /scripts/runner_bin.sh
+      - id: runtime.repo_boundary_tokens_forbidden
+        kind: file_tokens
+        path: /scripts/control_plane.sh
+        must_contain:
+          - ./scripts/governance_boundary_validate.sh
+      - id: runtime.repo_boundary_validator_tokens_configured
+        kind: file_tokens
+        path: /scripts/governance_boundary_validate.sh
+        must_contain:
+          - FORBIDDEN=(
+          - SCAN_PATHS=(
+          - boundary enforcement failed
   full:
     checks:
       - id: runtime.full_check_set_manifest_required

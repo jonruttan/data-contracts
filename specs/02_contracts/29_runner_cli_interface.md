@@ -7,6 +7,8 @@ by the control-plane conformance layer.
 
 This contract specifies only implementation-agnostic runner CLI behavior.
 Runtime-specific or implementation-specific subcommands remain runner-owned.
+Runner-owned CLI behavior specs are maintained in external runner spec
+repositories, not in canonical schema trees.
 
 ## MUST Surface
 

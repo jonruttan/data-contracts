@@ -45,6 +45,14 @@ Runner-owned executable spec suites MUST use canonical v1 case shape:
 - `harness` mapping
 - `contracts.clauses[]` with `asserts.checks[]`
 
+Boundary contract:
+
+- canonical `data-contracts` docs/specs must not reference internal runner trees
+  using internal runner tree path tokens.
+- external runner surfaces must be referenced via explicit repository paths, for
+  example `/dc-runner-spec/specs/impl/**` and
+  `/dc-runner-spec/specs/contract_sets/**`.
+
 ## Status Exchange Boundary
 
 Runner repositories publish release assets that conform to:

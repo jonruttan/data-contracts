@@ -21,6 +21,8 @@ Implementation repositories MUST define overlay intent using:
 Runner-owned spec repositories (for example `dc-runner-spec`) MUST keep
 executable `.spec.md` cases in canonical v1 suite shape so overlay consumers
 can parse and validate them deterministically.
+Canonical schema docs in `data-contracts` must reference runner-owned trees
+through explicit external repository paths only.
 
 Overlay operations are patch-based and file-scoped:
 
