@@ -391,6 +391,69 @@ fields:
     type: string
     required: true
     since: v2
+  bindings:
+    type: list
+    required: false
+    since: v2
+  bindings[].id:
+    type: string
+    required: true
+    since: v2
+  bindings[].contract:
+    type: string
+    required: true
+    since: v2
+  bindings[].service:
+    type: string
+    required: false
+    since: v2
+  bindings[].function:
+    type: string
+    required: true
+    since: v2
+  bindings[].import:
+    type: string
+    required: false
+    since: v2
+  bindings[].inputs:
+    type: list
+    required: false
+    since: v2
+  bindings[].inputs[].from:
+    type: string
+    required: true
+    since: v2
+  bindings[].inputs[].as:
+    type: string
+    required: true
+    since: v2
+  bindings[].outputs:
+    type: list
+    required: false
+    since: v2
+  bindings[].outputs[].to:
+    type: string
+    required: true
+    since: v2
+  bindings[].outputs[].as:
+    type: string
+    required: false
+    since: v2
+  bindings[].outputs[].path:
+    type: string
+    required: false
+    since: v2
+  bindings[].predicates:
+    type: list
+    required: false
+    since: v2
+  bindings[].mode:
+    type: string
+    required: false
+    since: v2
+    enum:
+    - merge
+    - override
   artifact:
     type: mapping
     required: false

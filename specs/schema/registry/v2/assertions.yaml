@@ -7,7 +7,9 @@ fields:
     required: true
     since: v2
     description: Canonical clause tree root mapping with defaults/predicates; 
-      leaves are direct spec-lang operator mappings.
+      leaves are direct spec-lang operator mappings. Binding-piped symbols are 
+      merged into effective predicate import context after clause/predicate 
+      import merge.
   contracts[].clauses.defaults:
     type: mapping
     required: false
@@ -17,7 +19,9 @@ fields:
     type: list
     required: false
     since: v2
-    description: Clause-level default import bindings inherited by predicates.
+    description: Clause-level default import bindings inherited by predicates. 
+      In merge mode, explicit imports win over binding-piped symbols; in 
+      override mode, binding-piped symbols replace same-name imports.
   contracts[].clauses.imports[].from:
     type: string
     required: true

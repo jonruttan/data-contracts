@@ -1,6 +1,18 @@
 version: 1
 title: Data Contracts Contract Traceability
 links:
+- rule_id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-022
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Suite bindings must transport runtime service payloads only through declared artifact import/export ids.
 - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
   contract_refs:

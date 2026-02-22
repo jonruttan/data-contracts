@@ -20,8 +20,8 @@ Suite-level external references:
   `artifact.exports[]` entries for external references and URLs outside
   per-contract assertion/harness blocks.
 - these suite-root declarations are metadata/coordination surfaces and are
-  distinct from `clauses.imports`, `clauses.config.spec_lang.imports`, and
-  suite-root `exports[]` function declarations.
+  distinct from `clauses.imports`, `clauses.config.spec_lang.imports`,
+  suite-root `bindings[]`, and suite-root `exports[]` function declarations.
 - `artifact.imports[].ref` / `artifact.exports[].ref` support moustache
   (`{{...}}`) template expressions resolved from suite context only.
 - documentation metadata for suite/function/artifact surfaces uses `docs[]`

@@ -33,6 +33,8 @@ Scope separation:
   `clauses.predicates[].imports`.
 - suite-root `artifact.imports[]` / `artifact.exports[]` are external
   reference declarations and do not implicitly bind assertion symbols.
+- suite-root `bindings[]` materializes service-produced symbols into predicate
+  contexts using artifact-id I/O mappings.
 - suite/contract/artifact/function documentation metadata is declared through
   `docs[]` entries and is not part of assertion symbol binding.
 
@@ -50,6 +52,9 @@ Import merge semantics:
 
 - effective imports = `clauses.imports` + `clauses.predicates[].imports`
 - predicate imports override same-name defaults
+- binding-piped symbols from `bindings[]` are applied after import merge:
+  - `mode: merge` preserves explicit import values on collisions
+  - `mode: override` replaces explicit import values on collisions
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
 

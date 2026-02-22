@@ -5,6 +5,8 @@
 - Runner dispatches by suite-root `harness` mapping.
 - Harness receives parsed suite/case data and execution context.
 - Suite-root `services.entries[]` provides concrete system hook bindings (I/O and callable service functions).
+- Suite-root `bindings[]` connects `contract` + optional `service` + artifact
+  ids so service results are piped into predicate contexts.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
@@ -17,6 +19,8 @@ Suite-root external references:
 - root `exports[]` is reserved for function symbol exports only.
 - `artifact.imports[].ref` / `artifact.exports[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
+- service runtime payload transport MUST use artifact ids declared in
+  `artifact.imports[]` and `artifact.exports[]` through `bindings[]` mappings.
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
   contract, artifact import/export, and root function export surfaces.
 

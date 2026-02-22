@@ -108,6 +108,16 @@ Suite runtime surfaces:
   - `services.entries[].profile` (string, optional)
   - `services.entries[].config` (mapping, optional)
   - `services.entries[].functions` (list, optional): declarative callable function surface
+- `bindings` (list, optional): suite-root service-to-contract binding declarations
+  - `bindings[].id` (string, required; unique in suite)
+  - `bindings[].contract` (string, required; references `contracts[].id`)
+  - `bindings[].service` (string, optional; references `services.entries[].id`)
+  - `bindings[].function` (string, required; callable service function name)
+  - `bindings[].import` (string, optional; shorthand `artifact.imports[].id`)
+  - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact import ids
+  - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact export ids
+  - `bindings[].predicates` (list[string], optional; predicate allowlist)
+  - `bindings[].mode` (string, optional): `merge|override` (default `merge`)
 
 Parser behavior:
 
@@ -147,6 +157,19 @@ Parser behavior:
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
 - unknown `services.entries[].type` MUST hard-fail during schema validation
 - invalid `services.entries[].io` MUST hard-fail during schema validation
+- bindings execute once per contract before predicate evaluation
+- `bindings[].contract` MUST reference an existing `contracts[].id`
+- `bindings[].service` (when present) MUST reference an existing `services.entries[].id`
+- omitted `bindings[].service` MUST resolve to a single sane default:
+  - first attempt effective `services.defaults.type`/`services.defaults.profile` match
+  - fallback to single `services.entries[]` when present
+  - otherwise hard-fail with ambiguity diagnostics
+- `bindings[].inputs[].from` MUST reference `artifact.imports[].id`
+- `bindings[].outputs[].to` MUST reference `artifact.exports[].id`
+- binding runtime payload transport MUST use artifact ids only (`artifact.imports`/`artifact.exports`)
+- `bindings[].mode` supports `merge|override`:
+  - `merge`: explicit imports win collisions
+  - `override`: binding-piped symbols overwrite same-name imports
 - legacy `type` on contract items is invalid in v2
 
 `expect` (conformance metadata):
@@ -519,6 +542,10 @@ Import merge behavior:
 - effective predicate imports = `clauses.imports` merged with
   `clauses.predicates[].imports`
 - predicate imports override defaults on key collision
+- binding-piped symbols are then merged into effective predicate context
+  according to `bindings[].mode`:
+  - `merge`: existing explicit import symbols are preserved
+  - `override`: binding symbols replace same-name explicit imports
 
 Symbol resolution:
 
@@ -780,6 +807,21 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].functions[].docs[].examples` | `list` | `false` | `v2` |
 | `services.entries[].functions[].docs[].examples[].title` | `string` | `true` | `v2` |
 | `services.entries[].functions[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `bindings` | `list` | `false` | `v2` |
+| `bindings[].id` | `string` | `true` | `v2` |
+| `bindings[].contract` | `string` | `true` | `v2` |
+| `bindings[].service` | `string` | `false` | `v2` |
+| `bindings[].function` | `string` | `true` | `v2` |
+| `bindings[].import` | `string` | `false` | `v2` |
+| `bindings[].inputs` | `list` | `false` | `v2` |
+| `bindings[].inputs[].from` | `string` | `true` | `v2` |
+| `bindings[].inputs[].as` | `string` | `true` | `v2` |
+| `bindings[].outputs` | `list` | `false` | `v2` |
+| `bindings[].outputs[].to` | `string` | `true` | `v2` |
+| `bindings[].outputs[].as` | `string` | `false` | `v2` |
+| `bindings[].outputs[].path` | `string` | `false` | `v2` |
+| `bindings[].predicates` | `list` | `false` | `v2` |
+| `bindings[].mode` | `string` | `false` | `v2` |
 | `artifact` | `mapping` | `false` | `v2` |
 | `artifact.imports` | `list` | `false` | `v2` |
 | `artifact.imports[].id` | `string` | `true` | `v2` |
@@ -928,15 +970,16 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 | surface | required keys | catalog |
 |---|---|---|
-| `harness` | `harness.type`, `harness.profile`, `harness.config` | n/a |
-| `services.entries[]` | `services.entries[].id`, `services.entries[].type`, `services.entries[].io`, `services.entries[].profile`, `services.entries[].config` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `harness` | `harness.type`, `harness.profile` | n/a |
+| `services.entries[]` | `services.entries[].id` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 221
+- top_level_field_count: 236
 - harness_surface: suite-root `harness`
 - service_catalog: `/specs/schema/service_contract_catalog_v1.yaml`
 
@@ -1021,6 +1064,21 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].functions[].docs[].examples` | `list` | false | `v2` |
 | `services.entries[].functions[].docs[].examples[].title` | `string` | true | `v2` |
 | `services.entries[].functions[].docs[].examples[].ref` | `string` | true | `v2` |
+| `bindings` | `list` | false | `v2` |
+| `bindings[].id` | `string` | true | `v2` |
+| `bindings[].contract` | `string` | true | `v2` |
+| `bindings[].service` | `string` | false | `v2` |
+| `bindings[].function` | `string` | true | `v2` |
+| `bindings[].import` | `string` | false | `v2` |
+| `bindings[].inputs` | `list` | false | `v2` |
+| `bindings[].inputs[].from` | `string` | true | `v2` |
+| `bindings[].inputs[].as` | `string` | true | `v2` |
+| `bindings[].outputs` | `list` | false | `v2` |
+| `bindings[].outputs[].to` | `string` | true | `v2` |
+| `bindings[].outputs[].as` | `string` | false | `v2` |
+| `bindings[].outputs[].path` | `string` | false | `v2` |
+| `bindings[].predicates` | `list` | false | `v2` |
+| `bindings[].mode` | `string` | false | `v2` |
 | `artifact` | `mapping` | false | `v2` |
 | `artifact.imports` | `list` | false | `v2` |
 | `artifact.imports[].id` | `string` | true | `v2` |
@@ -1169,6 +1227,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 | surface | required_keys | catalog |
 |---|---|---|
-| `harness` | `harness.type`, `harness.profile`, `harness.config` | n/a |
-| `services.entries[]` | `services.entries[].id`, `services.entries[].type`, `services.entries[].io`, `services.entries[].profile`, `services.entries[].config` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `harness` | `harness.type`, `harness.profile` | n/a |
+| `services.entries[]` | `services.entries[].id` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

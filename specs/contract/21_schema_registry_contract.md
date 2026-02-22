@@ -16,11 +16,19 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Runtime expectation overrides MUST use `expect.overrides[]` (no `expect.impl.*` wildcard keys).
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime services MUST define non-empty root `services.entries[]`.
+- Suite MAY declare root `bindings[]` to bind services to contracts for
+  predicate piping.
 - Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
 - `contracts[].harness` is invalid in v2 (hard cut).
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
 - `services.entries[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
+- `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
+  (when present) MUST resolve to `services.entries[].id`.
+- `bindings[].inputs[].from` MUST resolve to `artifact.imports[].id` and
+  `bindings[].outputs[].to` MUST resolve to `artifact.exports[].id`.
+- Omitted `bindings[].service` MUST resolve to a single sane default service
+  or hard-fail.
 - Suite artifact references MUST be declared only under
   `artifact.imports[]`/`artifact.exports[]`.
 - Root `exports[]` MUST be function-only declarations using
@@ -43,6 +51,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 Runtime catalog entries define service additions over common suite/contract keys:
 
 - required suite runtime fields (`harness`, `services.entries[]`)
+- optional service-contract binding field (`bindings[]`)
 - service type/profile/io compatibility
 - allowed function operation prefixes per service type
 

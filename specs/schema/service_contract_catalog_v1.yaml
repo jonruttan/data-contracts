@@ -83,3 +83,14 @@ services:
   - input
   - output
   - io
+binding_runtime_contract:
+  execution_timing: once_per_contract_before_predicates
+  io_transport: artifact_ids_only
+  default_service_resolution:
+  - match_services_defaults_type_profile
+  - fallback_single_services_entry
+  - hard_fail_on_ambiguity
+  required_mappings:
+    inputs: bindings[].inputs[].from -> artifact.imports[].id
+    outputs: bindings[].outputs[].to -> artifact.exports[].id
+  service_config_usage: static_only_no_runtime_payload_transport

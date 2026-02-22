@@ -383,6 +383,17 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+- id: DCCONF-SCHEMA-CASE-022
+  title: valid suite binding entry is accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
 harness:
   type: unit.test
   profile: export
@@ -407,4 +418,22 @@ services:
     type: assert.check
     io: input
     profile: default
+    functions:
+    - name: pipe_identity
+      op: ops.assert.identity
+bindings:
+- id: bind_schema_case_022
+  contract: DCCONF-SCHEMA-CASE-022
+  service: svc.check.default.1
+  function: pipe_identity
+  import: schema_ref_doc
+  inputs:
+  - from: schema_ref_doc
+    as: source_text
+  outputs:
+  - to: schema_ref_export
+    as: piped_text
+  predicates:
+  - assert_1
+  mode: merge
 ```

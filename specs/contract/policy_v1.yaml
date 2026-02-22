@@ -1,6 +1,22 @@
 version: 1
 title: Data Contracts Portable Contract Policy
 rules:
+- id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
+  introduced_in: v2
+  scope: case
+  applies_to: runtime.bindings
+  norm: MUST
+  requirement: service_binding_runtime_payloads_use_declared_artifact_ids
+  description: 'Service-to-contract bindings must source runtime inputs from
+    `artifact.imports[].id` and sink outputs to `artifact.exports[].id`.
+
+    '
+  rationale: Keeps service I/O explicit, portable, and traceable.
+  risk_if_violated: Runtime payload channels become implicit and non-portable.
+  references:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  - specs/schema/schema_v2.md
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
   introduced_in: v1
   scope: case

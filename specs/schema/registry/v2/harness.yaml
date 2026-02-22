@@ -46,3 +46,24 @@ fields:
     required: false
     since: v2
     description: Service type resolved by service_contract_catalog_v1.
+  bindings:
+    type: list
+    required: false
+    since: v2
+    description: Optional suite bindings that connect contracts to service calls via artifact-id I/O.
+  bindings[].id:
+    type: string
+    required: true
+    since: v2
+  bindings[].contract:
+    type: string
+    required: true
+    since: v2
+  bindings[].service:
+    type: string
+    required: false
+    since: v2
+  bindings[].function:
+    type: string
+    required: true
+    since: v2
