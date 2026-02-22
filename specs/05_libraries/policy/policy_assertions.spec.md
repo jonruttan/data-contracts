@@ -44,7 +44,7 @@ harness:
       - expected_check_id
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-ASSERT-001
     title: reusable scan envelope assertions
     library:

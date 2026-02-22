@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-PROFILE-001
     title: subject profile schema defines canonical envelope fields
     purpose: Ensures subject profile schema defines JSON-core envelope and deterministic projection constraints.

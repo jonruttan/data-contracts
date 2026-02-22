@@ -9,7 +9,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-ERR-001
     title: failing assertion includes context tokens in message
     purpose: Guarantees failure messages carry deterministic context tokens for debugging

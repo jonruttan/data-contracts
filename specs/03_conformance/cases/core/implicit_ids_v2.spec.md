@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-IMPLICIT-ID-001
     title: omitted docs id remains valid metadata
     docs:
@@ -36,7 +36,7 @@ harness:
     owners:
     - role: owner
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-IMPLICIT-ID-002
     title: omitted docs owner id remains valid metadata
     expect:
@@ -57,7 +57,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-IMPLICIT-ID-003
     title: missing predicate id is schema failure
     expect:
@@ -77,7 +77,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-IMPLICIT-ID-004
     title: synthetic report label is invalid as reference identity
     expect:

@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-CHAIN-EXPORT-002
     title: producer export path must resolve to producer assert step id
     purpose: Ensures from=assert.function exports fail with schema category when export path does not resolve to a producer assert step.

@@ -39,7 +39,7 @@ harness:
       - token_b
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-TEXT-001
     title: reusable text token assertions
     library:

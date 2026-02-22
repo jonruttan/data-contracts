@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-RSTAT-001
     title: runner status report schema is declared
     purpose: Ensures the producer-facing status report schema exists.

@@ -36,7 +36,7 @@ harness:
       - job_map
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-JOB-001
     title: reusable contract.job assertions
     library:

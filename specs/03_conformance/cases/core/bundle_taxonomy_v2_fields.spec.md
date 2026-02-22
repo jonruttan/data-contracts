@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-BUNDLE-001
     title: v2 schema docs forbid bundle suite metadata in contract-spec shape
     purpose: Ensures schema_v2 does not define top-level bundle metadata on executable suites.

@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-JOB-004
     title: schema registry build via contract.job
     purpose: Ensures script command contracts dispatch and return deterministic success state.

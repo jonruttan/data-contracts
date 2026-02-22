@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-STDLIB-003
     title: json parsing and type predicates stay deterministic
     purpose: Ensures parsed JSON shapes can be validated with deterministic type predicates.

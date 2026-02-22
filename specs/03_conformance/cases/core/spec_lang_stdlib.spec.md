@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-STDLIB-001
     title: core numeric and set operators evaluate deterministically
     purpose: Validates representative numeric operators in the stdlib profile.

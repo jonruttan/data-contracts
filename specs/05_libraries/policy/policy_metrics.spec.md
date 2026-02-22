@@ -48,7 +48,7 @@ harness:
           php: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
         since: v1
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
     title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
     docs:

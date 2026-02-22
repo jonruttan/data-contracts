@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-REG-001
     title: schema docs include generated registry snapshot markers
     purpose: Ensures generated schema registry snapshot markers and section header

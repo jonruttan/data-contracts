@@ -11,7 +11,7 @@ bindings:
   outputs:
   - to: status
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-BIND-ROOT-001
     title: root bindings are forbidden in v2
     expect:

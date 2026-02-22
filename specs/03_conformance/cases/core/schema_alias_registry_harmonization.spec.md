@@ -6,7 +6,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-ALIAS-001
     title: services imports compact aliases remain valid via alias registry
     expect:

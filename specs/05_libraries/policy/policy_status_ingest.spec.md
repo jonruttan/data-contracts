@@ -42,7 +42,7 @@ harness:
       - subject
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-INGEST-001
     title: status ingest predicates
     library:

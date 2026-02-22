@@ -143,7 +143,7 @@ harness:
           \ behavior and caveats."
         since: v1
 contracts:
-  asserts:
+  clauses:
   - id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
     docs:
     - summary: Case `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` for `contract.export`.

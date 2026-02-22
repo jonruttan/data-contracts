@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-JOB-REP-001
     title: conformance purpose json report
     purpose: Ensures report contract jobs dispatch and write the expected artifact output path.

@@ -92,7 +92,7 @@ artifacts:
   type: application/json
   direction: output
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-API-001
     title: api.http GET reads relative fixture and exposes body assertions
     purpose: Verifies api.http can resolve a local relative request url and assert deterministic status and json body shape.

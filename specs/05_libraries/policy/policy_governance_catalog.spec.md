@@ -42,7 +42,7 @@ harness:
       - subject
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-GOV-CATALOG-001
     title: governance catalog extractor predicates
     library:

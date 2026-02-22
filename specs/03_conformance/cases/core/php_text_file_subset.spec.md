@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-PHP-TEXT-001
     title: text.file contain assertion passes in php bootstrap
     purpose: Baseline positive contain check for the php text.file subset.

@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-027
     title: service imports compact single-name list is accepted via alias grammar
     expect:
@@ -46,7 +46,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-032
     title: clause imports bare-string short alias is accepted
     expect:
@@ -95,7 +95,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-033
     title: predicate imports bare-string short alias is accepted
     expect:
@@ -144,7 +144,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-034
     title: clause short alias without bindings defaults service is rejected
     expect:
@@ -190,7 +190,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-035
     title: clause short alias with unknown default service is rejected
     expect:
@@ -239,7 +239,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-036
     title: clause short alias unknown import name is rejected
     expect:
@@ -288,7 +288,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-028
     title: service imports compact multi-name list is accepted via alias grammar
     expect:
@@ -334,7 +334,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-029
     title: service imports mixed compact and mapping item kinds are rejected
     expect:
@@ -375,7 +375,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-030
     title: service imports compact duplicate names are rejected
     expect:
@@ -417,7 +417,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-031
     title: service imports compact unknown catalog name is rejected
     expect:

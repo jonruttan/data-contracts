@@ -35,7 +35,7 @@ harness:
       - subject
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-CI-001
     title: ci gate predicates
     library:

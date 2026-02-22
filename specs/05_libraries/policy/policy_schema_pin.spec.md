@@ -42,7 +42,7 @@ harness:
       - subject
       required: true
 contracts:
-  asserts:
+  clauses:
   - id: LIB-POLICY-SCHEMA-PIN-001
     title: schema pin extractor predicates
     library:

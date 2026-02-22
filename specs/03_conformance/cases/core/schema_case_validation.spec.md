@@ -17,7 +17,7 @@ exports:
   params: []
   required: true
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-SCHEMA-CASE-001
     title: valid core shape compiles and runs
     purpose: Ensures standard top-level keys accepted by registry validation continue
@@ -234,7 +234,7 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-014
-    title: artifacts entry missing io is rejected as schema
+    title: artifacts entry missing direction is rejected as schema
     expect:
       portable:
         status: fail
@@ -248,7 +248,7 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-015
-    title: artifacts entry invalid io enum is rejected as schema
+    title: artifacts entry invalid direction enum is rejected as schema
     expect:
       portable:
         status: fail
@@ -588,6 +588,48 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+  - id: DCCONF-SCHEMA-CASE-043
+    title: schema registry core yaml is ingestible as artifact input
+    expect:
+      portable:
+        status: pass
+        category: null
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - schema_registry_core_yaml
+      checks:
+      - id: assert_1
+        assert:
+          std.logic.and:
+          - std.string.contains:
+            - var: schema_registry_core_yaml
+            - "version: 2"
+          - std.string.contains:
+            - var: schema_registry_core_yaml
+            - "id: schema.registry.v2.core"
+  - id: DCCONF-SCHEMA-CASE-044
+    title: schema registry assertions yaml is ingestible as artifact input
+    expect:
+      portable:
+        status: pass
+        category: null
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - schema_registry_assertions_yaml
+      checks:
+      - id: assert_1
+        assert:
+          std.logic.and:
+          - std.string.contains:
+            - var: schema_registry_assertions_yaml
+            - "version: 2"
+          - std.string.contains:
+            - var: schema_registry_assertions_yaml
+            - "id: schema.registry.v2.assertions"
 artifacts:
 - id: schema_ref_doc
   ref: '{{schema_ref}}'
@@ -613,6 +655,22 @@ artifacts:
     audience: spec-authors
     status: active
   direction: output
+- id: schema_registry_core_yaml
+  ref: /specs/01_schema/registry/v2/core.yaml
+  type: application/yaml
+  docs:
+  - summary: schema registry core yaml input
+    audience: spec-authors
+    status: active
+  direction: input
+- id: schema_registry_assertions_yaml
+  ref: /specs/01_schema/registry/v2/assertions.yaml
+  type: application/yaml
+  docs:
+  - summary: schema registry assertions yaml input
+    audience: spec-authors
+    status: active
+  direction: input
 adapters:
 - type: io.fs
   defaults:

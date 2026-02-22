@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-DOMAIN-LIB-001
     title: domain http library defines status helper
     purpose: Ensures domain HTTP library exports reusable status-based assertion helper.

@@ -5,7 +5,7 @@ harness:
   type: unit.test
   profile: check
 contracts:
-  asserts:
+  clauses:
   - id: DCCONF-LIB-CONTRACT-001
     title: policy library uses producer harness exports
     purpose: Ensures policy library authoring uses producer-owned root exports mode=function with assert.function source mappings.
