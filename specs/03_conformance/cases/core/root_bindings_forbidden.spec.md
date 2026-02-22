@@ -13,7 +13,7 @@ bindings:
 contracts:
   clauses:
   - id: DCCONF-BIND-ROOT-001
-    title: root bindings are forbidden in v2
+    title: contract scoped bindings schema validation
     expect:
       portable:
         status: fail

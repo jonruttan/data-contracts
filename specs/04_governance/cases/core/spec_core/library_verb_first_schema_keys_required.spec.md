@@ -23,7 +23,7 @@ contracts:
   - id: DCGOV-LIB-VERB-001
     title: library schema uses verb-first key names
     purpose: Ensures spec_lang.export authoring uses defines.public/defines.private
-      and rejects non-canonical definitions keys.
+      and rejects canonical definitions keys.
     asserts:
       imports:
       - from: artifact
@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - library.verb_first_schema_keys_required
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.verb.first.schem.1
     direction: bidirectional

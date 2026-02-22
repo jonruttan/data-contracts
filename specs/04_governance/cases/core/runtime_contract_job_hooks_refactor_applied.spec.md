@@ -31,7 +31,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.contract.job.hoo.1
     direction: bidirectional

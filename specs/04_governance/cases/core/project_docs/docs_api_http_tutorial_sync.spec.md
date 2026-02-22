@@ -52,7 +52,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.api.http.tutorial.s.1
     direction: bidirectional

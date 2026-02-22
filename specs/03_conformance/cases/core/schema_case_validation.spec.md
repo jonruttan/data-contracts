@@ -36,7 +36,7 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - Spec-Test Schema (v2)
+          - Spec-Test Schema (v1)
   - id: DCCONF-SCHEMA-CASE-002
     title: unknown evaluate symbol is rejected as schema
     purpose: Ensures unknown spec-lang symbols fail as schema in both runtimes.
@@ -61,8 +61,8 @@ contracts:
     - summary: schema export validation case
       audience: spec-authors
       status: active
-      description: Valid contract.export shape without deprecated top-level imports.
-      since: v2
+      description: Valid contract.export shape without unsupported top-level imports.
+      since: v1
       tags:
       - contract.export
     expect:
@@ -85,9 +85,9 @@ contracts:
     - summary: schema export invalid imports case
       audience: spec-authors
       status: active
-      description: Deprecated contract.export top-level imports must hard-fail in
-        v2.
-      since: v2
+      description: unsupported contract.export top-level imports must hard-fail in
+        v1.
+      since: v1
       tags:
       - contract.export
     expect:
@@ -131,7 +131,7 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-007
-    title: legacy type field is rejected as schema
+    title: canonical type field is rejected as schema
     expect:
       portable:
         status: fail
@@ -149,7 +149,7 @@ contracts:
         status: fail
         category: schema
     imports:
-    - id: legacy_import
+    - id: prior_import
       ref: /specs/01_schema/schema_v1.md
     asserts:
       checks:
@@ -278,13 +278,13 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-017
-    title: legacy singular doc is rejected as schema
+    title: canonical singular doc is rejected as schema
     expect:
       portable:
         status: fail
         category: schema
     doc:
-      summary: legacy singular doc
+      summary: canonical singular doc
     asserts:
       checks:
       - id: assert_1
@@ -452,7 +452,7 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-035
-    title: legacy harness config payload key is rejected as schema
+    title: canonical harness config payload key is rejected as schema
     expect:
       portable:
         status: fail
@@ -461,7 +461,7 @@ contracts:
       type: unit.test
       profile: check
       config:
-        legacy_contract_harnesses:
+        scan_payloads_raw:
         - check
     asserts:
       checks:
@@ -573,13 +573,13 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-CASE-042
-    title: legacy flat services row shape is rejected as schema
+    title: canonical flat services row shape is rejected as schema
     expect:
       portable:
         status: fail
         category: schema
     services:
-    - id: svc.legacy.flat.1
+    - id: svc.beta.flat.1
       type: io.fs
       mode: read.text
       direction: input
@@ -608,7 +608,7 @@ contracts:
             - "version: 2"
           - std.string.contains:
             - var: schema_registry_core_yaml
-            - "id: schema.registry.v2.core"
+            - "id: schema.registry.v1.core"
   - id: DCCONF-SCHEMA-CASE-044
     title: schema registry assertions yaml is ingestible as artifact input
     expect:
@@ -629,7 +629,7 @@ contracts:
             - "version: 2"
           - std.string.contains:
             - var: schema_registry_assertions_yaml
-            - "id: schema.registry.v2.assertions"
+            - "id: schema.registry.v1.assertions"
 artifacts:
 - id: schema_ref_doc
   ref: '{{schema_ref}}'

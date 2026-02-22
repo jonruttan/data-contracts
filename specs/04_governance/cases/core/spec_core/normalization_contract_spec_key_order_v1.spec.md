@@ -12,8 +12,8 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-NORM-007
-    title: v2 contract spec key order contract is documented
-    purpose: Ensures schema v2 documents canonical suite-root and contract-item key
+    title: v1 contract spec key order contract is documented
+    purpose: Ensures schema v1 documents canonical suite-root and contract-item key
       ordering for formatter enforcement.
     asserts:
       imports:
@@ -25,7 +25,7 @@ contracts:
         assert:
         - std.string.contains:
           - var: text
-          - '## v2 Canonical Key Order (Formatter Scope)'
+          - '## v1 Canonical Key Order (Formatter Scope)'
         - std.string.contains:
           - var: text
           - Suite root canonical order
@@ -42,7 +42,7 @@ contracts:
           - var: text
           - list item order is preserved as-authored
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
+- type: beta.check_profile_text_file_config_path_specs_schema_schema_v2_md
   actions:
   - id: act.gov.normalization.contract.s.1
     direction: bidirectional

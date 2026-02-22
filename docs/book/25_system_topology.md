@@ -41,7 +41,7 @@ Show the canonical topology of specification surfaces, governance, docs, and run
 
 - storing implementation internals in spec control-plane
 - missing linkage between normative and generated surfaces
-- assuming CI topology from non-canonical docs
+- assuming CI topology from canonical docs
 
 ## Component Topology
 

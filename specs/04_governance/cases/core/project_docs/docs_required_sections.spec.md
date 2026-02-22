@@ -25,7 +25,7 @@ harness:
       docs/book/30_assertion_model.md:
       - '## Canonical Contract Shape'
       - '## Imports and Precedence'
-      - '## Forbidden prior Forms'
+      - '## Forbidden canonical Forms'
       - '## Group Semantics'
       docs/book/35_usage_guides_index.md:
       - '## Guide Paths'
@@ -151,7 +151,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.required.sections.s.1
     direction: bidirectional

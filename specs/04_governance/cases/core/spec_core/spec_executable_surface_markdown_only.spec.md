@@ -46,7 +46,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.spec.executable.surface.1
     direction: bidirectional

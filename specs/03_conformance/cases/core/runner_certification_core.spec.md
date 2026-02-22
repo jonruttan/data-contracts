@@ -7,8 +7,8 @@ harness:
 contracts:
   clauses:
   - id: DCCONF-RCERT-001
-    title: runner execution certificate v2 schema is declared
-    purpose: Ensures the v2 runner execution certificate schema is present with core sections.
+    title: runner execution certificate v1 schema is declared
+    purpose: Ensures the v1 runner execution certificate schema is present with core sections.
     asserts:
       imports:
       - from: artifact
@@ -28,8 +28,8 @@ contracts:
           - version
           - '2'
   - id: DCCONF-RCERT-002
-    title: runner execution certificate v2 includes intent equivalence and proof
-    purpose: Ensures v2 schema defines deterministic intent and payload proof fields.
+    title: runner execution certificate v1 includes intent equivalence and proof
+    purpose: Ensures v1 schema defines deterministic intent and payload proof fields.
     asserts:
       imports:
       - from: artifact

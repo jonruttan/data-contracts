@@ -22,12 +22,6 @@ Check id uniqueness:
 - predicate ids must be unique within each predicate list
 - missing predicate ids are schema hard-fail
 
-prior forms are forbidden:
-
-- top-level list `asserts: [...]`
-- predicate key `asserts`
-- predicate keys `target` / `on`
-
 ## Explicit Import Bindings
 
 Assertions must consume explicitly imported values.
@@ -52,7 +46,7 @@ Import binding shape:
 
 - `imports` is a list of canonical mapping rows
 - canonical row form is `{from, names, service?, as?}`
-- compact/short alias rows are supported in v2 where defined by
+- compact/short alias rows are supported in v1 where defined by
   `/specs/01_schema/registry/v1/assertions.yaml`
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
@@ -62,8 +56,7 @@ Import binding shape:
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
 - when `from: service`, `service` key is required and must reference suite `services[].id`
-- referenced service actions must use integration-only catalog types (`io.*`);
-  legacy orchestration service types are invalid in v2
+- referenced service actions must use integration-only catalog types (`io.*`)
 - `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`
 - when `as` is omitted, local symbol defaults to each `names[]` entry
@@ -85,7 +78,6 @@ Import merge semantics:
 - binding-piped symbols from `contracts.clauses[].bindings.rows[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
-- implicit harness/service symbol injection is forbidden
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
 

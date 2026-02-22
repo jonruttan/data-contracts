@@ -21,7 +21,7 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-CHAIN-002
-    title: chain cycles are forbidden
+    title: chain dependency acyclic validation
     purpose: Ensures direct and indirect harness.chain dependency cycles are rejected.
     asserts:
       imports:
@@ -38,7 +38,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.chain.cycle.forb.1
     direction: bidirectional

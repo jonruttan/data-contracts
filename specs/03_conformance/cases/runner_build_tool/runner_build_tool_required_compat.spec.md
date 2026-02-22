@@ -25,7 +25,7 @@ contracts:
           - var: text
           - compat-check
 adapters:
-- type: legacy.check_profile_text_file_config
+- type: beta.check_profile_text_file_config
   actions:
   - id: svc.check_profile_text_file_config.default.1
     direction: bidirectional

@@ -59,7 +59,7 @@ contracts:
   - id: DCGOV-RUNTIME-BUNDLE-003
     title: runner build tool schema declares bundle sync tasks
     purpose: Ensures runner build tool schema uses bundle-sync task ids and does not
-      include legacy spec-sync task ids.
+      include canonical spec-sync task ids.
     asserts:
       imports:
       - from: artifact
@@ -83,11 +83,11 @@ contracts:
             - var: text
             - spec-sync
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+- type: beta.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
   actions:
   - id: act.gov.runtime.runner.bundle.pa.1
     profile: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
+- type: beta.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
   actions:
   - id: act.gov.runtime.runner.bundle.pa.2
     profile: default

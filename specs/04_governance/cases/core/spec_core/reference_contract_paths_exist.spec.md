@@ -39,7 +39,7 @@ contracts:
             - lit: {}
           - reference.contract_paths_exist
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.contract.paths.1
     direction: bidirectional

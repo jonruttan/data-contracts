@@ -7,7 +7,7 @@
 - Optional suite-root `adapters[]` provides concrete mechanism actions.
 - Optional suite-root `services[]` provides contract-facing service composition
   (`exposes` + `bindings`) over adapter actions.
-- `adapters[].type` is integration-only in v2 (`io.fs`, `io.http`,
+- `adapters[].type` is integration-only in v1 (`io.fs`, `io.http`,
   `io.system`, `io.mysql`, `io.docs`); orchestration categories (`assert.check`,
   `assert.export`, `ops.job`) are invalid as service types.
 - `adapters[].actions[].profile` is a profile token validated per integration type
@@ -21,7 +21,6 @@
   - `inputs`: `{from, as?}`
 - clause/predicate imports support canonical rows (`{from, names, service?, as?}`)
   and supported compact aliases.
-- root `bindings` is invalid in v2.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
   `resolve_subject_for_target`.
@@ -58,7 +57,6 @@ Suite-root external references:
   `services` and `adapters` MUST be declared and valid.
 - binding defaults are additive only: explicit row values override defaults.
 - `service` and `import` are effective-required after defaults merge.
-- `harness.config.legacy_contract_harnesses` payload strings are invalid in v2.
 - scan-style harness config must use explicit structured keys:
   - `harness.config.root`
   - `harness.config.check.profile`
@@ -167,8 +165,6 @@ Cross-spec chaining profile:
   - `ref` string in format `[path][#case_id]`
 - producer symbol declarations are canonical at suite-root `exports[]` using
   `from: assert.function`.
-- `harness.chain.steps[*].imports` and `harness.chain.steps[*].exports` are
-  forbidden non-canonical locations.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:
   - `from` (required)
@@ -184,8 +180,6 @@ Reference resolution:
 - `path` only: execute all cases in referenced document in document order.
 - relative `path` values resolve from current spec document directory.
 - when using hash-only refs in YAML, quote them (for example `ref: "#CASE-1"`).
-- top-level `chain` and type-specific `*.chain` aliases are forbidden; chain
-  is declared only at `harness.chain`.
 
 Cycle and recursion safety:
 
@@ -245,7 +239,6 @@ Subject profile envelope contract:
   optional `as` aliases.
 - `when` MAY declare lifecycle hooks as non-empty expression lists:
   - `required`, `optional`, `fail`, `complete`
-  - non-canonical `harness.on` is forbidden
   - `required` runs after successful required-step evaluation
   - `optional` runs after successful optional-step evaluation
   - `fail` runs once on first failure
@@ -259,7 +252,6 @@ Subject profile envelope contract:
 - Rust job spec pattern standardizes lifecycle diagnostics with hook jobs:
   - job id `on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
   - job id `on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
-- non-canonical `harness.job` singular shape is forbidden.
 - job execution is dispatched from `clauses` expressions via
   `ops.job.dispatch`.
 
@@ -274,7 +266,6 @@ Subject profile envelope contract:
   `ops.<segment>(.<segment>)+`
   (for example `ops.fs.file.read`, `ops.time.clock.now_utc`,
   `ops.proc.command.exec`).
-- non-canonical underscore forms are forbidden.
 
 ## Docs Generation Harness
 

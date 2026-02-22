@@ -34,16 +34,11 @@ Bundle metadata uses:
 
 `bundle_version` and `maintainers` are canonical names for new bundle metadata.
 
-## Legacy Alias Policy
+## Canonical Vocabulary
 
-Legacy terms remain migration aliases and are not co-equal canonical terms:
+Use canonical bundle terminology in all active surfaces:
 
-- `contract_set` is a legacy alias for bundle selection/resolution surfaces.
-- `pack` is a legacy alias for curated bundle views.
-- `author` is a deprecated alias for ownership metadata; use `maintainers`.
-- bare `version` is ambiguous for bundle metadata; use `bundle_version`.
-
-## Compatibility Intent
-
-- Existing contract-set and pack surfaces may remain for compatibility during migration.
-- New bundle-oriented schema and docs must prefer canonical bundle vocabulary.
+- `bundle_id` for bundle identity.
+- `bundle_version` for bundle version metadata.
+- `maintainers` for ownership metadata.
+- avoid ambiguous bare `version` in bundle metadata contexts.

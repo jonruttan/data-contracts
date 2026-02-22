@@ -20,8 +20,8 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-PIN-005
-    title: schema catalog includes active contract-spec v2
-    purpose: Ensures active schema catalog includes canonical contract-spec v2 entry.
+    title: schema catalog includes active contract-spec v1
+    purpose: Ensures active schema catalog includes canonical contract-spec v1 entry.
     asserts:
       imports:
       - from: artifact
@@ -37,7 +37,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.schema.catalog.contains.1
     direction: bidirectional

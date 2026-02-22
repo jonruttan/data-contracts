@@ -23,7 +23,7 @@ contracts:
   - id: DCGOV-CHAIN-006
     title: chain refs use canonical scalar format
     purpose: Ensures harness.chain step refs are scalar [path][#case_id] values and
-      reject non-canonical mapping form.
+      reject canonical mapping form.
     asserts:
       imports:
       - from: artifact
@@ -39,7 +39,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.chain.ref.scalar.1
     direction: bidirectional

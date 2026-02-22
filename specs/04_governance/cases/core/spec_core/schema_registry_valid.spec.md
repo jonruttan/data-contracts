@@ -46,7 +46,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.schema.registry.valid.sp.1
     direction: bidirectional

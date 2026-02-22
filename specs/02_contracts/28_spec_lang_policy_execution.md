@@ -58,7 +58,7 @@ Runner-ingestible domain packs:
 
 ## Artifact Compatibility
 
-During migration and after cutover:
+During normalization and after cutover:
 
 - existing artifact file paths remain stable
 - existing top-level JSON keys remain stable

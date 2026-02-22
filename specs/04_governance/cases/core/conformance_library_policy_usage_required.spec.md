@@ -63,7 +63,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.conformance.library.poli.1
     direction: bidirectional

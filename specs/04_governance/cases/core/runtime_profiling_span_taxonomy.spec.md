@@ -50,7 +50,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.profiling.span.t.1
     direction: bidirectional

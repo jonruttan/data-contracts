@@ -32,7 +32,7 @@ contracts:
           - var: text
           - pack
   - id: DCGOV-BUNDLE-TAXONOMY-002
-    title: schema v2 docs keep bundle semantics outside contract-spec suite shape
+    title: schema v1 docs keep bundle semantics outside contract-spec suite shape
     purpose: Ensures schema_v2 does not define top-level bundle metadata and points to package-level contracts.
     harness:
       check:
@@ -54,5 +54,5 @@ contracts:
               - "- `bundle` (mapping, optional)"
           - std.string.contains:
             - var: text
-            - Bundle/package management is not part of `contract-spec` suite shape in v2.
+            - Bundle/package management is not part of `contract-spec` suite shape in v1.
 ```

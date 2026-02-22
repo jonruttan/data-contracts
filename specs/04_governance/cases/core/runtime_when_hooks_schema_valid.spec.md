@@ -30,7 +30,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.when.hooks.schem.1
     direction: bidirectional

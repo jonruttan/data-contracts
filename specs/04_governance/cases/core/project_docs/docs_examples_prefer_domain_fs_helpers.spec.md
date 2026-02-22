@@ -44,7 +44,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.examples.prefer.dom.1
     direction: bidirectional

@@ -26,7 +26,7 @@ contracts:
           - var: text
           - /specs/02_contracts/30_build_tool_command_set.md
 adapters:
-- type: legacy.check_profile_text_file_config
+- type: beta.check_profile_text_file_config
   actions:
   - id: svc.check_profile_text_file_config.default.1
     direction: bidirectional

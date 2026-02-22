@@ -2,7 +2,7 @@ version: 1
 title: Data Contracts Portable Contract Policy
 rules:
 - id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
-  introduced_in: v2
+  introduced_in: v1
   scope: case
   applies_to: contracts.clauses[].bindings.imports
   norm: MUST
@@ -19,7 +19,7 @@ rules:
   - specs/02_contracts/04_harness.md
   - specs/01_schema/schema_v1.md
 - id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
-  introduced_in: v2
+  introduced_in: v1
   scope: case
   applies_to: assertions.imports.artifact
   norm: MUST
@@ -36,7 +36,7 @@ rules:
   - specs/02_contracts/04_harness.md
   - specs/01_schema/schema_v1.md
 - id: BINDINGS_SERVICE_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: case
   applies_to: contracts.clauses[].bindings.imports
   norm: MUST
@@ -50,26 +50,25 @@ rules:
   - specs/02_contracts/21_schema_registry_contract.md
   - specs/01_schema/schema_v1.md
 - id: ROOT_BINDINGS_FORBIDDEN
-  introduced_in: v2
+  introduced_in: v1
   scope: case
-  applies_to: schema.v2.top_level
+  applies_to: schema.v1.top_level
   norm: MUST
-  requirement: root_bindings_are_invalid
-  description: Legacy root `bindings` is invalid in v2; bindings must be declared
-    under `contracts.clauses[].bindings`.
+  requirement: contract_scoped_bindings_required
+  description: Bindings must be declared under `contracts.clauses[].bindings`.
   rationale: Keeps service wiring owned by each contract and removes suite-level
     contract-dispatch coupling.
-  risk_if_violated: Ambiguous ownership and legacy shape drift.
+  risk_if_violated: Ambiguous ownership and canonical shape drift.
   references:
   - specs/02_contracts/21_schema_registry_contract.md
   - specs/01_schema/schema_v1.md
 - id: V2_DEFAULTS_SURFACE_NARROWED
-  introduced_in: v2
+  introduced_in: v1
   scope: case
-  applies_to: schema.v2.defaults
+  applies_to: schema.v1.defaults
   norm: MUST
   requirement: only_services_and_bindings_defaults_surfaces_are_allowed
-  description: In v2, only `adapters[].defaults` and
+  description: In v1, only `adapters[].defaults` and
     `contracts.clauses[].bindings.defaults` are allowed defaults surfaces.
     `contracts.defaults`, `contracts.clauses[].asserts.defaults`, and any other
     defaults surfaces are hard-fail.
@@ -80,14 +79,13 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/01_schema/registry/v1/assertions.yaml
   - specs/01_schema/schema_v1.md
-- id: HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
-  introduced_in: v2
+- id: HARNESS_STRUCTURED_SCAN_CONFIG_REQUIRED
+  introduced_in: v1
   scope: case
   applies_to: harness.config
   norm: MUST
-  requirement: harness_config_legacy_contract_harnesses_is_invalid
-  description: In v2, `harness.config.legacy_contract_harnesses` is forbidden.
-    Scan-style harness setup must use explicit structured keys (`root`,
+  requirement: harness_scan_config_uses_structured_keys
+  description: Scan-style harness setup uses explicit structured keys (`root`,
     `check.profile`, `check.config.check`, `use[]`).
   rationale: Removes opaque serialized payloads and keeps harness behavior declarative.
   risk_if_violated: Hidden config semantics, duplicated payload strings, and low-auditability
@@ -98,7 +96,7 @@ rules:
   - specs/01_schema/schema_v1.md
   - specs/02_contracts/04_harness.md
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
-  introduced_in: v2
+  introduced_in: v1
   scope: case
   applies_to: adapters[].defaults.config|adapters[].actions[].config
   norm: MUST
@@ -115,7 +113,7 @@ rules:
   - specs/02_contracts/21_schema_registry_contract.md
   - specs/01_schema/schema_v1.md
 - id: SHARED_RUNNER_LOGIC_SPEC_OWNED
-  introduced_in: v2
+  introduced_in: v1
   scope: governance
   applies_to: governance.shared_logic.execution
   norm: MUST
@@ -419,7 +417,7 @@ rules:
     from spec-lang decision expressions to reduce Python-only decision logic.
 
     '
-  rationale: Enables progressive migration toward implementation-independent executable
+  rationale: Enables progressive normalization toward implementation-independent executable
     governance specs.
   risk_if_violated: Governance logic remains scanner-bound and harder to port across
     runtimes.
@@ -642,9 +640,9 @@ rules:
     segmented and overall logic-self-containment signals.
 
     '
-  rationale: Provides directional signal for migration from host-language logic into
+  rationale: Provides directional signal for normalization from host-language logic into
     spec-lang.
-  risk_if_violated: Teams cannot measure migration progress toward spec-lang-first
+  risk_if_violated: Teams cannot measure normalization progress toward spec-lang-first
     behavior.
   references:
   - dc-runner-python
@@ -708,7 +706,7 @@ rules:
     usage in governance policy expressions.
 
     '
-  rationale: Keeps migration pressure on reusable spec-lang policy libraries instead
+  rationale: Keeps normalization pressure on reusable spec-lang policy libraries instead
     of bespoke inline logic.
   risk_if_violated: Governance checks can drift back to duplicated case-local policy
     expressions.
@@ -743,7 +741,6 @@ rules:
   rationale: Maintains one-way pressure away from direct interpreter/runtime coupling.
   risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
   references:
-  - specs/04_governance/cases/retired/runner_independence_non_regression.spec.md
   - specs/04_governance/metrics/runner_independence_baseline.json
   - dc-runner-python
 - id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
@@ -805,7 +802,6 @@ rules:
   rationale: Keeps rust lane ownership explicit and auditable.
   risk_if_violated: Rust path can mask python dependency through transitive delegation.
   references:
-  - specs/04_governance/cases/retired/runtime_rust_adapter_transitive_no_python.spec.md
   - dc-runner-rust
 - id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   introduced_in: v1
@@ -818,7 +814,7 @@ rules:
 
     '
   rationale: Makes rust lane the default operational boundary.
-  risk_if_violated: Default path remains python-biased and migration stalls.
+  risk_if_violated: Default path remains python-biased and normalization stalls.
   references:
   - scripts/ci_gate.sh
   - scripts/ci_gate.sh
@@ -909,7 +905,7 @@ rules:
     `min_segment_ratios`) when explicit enforcement is enabled in configuration.
 
     '
-  rationale: Enables gradual migration from report-only to hard quality gates.
+  rationale: Enables gradual normalization from report-only to hard quality gates.
   risk_if_violated: Teams cannot ratchet portability quality over time.
   references:
   - specs/02_contracts/07_portable_spec_authoring.md
@@ -1213,7 +1209,6 @@ rules:
   risk_if_violated: Gate commands fail when switching adapters by SPEC_RUNNER_BIN.
   references:
   - specs/02_contracts/12_runner_interface.md
-  - specs/04_governance/cases/retired/runtime_runner_interface_subcommands.spec.md
 - id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   introduced_in: v1
   scope: governance
@@ -1433,7 +1428,6 @@ rules:
   risk_if_violated: Public invocation contract fragments across multiple scripts.
   references:
   - specs/02_contracts/12_runner_interface.md
-  - specs/04_governance/cases/retired/runtime_public_runner_entrypoint_single.spec.md
 - id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1457,7 +1451,7 @@ rules:
   norm: MUST
   requirement: runtime_runner_adapter_must_reject_python_impl
   description: 'The public runtime runner adapter must reject python impl selection
-    and provide rust migration guidance.
+    and provide rust normalization guidance.
 
     '
   rationale: Enforces Rust-only runtime execution for local and CI critical paths.
@@ -1493,7 +1487,7 @@ rules:
 
     '
   rationale: Prevents accidental invocation of retired python runtime lanes.
-  risk_if_violated: prior commands persist and confuse runtime expectations.
+  risk_if_violated: canonical commands persist and confuse runtime expectations.
   references:
   - Makefile
   - specs/04_governance/cases/core/runtime_make_python_parity_targets_forbidden.spec.md
@@ -1631,7 +1625,6 @@ rules:
   references:
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_cigate_uses_governance_triage_required.spec.md
 - id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1647,7 +1640,6 @@ rules:
   references:
   - scripts/governance_triage.sh
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_triage_artifacts_emitted_required.spec.md
 - id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1728,7 +1720,6 @@ rules:
   - scripts/ci_gate.sh
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_ci_gate_ownership_contract_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   introduced_in: v1
   scope: governance
@@ -1813,7 +1804,7 @@ rules:
     parity execution.
 
     '
-  rationale: Keeps cross-runtime behavior equivalence enforced during migration.
+  rationale: Keeps cross-runtime behavior equivalence enforced during normalization.
   risk_if_violated: Runtime behavior drift can ship undetected.
   references:
   
@@ -1861,7 +1852,7 @@ rules:
     with core/full adoption profile guidance and optional compatibility lanes.
 
     '
-  rationale: Reduces onboarding ambiguity during runtime-primary migration.
+  rationale: Reduces onboarding ambiguity during runtime-primary normalization.
   risk_if_violated: Teams adopt inconsistent local/CI invocation paths.
   references:
   
@@ -2029,7 +2020,6 @@ rules:
   risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
   references:
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2224,7 +2214,6 @@ rules:
   references:
   - specs/02_contracts/15_governance_subject_model.md
   - specs/02_contracts/18_governance_subject_extractors.md
-  - specs/04_governance/cases/retired/governance_extractor_only_no_verdict_branching.spec.md
 - id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2258,7 +2247,6 @@ rules:
   references:
   - specs/02_contracts/12_runner_interface.md
   
-  - specs/04_governance/cases/retired/runtime_rust_adapter_no_python_exec.spec.md
 - id: NORMALIZATION_PROFILE_DEFINED
   introduced_in: v1
   scope: governance
@@ -2528,7 +2516,7 @@ rules:
   norm: MUST
   requirement: libraries_use_defines_public_private_scope_model
   description: 'spec_lang.export cases must define symbols under defines.public/defines.private
-    scopes and avoid non-canonical shapes.
+    scopes and avoid canonical shapes.
 
     '
   rationale: Provides explicit API visibility boundaries and deterministic export
@@ -2764,7 +2752,7 @@ rules:
     '
   rationale: Prevents hidden alternate execution lanes that bypass canonical markdown
     contract authoring.
-  risk_if_violated: Policy/execution drift can occur via non-canonical runnable file
+  risk_if_violated: Policy/execution drift can occur via canonical runnable file
     formats.
   references:
   - dc-runner-python
@@ -3087,7 +3075,7 @@ rules:
   norm: MUST
   requirement: docs_tree_roots_must_match_canonical_layout_profile
   description: 'Docs roots must match canonical layout contract (`book`, `spec`, `impl`,
-    `history/reviews`) and exclude non-canonical review root.
+    `history/reviews`) and exclude canonical review root.
 
     '
   rationale: Keeps docs discoverable and prevents namespace drift.
@@ -3802,7 +3790,7 @@ rules:
   norm: MUST
   requirement: schema_contract_current_docs_use_defines_wording
   description: 'schema_v1, library contract, and current snapshot docs must consistently
-    use defines wording and reject non-canonical definitions wording.
+    use defines wording and reject canonical definitions wording.
 
     '
   rationale: Keeps contract, schema, and snapshot docs synchronized for contributors
@@ -3868,7 +3856,6 @@ rules:
   references:
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_gate_fail_fast_behavior_required.spec.md
 - id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3884,7 +3871,6 @@ rules:
   - dc-runner-python
   - dc-runner-rust
   - specs/02_contracts/24_runtime_profiling_contract.md
-  - specs/04_governance/cases/retired/runtime_gate_skipped_steps_contract_required.spec.md
 - id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3899,7 +3885,6 @@ rules:
   - dc-runner-python
   - dc-runner-rust
   - specs/02_contracts/24_runtime_profiling_contract.md
-  - specs/04_governance/cases/retired/runtime_profile_artifacts_on_fail_required.spec.md
 - id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3913,7 +3898,6 @@ rules:
   references:
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3927,7 +3911,6 @@ rules:
   references:
   - dc-runner-python
   - specs/02_contracts/03_assertions.md
-  - specs/04_governance/cases/retired/runtime_assert_block_decision_authority_required.spec.md
 - id: META_JSON_TARGET_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3944,7 +3927,6 @@ rules:
   - dc-runner-python
   - dc-runner-python
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_meta_json_target_required.spec.md
 - id: OPS_OS_CAPABILITY_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3957,7 +3939,6 @@ rules:
   risk_if_violated: Unbounded process/environment side effects from specs.
   references:
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_ops_os_capability_required.spec.md
 - id: CONTRACT_SPEC_FENCE_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3966,7 +3947,7 @@ rules:
   requirement: executable_cases_use_contract_spec_fence
   description: Executable markdown cases must use yaml contract-spec fences.
   rationale: Hard-cut terminology keeps parser and docs aligned.
-  risk_if_violated: Case discovery becomes ambiguous across non-canonical/new formats.
+  risk_if_violated: Case discovery becomes ambiguous across canonical/new formats.
   references:
   - dc-runner-python
   - specs/04_governance/cases/core/runtime_contract_spec_fence_required.spec.md
@@ -4056,7 +4037,7 @@ rules:
   norm: MUST
   requirement: when_hook_mapping_shape_valid
   description: when must use only allowed hook keys with non-empty expression lists,
-    and non-canonical harness.on is forbidden.
+    and canonical harness.on is forbidden.
   rationale: Provides deterministic hook contract surface across harness types.
   risk_if_violated: Hook behavior diverges and invalid hook config is silently ignored.
   references:
@@ -4123,7 +4104,7 @@ rules:
   requirement: rust_contract_job_specs_must_define_fail_and_complete_hooks
   description: Rust contract.job specs must define when.fail and when.complete dispatching
     to on_fail and on_complete jobs.
-  rationale: Standardizes lifecycle diagnostics for migrated Rust script jobs without
+  rationale: Standardizes lifecycle diagnostics for normalized Rust script jobs without
     changing contract decision criteria.
   risk_if_violated: Job hook behavior drifts per case and operational diagnostics
     become inconsistent.
@@ -4249,7 +4230,7 @@ rules:
   norm: MUST
   requirement: extractor_artifact_paths_and_keys_must_remain_compatible
   description: Extractor artifacts must preserve canonical file paths and top-level key compatibility during spec-lang policy cutover.
-  rationale: Avoids breakage in CI/report consumers during migration.
+  rationale: Avoids breakage in CI/report consumers during normalization.
   risk_if_violated: Downstream automation and docs links fail despite valid policy logic.
   references:
   - specs/02_contracts/28_spec_lang_policy_execution.md
@@ -4322,13 +4303,13 @@ rules:
   - specs/01_schema/runner_cli_contract_v1.yaml
   - specs/03_conformance/cases/runner_cli/runner_cli_required_help.spec.md
 - id: CONTRACT_SPEC_FORMATTER_COMMAND_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runner.cli.contract_spec_format
   norm: MUST
   requirement: portable_contract_spec_formatter_modes_must_be_contract_defined
   description: Portable runner CLI contract must define `contract-spec-format`
-    with both `--check` and `--write` modes for v2 contract-spec blocks.
+    with both `--check` and `--write` modes for v1 contract-spec blocks.
   rationale: Keeps key-order normalization deterministic and implementation-agnostic.
   risk_if_violated: Contract-spec ordering drifts and review diffs become noisy.
   references:
@@ -4337,12 +4318,12 @@ rules:
   - specs/03_conformance/cases/runner_cli/runner_cli_required_contract_spec_format_check.spec.md
   - specs/03_conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md
 - id: CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
-  introduced_in: v2
+  introduced_in: v1
   scope: governance
-  applies_to: schema.v2.contract_spec_order
+  applies_to: schema.v1.contract_spec_order
   norm: SHOULD
   requirement: v2_contract_spec_key_order_is_canonicalized
-  description: v2 contract-spec blocks should maintain canonical suite-root and
+  description: v1 contract-spec blocks should maintain canonical suite-root and
     contract-item key ordering, with no list item reordering.
   rationale: Improves readability and keeps diffs minimal.
   risk_if_violated: Authoring churn and non-deterministic review diffs increase.
@@ -4351,9 +4332,9 @@ rules:
   - specs/02_contracts/29_runner_cli_interface.md
   - specs/03_conformance/style.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.services.imports
+  applies_to: schema.v1.services.imports
   norm: MUST
   requirement: services_entries_imports_accepts_compact_string_list_alias
   description: Service import declarations must accept canonical list mappings
@@ -4369,9 +4350,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
-  introduced_in: v2
+  introduced_in: v1
   scope: authoring
-  applies_to: schema.v2.services.imports.style
+  applies_to: schema.v1.services.imports.style
   norm: SHOULD
   requirement: services_imports_compact_alias_is_preferred_authoring_form
   description: Authoring should prefer compact list[string] alias rows for
@@ -4384,9 +4365,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
-  introduced_in: v2
+  introduced_in: v1
   scope: authoring
-  applies_to: schema.v2.contracts.clauses.asserts.imports.style
+  applies_to: schema.v1.contracts.clauses.asserts.imports.style
   norm: SHOULD
   requirement: clause_imports_prefer_compact_alias_rows
   description: Authoring should prefer canonical row rows for clause/check
@@ -4400,9 +4381,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/03_assertions.md
 - id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
-  introduced_in: v2
+  introduced_in: v1
   scope: authoring
-  applies_to: schema.v2.contracts.bindings.style
+  applies_to: schema.v1.contracts.bindings.style
   norm: SHOULD
   requirement: contract_bindings_prefer_defaults_rows_form_when_repetitive
   description: Authoring should prefer mapping-form bindings
@@ -4415,9 +4396,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/04_harness.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.contracts.bindings.io
+  applies_to: schema.v1.contracts.bindings.io
   norm: MUST
   requirement: contract_bindings_io_accept_compact_string_aliases
   description: Binding `inputs` and `outputs` must accept canonical mapping rows
@@ -4430,9 +4411,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.contracts.bindings.io.validation
+  applies_to: schema.v1.contracts.bindings.io.validation
   norm: MUST
   requirement: contract_bindings_io_compact_mixed_empty_duplicate_checks_enforced
   description: Binding I/O canonical rowes must hard-fail on mixed item kinds in one list,
@@ -4444,9 +4425,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
-  introduced_in: v2
+  introduced_in: v1
   scope: authoring
-  applies_to: schema.v2.contracts.bindings.io.style
+  applies_to: schema.v1.contracts.bindings.io.style
   norm: SHOULD
   requirement: contract_bindings_io_prefer_compact_alias_when_lossless
   description: Authoring should prefer compact list[string] binding I/O rows when
@@ -4458,9 +4439,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/04_harness.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.services.imports.validation
+  applies_to: schema.v1.services.imports.validation
   norm: MUST
   requirement: services_import_alias_mixed_duplicate_catalog_checks_enforced
   description: Mixed compact/mapping item kinds in one
@@ -4475,9 +4456,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.contracts.clauses.asserts.imports
+  applies_to: schema.v1.contracts.clauses.asserts.imports
   norm: MUST
   requirement: clauses_imports_accepts_bare_string_short_alias
   description: Clause and check imports must accept bare-string short alias
@@ -4493,9 +4474,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.contracts.clauses.asserts.imports.validation
+  applies_to: schema.v1.contracts.clauses.asserts.imports.validation
   norm: MUST
   requirement: clauses_short_alias_requires_bindings_default_service_and_valid_import
   description: Bare-string clause/check import aliases must resolve service
@@ -4511,9 +4492,9 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
-  introduced_in: v2
+  introduced_in: v1
   scope: governance
-  applies_to: schema.v2.registry.aliases
+  applies_to: schema.v1.registry.aliases
   norm: MUST
   requirement: v2_alias_grammar_must_be_defined_in_core_and_assertions_registries
   description: Alias grammar for compact/short forms must be defined in
@@ -4527,12 +4508,12 @@ rules:
   - specs/01_schema/registry/v1/assertions.yaml
   - specs/01_schema/schema_v1.md
 - id: REQUIREDNESS_MODEL_HARMONIZED_V2
-  introduced_in: v2
+  introduced_in: v1
   scope: governance
-  applies_to: schema.v2.requiredness_model
+  applies_to: schema.v1.requiredness_model
   norm: MUST
   requirement: v2_requiredness_language_uses_explicit_optional_effective_required
-  description: v2 schema/contract docs must use harmonized requiredness
+  description: v1 schema/contract docs must use harmonized requiredness
     terminology (`explicit-required`, `optional`, `effective-required`) and
     align effective-required checks with deterministic merge rules.
   rationale: Reduces cognitive load and avoids contradictory requiredness
@@ -4543,13 +4524,13 @@ rules:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
 - id: SERVICES_INTEGRATION_TYPES_ONLY_V2
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.services.type
+  applies_to: schema.v1.services.type
   norm: MUST
   requirement: v2_services_types_must_be_integration_only
   description: adapters[].type must resolve to integration service categories only
-    (`io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`). Legacy orchestration
+    (`io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`). canonical orchestration
     categories (`assert.check`, `assert.export`, `ops.job`) are invalid.
   rationale: Separates system integration concerns from assertion/export/job orchestration semantics.
   risk_if_violated: Service identity becomes ambiguous and runner behavior drifts across implementations.
@@ -4558,13 +4539,13 @@ rules:
   - specs/01_schema/service_contract_catalog_v1.yaml
   - specs/02_contracts/21_schema_registry_contract.md
 - id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.services.profile
+  applies_to: schema.v1.services.profile
   norm: MUST
   requirement: v2_service_profiles_must_be_mode_style_and_type_compatible
   description: adapters[].actions[].profile must be a mode token validated against
-    the resolved integration type from service catalog. Legacy profile tokens
+    the resolved integration type from service catalog. canonical profile tokens
     (`text.file`, `api.http`, `cli.run`, `docs.generate`) are invalid.
   rationale: Eliminates duplicated identity semantics between service type and profile.
   risk_if_violated: Type/profile combinations become non-portable and validation weakens.
@@ -4573,7 +4554,7 @@ rules:
   - specs/01_schema/service_contract_catalog_v1.yaml
   - specs/02_contracts/04_harness.md
 - id: SERVICE_IMPLEMENTATIONS_MUST_OWN_INTEGRATION_LIBS
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runtime.services.integration_ownership
   norm: MUST
@@ -4588,7 +4569,7 @@ rules:
   - specs/02_contracts/35_service_plugin_runtime.md
   - specs/01_schema/schema_v1.md
 - id: RUNTIME_PLUGIN_LOAD_REQUIRES_SIGNATURE_AND_LOCK_PIN
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runtime.services.plugin_integrity
   norm: MUST
@@ -4602,7 +4583,7 @@ rules:
   - specs/01_schema/service_plugin_manifest_v1.yaml
   - specs/01_schema/service_plugin_lock_v1.yaml
 - id: SERVICE_RESOLUTION_MUST_BE_TYPE_PROFILE_EXACT
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runtime.services.resolution
   norm: MUST
@@ -4615,7 +4596,7 @@ rules:
   - specs/02_contracts/35_service_plugin_runtime.md
   - specs/01_schema/service_contract_catalog_v1.yaml
 - id: BUILTIN_AND_PLUGIN_MODES_MUST_BE_BEHAVIORALLY_EQUIVALENT
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runtime.services.packaging_modes
   norm: MUST
@@ -4628,9 +4609,9 @@ rules:
   - specs/02_contracts/35_service_plugin_runtime.md
   - specs/01_schema/schema_v1.md
 - id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
-  applies_to: schema.v2.references.identity
+  applies_to: schema.v1.references.identity
   norm: MUST
   requirement: reference_targets_must_use_explicit_authored_ids_only
   description: Any field that resolves references must target explicitly authored
@@ -4645,7 +4626,7 @@ rules:
   - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/implicit_ids_v1.spec.md
 - id: SYNTHETIC_LABELS_DIAGNOSTICS_ONLY
-  introduced_in: v2
+  introduced_in: v1
   scope: runtime
   applies_to: runtime.reporting.synthetic_labels
   norm: MUST

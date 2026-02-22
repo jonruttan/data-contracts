@@ -43,7 +43,7 @@ contracts:
   - id: DCGOV-DOCS-REF-010
     title: readme remains implementation-agnostic and canonical for v1 authoring
     purpose: Ensures root README stays gateway-oriented, implementation-agnostic,
-      and free from prior assertion-surface snippets.
+      and free from canonical assertion-surface snippets.
     asserts:
       imports:
       - from: artifact
@@ -59,7 +59,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.readme.rust.first.c.1
     direction: bidirectional

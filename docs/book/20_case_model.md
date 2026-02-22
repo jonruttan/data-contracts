@@ -71,8 +71,6 @@ Typical keys:
 - `imports`
 - `steps`
 
-prior forms (`contract` list, `asserts`, `target`, `on`) are forbidden in canonical authoring.
-
 ## Normative References
 
 - `specs/01_schema/schema_v1.md`

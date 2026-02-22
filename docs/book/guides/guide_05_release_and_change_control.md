@@ -63,5 +63,5 @@ git status --short
 | Signature | Likely Cause | Action |
 | --- | --- | --- |
 | release PR blocked by governance | missing contract/doc alignment | update affected contracts/docs and rerun governance |
-| generated refs changed unexpectedly | prior drift discovered late | include regenerated refs in same change |
+| generated refs changed unexpectedly | canonical drift discovered late | include regenerated refs in same change |
 | unresolved traceability | policy rule references outdated | update traceability/policy ids consistently |

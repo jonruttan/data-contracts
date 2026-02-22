@@ -37,7 +37,7 @@ contracts:
           - var: text
           - /specs/01_schema/project_bundle_lock_v1.yaml
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+- type: beta.check_profile_text_file_config_path_specs_schema_index_md
   actions:
   - id: act.gov.runtime.runner.bundle.lo.1
     direction: bidirectional

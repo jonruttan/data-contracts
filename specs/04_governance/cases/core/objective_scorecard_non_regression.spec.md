@@ -76,7 +76,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.objective.scorecard.non.1
     direction: bidirectional

@@ -1474,33 +1474,6 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/docs_cli_flags_documented.spec.md",
-      "id": "DCGOV-DOCS-REF-005",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
       "file": "specs/04_governance/cases/core/docs_command_examples_verified.spec.md",
       "id": "DCGOV-DOCS-QUAL-006",
       "implementation_reliance_ratio": 0.6,
@@ -1987,33 +1960,6 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/governance_extractor_only_no_verdict_branching.spec.md",
-      "id": "DCGOV-POLICY-REQ-003",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
       "file": "specs/04_governance/cases/core/governance_evaluate_required.spec.md",
       "id": "DCGOV-POLICY-REQ-001",
       "implementation_reliance_ratio": 0.6,
@@ -2230,89 +2176,8 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runner_independence_non_regression.spec.md",
-      "id": "DCGOV-RUNTIME-INDEP-002",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_assertions_via_spec_lang.spec.md",
-      "id": "DCGOV-RUNTIME-ASSERT-001",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
       "file": "specs/04_governance/cases/core/runtime_config_literals.spec.md",
       "id": "DCGOV-RUNTIME-CONFIG-001",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_orchestration_policy_via_spec_lang.spec.md",
-      "id": "DCGOV-RUNTIME-ORCH-001",
       "implementation_reliance_ratio": 0.6,
       "leaf_counts": {
         "evaluate": 0,
@@ -2392,88 +2257,7 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_runner_interface_gate_sync.spec.md",
-      "id": "DCGOV-RUNTIME-CONFIG-003",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_runner_interface_subcommands.spec.md",
-      "id": "DCGOV-RUNTIME-CONFIG-004",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
       "id": "DCGOV-RUNTIME-CONFIG-006",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_rust_adapter_no_python_exec.spec.md",
-      "id": "DCGOV-RUST-PRIMARY-007",
       "implementation_reliance_ratio": 0.6,
       "leaf_counts": {
         "evaluate": 0,
@@ -2710,33 +2494,6 @@
       "execution_portability_ratio": 0.85,
       "file": "specs/04_governance/cases/core/runtime_settings_import_policy.spec.md",
       "id": "DCGOV-RUNTIME-IMPORT-001",
-      "implementation_reliance_ratio": 0.6,
-      "leaf_counts": {
-        "evaluate": 0,
-        "non_evaluate": 1,
-        "total": 1
-      },
-      "logic_reliance_ratio": 1.0,
-      "logic_self_contained_ratio": 0.0,
-      "penalties": {
-        "expect_impl_overlay": 0.0,
-        "non_core_type": 0.15,
-        "non_evaluate_leaf_share": 0.45,
-        "runtime_specific_capability": 0.0
-      },
-      "reasons": [
-        "non-evaluate leaf share 1/1",
-        "non-core type governance.check"
-      ],
-      "segment": "governance",
-      "self_contained_ratio": 0.4,
-      "type": "governance.check"
-    },
-    {
-      "execution_coupling_ratio": 0.15000000000000002,
-      "execution_portability_ratio": 0.85,
-      "file": "specs/04_governance/cases/retired/runtime_spec_lang_pure_no_effect_builtins.spec.md",
-      "id": "DCGOV-RUNTIME-SPECLANG-PURE-001",
       "implementation_reliance_ratio": 0.6,
       "leaf_counts": {
         "evaluate": 0,

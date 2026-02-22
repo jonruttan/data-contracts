@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - library.domain_ownership
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.domain.ownership.1
     direction: bidirectional

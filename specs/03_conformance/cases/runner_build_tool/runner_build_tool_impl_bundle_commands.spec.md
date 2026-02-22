@@ -42,7 +42,7 @@ contracts:
           - var: text
           - data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
+- type: beta.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
   actions:
   - id: act.conf.runner.build.tool.impl.b.1
     direction: bidirectional

@@ -6,7 +6,7 @@ entries:
   measurement_model_change: 'no'
 - baseline: specs/04_governance/metrics/spec_lang_adoption_baseline.json
   sha256: d0fd64e6c1096d4851297f3d204fdaf7b64c23ac2ae27e4c7c77712bd37d3156
-  rationale: Baseline refreshed after chain-first library loading hard-cut and one-public-symbol-per-library-case migration.
+  rationale: Baseline refreshed after chain-first library loading hard-cut and one-public-symbol-per-library-case normalization.
   measurement_model_change: 'yes'
 - baseline: specs/04_governance/metrics/runner_independence_baseline.json
   sha256: 7066ab5a9fb38c0b2815562015914e9ebdf8087ed77ecdb6c533afd3655923f0

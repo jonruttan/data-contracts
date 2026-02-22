@@ -21,9 +21,9 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-DOC-CURRENT-001
-    title: current-spec-only contract forbids prior-schema references and shims
+    title: current-spec-only contract forbids canonical-schema references and shims
     purpose: Ensures pre-v1 docs and parser paths stay focused on current schema only,
-      without prior-spec wording or compatibility rewrites.
+      without canonical-spec wording or compatibility rewrites.
     asserts:
       imports:
       - from: artifact
@@ -58,7 +58,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.current.spec.only.contra.1
     direction: bidirectional

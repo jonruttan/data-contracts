@@ -102,7 +102,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.reference.surface.c.1
     direction: bidirectional

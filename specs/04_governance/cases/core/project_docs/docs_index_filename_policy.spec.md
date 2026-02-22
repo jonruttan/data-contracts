@@ -45,7 +45,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.index.filename.poli.1
     direction: bidirectional

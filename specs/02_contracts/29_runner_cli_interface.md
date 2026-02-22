@@ -38,9 +38,9 @@ contract keys in `/specs/01_schema/runner_cli_contract_v1.yaml`.
 - processes Markdown `*.spec.md` files containing fenced `yaml contract-spec`
   blocks
 - applies only to `spec_version: 1` blocks
-- `--check` is read-only and exits non-zero when non-canonical order is found
-- `--write` rewrites non-canonical v2 block key order in place
-- non-v2 blocks are skipped (no rewrite)
+- `--check` is read-only and exits non-zero when canonical order is found
+- `--write` rewrites canonical v1 block key order in place
+- non-v1 blocks are skipped (no rewrite)
 
 Implementation-specific additions MUST be capability-gated and MUST NOT weaken
 the required portable command semantics.

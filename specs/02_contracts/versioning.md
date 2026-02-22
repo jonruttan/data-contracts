@@ -1,6 +1,6 @@
 # Contract Versioning
 
-Portable contract rules follow a minimal lifecycle model for pre-alpha evolution.
+Portable contract rules follow a minimal lifecycle model for beta evolution.
 
 ## Version Domains
 
@@ -40,5 +40,5 @@ Version labels use `vN` format (for example `v1`).
 Breaking behavior changes MUST include:
 
 - lifecycle field updates in policy
-- migration notes in contract/spec docs
+- normalization notes in contract/spec docs
 - updated traceability and conformance evidence

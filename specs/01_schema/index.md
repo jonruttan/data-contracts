@@ -7,23 +7,21 @@ Canonical schema sources for executable `contract-spec` documents.
 ## Canonical Files
 
 - `/specs/01_schema/schema_v1.md` (active)
-- `/specs/01_schema/schema_v1.md` (deprecated)
 - `/specs/01_schema/schema_catalog_v1.yaml`
 - `/specs/01_schema/registry/v1/core.yaml`
 - `/specs/01_schema/registry/v1/assertions.yaml`
 - `/specs/01_schema/registry/v1/harness.yaml`
-- `/specs/01_schema/registry/v1/core.yaml`
 - `/specs/01_schema/service_contract_catalog_v1.yaml`
 - `/specs/01_schema/service_plugin_manifest_v1.yaml`
 - `/specs/01_schema/service_plugin_lock_v1.yaml`
 
-v2 terminology baseline:
+v1 terminology baseline:
 
 - accepted input forms (parser-supported shapes)
 - preferred authoring form (style guidance)
 - canonical normalized form (deterministic pre-validation shape)
 
-Deprecated v2 type overlays (non-normative migration references):
+Optional v1 type overlays (non-normative references):
 
 - `/specs/01_schema/registry/v1/types/contract_check.yaml`
 - `/specs/01_schema/registry/v1/types/contract_export.yaml`

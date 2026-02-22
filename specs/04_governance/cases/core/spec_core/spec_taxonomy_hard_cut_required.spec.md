@@ -37,7 +37,7 @@ contracts:
   - id: DCGOV-SPEC-TOPO-001
     title: specs taxonomy hard-cut layout is canonical
     purpose: Ensures governance utility domains are folded under `/specs/04_governance/*`
-      and prior root shim paths are removed.
+      and canonical root shim paths are removed.
     asserts:
       imports:
       - from: artifact
@@ -53,7 +53,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.spec.taxonomy.hard.cut.r.1
     direction: bidirectional

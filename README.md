@@ -74,7 +74,7 @@ This repository does not execute runtime lanes.
 - Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/bundle_manifest_v1.yaml`
 - Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/resolved_bundle_lock_v1.yaml`
 - Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/project_bundle_lock_v1.yaml`
-- Legacy runner lock schema (deprecated): `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_bundle_lock_v1.yaml`
+- canonical runner lock schema (unsupported for canonical bundle flow): `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_bundle_lock_v1.yaml`
 - Implementation overlay schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/implementation_bundle_overlay_v1.yaml`
 - Implementation build lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/implementation_bundle_build_lock_v1.yaml`
 - Implementation overlay contract: `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/34_runner_implementation_spec_bundles.md`
@@ -84,14 +84,9 @@ This repository does not execute runtime lanes.
   - [`jonruttan/dc-runner-php-specs`](https://github.com/jonruttan/dc-runner-php-specs)
 - `bundles.lock.yaml` supports multi-bundle entries using `role: primary|additional` with isolated non-overlapping `install_dir` per bundle.
 
-Legacy alias:
-
-- `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set` is deprecated and forwards to `scripts/bundle`.
-
 ## Core Script Allowlist
 
 - `/Users/jon/Workspace/Development/data-contracts/scripts/bundle`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/control_plane.sh`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/ci_gate.sh`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/runner_status_ingest.sh`

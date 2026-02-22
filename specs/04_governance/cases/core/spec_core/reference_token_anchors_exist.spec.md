@@ -45,7 +45,7 @@ contracts:
             - lit: {}
           - reference.token_anchors_exist
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.token.anchors.1
     direction: bidirectional

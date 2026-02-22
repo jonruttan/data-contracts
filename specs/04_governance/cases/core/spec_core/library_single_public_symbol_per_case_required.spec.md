@@ -38,7 +38,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.single.public.sy.1
     direction: bidirectional

@@ -24,7 +24,7 @@ adapters:
 - type: io.mysql
   allowed_profiles:
   - mysql.query
-  - mysql.migrate
+  - mysql.normalize
   required_config_keys: []
   allowed_function_op_prefixes:
   - ops.mysql.
@@ -36,10 +36,10 @@ adapters:
   available_imports_by_profile:
     mysql.query:
     - query
-    - migrate
-    mysql.migrate:
+    - normalize
+    mysql.normalize:
     - query
-    - migrate
+    - normalize
   import_validation_scope: type_profile
 - type: io.fs
   allowed_profiles:
@@ -156,4 +156,4 @@ import_declaration_shape_v2:
   adapters[].actions[].imports: list[mapping]
   adapters[].actions[].imports[].names: list[string]
   adapters[].actions[].imports[].as: mapping(optional)
-  legacy_compact_form: invalid
+  prior_compact_form: invalid

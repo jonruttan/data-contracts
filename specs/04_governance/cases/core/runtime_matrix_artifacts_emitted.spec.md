@@ -36,7 +36,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.matrix.artifacts.1
     direction: bidirectional

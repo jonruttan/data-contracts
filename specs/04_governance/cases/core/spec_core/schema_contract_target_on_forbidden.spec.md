@@ -21,7 +21,7 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-CONTRACT-002
-    title: contract target and on keys are forbidden
+    title: contract imports-based assertion wiring
     purpose: Ensures canonical contract steps use imports bindings instead of target/on
       keys.
     asserts:
@@ -39,7 +39,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.schema.contract.target.o.1
     direction: bidirectional

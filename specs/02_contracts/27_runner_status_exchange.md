@@ -54,7 +54,7 @@ Required certificate outputs:
 - `/.artifacts/runner-certification-{runner}.json`
 - `/.artifacts/runner-certification-{runner}.md`
 
-Required certificate v2 sections:
+Required certificate v1 sections:
 
 - `runner`
 - `execution_intent`

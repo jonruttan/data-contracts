@@ -22,7 +22,7 @@ contracts:
   clauses:
   - id: DCGOV-SCHEMA-VERB-001
     title: verb-first contract wording remains synchronized
-    purpose: Ensures schema/contract/current docs use defines wording and reject non-canonical
+    purpose: Ensures schema/contract/current docs use defines wording and reject canonical
       definitions wording.
     asserts:
       imports:
@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - schema.verb_first_contract_sync
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.schema.verb.first.contra.1
     direction: bidirectional

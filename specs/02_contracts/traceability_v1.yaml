@@ -47,7 +47,7 @@ links:
   - DCCONF-BIND-ROOT-001
   unit_test_refs: []
   implementation_refs: []
-  notes: Root bindings are forbidden in v2; bindings must be declared per contract.
+  notes: Root bindings are forbidden in v1; bindings must be declared per contract.
 - rule_id: V2_DEFAULTS_SURFACE_NARROWED
   policy_ref: specs/02_contracts/policy_v1.yaml#V2_DEFAULTS_SURFACE_NARROWED
   contract_refs:
@@ -61,9 +61,9 @@ links:
   - DCCONF-SCHEMA-CASE-001
   unit_test_refs: []
   implementation_refs: []
-  notes: Only services and contract-binding defaults surfaces are allowed in v2.
-- rule_id: HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
-  policy_ref: specs/02_contracts/policy_v1.yaml#HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
+  notes: Only services and contract-binding defaults surfaces are allowed in v1.
+- rule_id: HARNESS_STRUCTURED_SCAN_CONFIG_REQUIRED
+  policy_ref: specs/02_contracts/policy_v1.yaml#HARNESS_STRUCTURED_SCAN_CONFIG_REQUIRED
   contract_refs:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
@@ -75,8 +75,7 @@ links:
   - DCCONF-SCHEMA-CASE-035
   unit_test_refs: []
   implementation_refs: []
-  notes: v2 forbids opaque `harness.config.legacy_contract_harnesses`; harness
-    scan config must use explicit structured keys.
+  notes: Harness scan config uses explicit structured keys.
 - rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   contract_refs:
@@ -168,7 +167,7 @@ links:
   - dc-runner-python
   - dc-runner-php
   - dc-runner-php
-  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/non-canonical
+  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/canonical
     forms.
 - rule_id: SPEC_LANG_PREFERRED_AUTHORING
   policy_ref: specs/02_contracts/policy_v1.yaml#SPEC_LANG_PREFERRED_AUTHORING
@@ -669,7 +668,6 @@ links:
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
   contract_refs:
   - specs/02_contracts/12_runner_interface.md
-  - specs/04_governance/cases/retired/runner_independence_non_regression.spec.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -730,7 +728,6 @@ links:
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   contract_refs:
   
-  - specs/04_governance/cases/retired/runtime_rust_adapter_transitive_no_python.spec.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -1144,7 +1141,6 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_runner_interface_gate_sync.spec.md
   - scripts/ci_gate.sh
   - scripts/runner_bin.sh
   - dc-runner-python
@@ -1292,7 +1288,6 @@ links:
   implementation_refs:
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_cigate_uses_governance_triage_required.spec.md
   notes: CI gate summary routes governance through triage and exposes triage metadata.
 - rule_id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
@@ -1306,7 +1301,6 @@ links:
   implementation_refs:
   - scripts/governance_triage.sh
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_triage_artifacts_emitted_required.spec.md
   notes: Triage flow emits deterministic machine/human artifacts on failure/stall.
 - rule_id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
@@ -1374,7 +1368,6 @@ links:
   - scripts/ci_gate.sh
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_ci_gate_ownership_contract_required.spec.md
   notes: CI gate owns critical in ci_gate.sh and keeps ci-gate-summary broad-only
     without critical toggles.
 - rule_id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
@@ -1482,7 +1475,6 @@ links:
   - dc-runner-python
   - dc-runner-php
   - dc-runner-php
-  - specs/04_governance/cases/retired/runtime_spec_lang_pure_no_effect_builtins.spec.md
   notes: Spec-lang core forbids side-effect builtins; adapters provide normalized
     effect results.
 - rule_id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
@@ -1598,7 +1590,6 @@ links:
   - dc-runner-python
   implementation_refs:
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_orchestration_policy_via_spec_lang.spec.md
   notes: CI gate summary loads a spec-lang decision expression from governance policy
     case.
 - rule_id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
@@ -1656,7 +1647,6 @@ links:
   implementation_refs:
   - dc-runner-python
   - dc-runner-rust
-  - specs/04_governance/cases/retired/runtime_runner_interface_subcommands.spec.md
   notes: Governance verifies Rust adapter case labels cover required runner-interface
     subcommands.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
@@ -1779,7 +1769,7 @@ links:
   - docs/development.md
   - dc-runner-python
   - specs/04_governance/cases/core/project_docs/docs_adoption_profiles_sync.spec.md
-  notes: Adoption profile docs remain synchronized during Rust-primary migration.
+  notes: Adoption profile docs remain synchronized during Rust-primary normalization.
 - rule_id: OBJECTIVE_METRIC_MANIFEST_VALID
   policy_ref: specs/02_contracts/policy_v1.yaml#OBJECTIVE_METRIC_MANIFEST_VALID
   contract_refs:
@@ -2316,7 +2306,6 @@ links:
   - scripts/ci_gate.sh
   - scripts/control_plane.sh
   - dc-runner-python
-  - specs/04_governance/cases/retired/runtime_public_runner_entrypoint_single.spec.md
   notes: Gate scripts must reference scripts/runner_bin.sh as the single public
     runner entrypoint.
 - rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
@@ -2347,7 +2336,7 @@ links:
   - scripts/runner_bin.sh
   - dc-runner-python
   - specs/04_governance/cases/core/runner_contract/runtime_control_plane_ci_runner_execution_forbidden.spec.md
-  notes: Runtime runner adapter rejects python impl selection with migration guidance.
+  notes: Runtime runner adapter rejects python impl selection with normalization guidance.
 - rule_id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   contract_refs:
@@ -2765,7 +2754,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - specs/04_governance/cases/core/project_docs/docs_layout_canonical_trees.spec.md
-  notes: Enforces canonical docs tree roots and forbids non-canonical review root.
+  notes: Enforces canonical docs tree roots and forbids canonical review root.
 - rule_id: DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
   contract_refs:
@@ -3127,7 +3116,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - dc-runner-python
-  notes: Governance forbids non-canonical per-harness workflow tokens.
+  notes: Governance forbids canonical per-harness workflow tokens.
 - rule_id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   contract_refs:
@@ -4194,7 +4183,7 @@ links:
   unit_test_refs: []
   implementation_refs:
   - specs/03_conformance/cases/core/schema_alias_registry_harmonization.spec.md
-  notes: Alias grammar is centralized in the v2 core/assertions registries with one deterministic normalization contract.
+  notes: Alias grammar is centralized in the v1 core/assertions registries with one deterministic normalization contract.
 - rule_id: REQUIREDNESS_MODEL_HARMONIZED_V2
   policy_ref: specs/02_contracts/policy_v1.yaml#REQUIREDNESS_MODEL_HARMONIZED_V2
   contract_refs:
@@ -4220,7 +4209,7 @@ links:
   unit_test_refs: []
   implementation_refs:
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
-  notes: v2 service type surface is integration-only and rejects legacy assert/ops categories.
+  notes: v1 service type surface is integration-only and rejects canonical assert/ops categories.
 - rule_id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
   policy_ref: specs/02_contracts/policy_v1.yaml#SERVICES_MODE_PROFILE_COMPATIBILITY_V2
   contract_refs:

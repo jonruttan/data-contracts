@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - reference.external_refs_policy
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.external.refs.1
     direction: bidirectional

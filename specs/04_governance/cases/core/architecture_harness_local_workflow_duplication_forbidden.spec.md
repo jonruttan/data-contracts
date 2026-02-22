@@ -21,9 +21,9 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-ARCH-COMPONENTS-002
-    title: non-canonical harness workflow duplication is forbidden
+    title: harness workflow componentized structure
     purpose: Prevents harness modules from reintroducing local spec-lang setup and
-      direct assertion-evaluation glue after component hard cut.
+      direct assertion-evaluation glue.
     asserts:
       imports:
       - from: artifact
@@ -39,7 +39,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.architecture.harness.loc.1
     direction: bidirectional
@@ -49,4 +49,3 @@ services:
   consumes:
   - act.gov.architecture.harness.loc.1
 ```
-

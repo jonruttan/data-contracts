@@ -42,7 +42,7 @@ contracts:
           - var: text
           - output_bundle
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
+- type: beta.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
   actions:
   - id: act.conf.runner.build.tool.impl.o.1
     direction: bidirectional

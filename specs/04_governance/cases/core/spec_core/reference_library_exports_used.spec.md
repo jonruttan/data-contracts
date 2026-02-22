@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - reference.library_exports_used
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.library.export.1
     direction: bidirectional

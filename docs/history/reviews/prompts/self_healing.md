@@ -38,7 +38,7 @@ Stop immediately if:
 - Baseline commands cannot be run reliably after reasonable investigation.
 - Changes introduce unclear/high-risk core contract drift (parser semantics, dispatch behavior, schema compatibility) without tests and explicit intent.
 - Potential security issue in Markdown/spec parsing or harness execution path is suspected but unproven safe.
-- Backward compatibility for schema behavior is broken without migration/versioning plan.
+- Backward compatibility for schema behavior is broken without normalization/versioning plan.
 
 ## Commit Discipline (Adjusted for this Repo)
 - Do not run `git commit` unless the user explicitly approves (`approved` or `commit it`).

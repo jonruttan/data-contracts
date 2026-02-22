@@ -39,7 +39,7 @@ contracts:
             - lit: {}
           - normalization.virtual_root_paths_only
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.normalization.virtual.ro.1
     direction: bidirectional

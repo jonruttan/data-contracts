@@ -23,7 +23,7 @@ contracts:
   - id: DCGOV-LIB-SURFACE-001
     title: library public/private surface model is enforced
     purpose: Ensures spec_lang.export cases use defines.public/defines.private scopes
-      and do not use non-canonical export shape.
+      and do not use canonical export shape.
     asserts:
       imports:
       - from: artifact
@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - library.public_surface_model
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.public.surface.m.1
     direction: bidirectional

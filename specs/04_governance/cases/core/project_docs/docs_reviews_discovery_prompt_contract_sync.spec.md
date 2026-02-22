@@ -47,7 +47,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.reviews.discovery.p.1
     direction: bidirectional

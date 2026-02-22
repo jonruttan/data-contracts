@@ -33,11 +33,11 @@ contracts:
           - var: text
           - --write
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
+- type: beta.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
   actions:
   - id: act.gov.runtime.contract.spec.fo.1
     profile: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
+- type: beta.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
   actions:
   - id: act.gov.runtime.contract.spec.fo.2
     profile: default

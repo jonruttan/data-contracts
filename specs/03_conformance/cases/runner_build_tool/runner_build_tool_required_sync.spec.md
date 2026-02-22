@@ -44,7 +44,7 @@ contracts:
             - var: text
             - '`spec-sync-check`'
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
+- type: beta.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
   actions:
   - id: act.conf.runner.build.tool.requir.1
     direction: bidirectional

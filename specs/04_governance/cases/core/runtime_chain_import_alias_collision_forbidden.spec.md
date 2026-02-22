@@ -21,7 +21,7 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-CHAIN-008
-    title: chain import alias collisions are forbidden
+    title: chain import alias uniqueness
     purpose: Ensures harness.chain.imports bindings are valid and do not collide or
       shadow reserved symbols.
     asserts:
@@ -39,7 +39,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.chain.import.ali.1
     direction: bidirectional

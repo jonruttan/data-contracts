@@ -39,7 +39,7 @@ contracts:
             - lit: {}
           - reference.symbols_exist
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.symbols.exist.1
     direction: bidirectional

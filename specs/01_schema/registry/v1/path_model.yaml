@@ -1,9 +1,9 @@
 version: 2
-id: schema.registry.v2.path_model
+id: schema.registry.v1.path_model
 type: path_model
 fields:
   path:
     type: string
     required: false
-    since: v2
+    since: v1
     description: Virtual-root contract path (/...).

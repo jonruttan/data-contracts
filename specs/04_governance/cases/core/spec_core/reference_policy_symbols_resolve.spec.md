@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - reference.policy_symbols_resolve
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.policy.symbols.1
     direction: bidirectional

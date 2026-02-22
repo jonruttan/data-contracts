@@ -71,7 +71,7 @@ Install directory overlap is forbidden.
 - Runner lock schema:
   `/specs/01_schema/runner_bundle_lock_v1.yaml`
 
-`runner_bundle_lock_v1` is deprecated and retained only for migration
+`runner_bundle_lock_v1` is unsupported and retained only for normalization
 compatibility.
 
 ## Bundle Governance Boundary
@@ -109,9 +109,8 @@ Failure messages MUST be direct and actionable:
 - missing `resolved_bundle_lock_v1.yaml` in unpacked package
 - local materialization drift vs `resolved_files.sha256`
 
-## Legacy Compatibility
+## Compatibility
 
-- `scripts/contract-set` is a deprecated alias command.
 - canonical bundle manifests are no longer sourced from local
   `/specs/bundles/*.yaml` in this repository.
 - Runner task IDs `spec-sync` and `spec-sync-check` are not part of required

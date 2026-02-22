@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - library.domain_index_sync
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.domain.index.syn.1
     direction: bidirectional

@@ -52,7 +52,7 @@ contracts:
           - var: text
           - Full copied canonical trees are not the normative model.
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
+- type: beta.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
   actions:
   - id: act.gov.runtime.impl.bundle.over.1
     direction: bidirectional

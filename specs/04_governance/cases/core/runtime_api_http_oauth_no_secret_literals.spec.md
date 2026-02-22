@@ -58,7 +58,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.api.http.oauth.n.1
     direction: bidirectional

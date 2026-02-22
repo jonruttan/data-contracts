@@ -21,7 +21,7 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CONFIG-009
-    title: implicit subject binding is forbidden
+    title: explicit subject import binding
     purpose: Ensures evaluator does not inject subject implicitly and requires explicit
       imports.
     asserts:
@@ -39,7 +39,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.implicit.subject.1
     direction: bidirectional

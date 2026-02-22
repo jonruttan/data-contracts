@@ -23,7 +23,7 @@ contracts:
   - id: DCGOV-CHAIN-FROM-001
     title: chain exports use canonical from key
     purpose: Ensures harness.chain step exports declare the required from field and
-      do not rely on non-canonical key forms.
+      do not rely on canonical key forms.
     asserts:
       imports:
       - from: artifact
@@ -39,7 +39,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.chain.exports.fr.1
     direction: bidirectional

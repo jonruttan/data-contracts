@@ -25,7 +25,7 @@ Suite-level external references:
 - `artifacts[].ref` supports moustache
   (`{{...}}`) template expressions resolved from suite context only.
 - documentation metadata for suite/function/artifact surfaces uses `docs[]`
-  entries; singular `doc` is non-canonical in v2.
+  entries; singular `doc` is canonical in v1.
 
 Governance policy reuse:
 
@@ -43,7 +43,7 @@ Library paths:
 - external references (`external://provider/id`) are deny-by-default and
   require explicit capability + harness policy allowlist
 - Canonical in-repo library case surfaces under `specs/libraries` MUST be
-  `.spec.md`; yaml/yml include support exists for non-canonical external
+  `.spec.md`; yaml/yml include support exists for canonical external
   adapter surfaces only.
 
 ## Library Document Shape

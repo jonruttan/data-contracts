@@ -4,7 +4,7 @@ schema_ref: "/specs/01_schema/schema_v1.md"
 contracts:
   clauses:
   - id: DCGOV-PIPE-INGEST-002
-    title: ingest policy branch exits are forbidden
+    title: ingest policy branch handling
     purpose: Ensures ingest script does not hard-fail on freshness policy branches.
     harness:
       root: "."

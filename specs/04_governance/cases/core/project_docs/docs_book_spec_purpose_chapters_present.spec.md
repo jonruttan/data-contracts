@@ -37,7 +37,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.docs.book.spec.purpose.c.1
     direction: bidirectional

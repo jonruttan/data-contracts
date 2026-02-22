@@ -1,4 +1,4 @@
-# Schema Registry Contract (v2)
+# Schema Registry Contract (v1)
 
 ## Purpose
 
@@ -18,13 +18,6 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - Suite runtime adapters/services are optional at root.
 - When `services` is present, it MUST define non-empty `services[]`.
 - When `adapters` is present, it MUST define non-empty `adapters[]`.
-- Root `bindings` is invalid in v2.
-- `contracts.defaults` is invalid in v2.
-- `contracts.clauses[].asserts.defaults` is invalid in v2.
-- `harness.config.legacy_contract_harnesses` is invalid in v2; scan-style harness
-  config must be explicit (`root`, `check.profile`, `check.config.check`, `use[]`).
-- `contracts.clauses[].harness` is invalid in v2.
-- `contracts.clauses[].asserts.profile` and `contracts.clauses[].asserts.config` are invalid in v2 runtime ownership.
 - `adapters[].type` MUST resolve to an entry in `/specs/01_schema/service_contract_catalog_v1.yaml`; unknown service types are hard-fail schema errors.
 - `adapters[].actions[].profile` (effective via defaults+entry merge) MUST be valid for the resolved `adapters[].type`.
 - `adapters[].actions[].direction` (effective via defaults+entry merge) and `artifacts[].direction` MUST use `input|output|bidirectional`.
@@ -35,7 +28,6 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - `adapters[].defaults.config` and `adapters[].actions[].config` MUST NOT include direct locator keys (`path`, `url`, `token_url`, `template_path`, `output_path`, `ref`).
 - Any external locator consumed by service config MUST be declared in `artifacts[]` and referenced by `*_artifact_id` (or `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
 - `contracts.clauses[].bindings` uses mapping form only: `contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`.
-- Direct list-form bindings are invalid in v2.
 - Effective binding row = shallow merge(defaults, row), with row values overriding defaults.
 - Effective binding rows MUST include `id`, `service`, and `import`.
 - Effective `service` MUST resolve to `services[].id`.
@@ -51,7 +43,7 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - If any `contracts.clauses[].bindings.rows[]` or any `from: service` assertion import is present, both `services` and `adapters` MUST be declared and valid.
 - Suite artifact references MUST be declared only under `artifacts[]`.
 - Root `exports[]` MUST be function-only declarations using `as` + `from: assert.function` + `path`.
-- Documentation metadata surfaces MUST use `docs[]` entry arrays with required `summary|audience|status`; singular `doc` is invalid in v2.
+- Documentation metadata surfaces MUST use `docs[]` entry arrays with required `summary|audience|status`.
 - `docs[].id` and `docs[].owners[].id` are optional metadata keys.
 - `contracts.clauses[].asserts.checks[].id` is required and must be explicitly authored.
 - Requiredness language is standardized as: `explicit-required`, `optional`, `effective-required (required after deterministic merge)`.
@@ -62,7 +54,7 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - `assertions`
 - `harness`
 - `path_model`
-- `deprecated type overlays` (migration-only; non-normative)
+- `unsupported type overlays` (normalization-only; non-normative)
 
 ## Runtime Catalogs
 

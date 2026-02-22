@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - tests.unit_opt_out_non_regression
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.tests.unit.opt.out.non.r.1
     direction: bidirectional

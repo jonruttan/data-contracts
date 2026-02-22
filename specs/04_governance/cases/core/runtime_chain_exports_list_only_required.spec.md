@@ -22,7 +22,7 @@ contracts:
   clauses:
   - id: DCGOV-CHAIN-FORM-001
     title: chain exports use list-only canonical form
-    purpose: Ensures harness.chain step exports reject non-canonical mapping form
+    purpose: Ensures harness.chain step exports reject canonical mapping form
       and require list-form entries.
     asserts:
       imports:
@@ -39,7 +39,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.chain.exports.li.1
     direction: bidirectional

@@ -57,7 +57,7 @@ Spec-lang lint code contract:
 - `SLINT005` invalid spec-lang mapping AST expression
 - `SLINT006` assert node must be mapping/list
 - `SLINT007` contract step `asserts` must be non-empty list
-- `SLINT008` prior lowercase group key forbidden (`must`/`can`/`cannot`)
+- `SLINT008` canonical lowercase group key forbidden (`must`/`can`/`cannot`)
 - `SLINT009` assert group must include exactly one group key
 - `SLINT010` assert group children must be non-empty list
 - `SLINT011` `when` must be mapping
@@ -83,7 +83,7 @@ Spec-lang lint code contract:
 - `SLINT057` unsupported key in `docs[]` entry (closed shape)
 - `SLINT058` missing required `docs[]` fields (`id|summary|audience|status`)
 - `SLINT059` invalid `docs[].tags` shape
-- `SLINT060` legacy singular `doc` is invalid in v2
+- `SLINT060` singular `doc` key is not part of the v1 contract
 
 Rationale:
 

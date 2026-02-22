@@ -39,7 +39,7 @@ contracts:
             - lit: {}
           - reference.check_ids_exist
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.check.ids.exis.1
     direction: bidirectional

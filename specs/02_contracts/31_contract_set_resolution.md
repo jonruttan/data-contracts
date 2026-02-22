@@ -1,12 +1,9 @@
 # Contract Set Resolution Contract (v1)
 
-Defines deterministic contract-set dependency resolution for runner-facing spec pulls.
+Defines deterministic bundle dependency resolution for runner-facing spec pulls.
 
-Legacy vocabulary note:
-
-- `contract_set` remains a compatibility alias.
-- Canonical bundle taxonomy terms are defined in
-  `/specs/02_contracts/32_contract_bundle_taxonomy.md`.
+Canonical bundle taxonomy terms are defined in
+`/specs/02_contracts/32_contract_bundle_taxonomy.md`.
 
 ## Canonical Unit
 
@@ -28,11 +25,7 @@ Each contract set manifest MUST declare:
 
 ## Resolver Interface
 
-Canonical resolver command contract (legacy alias):
-
-- `contract-set resolve --runner <runner> --root <contract_set_id> --out <dir>`
-
-Preferred command contract:
+Canonical resolver command contract:
 
 - `bundle resolve --runner <runner> --root <bundle_id> --out <dir>`
 

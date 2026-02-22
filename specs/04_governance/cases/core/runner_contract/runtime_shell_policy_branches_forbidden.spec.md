@@ -4,7 +4,7 @@ schema_ref: "/specs/01_schema/schema_v1.md"
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-SHELL-001
-    title: shell policy branches forbidden in control-plane dispatcher
+    title: control plane shell branch integrity
     purpose: Ensures active control-plane shell entrypoints do not embed policy verdict branching text.
     harness:
       root: "."

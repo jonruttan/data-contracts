@@ -1,4 +1,4 @@
-# Conformance Contract (v2)
+# Conformance Contract (v1)
 
 Implementations are conformant when equivalent fixture sets produce equivalent:
 

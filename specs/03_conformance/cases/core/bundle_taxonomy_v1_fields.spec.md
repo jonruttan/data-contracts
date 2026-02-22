@@ -7,7 +7,7 @@ harness:
 contracts:
   clauses:
   - id: DCCONF-BUNDLE-001
-    title: v2 schema docs forbid bundle suite metadata in contract-spec shape
+    title: v1 schema docs forbid bundle suite metadata in contract-spec shape
     purpose: Ensures schema_v2 does not define top-level bundle metadata on executable suites.
     expect:
       portable:
@@ -35,8 +35,8 @@ contracts:
               - var: text
               - "- `bundle.maintainers` (list, optional)"
   - id: DCCONF-BUNDLE-002
-    title: v2 core registry excludes bundle taxonomy fields
-    purpose: Ensures schema registry v2 core profile does not codify top-level bundle mappings.
+    title: v1 core registry excludes bundle taxonomy fields
+    purpose: Ensures schema registry v1 core profile does not codify top-level bundle mappings.
     expect:
       portable:
         status: pass

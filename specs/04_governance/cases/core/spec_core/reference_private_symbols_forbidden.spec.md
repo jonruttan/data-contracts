@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - reference.private_symbols_forbidden
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.reference.private.symbol.1
     direction: bidirectional

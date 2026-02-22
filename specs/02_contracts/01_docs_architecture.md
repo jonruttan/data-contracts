@@ -15,6 +15,6 @@ Source of truth: spec.contract.docs_architecture
 
 Generated appendices in `/docs/book/9*.md` are derived artifacts and must be regenerated from canonical sources.
 
-## Non-canonical Historical Content
+## Historical Content
 
-- `/docs/history/**` is archival and non-canonical.
+- `/docs/history/**` is archival and informational.

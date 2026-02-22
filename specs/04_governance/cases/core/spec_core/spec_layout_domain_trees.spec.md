@@ -40,7 +40,7 @@ contracts:
             - lit: {}
           - spec.layout_domain_trees
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.spec.layout.domain.trees.1
     direction: bidirectional

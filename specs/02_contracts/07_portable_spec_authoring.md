@@ -17,7 +17,7 @@ implementation-independent.
 - Governance executable cases MUST use evaluate-only assertion trees for
   decision semantics.
 - Implementation fixture suites SHOULD use evaluate-first assertion trees; sugar
-  operators are non-canonical in `runner-owned implementation specs/**` and are only permitted for
+  operators are canonical in `runner-owned implementation specs/**` and are only permitted for
   explicitly allowlisted schema-behavior fixtures.
 - Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain schema
   syntax for non-governance/non-conformance surfaces only.

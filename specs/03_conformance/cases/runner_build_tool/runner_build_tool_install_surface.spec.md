@@ -32,7 +32,7 @@ contracts:
           - var: text
           - scripts/bundle install-check --project-lock
 adapters:
-- type: legacy.check_profile_text_file_config_path_scripts_bundle
+- type: beta.check_profile_text_file_config_path_scripts_bundle
   actions:
   - id: act.conf.runner.build.tool.instal.1
     direction: bidirectional

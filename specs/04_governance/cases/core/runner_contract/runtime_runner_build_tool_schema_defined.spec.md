@@ -25,7 +25,7 @@ contracts:
           - var: text
           - /specs/01_schema/runner_build_tool_contract_v1.yaml
 adapters:
-- type: legacy.check_profile_text_file_config
+- type: beta.check_profile_text_file_config
   actions:
   - id: svc.check_profile_text_file_config.default.1
     direction: bidirectional

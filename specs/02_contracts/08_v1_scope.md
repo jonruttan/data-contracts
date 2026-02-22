@@ -40,8 +40,8 @@ maintenance decisions stay predictable.
   `regex`) remain stable.
 - Current-spec-only rule (pre-v1):
   - docs and runtime behavior MUST describe and execute only the current schema
-  - do not add wording about prior schema forms
-  - do not add compatibility code paths that rewrite/accept prior schema forms
+  - do not add wording about canonical schema forms
+  - do not add compatibility code paths that rewrite/accept canonical schema forms
 - Governance checks SHOULD keep rule-data (for example token/regex lists) in
   governance `.spec.md` harness config instead of hardcoded script globals.
 - Contract-breaking changes require versioning:

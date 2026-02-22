@@ -39,7 +39,7 @@ contracts:
             - var: summary_json
             - lit: {}
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.library.colocated.symbol.1
     direction: bidirectional

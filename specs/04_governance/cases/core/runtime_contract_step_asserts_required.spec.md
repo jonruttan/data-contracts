@@ -29,7 +29,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required
+- type: beta.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required
   actions:
   - id: act.gov.runtime.contract.step.as.1
     direction: bidirectional

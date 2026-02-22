@@ -2,7 +2,7 @@
 
 ## Status
 
-- v2 harness-dispatched core profile
+- v1 harness-dispatched core profile
 
 ## Purpose
 

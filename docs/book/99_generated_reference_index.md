@@ -1,6 +1,6 @@
 # Chapter 99: Generated Reference Index
 
-Generated appendices were removed in this pre-alpha hard-cut.
+Generated appendices were removed in this beta hard-cut.
 
 The canonical references are:
 

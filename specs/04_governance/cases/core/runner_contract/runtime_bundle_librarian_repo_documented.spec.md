@@ -33,7 +33,7 @@ contracts:
             - var: text
             - /specs/bundles/index.md
 adapters:
-- type: legacy.check_profile_text_file_config_path_readme_md
+- type: beta.check_profile_text_file_config_path_readme_md
   actions:
   - id: act.gov.runtime.bundle.librarian.1
     direction: bidirectional

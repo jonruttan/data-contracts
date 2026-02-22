@@ -77,7 +77,7 @@ assert:
 ## Anti-Patterns
 
 - encoding final decision logic in harness adapters
-- mixing prior syntax with canonical forms
+- mixing canonical syntax with canonical forms
 - using ambiguous aliases when direct import names are clearer
 
 ## Library-Backed Reuse

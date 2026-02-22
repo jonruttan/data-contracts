@@ -29,7 +29,7 @@ contracts:
             - var: violation_count
             - lit: {}
 adapters:
-- type: legacy.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required
+- type: beta.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required
   actions:
   - id: act.gov.runtime.contract.spec.fe.1
     direction: bidirectional

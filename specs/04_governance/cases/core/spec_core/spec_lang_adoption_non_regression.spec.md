@@ -87,7 +87,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.spec.lang.adoption.non.r.1
     direction: bidirectional

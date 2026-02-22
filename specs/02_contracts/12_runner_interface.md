@@ -58,7 +58,7 @@ Portable CLI surface is defined by:
 Rust-first required-lane formatter implementation ownership:
 
 - `dc-runner-rust` MUST implement `contract-spec-format` (`--check`, `--write`)
-  for v2 contract-spec key-order normalization.
+  for v1 contract-spec key-order normalization.
 
 Bundle package management surface is defined by:
 

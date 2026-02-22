@@ -42,7 +42,7 @@ contracts:
           - var: text
           - install_dir
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_schema_project_bundle_lock_v1_yaml
+- type: beta.check_profile_text_file_config_path_specs_schema_project_bundle_lock_v1_yaml
   actions:
   - id: act.conf.runner.build.tool.bundle.1
     direction: bidirectional

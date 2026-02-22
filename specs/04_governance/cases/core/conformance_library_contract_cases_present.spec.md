@@ -46,7 +46,7 @@ contracts:
             - lit: {}
           - conformance.library_contract_cases_present
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.conformance.library.cont.1
     direction: bidirectional

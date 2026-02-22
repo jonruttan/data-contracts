@@ -30,4 +30,4 @@ Canonical specification root for `data-contracts`.
 - canonical bundle manifests/packages are sourced from
   `https://github.com/jonruttan/data-contracts-bundles`.
 - `docs/book/**` is reader-facing and includes generated references.
-- `docs/history/**` is archival and non-canonical.
+- `docs/history/**` is archival and canonical.

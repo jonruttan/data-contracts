@@ -21,7 +21,7 @@ harness:
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-SPECLANG-EXPORT-001
-    title: non-canonical spec_lang.export type is forbidden after hard cut
+    title: executable spec export type contract
     purpose: Ensures executable spec surfaces reject type spec_lang.export and require
       spec.export producer cases.
     asserts:
@@ -58,7 +58,7 @@ contracts:
           names:
           - summary_json
 adapters:
-- type: legacy.scan
+- type: beta.scan
   actions:
   - id: act.gov.runtime.spec.lang.export.1
     direction: bidirectional

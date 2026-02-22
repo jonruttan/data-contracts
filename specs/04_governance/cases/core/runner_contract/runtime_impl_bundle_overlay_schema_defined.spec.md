@@ -62,11 +62,11 @@ contracts:
           - var: text
           - resolved_files_sha256
 adapters:
-- type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+- type: beta.check_profile_text_file_config_path_specs_schema_index_md
   actions:
   - id: act.gov.runtime.impl.bundle.over.1
     profile: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
+- type: beta.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
   actions:
   - id: act.gov.runtime.impl.bundle.over.2
     profile: default

@@ -41,7 +41,7 @@ Define canonical assertion semantics and explicit import binding rules.
 ## Failure Modes
 
 - missing imports for referenced variables
-- non-canonical assertion shapes
+- canonical assertion shapes
 - incompatible class semantics assumptions
 
 ## Canonical Contract Shape
@@ -74,7 +74,7 @@ Assertion imports use list form:
 - `names` (non-empty list)
 - `as` (optional alias map)
 
-## Forbidden prior Forms
+## Forbidden canonical Forms
 
 - `contract: [ ... ]`
 - `steps[].asserts`

@@ -2,4 +2,4 @@
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
-exec ./scripts/runner_bin.sh migrate-case-domain-prefix-v1 "$@"
+exec ./scripts/runner_bin.sh normalize-case-domain-prefix-v1 "$@"
