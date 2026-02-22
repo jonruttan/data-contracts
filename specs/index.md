@@ -9,6 +9,7 @@ Canonical specification root for `data-contracts`.
 - Active model snapshot: `/specs/00_core/current.md`
 - Schema contracts: `/specs/01_schema/index.md`
 - Normative contracts: `/specs/02_contracts/index.md`
+- Runner governance interface (generated): `/specs/governance/index.md`
 - Governance checks: `/specs/04_governance/index.md`
 - Reusable libraries: `/specs/05_libraries/index.md`
 - Runner-ingestible packs: `/specs/00_core/packs/index.md`
@@ -24,6 +25,8 @@ Canonical specification root for `data-contracts`.
 ## Ownership Model
 
 - `specs/**` is canonical.
+- `specs/04_governance/**` is the governance source of truth.
+- `specs/governance/**` is generated from `specs/04_governance/**` and must not be hand-edited.
 - canonical bundle manifests/packages are sourced from
   `https://github.com/jonruttan/data-contracts-bundles`.
 - `docs/book/**` is reader-facing and includes generated references.

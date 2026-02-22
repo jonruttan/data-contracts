@@ -7,6 +7,7 @@ The schema registry under `specs/01_schema/registry/v2/` is the machine source o
 ## Normative Rules
 
 - Runtime schema validation MUST be driven from compiled registry data.
+- Governance runner contact files MUST be read from `/specs/governance/**`, which is a generated interface surface sourced from `/specs/04_governance/**`.
 - Canonical field grammar MUST be driven from `/specs/01_schema/registry/v2/core.yaml` and `/specs/01_schema/registry/v2/assertions.yaml`.
 - Unknown top-level case keys MUST fail with `schema`.
 - Suite top-level validation MUST enforce `spec_version`, `schema_ref`, and non-empty `contracts`.
