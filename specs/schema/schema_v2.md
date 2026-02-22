@@ -162,9 +162,15 @@ Suite runtime surfaces:
     - canonical: list of mappings with `names` and optional `as`
     - compact alias: list of strings (`imports: [pipe_identity, get_json]`)
       expands to one canonical row `{names:[...]}`; compact form does not support aliasing
+    - per-item short form is supported (`imports: [pipe_identity]`)
     - mixed item kinds (string + mapping) in one `imports` list are invalid
   - `services.actions[].imports[].names` (list, required)
   - `services.actions[].imports[].as` (mapping, optional)
+  - service implementations may be built-in or runtime-loaded plugins; suite
+    authoring shape is unchanged
+  - runtime plugin contracts:
+    - `/specs/schema/service_plugin_manifest_v1.yaml`
+    - `/specs/schema/service_plugin_lock_v1.yaml`
 Parser behavior:
 
 - discovery scans files matching case-file pattern (default `*.spec.md`) in
@@ -206,6 +212,11 @@ Parser behavior:
 - `contracts[].clauses.predicates[].id` is required
 - unknown `services.actions[].type` MUST hard-fail during schema validation
 - invalid `services.actions[].io` MUST hard-fail during schema validation
+- service-specific integration behavior (for example HTTP client operations) is
+  implementation-owned by resolved service implementations, not core runner
+  orchestration logic
+- runtime-loaded service implementations MUST pass lock + digest + signature
+  verification before invocation
 - `services.actions[].imports` supports canonical list[mapping] and compact
   list[string] alias forms
 - mixed item kinds in one `services.actions[].imports` list are invalid
@@ -215,6 +226,17 @@ Parser behavior:
 - if any contract declares `contracts[].bindings[]`, `services` MUST be present and valid
 - if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
   `from: service`, `services` MUST be present and valid
+- clause/predicate bare-string import rows (for example `- pipe_identity`) are
+  compact service aliases normalized to
+  `{from: service, names:[pipe_identity], service:<resolved>}`
+- `<resolved>` service id for clause/predicate bare-string rows MUST come from
+  `contracts[].bindings.defaults.service`; missing/empty defaults service is
+  schema failure
+- clause/predicate bare-string rows with unknown resolved service id are schema
+  failures
+- clause/predicate bare-string rows with import names not supported by resolved
+  service `type/profile` are schema failures
+- empty/whitespace-only clause/predicate bare-string import rows are schema failures
 - bindings execute once per contract before predicate evaluation
 - bindings support canonical list form (`contracts[].bindings[]`) and additive mapping form (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`)
 - legacy row key `contract` under `contracts[].bindings[]` is invalid
@@ -262,6 +284,8 @@ Clause import compact semantics:
 - canonical rows and compact alias rows may coexist in one imports list
 - compact artifact alias requires non-empty list of artifact ids
 - compact service alias requires `id` and non-empty `names`
+- compact bare-string alias is supported and means a service import using
+  `contracts[].bindings.defaults.service`
 - unknown keys in compact alias rows are schema failures
 
 `expect` (conformance metadata):
@@ -634,15 +658,20 @@ Forbidden prior forms:
 
 Import binding shape:
 
-- `imports` is a list of mapping items
-- each item requires `from` and `names`, with optional `as`
+- `imports` is a list that accepts canonical mapping items and compact alias items
+- canonical item requires `from` and `names`, with optional `as`
 - compact grouped aliases are allowed per row:
   - artifact alias: `{artifact: [id_a, id_b]}`
   - service alias: `{service: {id: svc.x, names: [...], as?: {...}}}`
+  - service short alias: `"pipe_identity"` (normalized using
+    `contracts[].bindings.defaults.service`)
 - compact aliases normalize to canonical rows before validation/execution
 - canonical assertion imports may use `from: artifact` or `from: service`
+- short string aliases are always interpreted as `from: service` imports
 - when `from: artifact`, `names` must be a non-empty list of suite-declared
   artifact ids (and be explicitly wired when runtime-produced)
+- for short string aliases, `contracts[].bindings.defaults.service` must exist
+  and resolve to `services.actions[].id`
 - `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:

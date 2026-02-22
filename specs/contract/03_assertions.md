@@ -48,12 +48,17 @@ Scope separation:
 
 Import binding shape:
 
-- `imports` is a list of mapping items
+- `imports` is a list of canonical mapping items and compact alias items
 - canonical row form is `{from, names, service?, as?}`
 - compact grouped alias rows are allowed:
   - `{artifact: [id_a, id_b]}`
   - `{service: {id: svc.x, names: [...], as?: {...}}}`
+  - `"pipe_identity"` short alias row
 - compact alias rows normalize to canonical rows before validation/evaluation
+- short alias rows always normalize to `from: service` rows with
+  `service` resolved from `contracts[].bindings.defaults.service`
+- missing/empty `contracts[].bindings.defaults.service` with short alias rows
+  is a schema hard-fail
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)

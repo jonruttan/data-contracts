@@ -19,6 +19,9 @@
 - Contract-scoped `contracts[].bindings` connects contracts to services and artifact channels.
   It supports canonical `contracts[].bindings[]` rows and additive compaction form
   `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`.
+- Clause/predicate short import rows (`- pipe_identity`) resolve their service
+  id from `contracts[].bindings.defaults.service`; there is no implicit
+  single-service fallback.
 - root `bindings` is invalid in v2.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
@@ -43,6 +46,13 @@ Suite-root external references:
   `template_artifact_id`, `output_artifact_id`, `use[].artifact_id`).
 - services/harnesses define execution capabilities only; they do not implicitly
   inject predicate symbols.
+- core runner orchestration must not embed integration-specific client
+  libraries (for example HTTP clients); integration behavior is owned by service
+  implementations.
+- service implementations may be packaged built-in or as runtime plugins with
+  identical observable behavior.
+- runtime plugin lifecycle and lock/signature requirements are defined in
+  `/specs/contract/35_service_plugin_runtime.md`.
 - artifact symbols are available to predicates only when explicitly declared
   and wired.
 - when `contracts[].bindings[]` or `from: service` imports are present, `services` MUST be

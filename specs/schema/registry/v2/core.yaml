@@ -252,8 +252,10 @@ fields:
     required: false
     since: v2
     description: Service import declarations. Accepts either canonical list[mapping]
-      rows (`names`, optional `as`) or compact list[string] alias. Mixed list
-      item kinds in one `imports` list are invalid.
+      rows (`names`, optional `as`) or compact list[string] alias.
+      `imports: [a, b]` normalizes to canonical `{names:[a,b]}`; compact rows
+      do not support aliasing. Mixed list item kinds in one `imports` list are
+      invalid.
   services.actions[].imports[].names:
     type: list
     required: true

@@ -25,6 +25,10 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
 - `services.actions[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
+- Runtime plugin manifest and lock contracts are defined by
+  `/specs/schema/service_plugin_manifest_v1.yaml` and
+  `/specs/schema/service_plugin_lock_v1.yaml`.
+- Runtime-loaded service plugins MUST be lock-pinned and signature-verified.
 - v2 service types are integration-only (`io.fs`, `io.http`, `io.system`,
   `io.mysql`, `io.docs`).
 - legacy service types are hard-fail schema errors in v2:
@@ -52,6 +56,12 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   overriding defaults.
 - Effective binding rows MUST include `id`, `service`, and `import`.
 - Effective `service` MUST resolve to `services.actions[].id`.
+- `contracts[].clauses.imports` and `contracts[].clauses.predicates[].imports`
+  MUST accept bare-string short alias rows that normalize to
+  `from: service` rows.
+- Bare-string clause/predicate alias rows MUST resolve `service` from
+  `contracts[].bindings.defaults.service`; missing/empty defaults service is a
+  schema hard-fail.
 - Legacy binding row key `contract` is invalid in v2.
 - `contracts[].bindings[].inputs[].from` MUST resolve to `artifacts[].id` where `io` is
   `input` or `io`.

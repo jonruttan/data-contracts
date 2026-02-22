@@ -4027,6 +4027,38 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Mixed item-kind imports, duplicate names, and catalog-invalid names are hard-fail schema checks.
+- rule_id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
+  policy_ref: specs/contract/policy_v1.yaml#CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/assertions.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-032
+  - DCCONF-SCHEMA-CASE-033
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+  notes: Clause and predicate bare-string aliases normalize to canonical from=service rows.
+- rule_id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/assertions.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-034
+  - DCCONF-SCHEMA-CASE-035
+  - DCCONF-SCHEMA-CASE-036
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+  notes: Clause short alias requires bindings.defaults.service and valid service import resolution.
 - rule_id: SERVICES_INTEGRATION_TYPES_ONLY_V2
   policy_ref: specs/contract/policy_v1.yaml#SERVICES_INTEGRATION_TYPES_ONLY_V2
   contract_refs:
@@ -4053,6 +4085,50 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/schema_case_validation.spec.md
   notes: Service profile tokens are mode-style and validated against integration type catalog.
+- rule_id: SERVICE_IMPLEMENTATIONS_MUST_OWN_INTEGRATION_LIBS
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPLEMENTATIONS_MUST_OWN_INTEGRATION_LIBS
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/35_service_plugin_runtime.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/api_http.spec.md
+  notes: Integration libraries are implementation-owned by services and not core runner orchestration.
+- rule_id: RUNTIME_PLUGIN_LOAD_REQUIRES_SIGNATURE_AND_LOCK_PIN
+  policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PLUGIN_LOAD_REQUIRES_SIGNATURE_AND_LOCK_PIN
+  contract_refs:
+  - specs/contract/35_service_plugin_runtime.md
+  schema_refs:
+  - specs/schema/service_plugin_manifest_v1.yaml
+  - specs/schema/service_plugin_lock_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Runtime-loaded plugin integrity is enforced through lock pinning, digest checks, and signatures.
+- rule_id: SERVICE_RESOLUTION_MUST_BE_TYPE_PROFILE_EXACT
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_RESOLUTION_MUST_BE_TYPE_PROFILE_EXACT
+  contract_refs:
+  - specs/contract/35_service_plugin_runtime.md
+  schema_refs:
+  - specs/schema/service_contract_catalog_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: Service resolution is deterministic and exact on `type/profile`.
+- rule_id: BUILTIN_AND_PLUGIN_MODES_MUST_BE_BEHAVIORALLY_EQUIVALENT
+  policy_ref: specs/contract/policy_v1.yaml#BUILTIN_AND_PLUGIN_MODES_MUST_BE_BEHAVIORALLY_EQUIVALENT
+  contract_refs:
+  - specs/contract/35_service_plugin_runtime.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Built-in and plugin packaging modes must remain behaviorally equivalent.
 - rule_id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   contract_refs:

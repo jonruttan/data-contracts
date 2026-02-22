@@ -4332,6 +4332,40 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.contracts.clauses.imports
+  norm: MUST
+  requirement: clauses_imports_accepts_bare_string_short_alias
+  description: Clause and predicate imports must accept bare-string short alias
+    rows (for example `- pipe_identity`) that normalize to canonical
+    `from: service` import rows.
+  rationale: Reduces repetitive import authoring while preserving normalized
+    explicit runtime shape.
+  risk_if_violated: Contract import authoring remains noisy and runner behavior
+    diverges on accepted compact forms.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+- id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.contracts.clauses.imports.validation
+  norm: MUST
+  requirement: clauses_short_alias_requires_bindings_default_service_and_valid_import
+  description: Bare-string clause/predicate import aliases must resolve service
+    id from `contracts[].bindings.defaults.service`; missing defaults service,
+    unknown service id, empty alias names, or unsupported import names must
+    hard-fail.
+  rationale: Keeps compact alias behavior deterministic and prevents implicit
+    service resolution.
+  risk_if_violated: Alias resolution becomes ambiguous and validation weakens.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: SERVICES_INTEGRATION_TYPES_ONLY_V2
   introduced_in: v2
   scope: runtime
@@ -4362,6 +4396,61 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/contract/04_harness.md
+- id: SERVICE_IMPLEMENTATIONS_MUST_OWN_INTEGRATION_LIBS
+  introduced_in: v2
+  scope: runtime
+  applies_to: runtime.services.integration_ownership
+  norm: MUST
+  requirement: service_implementations_own_service_specific_libraries
+  description: Core runner orchestration must not embed service-specific client
+    libraries (for example HTTP clients). Integration libraries and behavior must
+    be owned by resolved service implementations.
+  rationale: Keeps service implementations conceptually independent and packaging-flexible.
+  risk_if_violated: Core runner becomes tightly coupled to integration stacks and cannot support clean plugin boundaries.
+  references:
+  - specs/contract/04_harness.md
+  - specs/contract/35_service_plugin_runtime.md
+  - specs/schema/schema_v2.md
+- id: RUNTIME_PLUGIN_LOAD_REQUIRES_SIGNATURE_AND_LOCK_PIN
+  introduced_in: v2
+  scope: runtime
+  applies_to: runtime.services.plugin_integrity
+  norm: MUST
+  requirement: runtime_loaded_service_plugins_must_be_signed_and_lock_pinned
+  description: Runtime-loaded service plugins must be resolved from lock-pinned
+    metadata and verified by digest and signature before execution.
+  rationale: Prevents untrusted or drifting runtime plugin loads.
+  risk_if_violated: Supply-chain compromise and non-deterministic runtime behavior.
+  references:
+  - specs/contract/35_service_plugin_runtime.md
+  - specs/schema/service_plugin_manifest_v1.yaml
+  - specs/schema/service_plugin_lock_v1.yaml
+- id: SERVICE_RESOLUTION_MUST_BE_TYPE_PROFILE_EXACT
+  introduced_in: v2
+  scope: runtime
+  applies_to: runtime.services.resolution
+  norm: MUST
+  requirement: service_resolution_must_match_exact_type_profile
+  description: Service implementation resolution must be exact on action
+    `type/profile` and must hard-fail unresolved combinations.
+  rationale: Keeps runtime behavior deterministic and portable across packaging modes.
+  risk_if_violated: Runner-dependent fallback behavior causes cross-implementation drift.
+  references:
+  - specs/contract/35_service_plugin_runtime.md
+  - specs/schema/service_contract_catalog_v1.yaml
+- id: BUILTIN_AND_PLUGIN_MODES_MUST_BE_BEHAVIORALLY_EQUIVALENT
+  introduced_in: v2
+  scope: runtime
+  applies_to: runtime.services.packaging_modes
+  norm: MUST
+  requirement: builtin_and_plugin_service_packaging_modes_are_behaviorally_equivalent
+  description: Built-in and runtime-plugin packaging modes for the same service
+    implementation must preserve equivalent observable behavior.
+  rationale: Packaging choice should not alter contract semantics.
+  risk_if_violated: CI and production mode divergence undermines portability.
+  references:
+  - specs/contract/35_service_plugin_runtime.md
+  - specs/schema/schema_v2.md
 - id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   introduced_in: v2
   scope: runtime
