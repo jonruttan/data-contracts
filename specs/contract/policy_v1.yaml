@@ -4,14 +4,14 @@ rules:
 - id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
   introduced_in: v2
   scope: case
-  applies_to: runtime.bindings
+  applies_to: runtime.bindings.imports
   norm: MUST
   requirement: service_binding_runtime_payloads_use_declared_artifact_ids
   description: 'Service-to-contract bindings must source runtime inputs from
     `artifact.imports[].id` and sink outputs to `artifact.exports[].id`.
 
     '
-  rationale: Keeps service I/O explicit, portable, and traceable.
+  rationale: Keeps service I/O and import binding explicit, portable, and traceable.
   risk_if_violated: Runtime payload channels become implicit and non-portable.
   references:
   - specs/contract/03_assertions.md

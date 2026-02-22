@@ -26,7 +26,8 @@ fields:
     type: mapping
     required: false
     since: v2
-    description: Optional suite-level service bindings with defaults and entries; required when service imports or bindings are used.
+    description: Optional suite-level service bindings with defaults and 
+      entries; required when service imports or bindings are used.
   services.defaults:
     type: mapping
     required: false
@@ -46,11 +47,16 @@ fields:
     required: false
     since: v2
     description: Service type resolved by service_contract_catalog_v1.
+  services.entries[].imports:
+    type: list
+    required: false
+    since: v2
   bindings:
     type: list
     required: false
     since: v2
-    description: Optional suite bindings that connect contracts to service calls via artifact-id I/O.
+    description: Optional suite bindings that connect contracts to service calls
+      via artifact-id I/O.
   bindings[].id:
     type: string
     required: true
@@ -63,7 +69,16 @@ fields:
     type: string
     required: false
     since: v2
-  bindings[].function:
+  bindings[].import:
     type: string
     required: true
+    since: v2
+  services.entries[].imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Service import names bound as service_id.import_name.
+  services.entries[].imports[].as:
+    type: mapping
+    required: false
     since: v2

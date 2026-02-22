@@ -17,8 +17,8 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime services are optional at root.
 - When `services` is present, it MUST define non-empty `services.entries[]`.
-- Suite MAY declare root `bindings[]` to bind services to contracts for
-  predicate piping.
+- Suite MAY declare root `bindings[]` to bind service imports to contracts for
+  predicate piping (`service_id.import_name`).
 - Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
 - `contracts[].harness` is invalid in v2 (hard cut).
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
@@ -55,7 +55,7 @@ Runtime catalog entries define service additions over common suite/contract keys
 
 - required suite runtime fields (`harness`; `services.entries[]` when services are used)
 - optional service-contract binding field (`bindings[]`)
-- service type/profile/io compatibility
+- service type/profile/io compatibility and available function names
 - allowed function operation prefixes per service type
 
 ## Determinism

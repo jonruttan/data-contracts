@@ -449,20 +449,19 @@ services:
   - id: svc.export.default.1
     type: assert.export
     io: output
-    profile: default
+    profile: contract.export
   - id: svc.check.default.1
     type: assert.check
     io: input
-    profile: default
-    functions:
-    - name: pipe_identity
-      op: ops.assert.identity
+    profile: text.file
+    imports:
+    - names:
+      - pipe_identity
 bindings:
 - id: bind_schema_case_022
   contract: DCCONF-SCHEMA-CASE-022
   service: svc.check.default.1
-  function: pipe_identity
-  import: schema_ref_doc
+  import: pipe_identity
   inputs:
   - from: schema_ref_doc
     as: source_text

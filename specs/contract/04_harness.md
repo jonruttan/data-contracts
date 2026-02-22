@@ -5,7 +5,7 @@
 - Runner dispatches by suite-root `harness` mapping.
 - Harness receives parsed suite/case data and execution context.
 - Optional suite-root `services.entries[]` provides concrete system hook
-  bindings (I/O and callable service functions).
+  bindings (I/O and callable service import names).
 - Suite-root `bindings[]` connects `contract` + optional `service` + artifact
   ids so service results are piped into predicate contexts.
 - Harness runtime workflow is componentized and MUST use shared components:

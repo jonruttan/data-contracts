@@ -107,13 +107,14 @@ Suite runtime surfaces:
   - `services.entries[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
   - `services.entries[].profile` (string, optional)
   - `services.entries[].config` (mapping, optional)
-  - `services.entries[].functions` (list, optional): declarative callable function surface
+  - `services.entries[].imports` (list, optional): declarative callable service-import surface
+  - `services.entries[].imports[].names` (list, required)
+  - `services.entries[].imports[].as` (mapping, optional)
 - `bindings` (list, optional): suite-root service-to-contract binding declarations
   - `bindings[].id` (string, required; unique in suite)
   - `bindings[].contract` (string, required; references `contracts[].id`)
   - `bindings[].service` (string, optional; references `services.entries[].id`)
-  - `bindings[].function` (string, required; callable service function name)
-  - `bindings[].import` (string, optional; shorthand `artifact.imports[].id`)
+  - `bindings[].import` (string, required; declared service import name)
   - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact import ids
   - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact export ids
   - `bindings[].predicates` (list[string], optional; predicate allowlist)
@@ -767,10 +768,9 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].io` | `string` | `false` | `v2` |
 | `services.entries[].profile` | `string` | `false` | `v2` |
 | `services.entries[].config` | `mapping` | `false` | `v2` |
-| `services.entries[].functions` | `list` | `false` | `v2` |
-| `services.entries[].functions[].name` | `string` | `true` | `v2` |
-| `services.entries[].functions[].op` | `string` | `true` | `v2` |
-| `services.entries[].functions[].params` | `list` | `false` | `v2` |
+| `services.entries[].imports` | `list` | `false` | `v2` |
+| `services.entries[].imports[].names` | `list` | `true` | `v2` |
+| `services.entries[].imports[].as` | `mapping` | `false` | `v2` |
 | `services.entries[].docs` | `list` | `false` | `v2` |
 | `services.entries[].docs[].id` | `string` | `true` | `v2` |
 | `services.entries[].docs[].summary` | `string` | `true` | `v2` |
@@ -791,32 +791,11 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].docs[].examples` | `list` | `false` | `v2` |
 | `services.entries[].docs[].examples[].title` | `string` | `true` | `v2` |
 | `services.entries[].docs[].examples[].ref` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs` | `list` | `false` | `v2` |
-| `services.entries[].functions[].docs[].id` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].summary` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].audience` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].status` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].description` | `string` | `false` | `v2` |
-| `services.entries[].functions[].docs[].type` | `string` | `false` | `v2` |
-| `services.entries[].functions[].docs[].since` | `string` | `false` | `v2` |
-| `services.entries[].functions[].docs[].updated_at` | `string` | `false` | `v2` |
-| `services.entries[].functions[].docs[].tags` | `list` | `false` | `v2` |
-| `services.entries[].functions[].docs[].owners` | `list` | `false` | `v2` |
-| `services.entries[].functions[].docs[].owners[].id` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].owners[].role` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].links` | `list` | `false` | `v2` |
-| `services.entries[].functions[].docs[].links[].rel` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].links[].ref` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].links[].title` | `string` | `false` | `v2` |
-| `services.entries[].functions[].docs[].examples` | `list` | `false` | `v2` |
-| `services.entries[].functions[].docs[].examples[].title` | `string` | `true` | `v2` |
-| `services.entries[].functions[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `bindings` | `list` | `false` | `v2` |
 | `bindings[].id` | `string` | `true` | `v2` |
 | `bindings[].contract` | `string` | `true` | `v2` |
 | `bindings[].service` | `string` | `false` | `v2` |
-| `bindings[].function` | `string` | `true` | `v2` |
-| `bindings[].import` | `string` | `false` | `v2` |
+| `bindings[].import` | `string` | `true` | `v2` |
 | `bindings[].inputs` | `list` | `false` | `v2` |
 | `bindings[].inputs[].from` | `string` | `true` | `v2` |
 | `bindings[].inputs[].as` | `string` | `true` | `v2` |
@@ -976,14 +955,14 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
 | `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 236
+- top_level_field_count: 221
 - harness_surface: suite-root `harness`
 - service_catalog: `/specs/schema/service_contract_catalog_v1.yaml`
 
@@ -1024,10 +1003,9 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].io` | `string` | false | `v2` |
 | `services.entries[].profile` | `string` | false | `v2` |
 | `services.entries[].config` | `mapping` | false | `v2` |
-| `services.entries[].functions` | `list` | false | `v2` |
-| `services.entries[].functions[].name` | `string` | true | `v2` |
-| `services.entries[].functions[].op` | `string` | true | `v2` |
-| `services.entries[].functions[].params` | `list` | false | `v2` |
+| `services.entries[].imports` | `list` | false | `v2` |
+| `services.entries[].imports[].names` | `list` | true | `v2` |
+| `services.entries[].imports[].as` | `mapping` | false | `v2` |
 | `services.entries[].docs` | `list` | false | `v2` |
 | `services.entries[].docs[].id` | `string` | true | `v2` |
 | `services.entries[].docs[].summary` | `string` | true | `v2` |
@@ -1048,32 +1026,11 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].docs[].examples` | `list` | false | `v2` |
 | `services.entries[].docs[].examples[].title` | `string` | true | `v2` |
 | `services.entries[].docs[].examples[].ref` | `string` | true | `v2` |
-| `services.entries[].functions[].docs` | `list` | false | `v2` |
-| `services.entries[].functions[].docs[].id` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].summary` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].audience` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].status` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].description` | `string` | false | `v2` |
-| `services.entries[].functions[].docs[].type` | `string` | false | `v2` |
-| `services.entries[].functions[].docs[].since` | `string` | false | `v2` |
-| `services.entries[].functions[].docs[].updated_at` | `string` | false | `v2` |
-| `services.entries[].functions[].docs[].tags` | `list` | false | `v2` |
-| `services.entries[].functions[].docs[].owners` | `list` | false | `v2` |
-| `services.entries[].functions[].docs[].owners[].id` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].owners[].role` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].links` | `list` | false | `v2` |
-| `services.entries[].functions[].docs[].links[].rel` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].links[].ref` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].links[].title` | `string` | false | `v2` |
-| `services.entries[].functions[].docs[].examples` | `list` | false | `v2` |
-| `services.entries[].functions[].docs[].examples[].title` | `string` | true | `v2` |
-| `services.entries[].functions[].docs[].examples[].ref` | `string` | true | `v2` |
 | `bindings` | `list` | false | `v2` |
 | `bindings[].id` | `string` | true | `v2` |
 | `bindings[].contract` | `string` | true | `v2` |
 | `bindings[].service` | `string` | false | `v2` |
-| `bindings[].function` | `string` | true | `v2` |
-| `bindings[].import` | `string` | false | `v2` |
+| `bindings[].import` | `string` | true | `v2` |
 | `bindings[].inputs` | `list` | false | `v2` |
 | `bindings[].inputs[].from` | `string` | true | `v2` |
 | `bindings[].inputs[].as` | `string` | true | `v2` |
@@ -1233,5 +1190,5 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
 | `services.entries[]` | `services.entries[].id` (required when `services` is present, or when `bindings[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].function` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `bindings[]` | `bindings[].id`, `bindings[].contract`, `bindings[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

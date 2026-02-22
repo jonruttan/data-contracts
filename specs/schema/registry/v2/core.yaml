@@ -50,7 +50,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id005
+    enum: &id001
     - draft
     - active
     - deprecated
@@ -63,7 +63,7 @@ fields:
     type: string
     required: false
     since: v2
-    enum: &id006
+    enum: &id002
     - overview
     - reference
     - howto
@@ -94,7 +94,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id007
+    enum: &id003
     - owner
     - reviewer
     - approver
@@ -106,7 +106,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id008
+    enum: &id004
     - see_also
     - depends_on
     - implements
@@ -189,20 +189,19 @@ fields:
     type: mapping
     required: false
     since: v2
-  services.entries[].functions:
+  services.entries[].imports:
     type: list
     required: false
     since: v2
-  services.entries[].functions[].name:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].op:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].params:
+  services.entries[].imports[].names:
     type: list
+    required: true
+    since: v2
+    description: Declared service import names; each name must be unique per
+      service entry after alias resolution and available for resolved
+      type+profile in service catalog.
+  services.entries[].imports[].as:
+    type: mapping
     required: false
     since: v2
   services.entries[].docs:
@@ -225,7 +224,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id001
+    enum:
     - draft
     - active
     - deprecated
@@ -238,7 +237,7 @@ fields:
     type: string
     required: false
     since: v2
-    enum: &id002
+    enum:
     - overview
     - reference
     - howto
@@ -269,7 +268,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id003
+    enum:
     - owner
     - reviewer
     - approver
@@ -281,7 +280,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: &id004
+    enum:
     - see_also
     - depends_on
     - implements
@@ -307,90 +306,6 @@ fields:
     type: string
     required: true
     since: v2
-  services.entries[].functions[].docs:
-    type: list
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].id:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].summary:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].audience:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].status:
-    type: string
-    required: true
-    since: v2
-    enum: *id001
-  services.entries[].functions[].docs[].description:
-    type: string
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].type:
-    type: string
-    required: false
-    since: v2
-    enum: *id002
-  services.entries[].functions[].docs[].since:
-    type: string
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].updated_at:
-    type: string
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].tags:
-    type: list
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].owners:
-    type: list
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].owners[].id:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].owners[].role:
-    type: string
-    required: true
-    since: v2
-    enum: *id003
-  services.entries[].functions[].docs[].links:
-    type: list
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].links[].rel:
-    type: string
-    required: true
-    since: v2
-    enum: *id004
-  services.entries[].functions[].docs[].links[].ref:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].links[].title:
-    type: string
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].examples:
-    type: list
-    required: false
-    since: v2
-  services.entries[].functions[].docs[].examples[].title:
-    type: string
-    required: true
-    since: v2
-  services.entries[].functions[].docs[].examples[].ref:
-    type: string
-    required: true
-    since: v2
   bindings:
     type: list
     required: false
@@ -407,13 +322,9 @@ fields:
     type: string
     required: false
     since: v2
-  bindings[].function:
-    type: string
-    required: true
-    since: v2
   bindings[].import:
     type: string
-    required: false
+    required: true
     since: v2
   bindings[].inputs:
     type: list
@@ -877,7 +788,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: *id005
+    enum: *id001
   docs[].description:
     type: string
     required: false
@@ -886,7 +797,7 @@ fields:
     type: string
     required: false
     since: v2
-    enum: *id006
+    enum: *id002
   docs[].since:
     type: string
     required: false
@@ -911,7 +822,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: *id007
+    enum: *id003
   docs[].links:
     type: list
     required: false
@@ -920,7 +831,7 @@ fields:
     type: string
     required: true
     since: v2
-    enum: *id008
+    enum: *id004
   docs[].links[].ref:
     type: string
     required: true

@@ -15,6 +15,20 @@ services:
   - assert.
   allowed_io:
   - input
+  available_imports_by_profile:
+    text.file:
+    - pipe_identity
+    - assert_truth
+    cli.run:
+    - pipe_identity
+    - assert_truth
+    api.http:
+    - pipe_identity
+    - assert_truth
+    docs.generate:
+    - pipe_identity
+    - assert_truth
+  import_validation_scope: type_profile
 - type: assert.export
   allowed_profiles:
   - contract.export
@@ -24,6 +38,12 @@ services:
   - assert.function
   allowed_io:
   - output
+  available_imports_by_profile:
+    contract.export:
+    - export_symbol
+    spec.export:
+    - export_symbol
+  import_validation_scope: type_profile
 - type: ops.job
   allowed_profiles:
   - job.dispatch
@@ -35,6 +55,14 @@ services:
   - input
   - output
   - io
+  available_imports_by_profile:
+    job.dispatch:
+    - run_job
+    - report_job
+    report.generate:
+    - run_job
+    - report_job
+  import_validation_scope: type_profile
 - type: io.http
   allowed_profiles:
   - api.http
@@ -46,6 +74,11 @@ services:
   - input
   - output
   - io
+  available_imports_by_profile:
+    api.http:
+    - get_json
+    - post_json
+  import_validation_scope: type_profile
 - type: io.mysql
   allowed_profiles:
   - mysql.query
@@ -58,6 +91,14 @@ services:
   - input
   - output
   - io
+  available_imports_by_profile:
+    mysql.query:
+    - query
+    - migrate
+    mysql.migrate:
+    - query
+    - migrate
+  import_validation_scope: type_profile
 - type: io.fs
   allowed_profiles:
   - fs.readwrite
@@ -70,6 +111,14 @@ services:
   - input
   - output
   - io
+  available_imports_by_profile:
+    fs.readwrite:
+    - read_text
+    - write_text
+    text.file:
+    - read_text
+    - write_text
+  import_validation_scope: type_profile
 - type: io.system
   allowed_profiles:
   - system.exec
@@ -83,6 +132,14 @@ services:
   - input
   - output
   - io
+  available_imports_by_profile:
+    system.exec:
+    - exec
+    - now
+    cli.run:
+    - exec
+    - now
+  import_validation_scope: type_profile
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
   io_transport: artifact_ids_only
@@ -94,3 +151,12 @@ binding_runtime_contract:
     inputs: bindings[].inputs[].from -> artifact.imports[].id
     outputs: bindings[].outputs[].to -> artifact.exports[].id
   service_config_usage: static_only_no_runtime_payload_transport
+  bound_symbol_format: service_id.import_name
+  binding_import_validation:
+  - binding_import_must_be_declared_on_service_entry
+  - declared_import_must_exist_in_available_imports_by_profile
+import_declaration_shape_v2:
+  services.entries[].imports: list[mapping]
+  services.entries[].imports[].names: list[string]
+  services.entries[].imports[].as: mapping(optional)
+  legacy_object_form: invalid
