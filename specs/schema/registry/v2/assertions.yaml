@@ -19,9 +19,10 @@ fields:
     type: list
     required: false
     since: v2
-    description: Clause-level default import bindings inherited by predicates. 
-      In merge mode, explicit imports win over binding-piped symbols; in 
-      override mode, binding-piped symbols replace same-name imports.
+    description: Clause-level default import bindings inherited by predicates.
+      For from=artifact, every imported name must be explicitly declared at suite
+      root (artifact.imports[].id or artifact.exports[].id) and wired through
+      bindings when runtime-produced.
   contracts[].clauses.imports[].from:
     type: string
     required: true
@@ -36,7 +37,8 @@ fields:
     type: list
     required: true
     since: v2
-    description: Imported symbol names.
+    description: Imported symbol names; from=artifact names must resolve to
+      suite-declared artifact ids.
   contracts[].clauses.imports[].as:
     type: mapping
     required: false
@@ -56,7 +58,8 @@ fields:
     type: list
     required: false
     since: v2
-    description: Predicate-level imports merged over clauses.imports.
+    description: Predicate-level imports merged over clauses.imports. from=artifact
+      names must resolve to suite-declared artifact ids.
   contracts[].clauses.predicates[].imports[].from:
     type: string
     required: true
@@ -71,7 +74,8 @@ fields:
     type: list
     required: true
     since: v2
-    description: Imported symbol names.
+    description: Imported symbol names; from=artifact names must resolve to
+      suite-declared artifact ids.
   contracts[].clauses.predicates[].imports[].as:
     type: mapping
     required: false

@@ -17,6 +17,36 @@ rules:
   - specs/contract/03_assertions.md
   - specs/contract/04_harness.md
   - specs/schema/schema_v2.md
+- id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+  introduced_in: v2
+  scope: case
+  applies_to: assertions.imports.artifact
+  norm: MUST
+  requirement: imported_artifact_symbols_must_be_declared_and_wired
+  description: 'Any `from: artifact` import name must be explicitly declared in
+    suite `artifact.imports[]` or `artifact.exports[]`; runtime-produced symbols
+    must be explicitly wired through `bindings[].outputs`.
+
+    '
+  rationale: Eliminates implicit symbol magic and keeps predicate dataflow explicit.
+  risk_if_violated: Hidden runtime coupling and non-deterministic symbol availability.
+  references:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  - specs/schema/schema_v2.md
+- id: BINDINGS_SERVICE_REQUIRED
+  introduced_in: v2
+  scope: case
+  applies_to: runtime.bindings.imports
+  norm: MUST
+  requirement: bindings_service_is_required
+  description: Suite bindings must set `bindings[].service`; implicit default service
+    resolution is forbidden.
+  rationale: Keeps service selection explicit and auditable.
+  risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
+  references:
+  - specs/contract/21_schema_registry_contract.md
+  - specs/schema/schema_v2.md
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
   introduced_in: v1
   scope: case

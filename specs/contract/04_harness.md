@@ -22,6 +22,10 @@ Suite-root external references:
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
   `artifact.imports[]` and `artifact.exports[]` through `bindings[]` mappings.
+- services/harnesses define execution capabilities only; they do not implicitly
+  inject predicate symbols.
+- artifact symbols are available to predicates only when explicitly declared
+  and wired.
 - when `bindings[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,

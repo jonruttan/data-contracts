@@ -24,6 +24,15 @@ artifact:
       summary: schema reference export
       audience: spec-authors
       status: active
+  - id: text
+    ref: "{{schema_ref}}"
+    type: text/plain
+    options: {}
+    docs:
+    - id: text.doc.1
+      summary: schema text export
+      audience: spec-authors
+      status: active
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -430,6 +439,32 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+- id: DCCONF-SCHEMA-CASE-025
+  title: binding service is required
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-026
+  title: undeclared artifact symbol import is rejected as schema
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    imports:
+    - from: artifact
+      names:
+      - undeclared_symbol
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
 harness:
   type: unit.test
   profile: export
@@ -470,5 +505,12 @@ bindings:
     as: piped_text
   predicates:
   - assert_1
+  mode: merge
+- id: bind_schema_case_025_missing_service
+  contract: DCCONF-SCHEMA-CASE-025
+  import: pipe_identity
+  outputs:
+  - to: schema_ref_export
+    as: piped_text
   mode: merge
 ```

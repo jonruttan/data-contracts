@@ -13,6 +13,29 @@ links:
   unit_test_refs: []
   implementation_refs: []
   notes: Suite bindings must transport runtime service payloads only through declared artifact import/export ids.
+- rule_id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+  policy_ref: specs/contract/policy_v1.yaml#ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-026
+  unit_test_refs: []
+  implementation_refs: []
+  notes: Artifact symbols are usable only when suite-declared and explicitly wired.
+- rule_id: BINDINGS_SERVICE_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#BINDINGS_SERVICE_REQUIRED
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-025
+  unit_test_refs: []
+  implementation_refs: []
+  notes: bindings[].service is required; default service fallback is forbidden.
 - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
   contract_refs:

@@ -67,7 +67,7 @@ fields:
     since: v2
   bindings[].service:
     type: string
-    required: false
+    required: true
     since: v2
   bindings[].import:
     type: string

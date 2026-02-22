@@ -43,6 +43,10 @@ Import binding shape:
 - `imports` is a list of mapping items
 - each item must be `{from, names, as?}`
 - canonical sources are `artifact` and `service`
+- for `from: artifact`, imported names MUST be explicitly declared at suite
+  root (`artifact.imports[].id` or `artifact.exports[].id`)
+- runtime-produced artifact symbols MUST be explicitly wired through
+  `bindings[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
 - when `from: service`, `service` key is required and must reference suite `services.entries[].id`
@@ -57,6 +61,7 @@ Import merge semantics:
 - binding-piped symbols from `bindings[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
+- implicit harness/service symbol injection is forbidden
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
 

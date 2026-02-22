@@ -113,7 +113,7 @@ Suite runtime surfaces:
 - `bindings` (list, optional): suite-root service-to-contract binding declarations
   - `bindings[].id` (string, required; unique in suite)
   - `bindings[].contract` (string, required; references `contracts[].id`)
-  - `bindings[].service` (string, optional; references `services.entries[].id`)
+  - `bindings[].service` (string, required; references `services.entries[].id`)
   - `bindings[].import` (string, required; declared service import name)
   - `bindings[].inputs` (list, optional): `from` + `as` mappings from artifact import ids
   - `bindings[].outputs` (list, optional): `to` + optional `as` + optional `path` mappings to artifact export ids
@@ -164,14 +164,15 @@ Parser behavior:
   `from: service`, `services` MUST be present and valid
 - bindings execute once per contract before predicate evaluation
 - `bindings[].contract` MUST reference an existing `contracts[].id`
-- `bindings[].service` (when present) MUST reference an existing `services.entries[].id`
-- omitted `bindings[].service` MUST resolve to a single sane default:
-  - first attempt effective `services.defaults.type`/`services.defaults.profile` match
-  - fallback to single `services.entries[]` when present
-  - otherwise hard-fail with ambiguity diagnostics
+- `bindings[].service` MUST reference an existing `services.entries[].id`
 - `bindings[].inputs[].from` MUST reference `artifact.imports[].id`
 - `bindings[].outputs[].to` MUST reference `artifact.exports[].id`
 - binding runtime payload transport MUST use artifact ids only (`artifact.imports`/`artifact.exports`)
+- `clauses.imports[].from=artifact` and `clauses.predicates[].imports[].from=artifact`
+  names MUST resolve to suite-declared artifact ids only (`artifact.imports[].id`
+  or `artifact.exports[].id`)
+- implicit harness/service target symbol injection is invalid; artifact symbols are
+  declaration-and-binding derived only
 - `bindings[].mode` supports `merge|override`:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
@@ -335,7 +336,7 @@ OAuth and execution rules:
     - `request_headers` (optional list)
     - `preflight` (optional bool, default `false`)
 
-`api.http` additional assert targets:
+`api.http` common service result symbols (must be explicitly declared/wired before import):
 
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
@@ -538,8 +539,9 @@ Import binding shape:
 
 - `imports` is a list of mapping items
 - each item requires `from` and `names`, with optional `as`
-- canonical assertion imports are artifact-only (`from: artifact`)
-- `names` must be a non-empty list of artifact keys
+- canonical assertion imports may use `from: artifact` or `from: service`
+- when `from: artifact`, `names` must be a non-empty list of suite-declared
+  artifact ids (and be explicitly wired when runtime-produced)
 - `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:
@@ -794,7 +796,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `bindings` | `list` | `false` | `v2` |
 | `bindings[].id` | `string` | `true` | `v2` |
 | `bindings[].contract` | `string` | `true` | `v2` |
-| `bindings[].service` | `string` | `false` | `v2` |
+| `bindings[].service` | `string` | `true` | `v2` |
 | `bindings[].import` | `string` | `true` | `v2` |
 | `bindings[].inputs` | `list` | `false` | `v2` |
 | `bindings[].inputs[].from` | `string` | `true` | `v2` |
@@ -1029,7 +1031,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `bindings` | `list` | false | `v2` |
 | `bindings[].id` | `string` | true | `v2` |
 | `bindings[].contract` | `string` | true | `v2` |
-| `bindings[].service` | `string` | false | `v2` |
+| `bindings[].service` | `string` | true | `v2` |
 | `bindings[].import` | `string` | true | `v2` |
 | `bindings[].inputs` | `list` | false | `v2` |
 | `bindings[].inputs[].from` | `string` | true | `v2` |

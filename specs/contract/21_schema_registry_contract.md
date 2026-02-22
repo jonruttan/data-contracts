@@ -25,11 +25,11 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `services.entries[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
 - `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
-  (when present) MUST resolve to `services.entries[].id`.
+  MUST resolve to `services.entries[].id`.
 - `bindings[].inputs[].from` MUST resolve to `artifact.imports[].id` and
   `bindings[].outputs[].to` MUST resolve to `artifact.exports[].id`.
-- Omitted `bindings[].service` MUST resolve to a single sane default service
-  or hard-fail.
+- `from: artifact` imported names MUST resolve to suite-declared artifact ids
+  and MUST NOT rely on implicit runtime target injection.
 - If `bindings[]` or any `from: service` assertion import is present,
   `services` MUST be declared and valid.
 - Suite artifact references MUST be declared only under
