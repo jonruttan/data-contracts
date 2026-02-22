@@ -100,14 +100,13 @@ Suite runtime surfaces:
 - `harness` (mapping, required): suite orchestration surface
   - `harness.type` (string, required)
   - `harness.profile` (string, required)
-  - `harness.config` (mapping, required)
-- `services` (mapping, required): suite system service bindings with defaults and concrete entries
+  - `harness.config` (mapping, optional)
+- `services` (mapping, required): suite system service bindings with defaults and concrete entries (effective type/io/profile/config)
   - `services.entries[].id` (string, required; unique in suite)
-  - `services.entries[].type` (string, required; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
-  - `services.entries[].io` (string, required): `input|output|io`
-  - `services.entries[].profile` (string, required)
-  - `services.entries[].config` (mapping, required)
-  - `services.entries[].default` (bool, optional; at most one `true`)
+  - `services.entries[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
+  - `services.entries[].io` (string, optional): `input|output|io` (defaults to `io` via `services.defaults.io` when omitted)
+  - `services.entries[].profile` (string, optional)
+  - `services.entries[].config` (mapping, optional)
   - `services.entries[].functions` (list, optional): declarative callable function surface
 
 Parser behavior:
@@ -710,7 +709,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness` | `mapping` | `true` | `v2` |
 | `harness.type` | `string` | `true` | `v2` |
 | `harness.profile` | `string` | `true` | `v2` |
-| `harness.config` | `mapping` | `true` | `v2` |
+| `harness.config` | `mapping` | `false` | `v2` |
 | `harness.docs` | `list` | `false` | `v2` |
 | `harness.docs[].id` | `string` | `true` | `v2` |
 | `harness.docs[].summary` | `string` | `true` | `v2` |
@@ -731,13 +730,12 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples` | `list` | `false` | `v2` |
 | `harness.docs[].examples[].title` | `string` | `true` | `v2` |
 | `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
-| `services` | `list` | `true` | `v2` |
+| `services` | `mapping` | `true` | `v2` |
 | `services.entries[].id` | `string` | `true` | `v2` |
-| `services.entries[].type` | `string` | `true` | `v2` |
-| `services.entries[].io` | `string` | `true` | `v2` |
-| `services.entries[].profile` | `string` | `true` | `v2` |
-| `services.entries[].config` | `mapping` | `true` | `v2` |
-| `services.entries[].default` | `bool` | `false` | `v2` |
+| `services.entries[].type` | `string` | `false` | `v2` |
+| `services.entries[].io` | `string` | `false` | `v2` |
+| `services.entries[].profile` | `string` | `false` | `v2` |
+| `services.entries[].config` | `mapping` | `false` | `v2` |
 | `services.entries[].functions` | `list` | `false` | `v2` |
 | `services.entries[].functions[].name` | `string` | `true` | `v2` |
 | `services.entries[].functions[].op` | `string` | `true` | `v2` |
@@ -952,7 +950,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness` | `mapping` | true | `v2` |
 | `harness.type` | `string` | true | `v2` |
 | `harness.profile` | `string` | true | `v2` |
-| `harness.config` | `mapping` | true | `v2` |
+| `harness.config` | `mapping` | false | `v2` |
 | `harness.docs` | `list` | false | `v2` |
 | `harness.docs[].id` | `string` | true | `v2` |
 | `harness.docs[].summary` | `string` | true | `v2` |
@@ -973,13 +971,12 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples` | `list` | false | `v2` |
 | `harness.docs[].examples[].title` | `string` | true | `v2` |
 | `harness.docs[].examples[].ref` | `string` | true | `v2` |
-| `services` | `list` | true | `v2` |
+| `services` | `mapping` | true | `v2` |
 | `services.entries[].id` | `string` | true | `v2` |
-| `services.entries[].type` | `string` | true | `v2` |
-| `services.entries[].io` | `string` | true | `v2` |
-| `services.entries[].profile` | `string` | true | `v2` |
-| `services.entries[].config` | `mapping` | true | `v2` |
-| `services.entries[].default` | `bool` | false | `v2` |
+| `services.entries[].type` | `string` | false | `v2` |
+| `services.entries[].io` | `string` | false | `v2` |
+| `services.entries[].profile` | `string` | false | `v2` |
+| `services.entries[].config` | `mapping` | false | `v2` |
 | `services.entries[].functions` | `list` | false | `v2` |
 | `services.entries[].functions[].name` | `string` | true | `v2` |
 | `services.entries[].functions[].op` | `string` | true | `v2` |

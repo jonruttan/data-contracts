@@ -84,7 +84,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -100,7 +99,6 @@ services:
         symbols:
         - policy.text.contains_all
         - policy.text.contains_none
-    default: true
   - id: svc.assert_check.text_file.2
     config:
       path: "/specs/libraries/path/path_core.spec.md"

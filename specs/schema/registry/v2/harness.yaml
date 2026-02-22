@@ -19,7 +19,7 @@ fields:
     description: Harness execution profile.
   harness.config:
     type: mapping
-    required: true
+    required: false
     since: v2
     description: Harness runtime configuration mapping.
   services:

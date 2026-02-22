@@ -294,7 +294,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   entries:
   - id: svc.assert_check.text_file.1
@@ -302,7 +301,6 @@ services:
     io: input
     profile: text.file
     config: {}
-    default: true
 ```
 
 

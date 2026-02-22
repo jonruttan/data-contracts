@@ -44,5 +44,4 @@ services:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
-    default: true
 ```

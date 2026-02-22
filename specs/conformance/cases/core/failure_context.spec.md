@@ -43,5 +43,4 @@ services:
     io: input
     profile: text.file
     config: {}
-    default: true
 ```

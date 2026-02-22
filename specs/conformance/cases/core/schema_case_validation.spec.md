@@ -399,7 +399,6 @@ services:
     type: assert.check
     io: input
     profile: text.file
-    default: true
   - id: svc.export.default.1
     type: assert.export
     io: output

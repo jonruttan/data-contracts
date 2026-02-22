@@ -84,7 +84,6 @@ harness:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_build_tool_contract_v1.yaml'}}}"
 services:
   defaults:
-    io: io
     profile: default
     config: {}
   entries:
@@ -92,7 +91,6 @@ services:
       svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
     type: 
       legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
-    default: true
   - id: 
       svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
     type: 

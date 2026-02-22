@@ -28,7 +28,7 @@ fields:
     since: v2
   harness.config:
     type: mapping
-    required: true
+    required: false
     since: v2
   harness.docs:
     type: list
@@ -152,16 +152,13 @@ fields:
     - input
     - output
     - io
+    description: Defaults to io when omitted.
   services.defaults.profile:
     type: string
     required: false
     since: v2
   services.defaults.config:
     type: mapping
-    required: false
-    since: v2
-  services.defaults.default:
-    type: bool
     required: false
     since: v2
   services.entries:
@@ -190,10 +187,6 @@ fields:
     since: v2
   services.entries[].config:
     type: mapping
-    required: false
-    since: v2
-  services.entries[].default:
-    type: bool
     required: false
     since: v2
   services.entries[].functions:

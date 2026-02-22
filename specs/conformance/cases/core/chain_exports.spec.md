@@ -27,7 +27,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -42,7 +41,6 @@ services:
         as: bad_export_path_fixture
         symbols:
         - bad.path.symbol
-    default: true
   - id: svc.assert_check.text_file.2
     config:
       path: "/specs/libraries/conformance/chain_export_validation.spec.md"

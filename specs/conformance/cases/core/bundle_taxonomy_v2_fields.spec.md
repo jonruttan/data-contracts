@@ -65,7 +65,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -75,7 +74,6 @@ services:
   - id: svc.assert_check.text_file.1
     config:
       path: "/specs/schema/schema_v2.md"
-    default: true
   - id: svc.assert_check.text_file.2
     config:
       path: "/specs/schema/registry/v2/core.yaml"

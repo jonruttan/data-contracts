@@ -384,7 +384,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -396,7 +395,6 @@ services:
       request:
         method: GET
         url: "/specs/conformance/cases/fixtures/api_http_ok.json"
-    default: true
   - id: svc.assert_check.api_http.2
     config:
       request:

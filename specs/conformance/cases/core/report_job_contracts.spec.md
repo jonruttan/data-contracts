@@ -511,7 +511,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -552,7 +551,6 @@ services:
         capabilities:
         - ops.helper
         - ops.job
-    default: true
   - id: svc.assert_check.default.2
     config:
       jobs:

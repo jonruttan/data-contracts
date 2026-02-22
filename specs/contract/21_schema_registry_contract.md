@@ -14,7 +14,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `specs/schema/schema_v2.md` MUST contain generated registry snapshot
   content and stay synchronized.
 - Runtime expectation overrides MUST use `expect.overrides[]` (no `expect.impl.*` wildcard keys).
-- Suite runtime metadata MUST define root `harness` (`type`, `profile`, `config`).
+- Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime services MUST define non-empty root `services.entries[]`.
 - Contract-job metadata MUST use `services.entries[].config.jobs[]` rows keyed by explicit `id`.
 - `contracts[].harness` is invalid in v2 (hard cut).

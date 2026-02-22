@@ -63,13 +63,11 @@ harness:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
 services:
   defaults:
-    io: io
     profile: default
     config: {}
   entries:
   - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
     type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-    default: true
   - id: 
       svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
     type: 

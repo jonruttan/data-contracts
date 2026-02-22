@@ -106,7 +106,6 @@ harness:
       'token_b'], 'required': True}]}"
 services:
   defaults:
-    io: io
     profile: default
     config: {}
   entries:
@@ -114,7 +113,6 @@ services:
       svc.exports_as_policy_text_contains_all_from_assert_function_path_export_policy_text_contains_all_params_text_required_tokens_required_true_as_policy_text_contains_none_from_assert_function_path_export_policy_text_contains_none_params_text_forbidden_tokens_required_true_as_policy_text_contains_pair_from_assert_function_path_export_policy_text_contains_pair_params_text_token_a_token_b_required_true.default.1
     type: 
       legacy.exports_as_policy_text_contains_all_from_assert_function_path_export_policy_text_contains_all_params_text_required_tokens_required_true_as_policy_text_contains_none_from_assert_function_path_export_policy_text_contains_none_params_text_forbidden_tokens_required_true_as_policy_text_contains_pair_from_assert_function_path_export_policy_text_contains_pair_params_text_token_a_token_b_required_true
-    default: true
   - id: 
       svc.check_profile_text_file_config_use_ref_lib_policy_text_001_as_lib_policy_text_symbols_policy_text_contains_all_policy_text_contains_none_policy_text_contains_pair.default.1
     type: 

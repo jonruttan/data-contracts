@@ -57,7 +57,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -70,7 +69,6 @@ services:
       - "--help"
       exit_code: 0
       entrypoint: spec_runner.conformance_fixtures:main
-    default: true
   - id: svc.assert_check.cli_run.2
     config:
       argv:

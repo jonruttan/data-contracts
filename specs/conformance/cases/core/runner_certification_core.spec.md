@@ -56,7 +56,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   entries:
   - id: svc.assert_check.text_file.1
@@ -69,6 +68,5 @@ services:
         as: lib_policy_text
         symbols:
         - policy.text.contains_pair
-    default: true
 ```
 

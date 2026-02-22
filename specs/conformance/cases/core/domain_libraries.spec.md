@@ -346,7 +346,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -376,7 +375,6 @@ services:
         - domain.http.status_is
         - domain.http.status_is_forbidden
         - domain.http.status_is_unauthorized
-    default: true
   - id: svc.assert_check.text_file.2
     config:
       path: "/specs/libraries/domain/index.md"

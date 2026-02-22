@@ -67,7 +67,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   entries:
   - id: svc.assert_check.text_file.1
@@ -76,7 +75,6 @@ services:
     profile: text.file
     config:
       path: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
-    default: true
 ```
 
 

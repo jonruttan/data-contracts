@@ -71,5 +71,4 @@ services:
     io: io
     profile: default
     config: {}
-    default: true
 ```

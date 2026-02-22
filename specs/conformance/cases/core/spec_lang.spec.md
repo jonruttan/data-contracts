@@ -1166,7 +1166,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -1180,7 +1179,6 @@ services:
         as: lib_assertion_core_spec
         symbols:
         - conf.pass_when_text_contains
-    default: true
   - id: svc.assert_check.text_file.2
     config: {}
   - id: svc.assert_check.text_file.3

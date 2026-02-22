@@ -61,7 +61,6 @@ defaults:
 harness:
   type: unit.test
   profile: check
-  config: {}
 services:
   defaults:
     type: assert.check
@@ -76,7 +75,6 @@ services:
         as: lib_policy_text
         symbols:
         - policy.text.contains_all
-    default: true
   - id: svc.assert_check.text_file.2
     config:
       path: "/specs/contract/20_subject_profiles_v1.md"

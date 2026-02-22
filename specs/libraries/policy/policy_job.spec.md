@@ -96,7 +96,6 @@ harness:
       ['job_map'], 'required': True}]}"
 services:
   defaults:
-    io: io
     profile: default
     config: {}
   entries:
@@ -104,7 +103,6 @@ services:
       svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
     type: 
       legacy.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true
-    default: true
   - id: 
       svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
     type: 
