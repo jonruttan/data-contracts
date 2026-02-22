@@ -15,7 +15,7 @@ Project-specific instructions for AI agents working in `data-contracts`.
 
 ## Configuration / Schema
 
-- The contract-spec schema is documented in `specs/schema/schema_v1.md`.
+- The contract-spec schema is documented in `specs/01_schema/schema_v1.md`.
 - Runner-only setup inputs MUST live under `harness:` (never as arbitrary
   top-level keys).
 - Executable spec cases MUST live in Markdown files (`*.spec.md`) with fenced

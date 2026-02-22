@@ -28,8 +28,8 @@ Extend schema and contract surfaces without breaking existing executable specs.
 
 ## Inputs
 
-- target schema under `specs/schema/`
-- related contract docs under `specs/contract/`
+- target schema under `specs/01_schema/`
+- related contract docs under `specs/02_contracts/`
 
 ## Outputs
 

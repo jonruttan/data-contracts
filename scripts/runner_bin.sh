@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-LOCK_FILE="${ROOT_DIR}/specs/schema/dc_runner_rust_lock_v1.yaml"
+LOCK_FILE="${ROOT_DIR}/specs/01_schema/dc_runner_rust_lock_v1.yaml"
 CACHE_ROOT="${ROOT_DIR}/.artifacts/tools/dc-runner-rust"
 
 detect_platform() {

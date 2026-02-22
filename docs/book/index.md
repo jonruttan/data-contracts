@@ -52,9 +52,9 @@ Guide-first path:
 
 ## Canonical Sources
 
-- `specs/schema/schema_v1.md`
-- `specs/contract/`
-- `specs/governance/`
+- `specs/01_schema/schema_v1.md`
+- `specs/02_contracts/`
+- `specs/04_governance/`
 - `docs/book/reference_manifest.yaml`
 
 ## Compatibility (Non-Blocking)

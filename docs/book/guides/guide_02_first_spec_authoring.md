@@ -46,7 +46,7 @@ Author a valid executable `.spec.md` case using the canonical contract shape.
 ## Do This Now
 
 ```bash
-cat > specs/conformance/cases/core/example_minimal_check.spec.md <<'SPEC'
+cat > specs/03_conformance/cases/core/example_minimal_check.spec.md <<'SPEC'
 # Example Minimal Check
 
 ```yaml contract-spec

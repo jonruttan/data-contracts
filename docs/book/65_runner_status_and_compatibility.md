@@ -29,9 +29,9 @@ policy effects without importing runner implementation logic.
 
 ## Inputs
 
-- `/specs/schema/runner_status_report_v1.yaml`
-- `/specs/schema/runner_status_matrix_v1.yaml`
-- `/specs/schema/runner_certification_registry_v1.yaml`
+- `/specs/01_schema/runner_status_report_v1.yaml`
+- `/specs/01_schema/runner_status_matrix_v1.yaml`
+- `/specs/01_schema/runner_certification_registry_v1.yaml`
 - release assets from `dc-runner-rust`, `dc-runner-python`, `dc-runner-php`
 
 ## Outputs

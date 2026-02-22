@@ -28,9 +28,9 @@ Explain what this repository is, what the spec controls, and why a contract-firs
 
 ## Inputs
 
-- `/specs/schema/schema_v1.md`
-- `/specs/contract/index.md`
-- `/specs/governance/index.md`
+- `/specs/01_schema/schema_v1.md`
+- `/specs/02_contracts/index.md`
+- `/specs/04_governance/index.md`
 
 ## Outputs
 

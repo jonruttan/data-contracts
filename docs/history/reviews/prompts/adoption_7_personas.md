@@ -51,7 +51,7 @@ Context you should assume about this repo:
 - Runner-only setup keys must live under `harness:`.
 - There is a conformance system and Python/PHP parity checks.
 - Active spec snapshot: `specs/current.md`.
-- Pending work: `specs/governance/`.
+- Pending work: `specs/04_governance/`.
 
 Important:
 - Reference concrete file paths and nearby section names/keywords when making claims.
@@ -70,7 +70,7 @@ Suggested commands:
 - `./scripts/ci_gate.sh`
 - `.venv/bin/python -m pytest -q`
 - `.venv/bin/python -m build`
-- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/conformance/cases --php-runner dc%2Drunner%2Dphp/conformance_runner.php --out .artifacts/conformance-parity.json`
+- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/03_conformance/cases --php-runner dc%2Drunner%2Dphp/conformance_runner.php --out .artifacts/conformance-parity.json`
 - Optional: run `dc%2Drunner%2Dphp/spec_runner.php` against `runner-owned implementation specs/php/cases/` if PHP + yaml extension are available
 
 Your task:

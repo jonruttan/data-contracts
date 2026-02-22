@@ -30,7 +30,7 @@ Define canonical assertion semantics and explicit import binding rules.
 
 ## Inputs
 
-- `specs/contract/03_assertions.md`
+- `specs/02_contracts/03_assertions.md`
 - assertion expressions in mapping-AST form
 
 ## Outputs

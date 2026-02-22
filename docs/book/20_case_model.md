@@ -28,9 +28,9 @@ Define canonical executable case structure and responsibility boundaries.
 
 ## Inputs
 
-- `specs/schema/schema_v1.md`
-- `specs/contract/02_case_shape.md`
-- `specs/contract/04_harness.md`
+- `specs/01_schema/schema_v1.md`
+- `specs/02_contracts/02_case_shape.md`
+- `specs/02_contracts/04_harness.md`
 
 ## Outputs
 
@@ -75,7 +75,7 @@ prior forms (`contract` list, `asserts`, `target`, `on`) are forbidden in canoni
 
 ## Normative References
 
-- `specs/schema/schema_v1.md`
-- `specs/contract/02_case_shape.md`
-- `specs/contract/types/contract_check.md`
-- `specs/contract/03_assertions.md`
+- `specs/01_schema/schema_v1.md`
+- `specs/02_contracts/02_case_shape.md`
+- `specs/02_contracts/types/contract_check.md`
+- `specs/02_contracts/03_assertions.md`

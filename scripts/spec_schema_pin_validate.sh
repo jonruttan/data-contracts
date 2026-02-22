@@ -9,7 +9,7 @@ source "${ROOT_DIR}/scripts/lib/yaml_to_json.sh"
 OUT_DIR="${ROOT_DIR}/.artifacts"
 mkdir -p "${OUT_DIR}"
 
-catalog="${ROOT_DIR}/specs/schema/schema_catalog_v1.yaml"
+catalog="${ROOT_DIR}/specs/01_schema/schema_catalog_v1.yaml"
 if [[ ! -f "${catalog}" ]]; then
   echo "ERROR: missing schema catalog: ${catalog}" >&2
   exit 2
@@ -23,7 +23,7 @@ read -r missing_spec_version_count missing_schema_ref_count unknown_schema_ref_c
     BEGIN {
       missing_spec=0; missing_ref=0; unknown_ref=0; mismatch=0
 
-      while ((getline line < "specs/schema/schema_catalog_v1.yaml") > 0) {
+      while ((getline line < "specs/01_schema/schema_catalog_v1.yaml") > 0) {
         if (line ~ /^[[:space:]]*-[[:space:]]schema_id:[[:space:]]/) {
           if (path != "" && status == "active" && major != "") active[path]=major
           path=""; status=""; major=""
@@ -49,7 +49,7 @@ read -r missing_spec_version_count missing_schema_ref_count unknown_schema_ref_c
       }
       if (path != "" && status == "active" && major != "") active[path]=major
 
-      cmd="find specs/conformance/cases specs/governance/cases specs/libraries -name \"*.spec.md\" -type f | sort"
+      cmd="find specs/03_conformance/cases specs/04_governance/cases specs/libraries -name \"*.spec.md\" -type f | sort"
       while ((cmd | getline file) > 0) {
         in_block=0
         spec=""

@@ -29,8 +29,8 @@ Show the canonical topology of specification surfaces, governance, docs, and run
 ## Inputs
 
 - `/specs/index.md`
-- `/specs/contract/index.md`
-- `/specs/schema/index.md`
+- `/specs/02_contracts/index.md`
+- `/specs/01_schema/index.md`
 - `/docs/book/index.md`
 
 ## Outputs

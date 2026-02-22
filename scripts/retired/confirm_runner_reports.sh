@@ -46,8 +46,8 @@ fi
 SCENARIO_DIR="${WORK_DIR}/scenario"
 mkdir -p "${SCENARIO_DIR}"
 cp "${RUST_REPORT}" "${SCENARIO_DIR}/runner-status-report-v1.rust.json"
-cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.python.json" "${SCENARIO_DIR}/runner-status-report-v1.python.json"
-cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.php.json" "${SCENARIO_DIR}/runner-status-report-v1.php.json"
+cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.python.json" "${SCENARIO_DIR}/runner-status-report-v1.python.json"
+cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.php.json" "${SCENARIO_DIR}/runner-status-report-v1.php.json"
 
 cat > "${SCENARIO_DIR}/local_release_rust.json" <<JSON
 {

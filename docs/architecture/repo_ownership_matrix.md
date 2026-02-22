@@ -13,7 +13,7 @@
 - Spec schema and language contracts under `specs/schema` and `specs/contract`
 - Governance policy model and check-set declarations under `specs/governance`
 - Narrative documentation under `docs/`
-- Rust runner lock and resolver (`specs/schema/dc_runner_rust_lock_v1.yaml`, `scripts/runner_bin.sh`)
+- Rust runner lock and resolver (`specs/01_schema/dc_runner_rust_lock_v1.yaml`, `scripts/runner_bin.sh`)
 - Public compatibility adapter entrypoint (`scripts/runner_bin.sh`)
 
 ### dc-runner-rust

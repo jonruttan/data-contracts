@@ -13,7 +13,7 @@ optional_ids_tmp="$(mktemp)"
 case_checks_tmp="$(mktemp)"
 trap 'rm -f "${optional_ids_tmp}" "${case_checks_tmp}"' EXIT
 
-emit_optional_check_ids "specs/governance/check_sets_v1.yaml" > "${optional_ids_tmp}"
+emit_optional_check_ids "specs/04_governance/check_sets_v1.yaml" > "${optional_ids_tmp}"
 
 while IFS= read -r f; do
   check_id="$(awk '
@@ -28,7 +28,7 @@ while IFS= read -r f; do
   if [[ -n "${check_id}" ]]; then
     printf '%s|%s\n' "${check_id}" "${f}" >> "${case_checks_tmp}"
   fi
-done < <(find specs/governance/cases/core -type f -name '*.spec.md' | sort)
+done < <(find specs/04_governance/cases/core -type f -name '*.spec.md' | sort)
 
 optional_check_count="$(wc -l < "${optional_ids_tmp}" | tr -d ' ')"
 optional_case_bound_count=0

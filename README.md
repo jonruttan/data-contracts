@@ -30,7 +30,7 @@ This repository does not execute runtime lanes.
 ### 1) Author a spec change
 - Start with `/Users/jon/Workspace/Development/data-contracts/docs/book/index.md`
 - Use task guides at `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md`
-- Validate contract and schema intent under `/Users/jon/Workspace/Development/data-contracts/specs/contract/index.md`
+- Validate contract and schema intent under `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/index.md`
 
 ### 2) Validate docs and contract coherence
 - Run control-plane checks through CI and governance surfaces in this repo.
@@ -49,19 +49,19 @@ This repository does not execute runtime lanes.
 - Book index: `/Users/jon/Workspace/Development/data-contracts/docs/book/index.md`
 - Usage guides index: `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md`
 - Status exchange and compatibility: `/Users/jon/Workspace/Development/data-contracts/docs/book/65_runner_status_and_compatibility.md`
-- Contract index: `/Users/jon/Workspace/Development/data-contracts/specs/contract/index.md`
-- Policy execution boundary: `/Users/jon/Workspace/Development/data-contracts/specs/contract/28_spec_lang_policy_execution.md`
+- Contract index: `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/index.md`
+- Policy execution boundary: `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/28_spec_lang_policy_execution.md`
 
 ## Runner Test Packs
 
-- `/Users/jon/Workspace/Development/data-contracts/specs/packs/runner_contract_pack_v1.yaml`
-- `/Users/jon/Workspace/Development/data-contracts/specs/packs/spec_core_maintenance_pack_v1.yaml`
-- `/Users/jon/Workspace/Development/data-contracts/specs/packs/project_docs_maintenance_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/00_core/packs/runner_contract_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/00_core/packs/spec_core_maintenance_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/00_core/packs/project_docs_maintenance_pack_v1.yaml`
 
 ## Portable CLI Contract
 
-- `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
-- `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/29_runner_cli_interface.md`
+- `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_cli_contract_v1.yaml`
 
 ## Bundle Resolver and Package Tooling
 
@@ -71,13 +71,13 @@ This repository does not execute runtime lanes.
 - Verify package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package-check --package <path> --sha256 <path>`
 - Install bundles: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install --project-lock bundles.lock.yaml --out <workspace>`
 - Verify install: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install-check --project-lock bundles.lock.yaml --out <workspace>`
-- Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/bundle_manifest_v1.yaml`
-- Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_bundle_lock_v1.yaml`
-- Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/project_bundle_lock_v1.yaml`
-- Legacy runner lock schema (deprecated): `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_bundle_lock_v1.yaml`
-- Implementation overlay schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/implementation_bundle_overlay_v1.yaml`
-- Implementation build lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/implementation_bundle_build_lock_v1.yaml`
-- Implementation overlay contract: `/Users/jon/Workspace/Development/data-contracts/specs/contract/34_runner_implementation_spec_bundles.md`
+- Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/bundle_manifest_v1.yaml`
+- Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/resolved_bundle_lock_v1.yaml`
+- Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/project_bundle_lock_v1.yaml`
+- Legacy runner lock schema (deprecated): `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_bundle_lock_v1.yaml`
+- Implementation overlay schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/implementation_bundle_overlay_v1.yaml`
+- Implementation build lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/implementation_bundle_build_lock_v1.yaml`
+- Implementation overlay contract: `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/34_runner_implementation_spec_bundles.md`
 - Implementation spec bundle repos:
   - [`jonruttan/dc-runner-rust-specs`](https://github.com/jonruttan/dc-runner-rust-specs)
   - [`jonruttan/dc-runner-python-specs`](https://github.com/jonruttan/dc-runner-python-specs)

@@ -28,7 +28,7 @@ Describe policy enforcement for control-plane coherence across specs, contracts,
 
 ## Inputs
 
-- governance cases in `specs/governance/cases/core`
+- governance cases in `specs/04_governance/cases/core`
 - contract/policy/traceability surfaces
 
 ## Outputs

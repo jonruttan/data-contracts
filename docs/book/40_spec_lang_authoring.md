@@ -86,6 +86,6 @@ Use `harness.use` to import shared symbols and call them in assertions.
 
 Normative references:
 
-- `specs/contract/03b_spec_lang_v1.md`
-- `specs/contract/14_spec_lang_libraries.md`
-- `specs/schema/spec_lang_stdlib_profile_v1.yaml`
+- `specs/02_contracts/03b_spec_lang_v1.md`
+- `specs/02_contracts/14_spec_lang_libraries.md`
+- `specs/01_schema/spec_lang_stdlib_profile_v1.yaml`

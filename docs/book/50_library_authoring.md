@@ -28,7 +28,7 @@ Define how to author `contract.export` libraries with executable behavior and co
 
 ## Inputs
 
-- `specs/libraries/**/*.spec.md`
+- `specs/05_libraries/**/*.spec.md`
 - `contract.export` schema requirements
 
 ## Outputs

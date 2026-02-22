@@ -28,9 +28,9 @@ Operate the runner status exchange and interpret compatibility matrix freshness 
 
 ## Inputs
 
-- `specs/schema/runner_status_report_v1.yaml`
-- `specs/schema/runner_status_matrix_v1.yaml`
-- `specs/schema/runner_certification_registry_v1.yaml`
+- `specs/01_schema/runner_status_report_v1.yaml`
+- `specs/01_schema/runner_status_matrix_v1.yaml`
+- `specs/01_schema/runner_certification_registry_v1.yaml`
 - `scripts/runner_status_ingest.sh`
 
 ## Outputs

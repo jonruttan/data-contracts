@@ -24,8 +24,8 @@ gates.
 ## Grey Beard
 
 Top unacceptable:
-- no sandbox model for untrusted specs (`specs/contract/04_harness.md`)
-- policy stack may be too heavy for small teams (`specs/contract/policy_v1.yaml`)
+- no sandbox model for untrusted specs (`specs/02_contracts/04_harness.md`)
+- policy stack may be too heavy for small teams (`specs/02_contracts/policy_v1.yaml`)
 - env-driven behavior can still surprise (`dc%2Drunner%2Dpython/spec_runner/harnesses/cli_run.py`)
 
 Top salvageable:

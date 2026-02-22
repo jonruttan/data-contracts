@@ -33,9 +33,9 @@ while IFS= read -r f; do
   else
     printf '%s|\n' "${f}" >> "${core_checks_tmp}"
   fi
-done < <(find specs/governance/cases/core -type f -name '*.spec.md' | sort)
+done < <(find specs/04_governance/cases/core -type f -name '*.spec.md' | sort)
 
-emit_check_set_id_profile_pairs "specs/governance/check_sets_v1.yaml" > "${set_ids_tmp}"
+emit_check_set_id_profile_pairs "specs/04_governance/check_sets_v1.yaml" > "${set_ids_tmp}"
 
 missing_case_check_field_count=0
 unmapped_case_check_count=0

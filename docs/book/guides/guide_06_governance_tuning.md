@@ -29,7 +29,7 @@ Change governance behavior safely while preserving check traceability.
 ## Inputs
 
 - proposed rule/check id changes
-- updated case specs under `specs/governance/cases/core`
+- updated case specs under `specs/04_governance/cases/core`
 
 ## Outputs
 
@@ -65,7 +65,7 @@ Interpretation:
 
 ```bash
 ./scripts/control_plane.sh governance
-rg -n "DCGOV-|docs\." specs/governance/check_prefix_map_v1.yaml specs/governance/cases/core -g '*.yaml' -g '*.md'
+rg -n "DCGOV-|docs\." specs/04_governance/check_prefix_map_v1.yaml specs/04_governance/cases/core -g '*.yaml' -g '*.md'
 ```
 
 ## How To Verify Success

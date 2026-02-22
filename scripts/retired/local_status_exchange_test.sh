@@ -10,10 +10,10 @@ mkdir -p "${WORK_DIR}"
 seed_fixture_set() {
   local scenario_dir="$1"
   mkdir -p "${scenario_dir}"
-  cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.rust.json" "${scenario_dir}/runner-status-report-v1.rust.json"
-  cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.python.json" "${scenario_dir}/runner-status-report-v1.python.json"
-  cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.php.json" "${scenario_dir}/runner-status-report-v1.php.json"
-  cp "${ROOT_DIR}/specs/conformance/cases/fixtures/status_exchange/runner-status-report-v1.invalid.json" "${scenario_dir}/runner-status-report-v1.invalid.json"
+  cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.rust.json" "${scenario_dir}/runner-status-report-v1.rust.json"
+  cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.python.json" "${scenario_dir}/runner-status-report-v1.python.json"
+  cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.php.json" "${scenario_dir}/runner-status-report-v1.php.json"
+  cp "${ROOT_DIR}/specs/03_conformance/cases/fixtures/status_exchange/runner-status-report-v1.invalid.json" "${scenario_dir}/runner-status-report-v1.invalid.json"
 
   cat > "${scenario_dir}/local_release_rust.json" <<JSON
 {

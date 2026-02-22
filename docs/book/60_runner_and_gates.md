@@ -56,8 +56,8 @@ This chapter documents an implementation-agnostic control plane where runtime ex
 
 ## Portable CLI Contract
 
-- `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
-- `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/29_runner_cli_interface.md`
+- `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_cli_contract_v1.yaml`
 
 ## Control-Plane Gate
 
