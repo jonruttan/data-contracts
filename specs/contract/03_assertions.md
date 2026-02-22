@@ -9,13 +9,21 @@
 
 Each predicate has:
 
-- `id` (string)
+- `id` (optional string; when omitted normalization assigns `assert_<index>`)
 - `purpose` (optional string)
 - `required` (optional bool, default `true`)
 - `priority` (optional int, default `1`; must be `>=1`)
 - `severity` (optional int, default `1`; must be `>=1`)
 - `imports` (optional list of import items)
 - `assert` (non-empty expression mapping or list)
+
+Predicate id normalization and uniqueness:
+
+- missing predicate ids are assigned deterministically as `assert_<index>` in
+  declaration order (1-based)
+- explicit and generated predicate ids share one uniqueness pool within each
+  predicate list
+- duplicate/colliding ids are schema hard-fail
 
 prior forms are forbidden:
 

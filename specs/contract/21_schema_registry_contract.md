@@ -45,7 +45,13 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Root `exports[]` MUST be function-only declarations using
   `as` + `from: assert.function` + `path`.
 - Documentation metadata surfaces MUST use `docs[]` entry arrays with required
-  `id|summary|audience|status`; singular `doc` is invalid in v2.
+  `summary|audience|status`; singular `doc` is invalid in v2.
+- `docs[].id` and `docs[].owners[].id` are optional authoring keys and MUST
+  normalize to deterministic scope-local ids when omitted.
+- `contracts[].clauses.predicates[].id` is optional and MUST normalize to
+  deterministic `assert_<index>` ids when omitted.
+- Explicit and generated ids share one uniqueness pool in each containing list;
+  duplicates/collisions are schema hard-fail.
 - Suite defaults and clause defaults are optional compression surfaces; empty
   defaults mappings are non-canonical.
 

@@ -36,7 +36,7 @@ fields:
     since: v2
   harness.docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   harness.docs[].summary:
     type: string
@@ -88,7 +88,7 @@ fields:
     since: v2
   harness.docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   harness.docs[].owners[].role:
     type: string
@@ -213,7 +213,7 @@ fields:
     since: v2
   services.entries[].docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   services.entries[].docs[].summary:
     type: string
@@ -265,7 +265,7 @@ fields:
     since: v2
   services.entries[].docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   services.entries[].docs[].owners[].role:
     type: string
@@ -403,7 +403,7 @@ fields:
     since: v2
   artifact.imports[].docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   artifact.imports[].docs[].summary:
     type: string
@@ -455,7 +455,7 @@ fields:
     since: v2
   artifact.imports[].docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   artifact.imports[].docs[].owners[].role:
     type: string
@@ -526,7 +526,7 @@ fields:
     since: v2
   artifact.exports[].docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   artifact.exports[].docs[].summary:
     type: string
@@ -578,7 +578,7 @@ fields:
     since: v2
   artifact.exports[].docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   artifact.exports[].docs[].owners[].role:
     type: string
@@ -659,7 +659,7 @@ fields:
     since: v2
   exports[].docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   exports[].docs[].summary:
     type: string
@@ -711,7 +711,7 @@ fields:
     since: v2
   exports[].docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   exports[].docs[].owners[].role:
     type: string
@@ -777,7 +777,7 @@ fields:
     since: v2
   docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   docs[].summary:
     type: string
@@ -819,7 +819,7 @@ fields:
     since: v2
   docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   docs[].owners[].role:
     type: string
@@ -877,7 +877,7 @@ fields:
     since: v2
   contracts[].docs[].id:
     type: string
-    required: true
+    required: false
     since: v2
   contracts[].docs[].summary:
     type: string
@@ -929,7 +929,7 @@ fields:
     since: v2
   contracts[].docs[].owners[].id:
     type: string
-    required: true
+    required: false
     since: v2
   contracts[].docs[].owners[].role:
     type: string

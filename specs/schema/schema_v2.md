@@ -69,11 +69,14 @@ Related docs/reference schemas:
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
 - `docs` (list, optional): suite-level documentation metadata entries
-  - required entry keys: `id`, `summary`, `audience`, `status`
+  - required entry keys: `summary`, `audience`, `status`
+  - `id` is optional; when omitted, normalization assigns deterministic
+    scope-local ids (`doc_<index>`)
   - optional entry keys: `description`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`, `examples`
   - `docs[].type` enum: `overview|reference|howto|policy|contract|changelog`
   - unknown entry keys are invalid in v2
-  - `docs[].id` MUST be unique within each containing `docs[]` array scope
+  - `docs[].id` values (explicit and generated) MUST be unique within each
+    containing `docs[]` array scope
 
 Bundle/package management is not part of `contract-spec` suite shape in v2.
 Bundle taxonomy, lock, and package semantics are defined at package-contract
@@ -205,6 +208,8 @@ Parser behavior:
 - singular `doc` surfaces are invalid in v2; use `docs[]`
 - `contracts[].harness` is invalid in v2 (hard cut)
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
+- `contracts[].clauses.predicates[].id` is optional; missing ids normalize to
+  deterministic `assert_<index>` ids within each predicate list
 - unknown `services.entries[].type` MUST hard-fail during schema validation
 - invalid `services.entries[].io` MUST hard-fail during schema validation
 - `services.entries[].imports` supports canonical list[mapping] and compact
@@ -227,6 +232,12 @@ Parser behavior:
   or `artifact.exports[].id`)
 - implicit harness/service target symbol injection is invalid; artifact symbols are
   declaration-and-binding derived only
+- implicit-id normalization rules:
+  - `contracts[].clauses.predicates[].id` => `assert_<index>`
+  - `...docs[].id` => `doc_<index>`
+  - `...docs[].owners[].id` => `owner_<index>`
+  - explicit and generated ids share one uniqueness pool per containing list
+  - any duplicate/collision is a schema hard-fail
 - `bindings[].mode` supports `merge|override`:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
@@ -799,7 +810,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.profile` | `string` | `true` | `v2` |
 | `harness.config` | `mapping` | `false` | `v2` |
 | `harness.docs` | `list` | `false` | `v2` |
-| `harness.docs[].id` | `string` | `true` | `v2` |
+| `harness.docs[].id` | `string` | `false` | `v2` |
 | `harness.docs[].summary` | `string` | `true` | `v2` |
 | `harness.docs[].audience` | `string` | `true` | `v2` |
 | `harness.docs[].status` | `string` | `true` | `v2` |
@@ -809,7 +820,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].updated_at` | `string` | `false` | `v2` |
 | `harness.docs[].tags` | `list` | `false` | `v2` |
 | `harness.docs[].owners` | `list` | `false` | `v2` |
-| `harness.docs[].owners[].id` | `string` | `true` | `v2` |
+| `harness.docs[].owners[].id` | `string` | `false` | `v2` |
 | `harness.docs[].owners[].role` | `string` | `true` | `v2` |
 | `harness.docs[].links` | `list` | `false` | `v2` |
 | `harness.docs[].links[].rel` | `string` | `true` | `v2` |
@@ -828,7 +839,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].imports[].names` | `list` | `true` | `v2` |
 | `services.entries[].imports[].as` | `mapping` | `false` | `v2` |
 | `services.entries[].docs` | `list` | `false` | `v2` |
-| `services.entries[].docs[].id` | `string` | `true` | `v2` |
+| `services.entries[].docs[].id` | `string` | `false` | `v2` |
 | `services.entries[].docs[].summary` | `string` | `true` | `v2` |
 | `services.entries[].docs[].audience` | `string` | `true` | `v2` |
 | `services.entries[].docs[].status` | `string` | `true` | `v2` |
@@ -838,7 +849,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].docs[].updated_at` | `string` | `false` | `v2` |
 | `services.entries[].docs[].tags` | `list` | `false` | `v2` |
 | `services.entries[].docs[].owners` | `list` | `false` | `v2` |
-| `services.entries[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `services.entries[].docs[].owners[].id` | `string` | `false` | `v2` |
 | `services.entries[].docs[].owners[].role` | `string` | `true` | `v2` |
 | `services.entries[].docs[].links` | `list` | `false` | `v2` |
 | `services.entries[].docs[].links[].rel` | `string` | `true` | `v2` |
@@ -869,7 +880,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.imports[].inputs` | `mapping` | `false` | `v2` |
 | `artifact.imports[].options` | `mapping` | `false` | `v2` |
 | `artifact.imports[].docs` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].id` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].id` | `string` | `false` | `v2` |
 | `artifact.imports[].docs[].summary` | `string` | `true` | `v2` |
 | `artifact.imports[].docs[].audience` | `string` | `true` | `v2` |
 | `artifact.imports[].docs[].status` | `string` | `true` | `v2` |
@@ -879,7 +890,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.imports[].docs[].updated_at` | `string` | `false` | `v2` |
 | `artifact.imports[].docs[].tags` | `list` | `false` | `v2` |
 | `artifact.imports[].docs[].owners` | `list` | `false` | `v2` |
-| `artifact.imports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `artifact.imports[].docs[].owners[].id` | `string` | `false` | `v2` |
 | `artifact.imports[].docs[].owners[].role` | `string` | `true` | `v2` |
 | `artifact.imports[].docs[].links` | `list` | `false` | `v2` |
 | `artifact.imports[].docs[].links[].rel` | `string` | `true` | `v2` |
@@ -894,7 +905,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.exports[].type` | `string` | `false` | `v2` |
 | `artifact.exports[].options` | `mapping` | `false` | `v2` |
 | `artifact.exports[].docs` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].id` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].id` | `string` | `false` | `v2` |
 | `artifact.exports[].docs[].summary` | `string` | `true` | `v2` |
 | `artifact.exports[].docs[].audience` | `string` | `true` | `v2` |
 | `artifact.exports[].docs[].status` | `string` | `true` | `v2` |
@@ -904,7 +915,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.exports[].docs[].updated_at` | `string` | `false` | `v2` |
 | `artifact.exports[].docs[].tags` | `list` | `false` | `v2` |
 | `artifact.exports[].docs[].owners` | `list` | `false` | `v2` |
-| `artifact.exports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `artifact.exports[].docs[].owners[].id` | `string` | `false` | `v2` |
 | `artifact.exports[].docs[].owners[].role` | `string` | `true` | `v2` |
 | `artifact.exports[].docs[].links` | `list` | `false` | `v2` |
 | `artifact.exports[].docs[].links[].rel` | `string` | `true` | `v2` |
@@ -920,7 +931,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].params` | `list` | `false` | `v2` |
 | `exports[].required` | `bool` | `false` | `v2` |
 | `exports[].docs` | `list` | `false` | `v2` |
-| `exports[].docs[].id` | `string` | `true` | `v2` |
+| `exports[].docs[].id` | `string` | `false` | `v2` |
 | `exports[].docs[].summary` | `string` | `true` | `v2` |
 | `exports[].docs[].audience` | `string` | `true` | `v2` |
 | `exports[].docs[].status` | `string` | `true` | `v2` |
@@ -930,7 +941,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].updated_at` | `string` | `false` | `v2` |
 | `exports[].docs[].tags` | `list` | `false` | `v2` |
 | `exports[].docs[].owners` | `list` | `false` | `v2` |
-| `exports[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `exports[].docs[].owners[].id` | `string` | `false` | `v2` |
 | `exports[].docs[].owners[].role` | `string` | `true` | `v2` |
 | `exports[].docs[].links` | `list` | `false` | `v2` |
 | `exports[].docs[].links[].rel` | `string` | `true` | `v2` |
@@ -944,7 +955,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `title` | `string` | `false` | `v2` |
 | `purpose` | `string` | `false` | `v2` |
 | `docs` | `list` | `false` | `v2` |
-| `docs[].id` | `string` | `true` | `v2` |
+| `docs[].id` | `string` | `false` | `v2` |
 | `docs[].summary` | `string` | `true` | `v2` |
 | `docs[].audience` | `string` | `true` | `v2` |
 | `docs[].status` | `string` | `true` | `v2` |
@@ -954,7 +965,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `docs[].updated_at` | `string` | `false` | `v2` |
 | `docs[].tags` | `list` | `false` | `v2` |
 | `docs[].owners` | `list` | `false` | `v2` |
-| `docs[].owners[].id` | `string` | `true` | `v2` |
+| `docs[].owners[].id` | `string` | `false` | `v2` |
 | `docs[].owners[].role` | `string` | `true` | `v2` |
 | `docs[].links` | `list` | `false` | `v2` |
 | `docs[].links[].rel` | `string` | `true` | `v2` |
@@ -968,7 +979,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].purpose` | `string` | `false` | `v2` |
 | `contracts[].domain` | `string` | `false` | `v2` |
 | `contracts[].docs` | `list` | `false` | `v2` |
-| `contracts[].docs[].id` | `string` | `true` | `v2` |
+| `contracts[].docs[].id` | `string` | `false` | `v2` |
 | `contracts[].docs[].summary` | `string` | `true` | `v2` |
 | `contracts[].docs[].audience` | `string` | `true` | `v2` |
 | `contracts[].docs[].status` | `string` | `true` | `v2` |
@@ -978,7 +989,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].docs[].updated_at` | `string` | `false` | `v2` |
 | `contracts[].docs[].tags` | `list` | `false` | `v2` |
 | `contracts[].docs[].owners` | `list` | `false` | `v2` |
-| `contracts[].docs[].owners[].id` | `string` | `true` | `v2` |
+| `contracts[].docs[].owners[].id` | `string` | `false` | `v2` |
 | `contracts[].docs[].owners[].role` | `string` | `true` | `v2` |
 | `contracts[].docs[].links` | `list` | `false` | `v2` |
 | `contracts[].docs[].links[].rel` | `string` | `true` | `v2` |
@@ -1034,7 +1045,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.profile` | `string` | true | `v2` |
 | `harness.config` | `mapping` | false | `v2` |
 | `harness.docs` | `list` | false | `v2` |
-| `harness.docs[].id` | `string` | true | `v2` |
+| `harness.docs[].id` | `string` | false | `v2` |
 | `harness.docs[].summary` | `string` | true | `v2` |
 | `harness.docs[].audience` | `string` | true | `v2` |
 | `harness.docs[].status` | `string` | true | `v2` |
@@ -1044,7 +1055,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].updated_at` | `string` | false | `v2` |
 | `harness.docs[].tags` | `list` | false | `v2` |
 | `harness.docs[].owners` | `list` | false | `v2` |
-| `harness.docs[].owners[].id` | `string` | true | `v2` |
+| `harness.docs[].owners[].id` | `string` | false | `v2` |
 | `harness.docs[].owners[].role` | `string` | true | `v2` |
 | `harness.docs[].links` | `list` | false | `v2` |
 | `harness.docs[].links[].rel` | `string` | true | `v2` |
@@ -1063,7 +1074,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].imports[].names` | `list` | true | `v2` |
 | `services.entries[].imports[].as` | `mapping` | false | `v2` |
 | `services.entries[].docs` | `list` | false | `v2` |
-| `services.entries[].docs[].id` | `string` | true | `v2` |
+| `services.entries[].docs[].id` | `string` | false | `v2` |
 | `services.entries[].docs[].summary` | `string` | true | `v2` |
 | `services.entries[].docs[].audience` | `string` | true | `v2` |
 | `services.entries[].docs[].status` | `string` | true | `v2` |
@@ -1073,7 +1084,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services.entries[].docs[].updated_at` | `string` | false | `v2` |
 | `services.entries[].docs[].tags` | `list` | false | `v2` |
 | `services.entries[].docs[].owners` | `list` | false | `v2` |
-| `services.entries[].docs[].owners[].id` | `string` | true | `v2` |
+| `services.entries[].docs[].owners[].id` | `string` | false | `v2` |
 | `services.entries[].docs[].owners[].role` | `string` | true | `v2` |
 | `services.entries[].docs[].links` | `list` | false | `v2` |
 | `services.entries[].docs[].links[].rel` | `string` | true | `v2` |
@@ -1104,7 +1115,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.imports[].inputs` | `mapping` | false | `v2` |
 | `artifact.imports[].options` | `mapping` | false | `v2` |
 | `artifact.imports[].docs` | `list` | false | `v2` |
-| `artifact.imports[].docs[].id` | `string` | true | `v2` |
+| `artifact.imports[].docs[].id` | `string` | false | `v2` |
 | `artifact.imports[].docs[].summary` | `string` | true | `v2` |
 | `artifact.imports[].docs[].audience` | `string` | true | `v2` |
 | `artifact.imports[].docs[].status` | `string` | true | `v2` |
@@ -1114,7 +1125,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.imports[].docs[].updated_at` | `string` | false | `v2` |
 | `artifact.imports[].docs[].tags` | `list` | false | `v2` |
 | `artifact.imports[].docs[].owners` | `list` | false | `v2` |
-| `artifact.imports[].docs[].owners[].id` | `string` | true | `v2` |
+| `artifact.imports[].docs[].owners[].id` | `string` | false | `v2` |
 | `artifact.imports[].docs[].owners[].role` | `string` | true | `v2` |
 | `artifact.imports[].docs[].links` | `list` | false | `v2` |
 | `artifact.imports[].docs[].links[].rel` | `string` | true | `v2` |
@@ -1129,7 +1140,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.exports[].type` | `string` | false | `v2` |
 | `artifact.exports[].options` | `mapping` | false | `v2` |
 | `artifact.exports[].docs` | `list` | false | `v2` |
-| `artifact.exports[].docs[].id` | `string` | true | `v2` |
+| `artifact.exports[].docs[].id` | `string` | false | `v2` |
 | `artifact.exports[].docs[].summary` | `string` | true | `v2` |
 | `artifact.exports[].docs[].audience` | `string` | true | `v2` |
 | `artifact.exports[].docs[].status` | `string` | true | `v2` |
@@ -1139,7 +1150,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `artifact.exports[].docs[].updated_at` | `string` | false | `v2` |
 | `artifact.exports[].docs[].tags` | `list` | false | `v2` |
 | `artifact.exports[].docs[].owners` | `list` | false | `v2` |
-| `artifact.exports[].docs[].owners[].id` | `string` | true | `v2` |
+| `artifact.exports[].docs[].owners[].id` | `string` | false | `v2` |
 | `artifact.exports[].docs[].owners[].role` | `string` | true | `v2` |
 | `artifact.exports[].docs[].links` | `list` | false | `v2` |
 | `artifact.exports[].docs[].links[].rel` | `string` | true | `v2` |
@@ -1155,7 +1166,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].params` | `list` | false | `v2` |
 | `exports[].required` | `bool` | false | `v2` |
 | `exports[].docs` | `list` | false | `v2` |
-| `exports[].docs[].id` | `string` | true | `v2` |
+| `exports[].docs[].id` | `string` | false | `v2` |
 | `exports[].docs[].summary` | `string` | true | `v2` |
 | `exports[].docs[].audience` | `string` | true | `v2` |
 | `exports[].docs[].status` | `string` | true | `v2` |
@@ -1165,7 +1176,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].updated_at` | `string` | false | `v2` |
 | `exports[].docs[].tags` | `list` | false | `v2` |
 | `exports[].docs[].owners` | `list` | false | `v2` |
-| `exports[].docs[].owners[].id` | `string` | true | `v2` |
+| `exports[].docs[].owners[].id` | `string` | false | `v2` |
 | `exports[].docs[].owners[].role` | `string` | true | `v2` |
 | `exports[].docs[].links` | `list` | false | `v2` |
 | `exports[].docs[].links[].rel` | `string` | true | `v2` |
@@ -1179,7 +1190,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `title` | `string` | false | `v2` |
 | `purpose` | `string` | false | `v2` |
 | `docs` | `list` | false | `v2` |
-| `docs[].id` | `string` | true | `v2` |
+| `docs[].id` | `string` | false | `v2` |
 | `docs[].summary` | `string` | true | `v2` |
 | `docs[].audience` | `string` | true | `v2` |
 | `docs[].status` | `string` | true | `v2` |
@@ -1189,7 +1200,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `docs[].updated_at` | `string` | false | `v2` |
 | `docs[].tags` | `list` | false | `v2` |
 | `docs[].owners` | `list` | false | `v2` |
-| `docs[].owners[].id` | `string` | true | `v2` |
+| `docs[].owners[].id` | `string` | false | `v2` |
 | `docs[].owners[].role` | `string` | true | `v2` |
 | `docs[].links` | `list` | false | `v2` |
 | `docs[].links[].rel` | `string` | true | `v2` |
@@ -1203,7 +1214,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].purpose` | `string` | false | `v2` |
 | `contracts[].domain` | `string` | false | `v2` |
 | `contracts[].docs` | `list` | false | `v2` |
-| `contracts[].docs[].id` | `string` | true | `v2` |
+| `contracts[].docs[].id` | `string` | false | `v2` |
 | `contracts[].docs[].summary` | `string` | true | `v2` |
 | `contracts[].docs[].audience` | `string` | true | `v2` |
 | `contracts[].docs[].status` | `string` | true | `v2` |
@@ -1213,7 +1224,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `contracts[].docs[].updated_at` | `string` | false | `v2` |
 | `contracts[].docs[].tags` | `list` | false | `v2` |
 | `contracts[].docs[].owners` | `list` | false | `v2` |
-| `contracts[].docs[].owners[].id` | `string` | true | `v2` |
+| `contracts[].docs[].owners[].id` | `string` | false | `v2` |
 | `contracts[].docs[].owners[].role` | `string` | true | `v2` |
 | `contracts[].docs[].links` | `list` | false | `v2` |
 | `contracts[].docs[].links[].rel` | `string` | true | `v2` |

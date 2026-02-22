@@ -4004,6 +4004,37 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Mixed item-kind imports, duplicate names, and catalog-invalid names are hard-fail schema checks.
+- rule_id: IMPLICIT_IDS_NON_REFERENCED_SURFACES_ALLOWED
+  policy_ref: specs/contract/policy_v1.yaml#IMPLICIT_IDS_NON_REFERENCED_SURFACES_ALLOWED
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/core.yaml
+  conformance_case_ids:
+  - DCCONF-IMPLICIT-ID-001
+  - DCCONF-IMPLICIT-ID-002
+  - DCCONF-IMPLICIT-ID-003
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/implicit_ids_v2.spec.md
+  notes: Predicate/docs/docs-owner ids may be omitted and are normalized deterministically.
+- rule_id: IMPLICIT_ID_COLLISIONS_HARD_FAIL
+  policy_ref: specs/contract/policy_v1.yaml#IMPLICIT_ID_COLLISIONS_HARD_FAIL
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-IMPLICIT-ID-004
+  - DCCONF-IMPLICIT-ID-005
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/implicit_ids_v2.spec.md
+  notes: Explicit and generated ids share one uniqueness pool per list scope.
 - rule_id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   contract_refs:

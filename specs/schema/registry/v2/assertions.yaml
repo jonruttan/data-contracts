@@ -51,9 +51,10 @@ fields:
     description: Non-empty predicate list.
   contracts[].clauses.predicates[].id:
     type: string
-    required: true
+    required: false
     since: v2
-    description: Stable predicate id.
+    description: Stable predicate id. When omitted, normalization assigns
+      deterministic `assert_<index>` ids in declaration order.
   contracts[].clauses.predicates[].imports:
     type: list
     required: false

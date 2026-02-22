@@ -4299,6 +4299,39 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: IMPLICIT_IDS_NON_REFERENCED_SURFACES_ALLOWED
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.implicit_ids
+  norm: MUST
+  requirement: predicate_and_docs_ids_may_be_implicit_with_deterministic_generation
+  description: Non-referenced id surfaces (`contracts[].clauses.predicates[].id`,
+    docs entry ids, docs owner ids) may be omitted and must normalize to deterministic
+    scope-local ids.
+  rationale: Reduces authoring overhead while preserving explicit normalized
+    runtime data and stable diagnostics.
+  risk_if_violated: Implementations drift between strict-required and implicit-id
+    behavior, reducing portability.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/conformance/cases/core/implicit_ids_v2.spec.md
+- id: IMPLICIT_ID_COLLISIONS_HARD_FAIL
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.implicit_ids.uniqueness
+  norm: MUST
+  requirement: explicit_and_generated_ids_share_uniqueness_pool_and_collisions_fail
+  description: Explicit and generated ids in the same containing list must share
+    one uniqueness pool; duplicate/colliding ids are schema hard-fail.
+  rationale: Prevents ambiguous references and non-deterministic diagnostics.
+  risk_if_violated: Silent id collisions can cause unstable case behavior across
+    runners.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/contract/21_schema_registry_contract.md
+  - specs/conformance/cases/core/implicit_ids_v2.spec.md
 - id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   introduced_in: v1
   scope: runtime
