@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.governance_check_family_map_complete'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-CANON-002
   title: governance check family map covers all registered checks
@@ -22,7 +21,8 @@ contracts:
     prefix.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

@@ -19,23 +19,24 @@ harness:
   type: unit.test
   profile: check
 services:
-  defaults:
-    type: io.system
-    io: input
-    profile: exec.command
-  actions:
-  - id: svc.assert_check.cli_run.1
-    config:
-      argv:
-      - "--help"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
-  - id: svc.assert_check.cli_run.2
-    config:
-      argv:
-      - "--json"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
+- type: io.system
+  id: svc.assert_check.cli_run.1
+  config:
+    argv:
+    - "--help"
+    exit_code: 0
+    entrypoint: spec_runner.conformance_fixtures:main
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.cli_run.2
+  config:
+    argv:
+    - "--json"
+    exit_code: 0
+    entrypoint: spec_runner.conformance_fixtures:main
+  mode: exec.command
+  direction: input
 contracts:
 - id: DCCONF-CLI-001
   title: conformance fixture sets explicit cli.run harness.entrypoint
@@ -64,7 +65,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - stdout
     predicates:
     - id: assert_1

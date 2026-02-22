@@ -13,11 +13,10 @@ harness:
       'freshness_state', 'policy_effect']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'runtime.runner_status_matrix_schema_valid'}}}"
 services:
-  actions:
-  - id: svc.root_runner_status_matrix_schema_path_specs_schema_runner_status_matrix_v1_yaml_required_tokens_type_runtime_runner_status_matrix_matrix_rows_freshness_state_policy_effect_check_profile_governance_scan_config_check_runtime_runner_status_matrix_schema_valid.default.1
-    type: legacy.root_runner_status_matrix_schema_path_specs_schema_runner_status_matrix_v1_yaml_required_tokens_type_runtime_runner_status_matrix_matrix_rows_freshness_state_policy_effect_check_profile_governance_scan_config_check_runtime_runner_status_matrix_schema_valid
-    io: io
-    profile: default
+- id: svc.root_runner_status_matrix_schema_path_specs_schema_runner_status_matrix_v1_yaml_required_tokens_type_runtime_runner_status_matrix_matrix_rows_freshness_state_policy_effect_check_profile_governance_scan_config_check_runtime_runner_status_matrix_schema_valid.default.1
+  type: legacy.root_runner_status_matrix_schema_path_specs_schema_runner_status_matrix_v1_yaml_required_tokens_type_runtime_runner_status_matrix_matrix_rows_freshness_state_policy_effect_check_profile_governance_scan_config_check_runtime_runner_status_matrix_schema_valid
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-STATUS-002
   title: runner status matrix schema is defined
@@ -25,7 +24,8 @@ contracts:
     and docs.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

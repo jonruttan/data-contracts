@@ -17,11 +17,10 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_api_http_allowed_top_level_keys_id_type_title_purpose_request_requests_assert_expect_requires_harness_allowed_assert_targets_status_headers_body_text_body_json_cors_json_steps_json_context_json_required_request_fields_method_url_check_profile_governance_scan_config_check_conformance_api_http_portable_shape_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_api_http_allowed_top_level_keys_id_type_title_purpose_request_requests_assert_expect_requires_harness_allowed_assert_targets_status_headers_body_text_body_json_cors_json_steps_json_context_json_required_request_fields_method_url_check_profile_governance_scan_config_check_conformance_api_http_portable_shape_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_api_http_allowed_top_level_keys_id_type_title_purpose_request_requests_assert_expect_requires_harness_allowed_assert_targets_status_headers_body_text_body_json_cors_json_steps_json_context_json_required_request_fields_method_url_check_profile_governance_scan_config_check_conformance_api_http_portable_shape_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_api_http_allowed_top_level_keys_id_type_title_purpose_request_requests_assert_expect_requires_harness_allowed_assert_targets_status_headers_body_text_body_json_cors_json_steps_json_context_json_required_request_fields_method_url_check_profile_governance_scan_config_check_conformance_api_http_portable_shape_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-CONF-API-001
   title: api.http portable conformance cases use canonical shape
@@ -29,7 +28,8 @@ contracts:
     canonical behavior assertion targets.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1
@@ -56,6 +56,7 @@ contracts:
           - lit: {}
         - conformance.api_http_portable_shape
       imports:
-      - artifact:
+      - from: artifact
+        names:
         - summary_json
 ```

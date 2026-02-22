@@ -13,11 +13,10 @@ harness:
       'specs/contract/10_docs_quality.md', 'specs/contract/27_runner_status_exchange.md']},
       'check': {'profile': 'governance.scan', 'config': {'check': 'docs.guide_contract_links_valid'}}}"
 services:
-  actions:
-  - id: svc.root_reference_guide_path_docs_book_90_reference_guide_md_required_tokens_guide_to_contract_map_guide_01_onboarding_md_guide_10_reference_navigation_patterns_md_specs_contract_10_docs_quality_md_specs_contract_27_runner_status_exchange_md_check_profile_governance_scan_config_check_docs_guide_contract_links_valid.default.1
-    type: legacy.root_reference_guide_path_docs_book_90_reference_guide_md_required_tokens_guide_to_contract_map_guide_01_onboarding_md_guide_10_reference_navigation_patterns_md_specs_contract_10_docs_quality_md_specs_contract_27_runner_status_exchange_md_check_profile_governance_scan_config_check_docs_guide_contract_links_valid
-    io: io
-    profile: default
+- id: svc.root_reference_guide_path_docs_book_90_reference_guide_md_required_tokens_guide_to_contract_map_guide_01_onboarding_md_guide_10_reference_navigation_patterns_md_specs_contract_10_docs_quality_md_specs_contract_27_runner_status_exchange_md_check_profile_governance_scan_config_check_docs_guide_contract_links_valid.default.1
+  type: legacy.root_reference_guide_path_docs_book_90_reference_guide_md_required_tokens_guide_to_contract_map_guide_01_onboarding_md_guide_10_reference_navigation_patterns_md_specs_contract_10_docs_quality_md_specs_contract_27_runner_status_exchange_md_check_profile_governance_scan_config_check_docs_guide_contract_links_valid
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-REF-024
   title: guide to contract links are valid
@@ -25,7 +24,8 @@ contracts:
     guide set.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

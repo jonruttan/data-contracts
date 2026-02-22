@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/30_build_tool_command_set.md'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCCONF-BTOOL-002
   title: runner build tool contract defines required bundle sync tasks
@@ -22,7 +21,8 @@ contracts:
     required tasks.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

@@ -5,24 +5,24 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.assert_check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+- id: svc.assert_check.text_file.1
+  type: io.fs
+  config:
+    use:
+    - as: lib_policy_text
+      symbols:
+      - policy.text.contains_pair
+      artifact_id: art.svc.assert_check.text_file.1.use_1.1
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-RSTAT-001
   title: runner status report schema is declared
   purpose: Ensures the producer-facing status report schema exists.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -37,7 +37,8 @@ contracts:
   purpose: Ensures the aggregate status matrix schema exists.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -52,7 +53,8 @@ contracts:
   purpose: Ensures ingest includes max-age controls and enforcement flag.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -67,7 +69,8 @@ contracts:
   purpose: Ensures missing compatibility status is represented and policy-scored.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -82,7 +85,8 @@ contracts:
   purpose: Ensures required lane status maps to blocking policy effect.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -95,7 +99,7 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.use_1.1
   ref: "/specs/libraries/policy/policy_text.spec.md"
-  io: input
+  direction: input
 ```
 
 

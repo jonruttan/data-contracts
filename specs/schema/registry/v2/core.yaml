@@ -135,64 +135,35 @@ fields:
     required: true
     since: v2
   services:
-    type: mapping
-    required: false
-    since: v2
-  services.defaults:
-    type: mapping
-    required: false
-    since: v2
-  services.defaults.type:
-    type: string
-    required: false
-    since: v2
-  services.defaults.io:
-    type: string
-    required: false
-    since: v2
-    enum:
-    - input
-    - output
-    - io
-    description: Defaults to io when omitted.
-  services.defaults.profile:
-    type: string
-    required: false
-    since: v2
-  services.defaults.config:
-    type: mapping
-    required: false
-    since: v2
-  services.actions:
     type: list
-    required: true
+    required: false
     since: v2
-  services.actions[].id:
+  services[].id:
     type: string
     required: true
     since: v2
-  services.actions[].type:
+  services[].type:
     type: string
     required: false
     since: v2
     description: Integration service type from service catalog (`io.fs`, `io.http`,
       `io.system`, `io.mysql`, `io.docs`). Legacy orchestration types (`assert.check`,
       `assert.export`, `ops.job`) are invalid in v2.
-  services.actions[].io:
+  services[].direction:
     type: string
     required: false
     since: v2
     enum:
     - input
     - output
-    - io
-  services.actions[].profile:
+    - bidirectional
+  services[].mode:
     type: string
     required: false
     since: v2
     description: Service mode token for resolved service type (for example `read.text`,
       `request.http`, `exec.command`, `generate.docs`).
-  services.actions[].config:
+  services[].config:
     type: mapping
     required: false
     since: v2
@@ -200,92 +171,88 @@ fields:
       declared in `artifacts[]` and referenced by artifact id fields;
       direct locator keys (`path`, `url`, `token_url`, `template_path`,
       `output_path`, `ref`) are invalid.
-  services.actions[].config.source_artifact_id:
+  services[].config.source_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for `read.text` source payloads; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.request.artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.request.artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for `request.http` single request url; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.requests[].artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.requests[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for `request.http` scenario request url; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.api_http.auth.oauth.token_artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.api_http.auth.oauth.token_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for oauth token endpoint locator; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.use[].artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.use[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for config.use dependency locator; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.docs_generate.template_artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.docs_generate.template_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs template input; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].config.docs_generate.output_artifact_id:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].config.docs_generate.output_artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs output target.
-  services.actions[].config.docs_generate.data_sources[].artifact_id:
+  services[].config.docs_generate.data_sources[].artifact_id:
     type: string
     required: false
     since: v2
     description: Artifact id for docs data source payload; must resolve to
-      `artifacts[].id` where `io` is `input` or `io`.
-  services.actions[].imports:
+      `artifacts[].id` where `direction` is `input` or `bidirectional`.
+  services[].imports:
     type: list
     required: false
     since: v2
-    description: Service import declarations. Accepts compact list[string]
-      alias (preferred) and canonical list[mapping] rows (`names`,
-      optional `as`). `imports: [a, b]` normalizes to canonical
-      `{names:[a,b]}`; compact rows do not support aliasing. Mixed list item
-      kinds in one `imports` list are invalid. Alias grammar and normalization are defined in
-      `/specs/schema/registry/v2/aliases.yaml`.
-  services.actions[].imports[].names:
+    description: Canonical service import declarations using mapping rows
+      (`names`, optional `as`).
+  services[].imports[].names:
     type: list
     required: true
     since: v2
     description: Declared service import names; each name must be unique per
       service entry after alias resolution and available for resolved
-      type+profile in service catalog.
-  services.actions[].imports[].as:
+      type+mode in service catalog.
+  services[].imports[].as:
     type: mapping
     required: false
     since: v2
-  services.actions[].docs:
+  services[].docs:
     type: list
     required: false
     since: v2
-  services.actions[].docs[].id:
+  services[].docs[].id:
     type: string
     required: false
     since: v2
     description: Optional metadata id for documentation entry. Not reference identity.
-  services.actions[].docs[].summary:
+  services[].docs[].summary:
     type: string
     required: true
     since: v2
-  services.actions[].docs[].audience:
+  services[].docs[].audience:
     type: string
     required: true
     since: v2
-  services.actions[].docs[].status:
+  services[].docs[].status:
     type: string
     required: true
     since: v2
@@ -294,11 +261,11 @@ fields:
     - active
     - deprecated
     - retired
-  services.actions[].docs[].description:
+  services[].docs[].description:
     type: string
     required: false
     since: v2
-  services.actions[].docs[].type:
+  services[].docs[].type:
     type: string
     required: false
     since: v2
@@ -309,28 +276,28 @@ fields:
     - policy
     - contract
     - changelog
-  services.actions[].docs[].since:
+  services[].docs[].since:
     type: string
     required: false
     since: v2
-  services.actions[].docs[].updated_at:
+  services[].docs[].updated_at:
     type: string
     required: false
     since: v2
-  services.actions[].docs[].tags:
+  services[].docs[].tags:
     type: list
     required: false
     since: v2
-  services.actions[].docs[].owners:
+  services[].docs[].owners:
     type: list
     required: false
     since: v2
-  services.actions[].docs[].owners[].id:
+  services[].docs[].owners[].id:
     type: string
     required: false
     since: v2
     description: Optional metadata id for docs owner entry. Not reference identity.
-  services.actions[].docs[].owners[].role:
+  services[].docs[].owners[].role:
     type: string
     required: true
     since: v2
@@ -338,11 +305,11 @@ fields:
     - owner
     - reviewer
     - approver
-  services.actions[].docs[].links:
+  services[].docs[].links:
     type: list
     required: false
     since: v2
-  services.actions[].docs[].links[].rel:
+  services[].docs[].links[].rel:
     type: string
     required: true
     since: v2
@@ -352,23 +319,23 @@ fields:
     - implements
     - supersedes
     - replaced_by
-  services.actions[].docs[].links[].ref:
+  services[].docs[].links[].ref:
     type: string
     required: true
     since: v2
-  services.actions[].docs[].links[].title:
+  services[].docs[].links[].title:
     type: string
     required: false
     since: v2
-  services.actions[].docs[].examples:
+  services[].docs[].examples:
     type: list
     required: false
     since: v2
-  services.actions[].docs[].examples[].title:
+  services[].docs[].examples[].title:
     type: string
     required: true
     since: v2
-  services.actions[].docs[].examples[].ref:
+  services[].docs[].examples[].ref:
     type: string
     required: true
     since: v2
@@ -385,14 +352,14 @@ fields:
     required: true
     since: v2
     description: Supports moustache templates resolved from suite context.
-  artifacts[].io:
+  artifacts[].direction:
     type: string
     required: true
     since: v2
     enum:
     - input
     - output
-    - io
+    - bidirectional
   artifacts[].type:
     type: string
     required: false
@@ -891,14 +858,11 @@ fields:
     required: false
     since: v2
   contracts[].bindings:
-    type: any
+    type: mapping
     required: false
     since: v2
-    description: Supports additive mapping form (preferred)
-      (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`) and
-      direct list form (`contracts[].bindings[]`), normalized to effective
-      binding rows before validation. Alias/shape grammar and effective-row normalization are
-      defined in `/specs/schema/registry/v2/aliases.yaml`.
+    description: Contract-local binding declarations using mapping form
+      (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`).
   contracts[].bindings.defaults:
     type: mapping
     required: false
@@ -945,26 +909,20 @@ fields:
     type: list
     required: false
     since: v2
-    description: Accepted input forms are canonical mapping rows (`from`, `as`)
-      and compact list[string] alias rows. Compact strings normalize to
-      canonical normalized form `{from:<id>}` before validation/runtime.
-      Mixed item kinds in one list are invalid.
+    description: Canonical mapping rows (`from`, optional `as`).
   contracts[].bindings.rows[].inputs[].from:
     type: string
     required: true
     since: v2
   contracts[].bindings.rows[].inputs[].as:
     type: string
-    required: true
+    required: false
     since: v2
   contracts[].bindings.rows[].outputs:
     type: list
     required: false
     since: v2
-    description: Accepted input forms are canonical mapping rows (`to`,
-      optional `as`, optional `path`) and compact list[string] alias rows.
-      Compact strings normalize to canonical normalized form `{to:<id>}`
-      before validation/runtime. Mixed item kinds in one list are invalid.
+    description: Canonical mapping rows (`to`, optional `as`, optional `path`).
   contracts[].bindings.rows[].outputs[].to:
     type: string
     required: true
@@ -982,69 +940,6 @@ fields:
     required: false
     since: v2
   contracts[].bindings.rows[].mode:
-    type: string
-    required: false
-    since: v2
-    enum:
-    - merge
-    - override
-  contracts[].bindings[].id:
-    type: string
-    required: true
-    since: v2
-  contracts[].bindings[].service:
-    type: string
-    required: false
-    since: v2
-    description: Optional when inherited from `contracts[].bindings.defaults.service`;
-      effective binding service is required after defaults merge.
-  contracts[].bindings[].import:
-    type: string
-    required: false
-    since: v2
-    description: Optional when inherited from `contracts[].bindings.defaults.import`;
-      effective binding import is required after defaults merge.
-  contracts[].bindings[].inputs:
-    type: list
-    required: false
-    since: v2
-    description: Accepted input forms are canonical mapping rows (`from`, `as`)
-      and compact list[string] alias rows. Compact strings normalize to
-      canonical normalized form `{from:<id>}` before validation/runtime.
-      Mixed item kinds in one list are invalid.
-  contracts[].bindings[].inputs[].from:
-    type: string
-    required: true
-    since: v2
-  contracts[].bindings[].inputs[].as:
-    type: string
-    required: true
-    since: v2
-  contracts[].bindings[].outputs:
-    type: list
-    required: false
-    since: v2
-    description: Accepted input forms are canonical mapping rows (`to`,
-      optional `as`, optional `path`) and compact list[string] alias rows.
-      Compact strings normalize to canonical normalized form `{to:<id>}`
-      before validation/runtime. Mixed item kinds in one list are invalid.
-  contracts[].bindings[].outputs[].to:
-    type: string
-    required: true
-    since: v2
-  contracts[].bindings[].outputs[].as:
-    type: string
-    required: false
-    since: v2
-  contracts[].bindings[].outputs[].path:
-    type: string
-    required: false
-    since: v2
-  contracts[].bindings[].predicates:
-    type: list
-    required: false
-    since: v2
-  contracts[].bindings[].mode:
     type: string
     required: false
     since: v2

@@ -10,18 +10,18 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.case_contract_block_required'}}}"
 services:
-  actions:
-  - id: svc.check_profile_governance_scan_config_check_runtime_case_contract_block_required.default.1
-    type: legacy.check_profile_governance_scan_config_check_runtime_case_contract_block_required
-    io: io
-    profile: default
+- id: svc.check_profile_governance_scan_config_check_runtime_case_contract_block_required.default.1
+  type: legacy.check_profile_governance_scan_config_check_runtime_case_contract_block_required
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-CONTRACT-BLOCK-001
   title: cases must use contract block
   purpose: Enforces top-level contract block requirement for executable cases.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

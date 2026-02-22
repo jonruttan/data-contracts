@@ -38,7 +38,7 @@ Scope separation:
   `clauses.predicates[].imports`.
 - suite-root `artifacts[]` are external
   reference declarations and do not implicitly bind assertion symbols.
-- `contracts[].bindings[]` materializes service-produced symbols into predicate
+- `contracts[].bindings.rows[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
 - binding I/O rows accept canonical mappings and compact string aliases; compact
   rows are endpoint-only (`to` for outputs, `from` for inputs).
@@ -50,28 +50,17 @@ Scope separation:
 
 Import binding shape:
 
-- `imports` is a list of canonical mapping items and compact alias items
-- compact alias rows are preferred authoring style
+- `imports` is a list of canonical mapping rows
 - canonical row form is `{from, names, service?, as?}`
-- compact grouped alias rows are allowed:
-  - `{artifact: [id_a, id_b]}`
-  - `{service: {id: svc.x, names: [...], as?: {...}}}`
-  - `"pipe_identity"` short alias row
-- compact alias rows normalize to canonical rows before validation/evaluation
-- canonical alias grammar source:
-  `/specs/schema/registry/v2/aliases.yaml`
-- short alias rows always normalize to `from: service` rows with
-  `service` resolved from `contracts[].bindings.defaults.service`
-- missing/empty `contracts[].bindings.defaults.service` with short alias rows
-  is a schema hard-fail
+- compact/short alias rows are invalid in v2
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)
 - runtime-produced artifact symbols MUST be explicitly wired through
-  `contracts[].bindings[].outputs` before predicate import use
+  `contracts[].bindings.rows[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
-- when `from: service`, `service` key is required and must reference suite `services.actions[].id`
+- when `from: service`, `service` key is required and must reference suite `services[].id`
 - referenced service actions must use integration-only catalog types (`io.*`);
   legacy orchestration service types are invalid in v2
 - `names` is a non-empty list of imported symbol keys
@@ -84,8 +73,8 @@ Import binding shape:
 
 Uniform terminology:
 
-- accepted input forms: parser-supported import row shapes
-- preferred authoring form: compact aliases when lossless/readable
+- accepted input forms: parser-supported canonical row shape
+- preferred authoring form: canonical rows
 - canonical normalized form: canonical row shape before validation/evaluation
 
 Import merge semantics:
@@ -94,7 +83,7 @@ Import merge semantics:
 - predicate imports override same-name defaults
 - `clauses.defaults` may provide inherited clause-level defaults; explicit row
   values always override inherited defaults
-- binding-piped symbols from `contracts[].bindings[]` are applied after import merge:
+- binding-piped symbols from `contracts[].bindings.rows[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
 - implicit harness/service symbol injection is forbidden

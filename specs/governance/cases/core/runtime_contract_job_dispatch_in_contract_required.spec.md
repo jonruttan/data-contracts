@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_job_dispatch_in_contract_required'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_dispatch_in_contract_required.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_dispatch_in_contract_required
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_dispatch_in_contract_required.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_dispatch_in_contract_required
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-001
   title: contract.job dispatch must be declared in contract
@@ -22,7 +21,8 @@ contracts:
     assertions.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

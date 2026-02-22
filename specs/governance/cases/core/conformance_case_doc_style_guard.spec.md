@@ -13,18 +13,18 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_conformance_case_doc_style_guard_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_conformance_case_doc_style_guard_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_conformance_case_doc_style_guard_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_conformance_case_doc_style_guard_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-CONF-STYLE-001
   title: conformance case documents satisfy style and purpose lint rules
   purpose: Ensures conformance fixtures remain readable, deterministic, and policy-compliant.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1
@@ -51,6 +51,7 @@ contracts:
           - lit: {}
         - conformance.case_doc_style_guard
       imports:
-      - artifact:
+      - from: artifact
+        names:
         - summary_json
 ```

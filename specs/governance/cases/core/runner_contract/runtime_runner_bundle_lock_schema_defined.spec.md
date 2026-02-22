@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-002
   title: project bundle lock schema is indexed
@@ -22,7 +21,8 @@ contracts:
     installs.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

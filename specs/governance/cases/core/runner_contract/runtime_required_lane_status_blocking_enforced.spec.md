@@ -12,18 +12,18 @@ harness:
       'required_tokens': ['lane_class', 'required', 'blocking_fail']}, 'check': {'profile':
       'governance.scan', 'config': {'check': 'runtime.required_lane_status_blocking_enforced'}}}"
 services:
-  actions:
-  - id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
-    type: legacy.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced
-    io: io
-    profile: default
+- id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
+  type: legacy.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-STATUS-006
   title: required lane status remains blocking
   purpose: Ensures required-lane status outcomes map to blocking policy effects.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

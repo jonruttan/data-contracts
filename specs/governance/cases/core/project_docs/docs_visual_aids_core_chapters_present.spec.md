@@ -13,11 +13,10 @@ harness:
       '25_system_topology.md', 'Mermaid diagram block']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'docs.visual_aids_core_chapters_present'}}}"
 services:
-  actions:
-  - id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
-    type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
-    io: io
-    profile: default
+- id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
+  type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-REF-022
   title: visual aids required in core chapters
@@ -25,7 +24,8 @@ contracts:
     for core narrative chapters.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

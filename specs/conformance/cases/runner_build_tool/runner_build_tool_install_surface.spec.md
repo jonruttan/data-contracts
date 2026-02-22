@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/scripts/bundle'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
-    type: legacy.check_profile_text_file_config_path_scripts_bundle
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+  type: legacy.check_profile_text_file_config_path_scripts_bundle
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCCONF-BTOOL-007
   title: bundle tooling exposes install command surface
@@ -22,7 +21,8 @@ contracts:
     project workflows.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

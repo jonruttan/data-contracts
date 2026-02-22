@@ -17,11 +17,10 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-REF-007
   title: docs use canonical make command entrypoints
@@ -29,7 +28,8 @@ contracts:
     for verification and gate execution.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1
@@ -56,6 +56,7 @@ contracts:
           - lit: {}
         - docs.make_commands_sync
       imports:
-      - artifact:
+      - from: artifact
+        names:
         - summary_json
 ```

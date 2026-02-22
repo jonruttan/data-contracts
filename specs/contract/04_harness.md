@@ -4,34 +4,22 @@
 
 - Runner dispatches by suite-root `harness` mapping.
 - Harness receives parsed suite/case data and execution context.
-- Optional suite-root `services.actions[]` provides concrete system hook
+- Optional suite-root `services[]` provides concrete system hook
   bindings (I/O and callable service import names).
-- `services.actions[].type` is integration-only in v2 (`io.fs`, `io.http`,
+- `services[].type` is integration-only in v2 (`io.fs`, `io.http`,
   `io.system`, `io.mysql`, `io.docs`); orchestration categories (`assert.check`,
   `assert.export`, `ops.job`) are invalid as service types.
-- `services.actions[].profile` is a mode token validated per integration type
+- `services[].mode` is a mode token validated per integration type
   (`read.text`, `request.http`, `exec.command`, `generate.docs`, etc.).
-- `services.actions[].imports` supports compact list string aliases (preferred)
-  and canonical list mappings (`names` + optional `as`) that normalize to
-  canonical mapping rows.
-- Mixed string/mapping item kinds in one `services.actions[].imports` list are
-  invalid.
-- Alias grammar source for services imports and contract bindings:
-  `/specs/schema/registry/v2/aliases.yaml`.
-- Contract-scoped `contracts[].bindings` connects contracts to services and artifact channels.
-  It supports additive compaction form (preferred)
-  `contracts[].bindings.defaults` + `contracts[].bindings.rows[]` and
-  direct `contracts[].bindings[]` rows.
-- Binding I/O accepted input forms:
-  - `outputs`: canonical row mappings or compact `list[string]`
-  - `inputs`: canonical row mappings or compact `list[string]`
-- Binding I/O compact rows encode only endpoint ids:
-  - output string `"x"` => canonical normalized `{to: x}`
-  - input string `"y"` => canonical normalized `{from: y}`
-- Canonical mapping rows remain required when `as` and/or `path` is needed.
-- Clause/predicate short import rows (`- pipe_identity`) resolve their service
-  id from `contracts[].bindings.defaults.service`; there is no implicit
-  single-service fallback.
+- `services[].imports` uses canonical list mappings (`names` + optional `as`).
+- compact service import aliases are invalid in v2.
+- Contract-scoped `contracts[].bindings` connects contracts to services and
+  artifact channels using `contracts[].bindings.defaults + contracts[].bindings.rows[]`.
+- Binding I/O uses canonical mapping rows:
+  - `outputs`: `{to, as?, path?}`
+  - `inputs`: `{from, as?}`
+- compact binding I/O aliases are invalid in v2.
+- clause/predicate imports use canonical rows only (`{from, names, service?, as?}`).
 - root `bindings` is invalid in v2.
 - Harness runtime workflow is componentized and MUST use shared components:
   `build_execution_context`, `run_assertions_with_context`,
@@ -46,9 +34,9 @@ Suite-root external references:
 - `artifacts[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
-  `artifacts[]` through `contracts[].bindings[]` mappings.
+  `artifacts[]` through `contracts[].bindings.rows[]` mappings.
 - services MUST NOT reference external locations directly in
-  `services.actions[].config`; direct locator keys (`path`, `url`, `token_url`,
+  `services[].config`; direct locator keys (`path`, `url`, `token_url`,
   `template_path`, `output_path`, `ref`) are invalid.
 - service config locators MUST be routed via artifact IDs using
   profile-specific `*_artifact_id` fields (for example
@@ -65,7 +53,7 @@ Suite-root external references:
   `/specs/contract/35_service_plugin_runtime.md`.
 - artifact symbols are available to predicates only when explicitly declared
   and wired.
-- when `contracts[].bindings[]` or `from: service` imports are present, `services` MUST be
+- when `contracts[].bindings.rows[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
 - binding defaults are additive only: explicit row values override defaults.
 - `service` and `import` are effective-required after defaults merge.
@@ -76,15 +64,15 @@ Suite-root external references:
 - report labels are not schema identity and must not be accepted as reference
   targets.
 - terminology:
-  - accepted input forms: parser-supported surfaces and alias shapes
-  - preferred authoring form: compact aliases / defaults+rows where lossless
+  - accepted input forms: parser-supported canonical surfaces
+  - preferred authoring form: canonical mappings / defaults+rows
   - canonical normalized form: deterministic post-normalization runtime shape
 
 ## Entrypoint
 
-For `harness.type: unit.test` with `services.actions[].profile: exec.command`:
+For `harness.type: unit.test` with `services[].mode: exec.command`:
 
-- `services.actions[].config.entrypoint` MUST be provided by the spec.
+- `services[].config.entrypoint` MUST be provided by the spec.
 - Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).
@@ -124,16 +112,16 @@ For `request.http`:
 
 `request.http` auth/runtime profile:
 
-- `services.actions[].config.api_http.mode` (optional): `deterministic` (default) or `live`
+- `services[].config.api_http.mode` (optional): `deterministic` (default) or `live`
   - `deterministic` forbids network `http(s)` fetches for request/token URLs
   - `live` allows network `http(s)` fetches
-- `services.actions[].config.api_http.scenario` (optional mapping):
+- `services[].config.api_http.scenario` (optional mapping):
   - `setup.command` / `teardown.command` for lifecycle shell commands
   - optional `setup.ready_probe` polling (`url`, `method`, expected status list,
     timeout/interval)
   - optional `cwd` / `env` for setup/teardown commands
   - `fail_fast` (default `true`)
-- `services.actions[].config.api_http.auth.oauth` (optional mapping):
+- `services[].config.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
   - `token_artifact_id` (required): artifacts import id containing token endpoint
     locator payload
@@ -300,7 +288,7 @@ Subject profile envelope contract:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
 - `read.text` locator payloads MUST be declared under `artifacts[]` and
-  referenced through `services.actions[].config.source_artifact_id`.
+  referenced through `services[].config.source_artifact_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 

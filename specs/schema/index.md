@@ -12,7 +12,7 @@ Canonical schema sources for executable `contract-spec` documents.
 - `/specs/schema/registry/v2/core.yaml`
 - `/specs/schema/registry/v2/assertions.yaml`
 - `/specs/schema/registry/v2/harness.yaml`
-- `/specs/schema/registry/v2/aliases.yaml`
+- `/specs/schema/registry/v2/core.yaml`
 - `/specs/schema/service_contract_catalog_v1.yaml`
 - `/specs/schema/service_plugin_manifest_v1.yaml`
 - `/specs/schema/service_plugin_lock_v1.yaml`

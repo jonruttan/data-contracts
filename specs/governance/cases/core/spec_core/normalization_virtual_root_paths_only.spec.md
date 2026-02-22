@@ -13,18 +13,18 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_normalization_virtual_root_paths_only_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_normalization_virtual_root_paths_only_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_normalization_virtual_root_paths_only_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_normalization_virtual_root_paths_only_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-NORM-PATHS-001
   title: scoped spec paths use canonical virtual-root form
   purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1

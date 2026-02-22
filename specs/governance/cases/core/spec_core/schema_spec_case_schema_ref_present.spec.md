@@ -12,11 +12,10 @@ harness:
       'required_tokens': ['missing_schema_ref_count']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'schema.spec_case_schema_ref_present'}}}"
 services:
-  actions:
-  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present.default.1
-    type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present
-    io: io
-    profile: default
+- id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present.default.1
+  type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-SCHEMA-PIN-002
   title: spec cases include schema_ref
@@ -24,7 +23,8 @@ contracts:
     contract-spec blocks.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

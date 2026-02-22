@@ -11,13 +11,12 @@ harness:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/33_bundle_package_management.md'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_build_tool_contract_v1.yaml'}}}"
 services:
-  defaults:
-    profile: default
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
-  - id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
+- id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+  mode: default
+- id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
+  mode: default
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-001
   title: runner bundle package management contract is defined
@@ -25,7 +24,8 @@ contracts:
     checksum requirements.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -69,7 +69,8 @@ contracts:
     include legacy spec-sync task ids.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

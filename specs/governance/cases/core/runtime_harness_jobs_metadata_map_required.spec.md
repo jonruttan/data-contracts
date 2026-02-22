@@ -10,18 +10,18 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.harness_jobs_metadata_list_required'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_harness_jobs_metadata_list_required.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_jobs_metadata_list_required
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_runtime_harness_jobs_metadata_list_required.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_jobs_metadata_list_required
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-002
   title: contract.job harness uses jobs metadata list
   purpose: Ensures contract.job cases declare helper metadata under harness.jobs entries.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

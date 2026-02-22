@@ -5,17 +5,18 @@ harness:
   type: unit.test
   profile: check
 services:
-  defaults:
-    type: io.fs
-    io: input
-    profile: read.text
-  actions:
-  - id: svc.assert_check.text_file.1
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-  - id: svc.assert_check.text_file.2
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+- type: io.fs
+  id: svc.assert_check.text_file.1
+  config:
+    source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  mode: read.text
+  direction: input
+- type: io.fs
+  id: svc.assert_check.text_file.2
+  config:
+    source_artifact_id: art.svc.assert_check.text_file.2.source.1
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-BUNDLE-001
   title: v2 schema docs forbid bundle suite metadata in contract-spec shape
@@ -27,7 +28,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -55,7 +57,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -76,8 +79,8 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
   ref: "/specs/schema/schema_v2.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.2.source.1
   ref: "/specs/schema/registry/v2/core.yaml"
-  io: input
+  direction: input
 ```

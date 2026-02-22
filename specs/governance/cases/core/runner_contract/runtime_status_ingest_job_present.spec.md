@@ -13,18 +13,18 @@ harness:
       72 --enforce-freshness']}, 'check': {'profile': 'governance.scan', 'config':
       {'check': 'runtime.status_ingest_job_present'}}}"
 services:
-  actions:
-  - id: svc.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present.default.1
-    type: legacy.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present
-    io: io
-    profile: default
+- id: svc.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present.default.1
+  type: legacy.root_ci_ingest_job_path_github_workflows_ci_yml_required_tokens_runner_status_ingest_none_scripts_runner_status_ingest_sh_max_age_hours_72_enforce_freshness_check_profile_governance_scan_config_check_runtime_status_ingest_job_present
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-CI-002
   title: status ingest job present in ci
   purpose: Ensures CI includes a status-ingest control-plane job.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

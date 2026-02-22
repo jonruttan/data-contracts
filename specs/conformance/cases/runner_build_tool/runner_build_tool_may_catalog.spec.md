@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config.default.1
-    type: legacy.check_profile_text_file_config
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config.default.1
+  type: legacy.check_profile_text_file_config
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCCONF-BTOOL-004
   title: runner build tool contract defines optional task catalog
@@ -22,7 +21,8 @@ contracts:
     capabilities.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

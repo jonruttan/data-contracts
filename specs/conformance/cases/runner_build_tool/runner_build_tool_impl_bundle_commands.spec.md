@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/34_runner_implementation_spec_bundles.md'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCCONF-BTOOL-010
   title: implementation bundle contract defines build and package command surface
@@ -22,7 +21,8 @@ contracts:
     and package-check command vocabulary.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

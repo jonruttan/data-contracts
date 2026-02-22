@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.spec_index_reachability'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_docs_spec_index_reachability.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_docs_spec_index_reachability
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_docs_spec_index_reachability.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_docs_spec_index_reachability
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-CANON-001
   title: specs index links all canonical spec entrypoints
@@ -22,7 +21,8 @@ contracts:
     snapshot.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

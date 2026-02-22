@@ -20,10 +20,7 @@ fields:
     required: false
     since: v2
     description: 'Clause-level default import bindings inherited by predicates.
-      Accepted input forms include canonical rows (`from`, `names`, optional
-      `service`, optional `as`) and compact alias rows defined in
-      `/specs/schema/registry/v2/aliases.yaml`. Canonical normalized form is
-      canonical row shape before validation/runtime. For `from: artifact`,
+      Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
       imported names must resolve to suite-declared `artifacts[].id` and be
       explicitly wired when runtime-produced.'
   contracts[].clauses.imports[].from:
@@ -35,7 +32,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services.actions[].id.
+    description: Required when from=service; references services[].id.
   contracts[].clauses.imports[].names:
     type: list
     required: true
@@ -62,10 +59,8 @@ fields:
     required: false
     since: v2
     description: 'Predicate-level imports merged over clauses.imports.
-      Accepted input forms include canonical rows and compact alias rows as
-      defined in `/specs/schema/registry/v2/aliases.yaml`; canonical normalized
-      form is canonical row shape before validation/runtime. For
-      `from: artifact`, names must resolve to suite-declared `artifacts[].id`.'
+      Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
+      names must resolve to suite-declared `artifacts[].id`.'
   contracts[].clauses.predicates[].imports[].from:
     type: string
     required: true
@@ -75,7 +70,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services.actions[].id.
+    description: Required when from=service; references services[].id.
   contracts[].clauses.predicates[].imports[].names:
     type: list
     required: true

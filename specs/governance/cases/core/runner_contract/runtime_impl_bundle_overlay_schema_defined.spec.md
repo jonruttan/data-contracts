@@ -11,13 +11,12 @@ harness:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/implementation_bundle_build_lock_v1.yaml'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
 services:
-  defaults:
-    profile: default
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
+- id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+  mode: default
+- id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
+  mode: default
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-006
   title: implementation overlay schemas are indexed and include integrity fields
@@ -25,7 +24,8 @@ contracts:
     integrity fields for overlay bundle builds.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -44,7 +44,8 @@ contracts:
     resolved_files hash.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

@@ -14,11 +14,10 @@ harness:
       in runner repositories']}, 'check': {'profile': 'governance.scan', 'config':
       {'check': 'runtime.docs_no_required_lane_language'}}}"
 services:
-  actions:
-  - id: svc.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language.default.1
-    type: legacy.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language
-    io: io
-    profile: default
+- id: svc.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language.default.1
+  type: legacy.root_docs_language_files_readme_md_docs_development_md_docs_book_index_md_docs_book_60_runner_and_gates_md_required_tokens_implementation_agnostic_control_plane_runtime_execution_ownership_lives_in_runner_repositories_check_profile_governance_scan_config_check_runtime_docs_no_required_lane_language
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-DOCS-001
   title: docs use control-plane language
@@ -26,7 +25,8 @@ contracts:
     control-plane.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

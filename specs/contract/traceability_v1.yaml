@@ -4005,14 +4005,14 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-027
   - DCCONF-SCHEMA-CASE-028
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
-  notes: Service imports support compact list[string] aliases normalized to canonical rows.
+  notes: Service imports support canonical mapping rows normalized to canonical rows.
 - rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
   contract_refs:
@@ -4020,7 +4020,7 @@ links:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-027
   - DCCONF-SCHEMA-CASE-028
@@ -4035,13 +4035,13 @@ links:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-002
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
-  notes: Clause and predicate imports prefer compact aliases while keeping canonical rows valid.
+  notes: Clause and predicate imports prefer canonical rowes while keeping canonical rows valid.
 - rule_id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   contract_refs:
@@ -4049,7 +4049,7 @@ links:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-003
   unit_test_refs: []
@@ -4064,21 +4064,21 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/core.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-037
   - DCCONF-SCHEMA-CASE-038
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/schema_case_validation.spec.md
-  notes: Binding inputs/outputs support compact list[string] aliases normalized to canonical endpoint rows.
+  notes: Binding inputs/outputs support canonical mapping rows normalized to canonical endpoint rows.
 - rule_id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
   contract_refs:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-039
   - DCCONF-SCHEMA-CASE-040
@@ -4093,7 +4093,7 @@ links:
   - specs/contract/04_harness.md
   schema_refs:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-037
   - DCCONF-SCHEMA-CASE-038
@@ -4108,7 +4108,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-029
   - DCCONF-SCHEMA-CASE-030
@@ -4125,7 +4125,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-032
   - DCCONF-SCHEMA-CASE-033
@@ -4142,7 +4142,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-034
   - DCCONF-SCHEMA-CASE-035
@@ -4156,7 +4156,7 @@ links:
   contract_refs:
   - specs/contract/21_schema_registry_contract.md
   schema_refs:
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/assertions.yaml
   - specs/schema/schema_v2.md

@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_certification_compat_lanes_non_blocking'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_runner_certification_compat_lanes_non_blocking.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_compat_lanes_non_blocking
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_runtime_runner_certification_compat_lanes_non_blocking.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_compat_lanes_non_blocking
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-CERT-005
   title: compatibility lanes remain non-blocking in certification
@@ -22,7 +21,8 @@ contracts:
     in certification artifacts.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

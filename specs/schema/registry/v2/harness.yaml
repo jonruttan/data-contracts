@@ -23,51 +23,38 @@ fields:
     since: v2
     description: Harness runtime configuration mapping.
   services:
-    type: mapping
-    required: false
-    since: v2
-    description: Optional suite-level service bindings with defaults and 
-      entries; required when service imports or contract bindings are used.
-  services.defaults:
-    type: mapping
-    required: false
-    since: v2
-    description: Optional defaults merged into each services.actions[] row.
-  services.actions:
     type: list
-    required: true
+    required: false
     since: v2
-    description: Non-empty service entries for concrete runtime hooks.
-  services.actions[].config:
+    description: Optional suite-level service bindings; required when service
+      imports or contract bindings are used.
+  services[].config:
     type: mapping
     required: false
     since: v2
     description: Service runtime configuration. External locators must be routed
       through artifact ids (`*_artifact_id`/`*_artifact_ids`); direct locator
       keys are invalid.
-  services.actions[].id:
+  services[].id:
     type: string
     required: true
     since: v2
-  services.actions[].type:
+  services[].type:
     type: string
     required: false
     since: v2
     description: Service type resolved by service_contract_catalog_v1.
-  services.actions[].imports:
+  services[].imports:
     type: list
     required: false
-    description: Service callable imports. Supports compact list[string] alias
-      (preferred) and canonical list[mapping] (`names`, optional `as`). Mixed
-      item kinds are invalid. Alias grammar and normalization are defined in
-      `/specs/schema/registry/v2/aliases.yaml`.
+    description: Canonical service callable import rows (`names`, optional `as`).
     since: v2
-  services.actions[].imports[].names:
+  services[].imports[].names:
     type: list
     required: true
     since: v2
     description: Service import names bound as service_id.import_name.
-  services.actions[].imports[].as:
+  services[].imports[].as:
     type: mapping
     required: false
     since: v2

@@ -5,11 +5,10 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.assert_check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
+- id: svc.assert_check.text_file.1
+  type: io.fs
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-PHP-TEXT-001
   title: text.file contain assertion passes in php bootstrap
@@ -20,7 +19,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -37,7 +37,8 @@ contracts:
       category: assertion
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -54,7 +55,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -71,7 +73,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -92,7 +95,8 @@ contracts:
       category: assertion
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -113,7 +117,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -135,7 +140,8 @@ contracts:
       category: assertion
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -157,7 +163,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -184,7 +191,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -201,7 +209,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -218,7 +227,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -235,7 +245,8 @@ contracts:
       category: assertion
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -252,7 +263,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -273,7 +285,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

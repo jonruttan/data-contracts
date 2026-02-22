@@ -5,13 +5,12 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.assert_check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+- id: svc.assert_check.text_file.1
+  type: io.fs
+  config:
+    source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-SCHEMA-STDLIB-003
   title: json parsing and type predicates stay deterministic
@@ -21,7 +20,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -49,7 +49,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -73,7 +74,7 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
   ref: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
-  io: input
+  direction: input
 ```
 
 

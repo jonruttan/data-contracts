@@ -14,11 +14,10 @@ harness:
       'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
       'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_git_hook_prepush_hook_path_githooks_pre_push_install_script_scripts_ci_gate_sh_makefile_path_makefile_check_profile_governance_scan_config_check_runtime_git_hook_prepush_enforced_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_git_hook_prepush_hook_path_githooks_pre_push_install_script_scripts_ci_gate_sh_makefile_path_makefile_check_profile_governance_scan_config_check_runtime_git_hook_prepush_enforced_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_git_hook_prepush_hook_path_githooks_pre_push_install_script_scripts_ci_gate_sh_makefile_path_makefile_check_profile_governance_scan_config_check_runtime_git_hook_prepush_enforced_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_git_hook_prepush_hook_path_githooks_pre_push_install_script_scripts_ci_gate_sh_makefile_path_makefile_check_profile_governance_scan_config_check_runtime_git_hook_prepush_enforced_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-PREPUSH-003
   title: managed pre-push hook enforces local parity gate
@@ -26,7 +25,8 @@ contracts:
     canonical script.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

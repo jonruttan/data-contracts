@@ -5,272 +5,291 @@ harness:
   type: unit.test
   profile: check
 services:
-  defaults:
-    type: io.system
-    io: input
-    profile: exec.command
-  actions:
-  - id: svc.assert_check.default.1
-    config:
-      jobs:
-      - id: main
-        mode: build
-        helper: helper.schema.registry_report
-        inputs:
-          format: json
-          out: ".artifacts/schema_registry_report.json"
-          check: false
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-004.fail.json"
-          format: json
-          report_name: DCCONF-JOB-004.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-004.complete.json"
-          format: json
-          report_name: DCCONF-JOB-004.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.1.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.2
-    config:
-      jobs:
-      - id: main
-        mode: check
-        helper: helper.schema.registry_report
-        inputs:
-          format: json
-          out: ".artifacts/schema_registry_report.json"
-          check: true
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-005.fail.json"
-          format: json
-          report_name: DCCONF-JOB-005.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-005.complete.json"
-          format: json
-          report_name: DCCONF-JOB-005.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.2.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.3
-    config:
-      jobs:
-      - id: main
-        mode: lint
-        helper: helper.docs.lint
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-006.fail.json"
-          format: json
-          report_name: DCCONF-JOB-006.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-006.complete.json"
-          format: json
-          report_name: DCCONF-JOB-006.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.3.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.4
-    config:
-      jobs:
-      - id: main
-        mode: build
-        helper: helper.docs.generate_all
-        inputs:
-          action: build
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-007.fail.json"
-          format: json
-          report_name: DCCONF-JOB-007.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-007.complete.json"
-          format: json
-          report_name: DCCONF-JOB-007.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.4.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.5
-    config:
-      jobs:
-      - id: main
-        mode: check
-        helper: helper.docs.generate_all
-        inputs:
-          action: check
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-008.fail.json"
-          format: json
-          report_name: DCCONF-JOB-008.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-008.complete.json"
-          format: json
-          report_name: DCCONF-JOB-008.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.5.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.6
-    config:
-      jobs:
-      - id: main
-        mode: build
-        helper: helper.docs.generate_all
-        inputs:
-          action: build
-          surface: reference_book
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-009.fail.json"
-          format: json
-          report_name: DCCONF-JOB-009.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-009.complete.json"
-          format: json
-          report_name: DCCONF-JOB-009.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.6.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.7
-    config:
-      jobs:
-      - id: main
-        mode: check
-        helper: helper.docs.generate_all
-        inputs:
-          action: check
-          surface: reference_book
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-010.fail.json"
-          format: json
-          report_name: DCCONF-JOB-010.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-010.complete.json"
-          format: json
-          report_name: DCCONF-JOB-010.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.7.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
-  - id: svc.assert_check.default.8
-    config:
-      jobs:
-      - id: main
-        mode: build
-        helper: helper.docs.generate_all
-        inputs:
-          action: build
-          surface: docs_graph
-      - id: on_fail
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-011.fail.json"
-          format: json
-          report_name: DCCONF-JOB-011.fail
-      - id: on_complete
-        helper: helper.report.emit
-        mode: report
-        inputs:
-          out: ".artifacts/job-hooks/DCCONF-JOB-011.complete.json"
-          format: json
-          report_name: DCCONF-JOB-011.complete
-      use:
-      - as: lib_policy_job
-        symbols:
-        - policy.job.dispatch_ok
-        - policy.job.written_path_contains
-        artifact_id: art.svc.assert_check.default.8.use_1.1
-      spec_lang:
-        capabilities:
-        - ops.helper
-        - ops.job
+- type: io.system
+  id: svc.assert_check.default.1
+  config:
+    jobs:
+    - id: main
+      mode: build
+      helper: helper.schema.registry_report
+      inputs:
+        format: json
+        out: ".artifacts/schema_registry_report.json"
+        check: false
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-004.fail.json"
+        format: json
+        report_name: DCCONF-JOB-004.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-004.complete.json"
+        format: json
+        report_name: DCCONF-JOB-004.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.1.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.2
+  config:
+    jobs:
+    - id: main
+      mode: check
+      helper: helper.schema.registry_report
+      inputs:
+        format: json
+        out: ".artifacts/schema_registry_report.json"
+        check: true
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-005.fail.json"
+        format: json
+        report_name: DCCONF-JOB-005.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-005.complete.json"
+        format: json
+        report_name: DCCONF-JOB-005.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.2.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.3
+  config:
+    jobs:
+    - id: main
+      mode: lint
+      helper: helper.docs.lint
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-006.fail.json"
+        format: json
+        report_name: DCCONF-JOB-006.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-006.complete.json"
+        format: json
+        report_name: DCCONF-JOB-006.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.3.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.4
+  config:
+    jobs:
+    - id: main
+      mode: build
+      helper: helper.docs.generate_all
+      inputs:
+        action: build
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-007.fail.json"
+        format: json
+        report_name: DCCONF-JOB-007.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-007.complete.json"
+        format: json
+        report_name: DCCONF-JOB-007.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.4.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.5
+  config:
+    jobs:
+    - id: main
+      mode: check
+      helper: helper.docs.generate_all
+      inputs:
+        action: check
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-008.fail.json"
+        format: json
+        report_name: DCCONF-JOB-008.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-008.complete.json"
+        format: json
+        report_name: DCCONF-JOB-008.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.5.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.6
+  config:
+    jobs:
+    - id: main
+      mode: build
+      helper: helper.docs.generate_all
+      inputs:
+        action: build
+        surface: reference_book
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-009.fail.json"
+        format: json
+        report_name: DCCONF-JOB-009.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-009.complete.json"
+        format: json
+        report_name: DCCONF-JOB-009.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.6.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.7
+  config:
+    jobs:
+    - id: main
+      mode: check
+      helper: helper.docs.generate_all
+      inputs:
+        action: check
+        surface: reference_book
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-010.fail.json"
+        format: json
+        report_name: DCCONF-JOB-010.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-010.complete.json"
+        format: json
+        report_name: DCCONF-JOB-010.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.7.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
+- type: io.system
+  id: svc.assert_check.default.8
+  config:
+    jobs:
+    - id: main
+      mode: build
+      helper: helper.docs.generate_all
+      inputs:
+        action: build
+        surface: docs_graph
+    - id: on_fail
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-011.fail.json"
+        format: json
+        report_name: DCCONF-JOB-011.fail
+    - id: on_complete
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: ".artifacts/job-hooks/DCCONF-JOB-011.complete.json"
+        format: json
+        report_name: DCCONF-JOB-011.complete
+    use:
+    - as: lib_policy_job
+      symbols:
+      - policy.job.dispatch_ok
+      - policy.job.written_path_contains
+      artifact_id: art.svc.assert_check.default.8.use_1.1
+    spec_lang:
+      capabilities:
+      - ops.helper
+      - ops.job
+  mode: exec.command
+  direction: input
 contracts:
 - id: DCCONF-JOB-004
   title: schema registry build via contract.job
@@ -278,7 +297,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -301,7 +321,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -324,7 +345,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -347,7 +369,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -370,7 +393,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -393,7 +417,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -416,7 +441,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -439,7 +465,8 @@ contracts:
     state.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1
@@ -459,28 +486,28 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.default.1.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.2.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.3.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.4.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.5.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.6.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.7.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.default.8.use_1.1
   ref: "/specs/libraries/policy/policy_job.spec.md"
-  io: input
+  direction: input
 ```
 
 

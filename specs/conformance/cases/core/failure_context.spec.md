@@ -12,11 +12,10 @@ harness:
     legacy_contract_harnesses:
     - check
 services:
-  actions:
-  - id: svc.check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
+- id: svc.check.text_file.1
+  type: io.fs
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-ERR-001
   title: failing assertion includes context tokens in message
@@ -33,7 +32,8 @@ contracts:
       - op=evaluate
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

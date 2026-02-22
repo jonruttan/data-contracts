@@ -9,7 +9,7 @@ Machine-readable normative policy:
 - `/specs/contract/policy_v1.yaml`
 - `/specs/contract/traceability_v1.yaml`
 - `/specs/contract/rule_template.md`
-- schema alias grammar source: `/specs/schema/registry/v2/aliases.yaml`
+- schema alias grammar source: `/specs/schema/registry/v2/core.yaml`
 
 Read in order:
 

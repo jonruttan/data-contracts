@@ -26,7 +26,7 @@ rules:
   requirement: imported_artifact_symbols_must_be_declared_and_wired
   description: 'Any `from: artifact` import name must be explicitly declared in
     suite `artifacts[]`; runtime-produced symbols
-    must be explicitly wired through `contracts[].bindings[].outputs`.
+    must be explicitly wired through `contracts[].bindings.rows[].outputs`.
 
     '
   rationale: Eliminates implicit symbol magic and keeps predicate dataflow explicit.
@@ -66,7 +66,7 @@ rules:
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
   scope: case
-  applies_to: services.actions[].config
+  applies_to: services[].config
   norm: MUST
   requirement: service_config_locators_use_artifact_import_ids_only
   description: Service config must not embed direct locator values (`path`,
@@ -4302,7 +4302,7 @@ rules:
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.actions.imports
+  applies_to: schema.v2.services.imports
   norm: MUST
   requirement: services_entries_imports_accepts_compact_string_list_alias
   description: Service import declarations must accept canonical list mappings
@@ -4315,22 +4315,22 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
   scope: authoring
-  applies_to: schema.v2.services.actions.imports.style
+  applies_to: schema.v2.services.imports.style
   norm: SHOULD
   requirement: services_imports_compact_alias_is_preferred_authoring_form
   description: Authoring should prefer compact list[string] alias rows for
-    `services.actions[].imports`; canonical mapping rows should be used when
+    `services[].imports`; canonical mapping rows should be used when
     aliasing (`as`) is required.
   rationale: Reduces repetitive syntax while keeping normalized runtime semantics.
   risk_if_violated: Fixture style drifts and cognitive overhead increases.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
@@ -4338,7 +4338,7 @@ rules:
   applies_to: schema.v2.contracts.clauses.imports.style
   norm: SHOULD
   requirement: clause_imports_prefer_compact_alias_rows
-  description: Authoring should prefer compact alias rows for clause/predicate
+  description: Authoring should prefer canonical row rows for clause/predicate
     imports (bare string, `artifact`, `service` object aliases), while retaining
     canonical rows when they express intent more clearly.
   rationale: Reduces repetitive import syntax and keeps style uniform across active
@@ -4346,7 +4346,7 @@ rules:
   risk_if_violated: Equivalent import bindings drift in style and increase cognitive load.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/contract/03_assertions.md
 - id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   introduced_in: v2
@@ -4361,7 +4361,7 @@ rules:
   risk_if_violated: Binding blocks become repetitive and harder to maintain.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/contract/04_harness.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
   introduced_in: v2
@@ -4370,13 +4370,13 @@ rules:
   norm: MUST
   requirement: contract_bindings_io_accept_compact_string_aliases
   description: Binding `inputs` and `outputs` must accept canonical mapping rows
-    and compact list[string] aliases, normalized before validation/runtime.
+    and canonical mapping rows, normalized before validation/runtime.
   rationale: Reduces boilerplate in binding I/O declarations while preserving deterministic semantics.
   risk_if_violated: Runners diverge on accepted binding authoring forms.
   references:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/core.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
@@ -4384,13 +4384,13 @@ rules:
   applies_to: schema.v2.contracts.bindings.io.validation
   norm: MUST
   requirement: contract_bindings_io_compact_mixed_empty_duplicate_checks_enforced
-  description: Binding I/O compact aliases must hard-fail on mixed item kinds in one list,
+  description: Binding I/O canonical rowes must hard-fail on mixed item kinds in one list,
     empty/whitespace string items, and duplicate effective endpoint ids after normalization.
   rationale: Keeps compact binding I/O behavior deterministic and portable.
   risk_if_violated: Binding wiring becomes ambiguous and validation weakens across runners.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
@@ -4404,24 +4404,24 @@ rules:
   risk_if_violated: Equivalent binding blocks drift in style and increase cognitive load.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/contract/04_harness.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.actions.imports.validation
+  applies_to: schema.v2.services.imports.validation
   norm: MUST
   requirement: services_import_alias_mixed_duplicate_catalog_checks_enforced
   description: Mixed compact/mapping item kinds in one
-    `services.actions[].imports` list, duplicate effective import names, and
+    `services[].imports` list, duplicate effective import names, and
     catalog-invalid import names must hard-fail schema validation.
-  rationale: Keeps compact alias behavior deterministic and machine-checkable.
+  rationale: Keeps canonical row behavior deterministic and machine-checkable.
   risk_if_violated: Compact import declarations become ambiguous and drift across
     runner implementations.
   references:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
   introduced_in: v2
@@ -4439,7 +4439,7 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   introduced_in: v2
@@ -4451,13 +4451,13 @@ rules:
     id from `contracts[].bindings.defaults.service`; missing defaults service,
     unknown service id, empty alias names, or unsupported import names must
     hard-fail.
-  rationale: Keeps compact alias behavior deterministic and prevents implicit
+  rationale: Keeps canonical row behavior deterministic and prevents implicit
     service resolution.
   risk_if_violated: Alias resolution becomes ambiguous and validation weakens.
   references:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
   introduced_in: v2
@@ -4466,12 +4466,12 @@ rules:
   norm: MUST
   requirement: v2_alias_grammar_must_be_defined_in_aliases_registry
   description: Alias grammar for compact/short forms must be defined in
-    `/specs/schema/registry/v2/aliases.yaml`, with core/assertion registries
+    `/specs/schema/registry/v2/core.yaml`, with core/assertion registries
     containing canonical fields only.
   rationale: Eliminates duplicated alias semantics and reduces ambiguity.
   risk_if_violated: Alias behavior drifts between registry surfaces and docs.
   references:
-  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/assertions.yaml
   - specs/schema/schema_v2.md
@@ -4494,10 +4494,10 @@ rules:
 - id: SERVICES_INTEGRATION_TYPES_ONLY_V2
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.actions.type
+  applies_to: schema.v2.services.type
   norm: MUST
   requirement: v2_services_types_must_be_integration_only
-  description: services.actions[].type must resolve to integration service categories only
+  description: services[].type must resolve to integration service categories only
     (`io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`). Legacy orchestration
     categories (`assert.check`, `assert.export`, `ops.job`) are invalid.
   rationale: Separates system integration concerns from assertion/export/job orchestration semantics.
@@ -4509,10 +4509,10 @@ rules:
 - id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.services.actions.profile
+  applies_to: schema.v2.services.profile
   norm: MUST
   requirement: v2_service_profiles_must_be_mode_style_and_type_compatible
-  description: services.actions[].profile must be a mode token validated against
+  description: services[].mode must be a mode token validated against
     the resolved integration type from service catalog. Legacy profile tokens
     (`text.file`, `api.http`, `cli.run`, `docs.generate`) are invalid.
   rationale: Eliminates duplicated identity semantics between service type and profile.

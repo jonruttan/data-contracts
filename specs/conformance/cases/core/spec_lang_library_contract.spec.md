@@ -5,37 +5,41 @@ harness:
   type: unit.test
   profile: check
 services:
-  defaults:
-    type: io.fs
-    io: input
-    profile: read.text
-  actions:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        - policy.text.contains_none
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-  - id: svc.assert_check.text_file.2
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        - policy.text.contains_none
-        artifact_id: art.svc.assert_check.text_file.2.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
-  - id: svc.assert_check.text_file.3
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        artifact_id: art.svc.assert_check.text_file.3.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.3.source.1
+- type: io.fs
+  id: svc.assert_check.text_file.1
+  config:
+    use:
+    - as: lib_policy_text
+      symbols:
+      - policy.text.contains_all
+      - policy.text.contains_none
+      artifact_id: art.svc.assert_check.text_file.1.use_1.1
+    source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  mode: read.text
+  direction: input
+- type: io.fs
+  id: svc.assert_check.text_file.2
+  config:
+    use:
+    - as: lib_policy_text
+      symbols:
+      - policy.text.contains_all
+      - policy.text.contains_none
+      artifact_id: art.svc.assert_check.text_file.2.use_1.1
+    source_artifact_id: art.svc.assert_check.text_file.2.source.1
+  mode: read.text
+  direction: input
+- type: io.fs
+  id: svc.assert_check.text_file.3
+  config:
+    use:
+    - as: lib_policy_text
+      symbols:
+      - policy.text.contains_all
+      artifact_id: art.svc.assert_check.text_file.3.use_1.1
+    source_artifact_id: art.svc.assert_check.text_file.3.source.1
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-LIB-CONTRACT-001
   title: policy library uses producer harness exports
@@ -46,7 +50,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -73,7 +78,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -99,7 +105,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -113,22 +120,22 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
   ref: "/specs/libraries/policy/policy_core.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.1.use_1.1
   ref: "/specs/libraries/policy/policy_text.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.2.source.1
   ref: "/specs/libraries/path/path_core.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.2.use_1.1
   ref: "/specs/libraries/policy/policy_text.spec.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.3.source.1
   ref: "/specs/libraries/policy/index.md"
-  io: input
+  direction: input
 - id: art.svc.assert_check.text_file.3.use_1.1
   ref: "/specs/libraries/policy/policy_text.spec.md"
-  io: input
+  direction: input
 ```
 
 

@@ -10,18 +10,18 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.chain_imports_consumer_surface_unchanged'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-004
   title: chain imports consumer surface remains unchanged
   purpose: Ensures consumer bindings continue to use harness.chain.imports semantics.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - summary_json
     predicates:
     - id: assert_1

@@ -5,8 +5,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.default.1
+- id: svc.default.1
 contracts:
 - id: DCCONF-IMPLICIT-ID-001
   title: omitted docs id remains valid metadata
@@ -38,8 +37,7 @@ harness:
     owners:
     - role: owner
 services:
-  actions:
-  - id: svc.default.2
+- id: svc.default.2
 contracts:
 - id: DCCONF-IMPLICIT-ID-002
   title: omitted docs owner id remains valid metadata
@@ -61,8 +59,7 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.default.3
+- id: svc.default.3
 contracts:
 - id: DCCONF-IMPLICIT-ID-003
   title: missing predicate id is schema failure
@@ -83,9 +80,9 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.default.4
-    imports:
+- id: svc.default.4
+  imports:
+  - names:
     - pipe_identity
 contracts:
 - id: DCCONF-IMPLICIT-ID-004
@@ -101,7 +98,7 @@ contracts:
     rows:
     - id: bind.invalid.synthetic
       outputs:
-      - out_json
+      - to: out_json
   clauses:
     predicates:
     - id: assert_1
@@ -111,5 +108,5 @@ artifacts:
 - id: out_json
   ref: artifact://implicit_ids/out_json
   type: application/json
-  io: output
+  direction: output
 ```

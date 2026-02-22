@@ -11,17 +11,17 @@ harness:
     - export
     - unknown_harness
 services:
-  actions:
-  - id: svc.check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
-  - id: svc.check.default.1
-    type: io.fs
-    io: input
-    profile: read.text
-    imports:
+- id: svc.check.text_file.1
+  type: io.fs
+  mode: read.text
+  direction: input
+- id: svc.check.default.1
+  type: io.fs
+  imports:
+  - names:
     - pipe_identity
+  mode: read.text
+  direction: input
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -36,14 +36,16 @@ exports:
 contracts:
 - id: DCCONF-SCHEMA-CASE-001
   title: valid core shape compiles and runs
-  purpose: Ensures standard top-level keys accepted by registry validation continue to execute successfully.
+  purpose: Ensures standard top-level keys accepted by registry validation continue
+    to execute successfully.
   expect:
     portable:
       status: pass
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -60,7 +62,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -400,12 +403,12 @@ contracts:
       category:
   clauses:
     imports:
-    - service:
-        id: svc.check.default.1
-        names:
-        - pipe_identity
-        as:
-          pipe_identity: subject
+    - from: service
+      service: svc.check.default.1
+      names:
+      - pipe_identity
+      as:
+        pipe_identity: subject
     predicates:
     - id: assert_1
       assert:
@@ -420,10 +423,10 @@ contracts:
       category: schema
   clauses:
     imports:
-    - service:
-        id: svc.unknown
-        names:
-        - pipe_identity
+    - from: service
+      service: svc.unknown
+      names:
+      - pipe_identity
     predicates:
     - id: assert_1
       assert:
@@ -456,7 +459,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - undeclared_symbol
     predicates:
     - id: assert_1
@@ -476,7 +480,7 @@ contracts:
     - id: bind_schema_case_037
       service: svc.check.default.1
       outputs:
-      - schema_ref_export
+      - to: schema_ref_export
   clauses:
     predicates:
     - id: assert_1
@@ -496,9 +500,9 @@ contracts:
     - id: bind_schema_case_038
       service: svc.check.default.1
       inputs:
-      - schema_ref_doc
+      - from: schema_ref_doc
       outputs:
-      - schema_ref_export
+      - to: schema_ref_export
   clauses:
     predicates:
     - id: assert_1
@@ -518,7 +522,7 @@ contracts:
     - id: bind_schema_case_039
       service: svc.check.default.1
       outputs:
-      - schema_ref_export
+      - to: schema_ref_export
       - to: schema_ref_export
   clauses:
     predicates:
@@ -539,7 +543,7 @@ contracts:
     - id: bind_schema_case_040
       service: svc.check.default.1
       outputs:
-      - " "
+      - to: " "
   clauses:
     predicates:
     - id: assert_1
@@ -559,8 +563,8 @@ contracts:
     - id: bind_schema_case_041
       service: svc.check.default.1
       outputs:
-      - schema_ref_export
-      - schema_ref_export
+      - to: schema_ref_export
+      - to: schema_ref_export
   clauses:
     predicates:
     - id: assert_1
@@ -574,7 +578,7 @@ artifacts:
   - summary: schema reference import
     audience: spec-authors
     status: active
-  io: input
+  direction: input
 - id: schema_ref_export
   ref: "{{schema_ref}}"
   type: application/json
@@ -582,7 +586,7 @@ artifacts:
   - summary: schema reference export
     audience: spec-authors
     status: active
-  io: output
+  direction: output
 - id: text
   ref: "{{schema_ref}}"
   type: text/plain
@@ -590,5 +594,5 @@ artifacts:
   - summary: schema text export
     audience: spec-authors
     status: active
-  io: output
+  direction: output
 ```

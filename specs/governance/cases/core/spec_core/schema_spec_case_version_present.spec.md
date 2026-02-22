@@ -12,11 +12,10 @@ harness:
       'required_tokens': ['missing_spec_version_count']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'schema.spec_case_version_present'}}}"
 services:
-  actions:
-  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present.default.1
-    type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present
-    io: io
-    profile: default
+- id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present.default.1
+  type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_spec_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_present
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-SCHEMA-PIN-001
   title: spec cases include spec_version
@@ -24,7 +23,8 @@ contracts:
     executable contract-spec blocks.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

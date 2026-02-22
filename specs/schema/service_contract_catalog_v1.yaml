@@ -13,7 +13,7 @@ services:
   allowed_io:
   - input
   - output
-  - io
+  - bidirectional
   available_imports_by_profile:
     request.http:
     - pipe_identity
@@ -32,7 +32,7 @@ services:
   allowed_io:
   - input
   - output
-  - io
+  - bidirectional
   available_imports_by_profile:
     mysql.query:
     - query
@@ -52,7 +52,7 @@ services:
   allowed_io:
   - input
   - output
-  - io
+  - bidirectional
   available_imports_by_profile:
     read.text:
     - pipe_identity
@@ -75,7 +75,7 @@ services:
   allowed_io:
   - input
   - output
-  - io
+  - bidirectional
   available_imports_by_profile:
     exec.command:
     - pipe_identity
@@ -96,7 +96,7 @@ services:
   allowed_io:
   - input
   - output
-  - io
+  - bidirectional
   available_imports_by_profile:
     generate.docs:
     - pipe_identity
@@ -106,11 +106,11 @@ services:
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
   io_transport: artifact_ids_only
-  binding_service_requirement: contracts[].bindings[].service is required; no implicit/default
-    service resolution
+  binding_service_requirement: contracts[].bindings.rows[].service is required;
+    no implicit/default service resolution
   required_mappings:
-    inputs: contracts[].bindings[].inputs[].from -> artifacts[].id (io=input|io)
-    outputs: contracts[].bindings[].outputs[].to -> artifacts[].id (io=output|io)
+    inputs: contracts[].bindings.rows[].inputs[].from -> artifacts[].id (direction=input|bidirectional)
+    outputs: contracts[].bindings.rows[].outputs[].to -> artifacts[].id (direction=output|bidirectional)
   service_config_usage: static_only_no_runtime_payload_transport
   bound_symbol_format: service_id.import_name
   binding_import_validation:
@@ -128,24 +128,21 @@ service_locator_contract_v2:
     artifacts ids using `*_artifact_id` fields.
   profile_locator_fields:
     read.text:
-    - services.actions[].config.source_artifact_id
+    - services[].config.source_artifact_id
     request.http:
-    - services.actions[].config.request.artifact_id
-    - services.actions[].config.requests[].artifact_id
-    - services.actions[].config.api_http.auth.oauth.token_artifact_id
-    - services.actions[].config.use[].artifact_id
+    - services[].config.request.artifact_id
+    - services[].config.requests[].artifact_id
+    - services[].config.api_http.auth.oauth.token_artifact_id
+    - services[].config.use[].artifact_id
     generate.docs:
-    - services.actions[].config.docs_generate.template_artifact_id
-    - services.actions[].config.docs_generate.output_artifact_id
-    - services.actions[].config.docs_generate.data_sources[].artifact_id
+    - services[].config.docs_generate.template_artifact_id
+    - services[].config.docs_generate.output_artifact_id
+    - services[].config.docs_generate.data_sources[].artifact_id
   artifact_resolution:
-  - every *_artifact_id resolves to artifacts[].id (io=input|io)
-  - every *_artifact_ids[] entry resolves to artifacts[].id (io=input|io)
+  - every *_artifact_id resolves to artifacts[].id (direction=input|bidirectional)
+  - every *_artifact_ids[] entry resolves to artifacts[].id (direction=input|bidirectional)
 import_declaration_shape_v2:
-  services.actions[].imports: list[mapping]|list[string]
-  services.actions[].imports[].names: list[string]
-  services.actions[].imports[].as: mapping(optional)
-  services.actions[].imports_compact: list[string] expands to one canonical
-    row `{names:[...]}` (no aliasing support in compact form)
-  services.actions[].imports_mixed_item_kinds: invalid
-  legacy_object_form: invalid
+  services[].imports: list[mapping]
+  services[].imports[].names: list[string]
+  services[].imports[].as: mapping(optional)
+  legacy_compact_form: invalid

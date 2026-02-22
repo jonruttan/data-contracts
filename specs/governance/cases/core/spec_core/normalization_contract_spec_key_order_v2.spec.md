@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/schema_v2.md'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-NORM-007
   title: v2 contract spec key order contract is documented
@@ -22,7 +21,8 @@ contracts:
     ordering for formatter enforcement.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

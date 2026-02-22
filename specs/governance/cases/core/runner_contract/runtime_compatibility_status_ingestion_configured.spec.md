@@ -13,11 +13,10 @@ harness:
       'report_asset_name', 'runner-status-matrix.json', 'runner-status-ingest-log.json']},
       'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.compatibility_status_ingestion_configured'}}}"
 services:
-  actions:
-  - id: svc.root_status_ingestion_files_scripts_runner_status_ingest_sh_specs_schema_runner_certification_registry_v2_yaml_required_tokens_release_api_url_report_asset_name_runner_status_matrix_json_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_compatibility_status_ingestion_configured.default.1
-    type: legacy.root_status_ingestion_files_scripts_runner_status_ingest_sh_specs_schema_runner_certification_registry_v2_yaml_required_tokens_release_api_url_report_asset_name_runner_status_matrix_json_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_compatibility_status_ingestion_configured
-    io: io
-    profile: default
+- id: svc.root_status_ingestion_files_scripts_runner_status_ingest_sh_specs_schema_runner_certification_registry_v2_yaml_required_tokens_release_api_url_report_asset_name_runner_status_matrix_json_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_compatibility_status_ingestion_configured.default.1
+  type: legacy.root_status_ingestion_files_scripts_runner_status_ingest_sh_specs_schema_runner_certification_registry_v2_yaml_required_tokens_release_api_url_report_asset_name_runner_status_matrix_json_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_compatibility_status_ingestion_configured
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-STATUS-003
   title: compatibility status ingestion is configured
@@ -25,7 +24,8 @@ contracts:
     artifacts.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

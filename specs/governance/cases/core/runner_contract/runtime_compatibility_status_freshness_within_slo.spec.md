@@ -13,18 +13,18 @@ harness:
       'compatibility_stale_or_missing_count']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'runtime.compatibility_status_freshness_within_slo'}}}"
 services:
-  actions:
-  - id: svc.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo.default.1
-    type: legacy.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo
-    io: io
-    profile: default
+- id: svc.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo.default.1
+  type: legacy.root_freshness_policy_files_scripts_runner_status_ingest_sh_scripts_ci_gate_sh_required_tokens_max_age_hours_72_enforce_freshness_compatibility_stale_or_missing_count_check_profile_governance_scan_config_check_runtime_compatibility_status_freshness_within_slo
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-STATUS-004
   title: compatibility status freshness is bounded by SLO
   purpose: Ensures compatibility status telemetry enforces the 72-hour freshness budget.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

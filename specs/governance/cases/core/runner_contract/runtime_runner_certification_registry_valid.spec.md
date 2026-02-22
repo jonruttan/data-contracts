@@ -12,18 +12,18 @@ harness:
       'required_runner_ids': ['rust', 'python', 'php', 'node', 'c']}, 'check': {'profile':
       'governance.scan', 'config': {'check': 'runtime.runner_certification_registry_valid'}}}"
 services:
-  actions:
-  - id: svc.root_runner_certification_path_specs_schema_runner_certification_registry_v2_yaml_required_runner_ids_rust_python_php_node_c_check_profile_governance_scan_config_check_runtime_runner_certification_registry_valid.default.1
-    type: legacy.root_runner_certification_path_specs_schema_runner_certification_registry_v2_yaml_required_runner_ids_rust_python_php_node_c_check_profile_governance_scan_config_check_runtime_runner_certification_registry_valid
-    io: io
-    profile: default
+- id: svc.root_runner_certification_path_specs_schema_runner_certification_registry_v2_yaml_required_runner_ids_rust_python_php_node_c_check_profile_governance_scan_config_check_runtime_runner_certification_registry_valid.default.1
+  type: legacy.root_runner_certification_path_specs_schema_runner_certification_registry_v2_yaml_required_runner_ids_rust_python_php_node_c_check_profile_governance_scan_config_check_runtime_runner_certification_registry_valid
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-CERT-001
   title: runner certification registry shape is valid
   purpose: Ensures runner certification registry entries are complete and deterministic.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

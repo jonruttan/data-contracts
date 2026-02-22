@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/33_bundle_package_management.md'}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCCONF-BTOOL-006
   title: bundle package contract defines canonical data-contract-bundle asset naming
@@ -22,7 +21,8 @@ contracts:
     prefix and version token format.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

@@ -10,18 +10,18 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {}}}"
 services:
-  actions:
-  - id: svc.check_profile_text_file_config.default.1
-    type: legacy.check_profile_text_file_config
-    io: io
-    profile: default
+- id: svc.check_profile_text_file_config.default.1
+  type: legacy.check_profile_text_file_config
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-BTOOL-002
   title: runner build tool contract schema is defined
   purpose: Ensures tool-agnostic build tool schema is present in schema index.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

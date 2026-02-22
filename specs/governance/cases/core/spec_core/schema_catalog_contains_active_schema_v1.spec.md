@@ -13,18 +13,18 @@ harness:
       {'status': 'active'}]}, 'check': {'profile': 'governance.scan', 'config': {'check':
       'schema.catalog_contains_active_schema_v2'}}}"
 services:
-  actions:
-  - id: svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
-    type: legacy.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2
-    io: io
-    profile: default
+- id: svc.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2.default.1
+  type: legacy.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-SCHEMA-PIN-005
   title: schema catalog includes active contract-spec v2
   purpose: Ensures active schema catalog includes canonical contract-spec v2 entry.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

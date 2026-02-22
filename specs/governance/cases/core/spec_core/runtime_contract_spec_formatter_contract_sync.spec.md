@@ -11,13 +11,12 @@ harness:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/29_runner_cli_interface.md'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_cli_contract_v1.yaml'}}}"
 services:
-  defaults:
-    profile: default
-  actions:
-  - id: svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
-    type: legacy.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
-  - id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
-    type: legacy.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
+- id: svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
+  type: legacy.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
+  mode: default
+- id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
+  type: legacy.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
+  mode: default
 contracts:
 - id: DCGOV-RUNTIME-RCLI-006
   title: contract spec formatter command contract is synchronized
@@ -25,7 +24,8 @@ contracts:
     command surface and mode metadata.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1

@@ -18,11 +18,10 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-  actions:
-  - id: svc.root_conformance_evaluate_first_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_segment_rules_prefix_specs_conformance_cases_segment_conformance_recursive_true_check_profile_governance_scan_config_check_conformance_evaluate_first_ratio_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-    type: legacy.root_conformance_evaluate_first_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_segment_rules_prefix_specs_conformance_cases_segment_conformance_recursive_true_check_profile_governance_scan_config_check_conformance_evaluate_first_ratio_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-    io: io
-    profile: default
+- id: svc.root_conformance_evaluate_first_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_segment_rules_prefix_specs_conformance_cases_segment_conformance_recursive_true_check_profile_governance_scan_config_check_conformance_evaluate_first_ratio_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+  type: legacy.root_conformance_evaluate_first_non_regression_baseline_path_specs_governance_metrics_spec_lang_adoption_baseline_json_segment_fields_conformance_mean_logic_self_contained_ratio_non_decrease_epsilon_1e_12_spec_lang_adoption_roots_specs_conformance_cases_segment_rules_prefix_specs_conformance_cases_segment_conformance_recursive_true_check_profile_governance_scan_config_check_conformance_evaluate_first_ratio_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-CONF-SPECLANG-002
   title: conformance evaluate-first ratio is non-regressing
@@ -30,7 +29,8 @@ contracts:
     against the checked-in spec-lang adoption baseline.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1
@@ -57,6 +57,7 @@ contracts:
           - lit: {}
         - conformance.evaluate_first_ratio_non_regression
       imports:
-      - artifact:
+      - from: artifact
+        names:
         - summary_json
 ```

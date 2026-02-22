@@ -10,23 +10,27 @@ harness:
   type: unit.test
   profile: check
 services:
-  defaults:
-    type: io.fs
-    io: input
-    profile: read.text
-  actions:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: lib_assertion_core_spec
-        symbols:
-        - conf.pass_when_text_contains
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-  - id: svc.assert_check.text_file.2
-  - id: svc.assert_check.text_file.3
-    config:
-      spec_lang:
-        max_steps: 20
+- type: io.fs
+  id: svc.assert_check.text_file.1
+  config:
+    use:
+    - as: lib_assertion_core_spec
+      symbols:
+      - conf.pass_when_text_contains
+      artifact_id: art.svc.assert_check.text_file.1.use_1.1
+  mode: read.text
+  direction: input
+- type: io.fs
+  id: svc.assert_check.text_file.2
+  mode: read.text
+  direction: input
+- type: io.fs
+  id: svc.assert_check.text_file.3
+  config:
+    spec_lang:
+      max_steps: 20
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-EXPR-001
   title: evaluate simple predicate passes
@@ -40,7 +44,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -63,7 +68,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -91,7 +97,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -136,7 +143,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -158,7 +166,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -179,7 +188,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -202,7 +212,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -239,7 +250,8 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -268,7 +280,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -295,7 +308,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -321,7 +335,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -357,7 +372,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -396,7 +412,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -434,7 +451,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -511,7 +529,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -573,7 +592,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -601,7 +621,8 @@ contracts:
       - over-application error
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -628,7 +649,8 @@ contracts:
       - expects list
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -651,7 +673,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -756,7 +779,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -843,7 +867,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -908,7 +933,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -978,7 +1004,8 @@ contracts:
       category:
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -1144,7 +1171,8 @@ contracts:
       - arity error
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -1154,7 +1182,7 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.use_1.1
   ref: "/specs/libraries/conformance/assertion_core.spec.md"
-  io: input
+  direction: input
 ```
 
 

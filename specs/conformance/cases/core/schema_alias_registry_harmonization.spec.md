@@ -6,14 +6,14 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.alias.harmonize.1
-    type: io.fs
-    io: input
-    profile: read.text
-    imports:
+- id: svc.alias.harmonize.1
+  type: io.fs
+  imports:
+  - names:
     - pipe_identity
     - assert_truth
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-SCHEMA-ALIAS-001
   title: services imports compact aliases remain valid via alias registry
@@ -37,13 +37,17 @@ contracts:
       service: svc.alias.harmonize.1
       import: pipe_identity
       mode: merge
+    rows: []
   clauses:
     imports:
-    - pipe_identity
-    - service:
-        id: svc.alias.harmonize.1
-        names:
-        - assert_truth
+    - from: service
+      service: svc.alias.harmonize.1
+      names:
+      - pipe_identity
+    - from: service
+      service: svc.alias.harmonize.1
+      names:
+      - assert_truth
     - from: service
       service: svc.alias.harmonize.1
       names:
@@ -77,8 +81,10 @@ contracts:
       assert:
         lit: true
 - id: DCCONF-SCHEMA-ALIAS-004
-  title: terminology contract for accepted preferred canonical normalized forms is aligned
-  purpose: Captures harmonized terminology contract between alias registry and v2 schema docs.
+  title: terminology contract for accepted preferred canonical normalized forms is
+    aligned
+  purpose: Captures harmonized terminology contract between alias registry and v2
+    schema docs.
   expect:
     portable:
       status: pass
@@ -102,7 +108,7 @@ contracts:
     rows:
     - id: bind_alias_compact_output
       outputs:
-      - alias_output
+      - to: alias_output
   clauses:
     predicates:
     - id: assert_1
@@ -122,9 +128,9 @@ contracts:
     rows:
     - id: bind_alias_compact_input
       inputs:
-      - alias_input
+      - from: alias_input
       outputs:
-      - alias_output
+      - to: alias_output
   clauses:
     predicates:
     - id: assert_1
@@ -144,7 +150,7 @@ contracts:
     rows:
     - id: bind_alias_mixed_output
       outputs:
-      - alias_output
+      - to: alias_output
       - to: alias_output
   clauses:
     predicates:
@@ -165,7 +171,7 @@ contracts:
     rows:
     - id: bind_alias_empty_output
       outputs:
-      - " "
+      - to: " "
   clauses:
     predicates:
     - id: assert_1
@@ -185,8 +191,8 @@ contracts:
     rows:
     - id: bind_alias_duplicate_output
       outputs:
-      - alias_output
-      - alias_output
+      - to: alias_output
+      - to: alias_output
   clauses:
     predicates:
     - id: assert_1
@@ -206,11 +212,11 @@ contracts:
     rows:
     - id: bind_alias_mixed_input
       inputs:
-      - alias_input
+      - from: alias_input
       - from: alias_input
         as: alias_subject
       outputs:
-      - alias_output
+      - to: alias_output
   clauses:
     predicates:
     - id: assert_1
@@ -219,8 +225,8 @@ contracts:
 artifacts:
 - id: alias_output
   ref: "/specs/schema/schema_v2.md"
-  io: output
+  direction: output
 - id: alias_input
   ref: "/specs/schema/schema_v2.md"
-  io: input
+  direction: input
 ```

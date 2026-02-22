@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.canonical_freshness_strict'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-DOCS-CANON-003
   title: docs freshness strict checker passes
@@ -22,7 +21,8 @@ contracts:
     clean.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

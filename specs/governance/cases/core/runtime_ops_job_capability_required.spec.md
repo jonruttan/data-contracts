@@ -10,11 +10,10 @@ harness:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.ops_job_capability_required'}}}"
 services:
-  actions:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_ops_job_capability_required.default.1
-    type: legacy.root_check_profile_governance_scan_config_check_runtime_ops_job_capability_required
-    io: io
-    profile: default
+- id: svc.root_check_profile_governance_scan_config_check_runtime_ops_job_capability_required.default.1
+  type: legacy.root_check_profile_governance_scan_config_check_runtime_ops_job_capability_required
+  mode: default
+  direction: bidirectional
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-004
   title: ops.job.dispatch requires ops.job capability
@@ -22,7 +21,8 @@ contracts:
     including ops.job.
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - violation_count
     predicates:
     - id: assert_1

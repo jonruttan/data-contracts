@@ -5,13 +5,12 @@ harness:
   type: unit.test
   profile: check
 services:
-  actions:
-  - id: svc.assert_check.text_file.1
-    type: io.fs
-    io: input
-    profile: read.text
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+- id: svc.assert_check.text_file.1
+  type: io.fs
+  config:
+    source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  mode: read.text
+  direction: input
 contracts:
 - id: DCCONF-STDLIB-001
   title: core numeric and set operators evaluate deterministically
@@ -21,7 +20,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -54,7 +54,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -87,7 +88,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -131,7 +133,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -189,7 +192,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -251,7 +255,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -270,7 +275,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -311,7 +317,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -331,7 +338,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -367,7 +375,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -386,7 +395,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -429,7 +439,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -446,7 +457,8 @@ contracts:
       status: pass
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -480,7 +492,8 @@ contracts:
       category: schema
   clauses:
     imports:
-    - artifact:
+    - from: artifact
+      names:
       - text
     predicates:
     - id: assert_1
@@ -495,7 +508,7 @@ contracts:
 artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
   ref: "/specs/conformance/cases/core/spec_lang_stdlib.spec.md"
-  io: input
+  direction: input
 ```
 
 
