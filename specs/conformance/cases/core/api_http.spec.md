@@ -2,7 +2,6 @@
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
-  harness: check
   requires:
     capabilities:
     - api.http
@@ -158,6 +157,93 @@ services:
         - domain.http.step_by_id
         - domain.http.step_status_is
         artifact_id: art.svc.assert_check.api_http.16.use_1.1
+artifacts:
+- id: art.svc.assert_check.api_http.1.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.3.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_created.json"
+  io: input
+- id: art.svc.assert_check.api_http.4.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
+  io: input
+- id: art.svc.assert_check.api_http.5.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
+  io: input
+- id: art.svc.assert_check.api_http.6.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_deleted.json"
+  io: input
+- id: art.svc.assert_check.api_http.7.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.8.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.9.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.10.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.11.requests_url_1.1
+  ref: "/specs/conformance/cases/fixtures/api_http_created.json"
+  io: input
+- id: art.svc.assert_check.api_http.11.requests_url_2.1
+  ref: "/specs/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json"
+  io: input
+- id: art.svc.assert_check.api_http.11.requests_url_3.1
+  ref: "/specs/conformance/cases/fixtures/api_http_deleted.json"
+  io: input
+- id: art.svc.assert_check.api_http.12.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.12.oauth_token.1
+  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.13.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.13.oauth_token.1
+  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.14.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.14.oauth_token.1
+  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.15.request_url.1
+  ref: https://api.example.invalid/items
+  io: input
+- id: art.svc.assert_check.api_http.15.oauth_token.1
+  ref: https://issuer.example.invalid/oauth/token
+  io: input
+- id: art.svc.assert_check.api_http.16.request_url.1
+  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
+  io: input
+- id: art.svc.assert_check.api_http.16.use_1.1
+  ref: "/specs/libraries/domain/http_core.spec.md"
+  io: input
+- id: body_json
+  ref: artifact://api_http/body_json
+  type: application/json
+  io: output
+- id: body_text
+  ref: artifact://api_http/body_text
+  type: application/json
+  io: output
+- id: context_json
+  ref: artifact://api_http/context_json
+  type: application/json
+  io: output
+- id: status
+  ref: artifact://api_http/status
+  type: application/json
+  io: output
+- id: steps_json
+  ref: artifact://api_http/steps_json
+  type: application/json
+  io: output
 contracts:
 - id: DCCONF-API-001
   title: api.http GET reads relative fixture and exposes body assertions
@@ -677,91 +763,4 @@ contracts:
         std.string.contains:
         - var: status
         - '200'
-artifacts:
-- id: art.svc.assert_check.api_http.1.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.3.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_created.json"
-  io: input
-- id: art.svc.assert_check.api_http.4.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
-  io: input
-- id: art.svc.assert_check.api_http.5.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_item_abc-123.json"
-  io: input
-- id: art.svc.assert_check.api_http.6.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_deleted.json"
-  io: input
-- id: art.svc.assert_check.api_http.7.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.8.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.9.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.10.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.11.requests_url_1.1
-  ref: "/specs/conformance/cases/fixtures/api_http_created.json"
-  io: input
-- id: art.svc.assert_check.api_http.11.requests_url_2.1
-  ref: "/specs/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json"
-  io: input
-- id: art.svc.assert_check.api_http.11.requests_url_3.1
-  ref: "/specs/conformance/cases/fixtures/api_http_deleted.json"
-  io: input
-- id: art.svc.assert_check.api_http.12.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.12.oauth_token.1
-  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.13.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.13.oauth_token.1
-  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.14.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.14.oauth_token.1
-  ref: "/specs/conformance/cases/fixtures/oauth_token_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.15.request_url.1
-  ref: https://api.example.invalid/items
-  io: input
-- id: art.svc.assert_check.api_http.15.oauth_token.1
-  ref: https://issuer.example.invalid/oauth/token
-  io: input
-- id: art.svc.assert_check.api_http.16.request_url.1
-  ref: "/specs/conformance/cases/fixtures/api_http_ok.json"
-  io: input
-- id: art.svc.assert_check.api_http.16.use_1.1
-  ref: "/specs/libraries/domain/http_core.spec.md"
-  io: input
-- id: body_json
-  ref: artifact://api_http/body_json
-  type: application/json
-  io: output
-- id: body_text
-  ref: artifact://api_http/body_text
-  type: application/json
-  io: output
-- id: context_json
-  ref: artifact://api_http/context_json
-  type: application/json
-  io: output
-- id: status
-  ref: artifact://api_http/status
-  type: application/json
-  io: output
-- id: steps_json
-  ref: artifact://api_http/steps_json
-  type: application/json
-  io: output
 ```

@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  harness: check
 harness:
   type: unit.test
   profile: check

@@ -2,7 +2,6 @@
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
 defaults:
-  harness: check
   requires:
     capabilities:
     - evaluate.spec_lang.ramda.v1
