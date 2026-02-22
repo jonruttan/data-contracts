@@ -2,7 +2,7 @@ version: 1
 title: service_contract_catalog_v1
 kind: service_contract_catalog
 unknown_service_type_behavior: hard_fail
-services:
+adapters:
 - type: io.http
   allowed_profiles:
   - request.http
@@ -105,16 +105,16 @@ services:
   import_validation_scope: type_profile
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
-  io_transport: artifact_ids_only
+  io_adapter_action: artifact_ids_only
   binding_service_requirement: contracts.clauses[].bindings.rows[].service is required;
     no implicit/default service resolution
   required_mappings:
     inputs: contracts.clauses[].bindings.rows[].inputs[].from -> artifacts[].id (direction=input|bidirectional)
     outputs: contracts.clauses[].bindings.rows[].outputs[].to -> artifacts[].id (direction=output|bidirectional)
-  service_config_usage: static_only_no_runtime_payload_transport
+  service_config_usage: static_only_no_runtime_payload_adapter_action
   bound_symbol_format: service_id.import_name
   binding_import_validation:
-  - binding_import_must_be_declared_on_service_entry
+  - binding_import_must_be_declared_on_service_exposes
   - declared_import_must_exist_in_available_imports_by_profile
 service_locator_contract_v2:
   direct_locator_keys_forbidden:
@@ -128,32 +128,32 @@ service_locator_contract_v2:
     artifacts ids using `*_artifact_id` fields.
   profile_locator_fields:
     read.text:
-    - services[].defaults.config.source_artifact_id
-    - services[].operations[].config.source_artifact_id
+    - adapters[].defaults.config.source_artifact_id
+    - adapters[].actions[].config.source_artifact_id
     request.http:
-    - services[].defaults.config.request.artifact_id
-    - services[].operations[].config.request.artifact_id
-    - services[].defaults.config.requests[].artifact_id
-    - services[].operations[].config.requests[].artifact_id
-    - services[].defaults.config.api_http.auth.oauth.token_artifact_id
-    - services[].operations[].config.api_http.auth.oauth.token_artifact_id
-    - services[].defaults.config.use[].artifact_id
-    - services[].operations[].config.use[].artifact_id
+    - adapters[].defaults.config.request.artifact_id
+    - adapters[].actions[].config.request.artifact_id
+    - adapters[].defaults.config.requests[].artifact_id
+    - adapters[].actions[].config.requests[].artifact_id
+    - adapters[].defaults.config.api_http.auth.oauth.token_artifact_id
+    - adapters[].actions[].config.api_http.auth.oauth.token_artifact_id
+    - adapters[].defaults.config.use[].artifact_id
+    - adapters[].actions[].config.use[].artifact_id
     generate.docs:
-    - services[].defaults.config.docs_generate.template_artifact_id
-    - services[].operations[].config.docs_generate.template_artifact_id
-    - services[].defaults.config.docs_generate.output_artifact_id
-    - services[].operations[].config.docs_generate.output_artifact_id
-    - services[].defaults.config.docs_generate.data_sources[].artifact_id
-    - services[].operations[].config.docs_generate.data_sources[].artifact_id
+    - adapters[].defaults.config.docs_generate.template_artifact_id
+    - adapters[].actions[].config.docs_generate.template_artifact_id
+    - adapters[].defaults.config.docs_generate.output_artifact_id
+    - adapters[].actions[].config.docs_generate.output_artifact_id
+    - adapters[].defaults.config.docs_generate.data_sources[].artifact_id
+    - adapters[].actions[].config.docs_generate.data_sources[].artifact_id
   artifact_resolution:
   - every *_artifact_id resolves to artifacts[].id (direction=input|bidirectional)
   - every *_artifact_ids[] entry resolves to artifacts[].id (direction=input|bidirectional)
 import_declaration_shape_v2:
-  services[].defaults.imports: list[mapping]
-  services[].defaults.imports[].names: list[string]
-  services[].defaults.imports[].as: mapping(optional)
-  services[].operations[].imports: list[mapping]
-  services[].operations[].imports[].names: list[string]
-  services[].operations[].imports[].as: mapping(optional)
+  adapters[].defaults.imports: list[mapping]
+  adapters[].defaults.imports[].names: list[string]
+  adapters[].defaults.imports[].as: mapping(optional)
+  adapters[].actions[].imports: list[mapping]
+  adapters[].actions[].imports[].names: list[string]
+  adapters[].actions[].imports[].as: mapping(optional)
   legacy_compact_form: invalid

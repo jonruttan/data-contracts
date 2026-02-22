@@ -4,18 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  defaults:
-    mode: read.text
-    direction: input
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-  - id: svc.assert_check.text_file.2
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
   asserts:
   - id: DCCONF-BUNDLE-001
@@ -81,4 +69,23 @@ artifacts:
 - id: art.svc.assert_check.text_file.2.source.1
   ref: "/specs/schema/registry/v2/core.yaml"
   direction: input
+adapters:
+- type: io.fs
+  defaults:
+    direction: input
+    profile: read.text
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  - id: svc.assert_check.text_file.2
+    config:
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
+- id: svc.assert_check.text_file.2
+  consumes:
+  - svc.assert_check.text_file.2
 ```

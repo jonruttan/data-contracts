@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/implementation_bundle_overlay_v1.yaml'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCCONF-BTOOL-009
@@ -44,4 +38,14 @@ contracts:
           std.string.contains:
           - var: text
           - output_bundle
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml.default.1
 ```

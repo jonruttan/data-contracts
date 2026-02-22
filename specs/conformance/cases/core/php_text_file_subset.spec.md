@@ -4,12 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.assert_check.text_file.1
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-PHP-TEXT-001
@@ -296,6 +290,16 @@ contracts:
           std.string.contains:
           - var: text
           - ''
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.assert_check.text_file.1
+    direction: input
+    profile: read.text
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
 ```
 
 

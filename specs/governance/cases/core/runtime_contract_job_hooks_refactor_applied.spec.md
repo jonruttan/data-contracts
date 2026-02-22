@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_job_hooks_refactor_applied'}}}"
-services:
-- type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied
-  operations:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-JOB-HOOKS-001
@@ -32,4 +26,14 @@ contracts:
             - violation_count
             - var: violation_count
             - lit: {}
+adapters:
+- type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied
+  actions:
+  - id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
+  consumes:
+  - svc.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied.default.1
 ```

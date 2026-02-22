@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {}}}"
-services:
-- type: legacy.check_profile_text_file_config
-  operations:
-  - id: svc.check_profile_text_file_config.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCCONF-BTOOL-004
@@ -60,4 +54,14 @@ contracts:
           std.string.contains:
           - var: text
           - typecheck
+adapters:
+- type: legacy.check_profile_text_file_config
+  actions:
+  - id: svc.check_profile_text_file_config.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config.default.1
+  consumes:
+  - svc.check_profile_text_file_config.default.1
 ```

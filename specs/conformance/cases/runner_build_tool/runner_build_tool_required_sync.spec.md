@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/30_build_tool_command_set.md'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCCONF-BTOOL-002
@@ -46,4 +40,14 @@ contracts:
             std.string.contains:
             - var: text
             - "`spec-sync-check`"
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_contract_30_build_tool_command_set_md.default.1
 ```

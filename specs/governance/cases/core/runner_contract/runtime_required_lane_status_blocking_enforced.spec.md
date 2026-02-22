@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'root': '.', 'required_lane_policy': {'path': '/scripts/runner_status_ingest.sh', 'required_tokens': ['lane_class', 'required', 'blocking_fail']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.required_lane_status_blocking_enforced'}}}"
-services:
-- type: legacy.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced
-  operations:
-  - id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-STATUS-006
@@ -32,5 +26,15 @@ contracts:
             - violation_count
             - var: violation_count
             - lit: {}
+adapters:
+- type: legacy.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced
+  actions:
+  - id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
+  consumes:
+  - svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
 ```
 

@@ -4,15 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.1
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-027
@@ -26,6 +17,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.1
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.1
+  consumes:
+  - svc.check.compact.1
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.1
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -34,15 +45,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.6
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-032
@@ -64,6 +66,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.6
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.6
+  consumes:
+  - svc.check.compact.6
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.6
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -72,15 +94,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.7
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-033
@@ -102,6 +115,26 @@ contracts:
           - pipe_identity
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.7
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.7
+  consumes:
+  - svc.check.compact.7
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.7
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -110,15 +143,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.8
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-034
@@ -137,6 +161,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.8
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.8
+  consumes:
+  - svc.check.compact.8
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.8
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -145,15 +189,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.9
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-035
@@ -175,6 +210,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.9
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.9
+  consumes:
+  - svc.check.compact.9
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.9
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -183,15 +238,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.10
-    imports:
-    - names:
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-036
@@ -213,6 +259,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.10
+    imports:
+    - names:
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.10
+  consumes:
+  - svc.check.compact.10
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.10
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -221,16 +287,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.2
-    imports:
-    - names:
-      - pipe_identity
-      - assert_truth
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-028
@@ -244,6 +300,31 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.2
+    imports:
+    - names:
+      - pipe_identity
+      - assert_truth
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.2
+  consumes:
+  - svc.check.compact.2
+  exposes:
+  - names:
+    - pipe_identity
+    - assert_truth
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.2
+      adapter_import: pipe_identity
+    assert_truth:
+      adapter_action: svc.check.compact.2
+      adapter_import: assert_truth
 ```
 
 ```yaml contract-spec
@@ -252,15 +333,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.3
-    imports:
-    - names:
-      - assert_truth
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-029
@@ -274,6 +346,26 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.3
+    imports:
+    - names:
+      - assert_truth
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.3
+  consumes:
+  - svc.check.compact.3
+  exposes:
+  - names:
+    - assert_truth
+  bindings:
+    assert_truth:
+      adapter_action: svc.check.compact.3
+      adapter_import: assert_truth
 ```
 
 ```yaml contract-spec
@@ -282,16 +374,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.4
-    imports:
-    - names:
-      - pipe_identity
-      - pipe_identity
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-030
@@ -305,6 +387,27 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.4
+    imports:
+    - names:
+      - pipe_identity
+      - pipe_identity
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.4
+  consumes:
+  - svc.check.compact.4
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.compact.4
+      adapter_import: pipe_identity
 ```
 
 ```yaml contract-spec
@@ -313,15 +416,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.compact.5
-    imports:
-    - names:
-      - unknown_import
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-CASE-031
@@ -335,4 +429,24 @@ contracts:
       - id: assert_1
         assert:
           lit: true
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.compact.5
+    imports:
+    - names:
+      - unknown_import
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.compact.5
+  consumes:
+  - svc.check.compact.5
+  exposes:
+  - names:
+    - unknown_import
+  bindings:
+    unknown_import:
+      adapter_action: svc.check.compact.5
+      adapter_import: unknown_import
 ```

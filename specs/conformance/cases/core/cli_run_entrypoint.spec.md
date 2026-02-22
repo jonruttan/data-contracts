@@ -12,24 +12,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.system
-  defaults:
-    mode: exec.command
-    direction: input
-  operations:
-  - id: svc.assert_check.cli_run.1
-    config:
-      argv:
-      - "--help"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
-  - id: svc.assert_check.cli_run.2
-    config:
-      argv:
-      - "--json"
-      exit_code: 0
-      entrypoint: spec_runner.conformance_fixtures:main
 contracts:
   clauses:
   - id: DCCONF-CLI-001
@@ -67,6 +49,31 @@ contracts:
           std.string.contains:
           - var: stdout
           - '"ok": true'
+adapters:
+- type: io.system
+  defaults:
+    direction: input
+    profile: exec.command
+  actions:
+  - id: svc.assert_check.cli_run.1
+    config:
+      argv:
+      - "--help"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
+  - id: svc.assert_check.cli_run.2
+    config:
+      argv:
+      - "--json"
+      exit_code: 0
+      entrypoint: spec_runner.conformance_fixtures:main
+services:
+- id: svc.assert_check.cli_run.1
+  consumes:
+  - svc.assert_check.cli_run.1
+- id: svc.assert_check.cli_run.2
+  consumes:
+  - svc.assert_check.cli_run.2
 ```
 
 

@@ -4,28 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  defaults:
-    mode: read.text
-    direction: input
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: bad_export_path_fixture
-        symbols:
-        - bad.path.symbol
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-  - id: svc.assert_check.text_file.2
-    config:
-      use:
-      - as: bad_export_class_fixture
-        symbols:
-        - bad.class.symbol
-        artifact_id: art.svc.assert_check.text_file.2.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
   asserts:
   - id: DCCONF-CHAIN-EXPORT-002
@@ -59,6 +37,35 @@ artifacts:
 - id: art.svc.assert_check.text_file.2.use_1.1
   ref: "/specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS"
   direction: input
+adapters:
+- type: io.fs
+  defaults:
+    direction: input
+    profile: read.text
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      use:
+      - as: bad_export_path_fixture
+        symbols:
+        - bad.path.symbol
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  - id: svc.assert_check.text_file.2
+    config:
+      use:
+      - as: bad_export_class_fixture
+        symbols:
+        - bad.class.symbol
+        artifact_id: art.svc.assert_check.text_file.2.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
+- id: svc.assert_check.text_file.2
+  consumes:
+  - svc.assert_check.text_file.2
 ```
 
 

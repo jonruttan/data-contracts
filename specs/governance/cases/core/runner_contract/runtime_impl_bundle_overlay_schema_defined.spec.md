@@ -8,15 +8,6 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/implementation_bundle_build_lock_v1.yaml'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/index.md'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_schema_index_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
-    mode: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
-    mode: default
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-006
@@ -67,4 +58,20 @@ contracts:
           std.string.contains:
           - var: text
           - resolved_files_sha256
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_schema_index_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+    profile: default
+- type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_index_md.default.1
+- id: svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_implementation_bundle_build_lock_v1_yaml.default.1
 ```

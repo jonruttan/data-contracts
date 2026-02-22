@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contract_step_asserts_required'}}}"
-services:
-- type: legacy.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required
-  operations:
-  - id: svc.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-CONTRACT-STEP-001
@@ -32,4 +26,14 @@ contracts:
             - violation_count
             - var: violation_count
             - lit: {}
+adapters:
+- type: legacy.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required
+  actions:
+  - id: svc.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required.default.1
+  consumes:
+  - svc.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required.default.1
 ```

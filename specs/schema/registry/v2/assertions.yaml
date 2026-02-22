@@ -28,7 +28,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services[].operations[].id.
+    description: Required when from=service; references services[].id.
   contracts.clauses[].asserts.imports[].names:
     type: list
     required: true
@@ -67,7 +67,7 @@ fields:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services[].operations[].id.
+    description: Required when from=service; references services[].id.
   contracts.clauses[].asserts.checks[].imports[].names:
     type: list
     required: true

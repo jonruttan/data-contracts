@@ -22,57 +22,95 @@ fields:
     required: false
     since: v2
     description: Harness runtime configuration mapping.
+  adapters:
+    type: list
+    required: false
+    since: v2
+    description: Optional suite-level adapter blocks; required when services
+      are declared.
+  adapters[].type:
+    type: string
+    required: true
+    since: v2
+    description: Adapter type token resolved by service_contract_catalog_v1.
+  adapters[].defaults:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional defaults merged into each `adapters[].actions[]` row.
+  adapters[].defaults.config:
+    type: mapping
+    required: false
+    since: v2
+    description: Default adapter runtime configuration. External locators must be
+      routed through artifact ids (`*_artifact_id`/`*_artifact_ids`);
+      direct locator keys are invalid.
+  adapters[].actions:
+    type: list
+    required: true
+    since: v2
+  adapters[].actions[].id:
+    type: string
+    required: true
+    since: v2
+    description: Concrete adapter action id.
+  adapters[].actions[].profile:
+    type: string
+    required: false
+    since: v2
+  adapters[].actions[].config:
+    type: mapping
+    required: false
+    since: v2
+  adapters[].actions[].imports:
+    type: list
+    required: false
+    description: Canonical adapter callable import rows (`names`, optional `as`).
+    since: v2
+  adapters[].actions[].imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Adapter import names bound as adapter_action_id.import_name.
   services:
     type: list
     required: false
     since: v2
-    description: Optional suite-level service type blocks; required when service
-      imports or contract bindings are used.
-  services[].type:
+    description: Contract-facing service composition entries.
+  services[].id:
     type: string
     required: true
     since: v2
-    description: Service type token resolved by service_contract_catalog_v1.
-  services[].defaults:
-    type: mapping
-    required: false
-    since: v2
-    description: Optional defaults merged into each `services[].operations[]` row.
-  services[].defaults.config:
-    type: mapping
-    required: false
-    since: v2
-    description: Default service runtime configuration. External locators must be
-      routed through artifact ids (`*_artifact_id`/`*_artifact_ids`);
-      direct locator keys are invalid.
-  services[].operations:
+  services[].consumes:
     type: list
     required: true
     since: v2
-  services[].operations[].id:
+    description: Adapter action ids consumed by this service.
+  services[].exposes:
+    type: list
+    required: false
+    since: v2
+  services[].exposes[].names:
+    type: list
+    required: true
+    since: v2
+  services[].exposes[].as:
+    type: mapping
+    required: false
+    since: v2
+  services[].bindings:
+    type: mapping
+    required: false
+    since: v2
+  services[].bindings.<name>.adapter_action:
     type: string
     required: true
     since: v2
-    description: Concrete service instance id used by bindings/imports.
-  services[].operations[].mode:
+  services[].bindings.<name>.adapter_import:
     type: string
-    required: false
-    since: v2
-  services[].operations[].config:
-    type: mapping
-    required: false
-    since: v2
-  services[].operations[].imports:
-    type: list
-    required: false
-    description: Canonical service callable import rows (`names`, optional `as`).
-    since: v2
-  services[].operations[].imports[].names:
-    type: list
     required: true
     since: v2
-    description: Service import names bound as service_id.import_name.
-  services[].operations[].imports[].as:
+  adapters[].actions[].imports[].as:
     type: mapping
     required: false
     since: v2

@@ -4,14 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-STDLIB-003
@@ -76,6 +68,18 @@ artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
   ref: "/specs/conformance/cases/core/spec_lang_schema.spec.md"
   direction: input
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+    direction: input
+    profile: read.text
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
 ```
 
 

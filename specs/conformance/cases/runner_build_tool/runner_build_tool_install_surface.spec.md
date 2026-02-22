@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/scripts/bundle'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_scripts_bundle
-  operations:
-  - id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCCONF-BTOOL-007
@@ -34,4 +28,14 @@ contracts:
           std.string.contains:
           - var: text
           - scripts/bundle install-check --project-lock
+adapters:
+- type: legacy.check_profile_text_file_config_path_scripts_bundle
+  actions:
+  - id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_scripts_bundle.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_scripts_bundle.default.1
 ```

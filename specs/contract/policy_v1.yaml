@@ -69,7 +69,7 @@ rules:
   applies_to: schema.v2.defaults
   norm: MUST
   requirement: only_services_and_bindings_defaults_surfaces_are_allowed
-  description: In v2, only `services[].defaults` and
+  description: In v2, only `adapters[].defaults` and
     `contracts.clauses[].bindings.defaults` are allowed defaults surfaces.
     `contracts.defaults`, `contracts.clauses[].asserts.defaults`, and any other
     defaults surfaces are hard-fail.
@@ -83,7 +83,7 @@ rules:
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
   scope: case
-  applies_to: services[].defaults.config|services[].operations[].config
+  applies_to: adapters[].defaults.config|adapters[].actions[].config
   norm: MUST
   requirement: service_config_locators_use_artifact_import_ids_only
   description: Service config must not embed direct locator values (`path`,
@@ -4239,7 +4239,7 @@ rules:
   norm: MUST
   requirement: ingest_policy_outcomes_derived_by_governance_checks
   description: Ingest script must emit normalized facts and artifacts; freshness/blocking policy outcomes must be verified through spec-governed checks.
-  rationale: Prevents transport scripts from becoming hidden policy engines.
+  rationale: Prevents adapter_action scripts from becoming hidden policy engines.
   risk_if_violated: Divergent shell exits can bypass canonical policy contracts.
   references:
   - specs/contract/28_spec_lang_policy_execution.md
@@ -4341,7 +4341,7 @@ rules:
   norm: SHOULD
   requirement: services_imports_compact_alias_is_preferred_authoring_form
   description: Authoring should prefer compact list[string] alias rows for
-    `services[].operations[].imports`; canonical mapping rows should be used when
+    `adapters[].actions[].imports`; canonical mapping rows should be used when
     aliasing (`as`) is required.
   rationale: Reduces repetitive syntax while keeping normalized runtime semantics.
   risk_if_violated: Fixture style drifts and cognitive overhead increases.
@@ -4430,7 +4430,7 @@ rules:
   norm: MUST
   requirement: services_import_alias_mixed_duplicate_catalog_checks_enforced
   description: Mixed compact/mapping item kinds in one
-    `services[].operations[].imports` list, duplicate effective import names, and
+    `adapters[].actions[].imports` list, duplicate effective import names, and
     catalog-invalid import names must hard-fail schema validation.
   rationale: Keeps canonical row behavior deterministic and machine-checkable.
   risk_if_violated: Compact import declarations become ambiguous and drift across
@@ -4514,7 +4514,7 @@ rules:
   applies_to: schema.v2.services.type
   norm: MUST
   requirement: v2_services_types_must_be_integration_only
-  description: services[].type must resolve to integration service categories only
+  description: adapters[].type must resolve to integration service categories only
     (`io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`). Legacy orchestration
     categories (`assert.check`, `assert.export`, `ops.job`) are invalid.
   rationale: Separates system integration concerns from assertion/export/job orchestration semantics.
@@ -4529,7 +4529,7 @@ rules:
   applies_to: schema.v2.services.profile
   norm: MUST
   requirement: v2_service_profiles_must_be_mode_style_and_type_compatible
-  description: services[].operations[].mode must be a mode token validated against
+  description: adapters[].actions[].profile must be a mode token validated against
     the resolved integration type from service catalog. Legacy profile tokens
     (`text.file`, `api.http`, `cli.run`, `docs.generate`) are invalid.
   rationale: Eliminates duplicated identity semantics between service type and profile.

@@ -4,24 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  defaults:
-    mode: read.text
-    direction: input
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: lib_assertion_core_spec
-        symbols:
-        - conf.pass_when_text_contains
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-  - id: svc.assert_check.text_file.2
-  - id: svc.assert_check.text_file.3
-    config:
-      spec_lang:
-        max_steps: 20
 contracts:
   clauses:
   - id: DCCONF-EXPR-001
@@ -1160,6 +1142,34 @@ artifacts:
 - id: art.svc.assert_check.text_file.1.use_1.1
   ref: "/specs/libraries/conformance/assertion_core.spec.md"
   direction: input
+adapters:
+- type: io.fs
+  defaults:
+    direction: input
+    profile: read.text
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      use:
+      - as: lib_assertion_core_spec
+        symbols:
+        - conf.pass_when_text_contains
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+  - id: svc.assert_check.text_file.2
+  - id: svc.assert_check.text_file.3
+    config:
+      spec_lang:
+        max_steps: 20
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
+- id: svc.assert_check.text_file.2
+  consumes:
+  - svc.assert_check.text_file.2
+- id: svc.assert_check.text_file.3
+  consumes:
+  - svc.assert_check.text_file.3
 ```
 
 

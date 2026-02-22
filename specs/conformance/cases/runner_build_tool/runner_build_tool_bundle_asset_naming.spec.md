@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/33_bundle_package_management.md'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCCONF-BTOOL-006
@@ -45,4 +39,14 @@ contracts:
             std.string.contains:
             - var: text
             - bundle-{bundle_id}-{bundle_version}.tar.gz
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
 ```

@@ -76,16 +76,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.system
-  defaults:
-    mode: exec.command
-    direction: bidirectional
-    imports:
-    - names:
-      - pipe_identity
-  operations:
-  - id: svc.default.4
 contracts:
   asserts:
   - id: DCCONF-IMPLICIT-ID-004
@@ -112,4 +102,25 @@ artifacts:
   ref: artifact://implicit_ids/out_json
   type: application/json
   direction: output
+adapters:
+- type: io.system
+  defaults:
+    direction: bidirectional
+    imports:
+    - names:
+      - pipe_identity
+    profile: exec.command
+  actions:
+  - id: svc.default.4
+services:
+- id: svc.default.4
+  consumes:
+  - svc.default.4
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.default.4
+      adapter_import: pipe_identity
 ```

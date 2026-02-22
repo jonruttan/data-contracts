@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'root': '.', 'schema_pin_validator': {'path': '/scripts/spec_schema_pin_validate.sh', 'required_tokens': ['mismatched_version_count']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'schema.spec_case_version_matches_schema_ref'}}}"
-services:
-- type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref
-  operations:
-  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-PIN-004
@@ -32,4 +26,14 @@ contracts:
             - violation_count
             - var: violation_count
             - lit: {}
+adapters:
+- type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref
+  actions:
+  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
+  consumes:
+  - svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref.default.1
 ```

@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'root': '.', 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.harness_exports_location_required'}}}"
-services:
-- type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required
-  operations:
-  - id: svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-HARNESS-EXPORTS-001
@@ -32,4 +26,14 @@ contracts:
             - summary_json
             - var: summary_json
             - lit: {}
+adapters:
+- type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required
+  actions:
+  - id: svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required.default.1
+  consumes:
+  - svc.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required.default.1
 ```

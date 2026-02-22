@@ -5,16 +5,6 @@ title: schema alias registry harmonization
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.alias.harmonize.1
-    imports:
-    - names:
-      - pipe_identity
-      - assert_truth
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-SCHEMA-ALIAS-001
@@ -228,4 +218,29 @@ artifacts:
 - id: alias_input
   ref: "/specs/schema/schema_v2.md"
   direction: input
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.alias.harmonize.1
+    imports:
+    - names:
+      - pipe_identity
+      - assert_truth
+    direction: input
+    profile: read.text
+services:
+- id: svc.alias.harmonize.1
+  consumes:
+  - svc.alias.harmonize.1
+  exposes:
+  - names:
+    - pipe_identity
+    - assert_truth
+  bindings:
+    pipe_identity:
+      adapter_action: svc.alias.harmonize.1
+      adapter_import: pipe_identity
+    assert_truth:
+      adapter_action: svc.alias.harmonize.1
+      adapter_import: assert_truth
 ```

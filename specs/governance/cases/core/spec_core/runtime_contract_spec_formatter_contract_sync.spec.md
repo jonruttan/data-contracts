@@ -8,15 +8,6 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/29_runner_cli_interface.md'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_cli_contract_v1.yaml'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
-    mode: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
-    mode: default
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-RCLI-006
@@ -39,4 +30,20 @@ contracts:
         - std.string.contains:
           - var: text
           - "--write"
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
+    profile: default
+- type: legacy.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_contract_29_runner_cli_interface_md.default.1
+- id: svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_runner_cli_contract_v1_yaml.default.1
 ```

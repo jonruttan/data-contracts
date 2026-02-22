@@ -7,12 +7,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/schema_v2.md'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
-    mode: default
-    direction: bidirectional
 contracts:
   clauses:
   - id: DCGOV-NORM-007
@@ -44,4 +38,14 @@ contracts:
         - std.string.contains:
           - var: text
           - list item order is preserved as-authored
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
+    direction: bidirectional
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_schema_v2_md.default.1
 ```

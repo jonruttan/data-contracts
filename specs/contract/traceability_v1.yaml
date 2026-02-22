@@ -12,7 +12,7 @@ links:
   - DCCONF-SCHEMA-CASE-022
   unit_test_refs: []
   implementation_refs: []
-  notes: Contract bindings must transport runtime service payloads only through declared artifacts import/export ids.
+  notes: Contract bindings must adapter_action runtime service payloads only through declared artifacts import/export ids.
 - rule_id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   policy_ref: specs/contract/policy_v1.yaml#ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   contract_refs:

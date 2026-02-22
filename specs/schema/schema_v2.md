@@ -161,21 +161,21 @@ Suite runtime surfaces:
   - `harness.profile` (string, required)
   - `harness.config` (mapping, optional)
 - `services` (list, optional): suite service type blocks
-  - `services[].type` (string, required): service type token resolved by
+  - `adapters[].type` (string, required): service type token resolved by
     `/specs/schema/service_contract_catalog_v1.yaml` (for example `io.http`)
-  - `services[].defaults` (mapping, optional): per-type defaults merged into each
-    `services[].operations[]` row
-  - `services[].operations` (list, required): non-empty concrete service instance rows
-  - `services[].operations[].id` (string, required): concrete service instance id used by
+  - `adapters[].defaults` (mapping, optional): per-type defaults merged into each
+    `adapters[].actions[]` row
+  - `adapters[].actions` (list, required): non-empty concrete service instance rows
+  - `adapters[].actions[].id` (string, required): concrete service instance id used by
     `contracts.clauses[].bindings` and `from: service` imports
-  - `services[].operations[].mode` (string, optional): effective mode token
-  - `services[].operations[].direction` (string, optional): `input|output|bidirectional`
-  - `services[].operations[].config` (mapping, optional): service config values that
+  - `adapters[].actions[].profile` (string, optional): effective mode token
+  - `adapters[].actions[].direction` (string, optional): `input|output|bidirectional`
+  - `adapters[].actions[].config` (mapping, optional): service config values that
     reference external locations MUST use artifact-id fields (`*_artifact_id`)
     and must not embed direct locators
-  - `services[].operations[].imports` (list, optional): canonical mapping rows
+  - `adapters[].actions[].imports` (list, optional): canonical mapping rows
     (`names`, optional `as`)
-  - effective entry = shallow merge(`services[].defaults`, `services[].operations[]` row),
+  - effective entry = shallow merge(`adapters[].defaults`, `adapters[].actions[]` row),
     with row keys overriding defaults
   - service implementations may be built-in or runtime-loaded plugins; suite
     authoring shape is unchanged
@@ -223,17 +223,17 @@ Parser behavior:
 - `contracts.clauses[].harness` is invalid in v2 (hard cut)
 - `contracts.clauses[].asserts.profile` and `contracts.clauses[].asserts.config` are invalid in v2 runtime ownership
 - `contracts.clauses[].asserts.checks[].id` is required
-- unknown `services[].type` MUST hard-fail during schema validation
-- invalid `services[].operations[].direction` MUST hard-fail during schema validation
+- unknown `adapters[].type` MUST hard-fail during schema validation
+- invalid `adapters[].actions[].direction` MUST hard-fail during schema validation
 - service-specific integration behavior (for example HTTP client operations) is
   implementation-owned by resolved service implementations, not core runner
   orchestration logic
 - runtime-loaded service implementations MUST pass lock + digest + signature
   verification before invocation
-- `services[].operations[].imports` accepts canonical list[mapping] rows and compact
+- `adapters[].actions[].imports` accepts canonical list[mapping] rows and compact
   list[string] aliases
-- compact `services[].operations[].imports` names MUST be unique per service entry
-  and valid for resolved `services[].type/mode` in
+- compact `adapters[].actions[].imports` names MUST be unique per adapter action
+  and valid for resolved `adapters[].type/profile` in
   `/specs/schema/service_contract_catalog_v1.yaml`
 - if any contract declares `contracts.clauses[].bindings.rows[]`, `services` MUST be present and valid
 - if any `asserts.imports[]` or `asserts.checks[].imports[]` item uses
@@ -256,7 +256,7 @@ Parser behavior:
 - legacy row key `contract` under `contracts.clauses[].bindings.rows[]` is invalid
 - each effective binding row MUST include `id`, `service`, and `import` after defaults merge
 - effective row = shallow merge(`contracts.clauses[].bindings.defaults`, row), row values override defaults
-- effective `service` MUST reference an existing `services[].operations[].id`
+- effective `service` MUST reference an existing `adapters[].actions[].id`
 - `contracts.clauses[].bindings.rows[].inputs[].from` MUST reference `artifacts[].id` where artifact
   entry `direction` is `input` or `bidirectional`
 - `contracts.clauses[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id` where artifact
@@ -270,8 +270,8 @@ Parser behavior:
 - mixed item kinds (string + mapping) in one binding inputs/outputs list are invalid
 - empty/whitespace compact binding I/O strings are invalid
 - compact binding I/O rows encode `from`/`to` only; `as`/`path` require canonical mapping rows
-- binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
-- direct external locator keys in `services[].operations[].config` are invalid:
+- binding runtime payload adapter_action MUST use artifact ids only (`artifacts[]`)
+- direct external locator keys in `adapters[].actions[].config` are invalid:
   `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
 - every `*_artifact_id` in service config MUST resolve to
   `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
@@ -365,7 +365,7 @@ Normative contract details:
 
 ## Harness-Profile Fields
 
-### `harness.type: unit.test` with `services[].operations[].mode: read.text`
+### `harness.type: unit.test` with `adapters[].actions[].profile: read.text`
 
 `read.text` asserts against file content.
 
@@ -395,7 +395,7 @@ Markdown library authoring guidance:
 
 ## Harness Dispatch
 
-Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services[].operations[].mode`/`services[].operations[].config`.
+Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `adapters[].actions[].profile`/`adapters[].actions[].config`.
 
 Governance assertion contract:
 
@@ -423,7 +423,7 @@ Security model:
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `harness.type: unit.test` with `services[].operations[].mode: exec.command`, supported `services[].operations[].config` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: exec.command`, supported `adapters[].actions[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -439,7 +439,7 @@ For `harness.type: unit.test` with `services[].operations[].mode: exec.command`,
 - `orchestration` (mapping): orchestration tool dispatch contract for
   orchestration profiles
 
-For `harness.type: unit.test` with `services[].operations[].mode: request.http`, supported `services[].operations[].config` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: request.http`, supported `adapters[].actions[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -490,7 +490,7 @@ OAuth and execution rules:
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `harness.type: unit.test` with `services[].operations[].mode: generate.docs`, supported `services[].operations[].config` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: generate.docs`, supported `adapters[].actions[].config` keys include:
 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
@@ -633,7 +633,7 @@ Assertion targets for `exec.command`:
 
 ## Profiles
 
-Currently supported `services[].operations[].mode` values include:
+Currently supported `adapters[].actions[].profile` values include:
 
 - `read.text`
 - `fs.readwrite`
@@ -657,9 +657,9 @@ Published extension profile contracts:
 
 Service model (hard cut in v2):
 
-- `services[].type` is integration-only and MUST be one of:
+- `adapters[].type` is integration-only and MUST be one of:
   `io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`
-- `services[].operations[].mode` is mode-style and validated against the resolved
+- `adapters[].actions[].profile` is mode-style and validated against the resolved
   type via `service_contract_catalog_v1.yaml`
 - legacy service types are invalid: `assert.check`, `assert.export`, `ops.job`
 - legacy profiles are invalid: `text.file`, `api.http`, `cli.run`,
@@ -712,7 +712,7 @@ Import binding shape:
 - when `from: artifact`, `names` must be a non-empty list of suite-declared
   artifact ids (and be explicitly wired when runtime-produced)
 - for short string aliases, `contracts.clauses[].bindings.defaults.service` must exist
-  and resolve to `services[].operations[].id`
+  and resolve to `adapters[].actions[].id`
 - `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:
@@ -915,14 +915,14 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | `true` | `v2` |
 | `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
 | `services` | `mapping` | `false` | `v2` |
-| `services[].type` | `string` | `true` | `v2` |
-| `services[].type` | `string` | `false` | `v2` |
-| `services[].operations[].direction` | `string` | `false` | `v2` |
-| `services[].operations[].mode` | `string` | `false` | `v2` |
-| `services[].operations[].config` | `mapping` | `false` | `v2` |
-| `services[].operations[].imports` | `list` | `false` | `v2` |
-| `services[].operations[].imports[].names` | `list` | `true` | `v2` |
-| `services[].operations[].imports[].as` | `mapping` | `false` | `v2` |
+| `adapters[].type` | `string` | `true` | `v2` |
+| `adapters[].type` | `string` | `false` | `v2` |
+| `adapters[].actions[].direction` | `string` | `false` | `v2` |
+| `adapters[].actions[].profile` | `string` | `false` | `v2` |
+| `adapters[].actions[].config` | `mapping` | `false` | `v2` |
+| `adapters[].actions[].imports` | `list` | `false` | `v2` |
+| `adapters[].actions[].imports[].names` | `list` | `true` | `v2` |
+| `adapters[].actions[].imports[].as` | `mapping` | `false` | `v2` |
 | `services[].docs` | `list` | `false` | `v2` |
 | `services[].docs[].id` | `string` | `false` | `v2` |
 | `services[].docs[].summary` | `string` | `true` | `v2` |
@@ -1123,7 +1123,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services[]` | `services[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services[]` | `adapters[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
@@ -1166,14 +1166,14 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | true | `v2` |
 | `harness.docs[].examples[].ref` | `string` | true | `v2` |
 | `services` | `mapping` | false | `v2` |
-| `services[].type` | `string` | true | `v2` |
-| `services[].type` | `string` | false | `v2` |
-| `services[].operations[].direction` | `string` | false | `v2` |
-| `services[].operations[].mode` | `string` | false | `v2` |
-| `services[].operations[].config` | `mapping` | false | `v2` |
-| `services[].operations[].imports` | `list` | false | `v2` |
-| `services[].operations[].imports[].names` | `list` | true | `v2` |
-| `services[].operations[].imports[].as` | `mapping` | false | `v2` |
+| `adapters[].type` | `string` | true | `v2` |
+| `adapters[].type` | `string` | false | `v2` |
+| `adapters[].actions[].direction` | `string` | false | `v2` |
+| `adapters[].actions[].profile` | `string` | false | `v2` |
+| `adapters[].actions[].config` | `mapping` | false | `v2` |
+| `adapters[].actions[].imports` | `list` | false | `v2` |
+| `adapters[].actions[].imports[].names` | `list` | true | `v2` |
+| `adapters[].actions[].imports[].as` | `mapping` | false | `v2` |
 | `services[].docs` | `list` | false | `v2` |
 | `services[].docs[].id` | `string` | false | `v2` |
 | `services[].docs[].summary` | `string` | true | `v2` |
@@ -1374,6 +1374,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | surface | required_keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services[]` | `services[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services[]` | `adapters[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
 | `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

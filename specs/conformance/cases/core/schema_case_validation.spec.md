@@ -10,17 +10,6 @@ harness:
     - check
     - export
     - unknown_harness
-services:
-- type: io.fs
-  defaults:
-    mode: read.text
-    direction: input
-  operations:
-  - id: svc.check.text_file.1
-  - id: svc.check.default.1
-    imports:
-    - names:
-      - pipe_identity
 exports:
 - as: schema.validation.ok
   from: assert.function
@@ -610,4 +599,29 @@ artifacts:
     audience: spec-authors
     status: active
   direction: output
+adapters:
+- type: io.fs
+  defaults:
+    direction: input
+    profile: read.text
+  actions:
+  - id: svc.check.text_file.1
+  - id: svc.check.default.1
+    imports:
+    - names:
+      - pipe_identity
+services:
+- id: svc.check.text_file.1
+  consumes:
+  - svc.check.text_file.1
+- id: svc.check.default.1
+  consumes:
+  - svc.check.default.1
+  exposes:
+  - names:
+    - pipe_identity
+  bindings:
+    pipe_identity:
+      adapter_action: svc.check.default.1
+      adapter_import: pipe_identity
 ```

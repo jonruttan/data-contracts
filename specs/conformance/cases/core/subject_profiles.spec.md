@@ -4,23 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  defaults:
-    mode: read.text
-    direction: input
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_all
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
-  - id: svc.assert_check.text_file.2
-    config:
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
 contracts:
   asserts:
   - id: DCCONF-PROFILE-001
@@ -85,6 +68,30 @@ artifacts:
 - id: art.svc.assert_check.text_file.2.source.1
   ref: "/specs/contract/20_subject_profiles_v1.md"
   direction: input
+adapters:
+- type: io.fs
+  defaults:
+    direction: input
+    profile: read.text
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      use:
+      - as: lib_policy_text
+        symbols:
+        - policy.text.contains_all
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+  - id: svc.assert_check.text_file.2
+    config:
+      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
+- id: svc.assert_check.text_file.2
+  consumes:
+  - svc.assert_check.text_file.2
 ```
 
 

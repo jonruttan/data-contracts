@@ -8,15 +8,6 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/33_bundle_package_management.md'}}}"
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/schema/runner_build_tool_contract_v1.yaml'}}}"
-services:
-- type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
-    mode: default
-- type: legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
-  operations:
-  - id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
-    mode: default
 contracts:
   clauses:
   - id: DCGOV-RUNTIME-BUNDLE-001
@@ -88,4 +79,20 @@ contracts:
             std.string.contains:
             - var: text
             - spec-sync
+adapters:
+- type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+    profile: default
+- type: legacy.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml
+  actions:
+  - id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
+    profile: default
+services:
+- id: svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md.default.1
+- id: svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
+  consumes:
+  - svc.check_profile_text_file_config_path_specs_schema_runner_build_tool_contract_v1_yaml.default.1
 ```

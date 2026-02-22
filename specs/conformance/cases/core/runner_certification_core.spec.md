@@ -4,18 +4,6 @@ schema_ref: "/specs/schema/schema_v2.md"
 harness:
   type: unit.test
   profile: check
-services:
-- type: io.fs
-  operations:
-  - id: svc.assert_check.text_file.1
-    config:
-      use:
-      - as: lib_policy_text
-        symbols:
-        - policy.text.contains_pair
-        artifact_id: art.svc.assert_check.text_file.1.use_1.1
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-RCERT-001
@@ -69,5 +57,21 @@ artifacts:
 - id: art.svc.assert_check.text_file.1.use_1.1
   ref: "/specs/libraries/policy/policy_text.spec.md"
   direction: input
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.assert_check.text_file.1
+    config:
+      use:
+      - as: lib_policy_text
+        symbols:
+        - policy.text.contains_pair
+        artifact_id: art.svc.assert_check.text_file.1.use_1.1
+    direction: input
+    profile: read.text
+services:
+- id: svc.assert_check.text_file.1
+  consumes:
+  - svc.assert_check.text_file.1
 ```
 

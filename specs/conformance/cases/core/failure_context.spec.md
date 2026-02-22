@@ -11,12 +11,6 @@ harness:
   config:
     legacy_contract_harnesses:
     - check
-services:
-- type: io.fs
-  operations:
-  - id: svc.check.text_file.1
-    mode: read.text
-    direction: input
 contracts:
   asserts:
   - id: DCCONF-ERR-001
@@ -42,4 +36,14 @@ contracts:
           std.string.regex_match:
           - var: text
           - "\\A\\Z"
+adapters:
+- type: io.fs
+  actions:
+  - id: svc.check.text_file.1
+    direction: input
+    profile: read.text
+services:
+- id: svc.check.text_file.1
+  consumes:
+  - svc.check.text_file.1
 ```
