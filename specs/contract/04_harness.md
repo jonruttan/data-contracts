@@ -35,9 +35,10 @@ Suite-root external references:
   declared and valid.
 - documentation metadata uses `docs[]` entries (not singular `doc`) at suite,
   contract, artifact import/export, and root function export surfaces.
-- docs entry and docs-owner ids are optional authoring keys; when omitted they
-  normalize to deterministic scope-local ids (`doc_<index>`, `owner_<index>`)
-  with hard-fail collision checks.
+- docs entry and docs-owner ids are optional metadata keys; when omitted,
+  runtimes may emit deterministic report labels only for diagnostics.
+- report labels are not schema identity and must not be accepted as reference
+  targets.
 
 ## Entrypoint
 

@@ -46,12 +46,13 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   `as` + `from: assert.function` + `path`.
 - Documentation metadata surfaces MUST use `docs[]` entry arrays with required
   `summary|audience|status`; singular `doc` is invalid in v2.
-- `docs[].id` and `docs[].owners[].id` are optional authoring keys and MUST
-  normalize to deterministic scope-local ids when omitted.
-- `contracts[].clauses.predicates[].id` is optional and MUST normalize to
-  deterministic `assert_<index>` ids when omitted.
-- Explicit and generated ids share one uniqueness pool in each containing list;
-  duplicates/collisions are schema hard-fail.
+- `docs[].id` and `docs[].owners[].id` are optional metadata keys.
+- When optional docs/docs-owner ids are omitted, runtimes may emit
+  deterministic synthetic labels for diagnostics only.
+- Synthetic labels are not schema identity and must not be accepted as
+  reference targets.
+- `contracts[].clauses.predicates[].id` is required and must be explicitly
+  authored.
 - Suite defaults and clause defaults are optional compression surfaces; empty
   defaults mappings are non-canonical.
 

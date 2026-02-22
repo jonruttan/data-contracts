@@ -38,6 +38,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   harness.docs[].summary:
     type: string
     required: true
@@ -90,6 +91,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   harness.docs[].owners[].role:
     type: string
     required: true
@@ -215,6 +217,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   services.entries[].docs[].summary:
     type: string
     required: true
@@ -267,6 +270,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   services.entries[].docs[].owners[].role:
     type: string
     required: true
@@ -405,6 +409,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   artifact.imports[].docs[].summary:
     type: string
     required: true
@@ -457,6 +462,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   artifact.imports[].docs[].owners[].role:
     type: string
     required: true
@@ -528,6 +534,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   artifact.exports[].docs[].summary:
     type: string
     required: true
@@ -580,6 +587,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   artifact.exports[].docs[].owners[].role:
     type: string
     required: true
@@ -661,6 +669,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   exports[].docs[].summary:
     type: string
     required: true
@@ -713,6 +722,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   exports[].docs[].owners[].role:
     type: string
     required: true
@@ -779,6 +789,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   docs[].summary:
     type: string
     required: true
@@ -821,6 +832,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   docs[].owners[].role:
     type: string
     required: true
@@ -879,6 +891,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for documentation entry. Not reference identity.
   contracts[].docs[].summary:
     type: string
     required: true
@@ -931,6 +944,7 @@ fields:
     type: string
     required: false
     since: v2
+    description: Optional metadata id for docs owner entry. Not reference identity.
   contracts[].docs[].owners[].role:
     type: string
     required: true

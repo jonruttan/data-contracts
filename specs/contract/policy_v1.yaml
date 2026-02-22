@@ -4299,35 +4299,34 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
-- id: IMPLICIT_IDS_NON_REFERENCED_SURFACES_ALLOWED
+- id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.implicit_ids
+  applies_to: schema.v2.references.identity
   norm: MUST
-  requirement: predicate_and_docs_ids_may_be_implicit_with_deterministic_generation
-  description: Non-referenced id surfaces (`contracts[].clauses.predicates[].id`,
-    docs entry ids, docs owner ids) may be omitted and must normalize to deterministic
-    scope-local ids.
-  rationale: Reduces authoring overhead while preserving explicit normalized
-    runtime data and stable diagnostics.
-  risk_if_violated: Implementations drift between strict-required and implicit-id
-    behavior, reducing portability.
+  requirement: reference_targets_must_use_explicit_authored_ids_only
+  description: Any field that resolves references must target explicitly authored
+    ids only; implicit or synthetic labels are not valid schema reference identities.
+  rationale: Eliminates implicit identity semantics and keeps reference resolution
+    deterministic across runners.
+  risk_if_violated: Ambiguous identity resolution and runner-specific behavior
+    drift.
   references:
   - specs/schema/schema_v2.md
-  - specs/schema/registry/v2/core.yaml
   - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/core.yaml
   - specs/conformance/cases/core/implicit_ids_v2.spec.md
-- id: IMPLICIT_ID_COLLISIONS_HARD_FAIL
+- id: SYNTHETIC_LABELS_DIAGNOSTICS_ONLY
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.implicit_ids.uniqueness
+  applies_to: runtime.reporting.synthetic_labels
   norm: MUST
-  requirement: explicit_and_generated_ids_share_uniqueness_pool_and_collisions_fail
-  description: Explicit and generated ids in the same containing list must share
-    one uniqueness pool; duplicate/colliding ids are schema hard-fail.
-  rationale: Prevents ambiguous references and non-deterministic diagnostics.
-  risk_if_violated: Silent id collisions can cause unstable case behavior across
-    runners.
+  requirement: synthetic_labels_must_not_be_accepted_as_schema_ids
+  description: When optional docs/docs-owner ids are omitted, runtimes may emit
+    deterministic synthetic labels for diagnostics only. These labels must not
+    be accepted as schema identities or reference targets.
+  rationale: Preserves concise authoring while preventing hidden identity channels.
+  risk_if_violated: Diagnostic labels become accidental API surface and break portability.
   references:
   - specs/schema/schema_v2.md
   - specs/contract/21_schema_registry_contract.md

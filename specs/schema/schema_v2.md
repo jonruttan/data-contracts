@@ -70,13 +70,12 @@ Related docs/reference schemas:
 - `purpose` (string, optional): suite-level description
 - `docs` (list, optional): suite-level documentation metadata entries
   - required entry keys: `summary`, `audience`, `status`
-  - `id` is optional; when omitted, normalization assigns deterministic
-    scope-local ids (`doc_<index>`)
+  - `id` is optional metadata; when omitted, runners may emit deterministic
+    report labels only (not schema/reference identity)
   - optional entry keys: `description`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`, `examples`
   - `docs[].type` enum: `overview|reference|howto|policy|contract|changelog`
   - unknown entry keys are invalid in v2
-  - `docs[].id` values (explicit and generated) MUST be unique within each
-    containing `docs[]` array scope
+  - explicit `docs[].id` values MUST be unique within each containing `docs[]` array scope
 
 Bundle/package management is not part of `contract-spec` suite shape in v2.
 Bundle taxonomy, lock, and package semantics are defined at package-contract
@@ -208,8 +207,7 @@ Parser behavior:
 - singular `doc` surfaces are invalid in v2; use `docs[]`
 - `contracts[].harness` is invalid in v2 (hard cut)
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
-- `contracts[].clauses.predicates[].id` is optional; missing ids normalize to
-  deterministic `assert_<index>` ids within each predicate list
+- `contracts[].clauses.predicates[].id` is required
 - unknown `services.entries[].type` MUST hard-fail during schema validation
 - invalid `services.entries[].io` MUST hard-fail during schema validation
 - `services.entries[].imports` supports canonical list[mapping] and compact
@@ -232,12 +230,9 @@ Parser behavior:
   or `artifact.exports[].id`)
 - implicit harness/service target symbol injection is invalid; artifact symbols are
   declaration-and-binding derived only
-- implicit-id normalization rules:
-  - `contracts[].clauses.predicates[].id` => `assert_<index>`
-  - `...docs[].id` => `doc_<index>`
-  - `...docs[].owners[].id` => `owner_<index>`
-  - explicit and generated ids share one uniqueness pool per containing list
-  - any duplicate/collision is a schema hard-fail
+- synthetic labels may be emitted for reporting when optional docs/docs-owner ids
+  are omitted, but these labels are diagnostics-only and must not be accepted as
+  schema reference identities
 - `bindings[].mode` supports `merge|override`:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
