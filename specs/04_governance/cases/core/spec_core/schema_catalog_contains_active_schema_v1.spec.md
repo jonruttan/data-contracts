@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: /specs/01_schema/schema_v2.md
+spec_version: 1
+schema_ref: /specs/01_schema/schema_v1.md
 harness:
   type: unit.test
   profile: check
@@ -11,7 +11,7 @@ harness:
       required_tokens:
       - schema_id: contract_spec
       - major: 2
-      - path: /specs/01_schema/schema_v2.md
+      - path: /specs/01_schema/schema_v1.md
       - status: active
     check:
       profile: governance.scan

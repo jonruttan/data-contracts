@@ -1,39 +1,106 @@
-version: 1
-id: schema.registry.v1.assertions
+version: 2
+id: schema.registry.v2.assertions
 type: assertions
 fields:
-  contracts[].clauses:
+  contracts.clauses[].asserts:
     type: mapping
     required: true
-    since: v1
-    description: Canonical clause tree root mapping with defaults/predicates; leaves are direct spec-lang operator mappings.
-  contracts[].clauses.imports:
+    since: v2
+    description: Canonical assertion tree root mapping with checks; 
+      leaves are direct spec-lang operator mappings. Binding-piped symbols are 
+      merged into effective check import context after assertion/check 
+      import merge.
+  contracts.clauses[].asserts.imports:
     type: list
     required: false
-    since: v1
-    description: Clause-level default import bindings inherited by all predicates (list of from/names/as items).
-  contracts[].clauses.predicates[].imports:
-    type: list
-    required: false
-    since: v1
-    description: Predicate-level import bindings merged over clauses.imports (list of from/names/as items).
-  contracts[].clauses.predicates[].purpose:
+    since: v2
+    description: 'Assertion-level default import bindings inherited by checks.
+      Supports canonical rows (`{from, names, service?, as?}`) and compact
+      aliases (bare-string/service/artifact grouping). For `from: artifact`,
+      imported names must resolve to suite-declared `artifacts[].id` and be
+      explicitly wired when runtime-produced.'
+  contracts.clauses[].asserts.imports[].from:
+    type: string
+    required: true
+    since: v2
+    description: 'Import source: artifact or service.'
+  contracts.clauses[].asserts.imports[].service:
     type: string
     required: false
-    since: v1
-    description: Optional human-readable predicate intent.
-  contracts[].clauses.predicates[].required:
+    since: v2
+    description: Required when from=service; references services[].id.
+  contracts.clauses[].asserts.imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Imported symbol names; from=artifact names must resolve to
+      suite-declared artifact ids.
+  contracts.clauses[].asserts.imports[].as:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional local alias map.
+  contracts.clauses[].asserts.checks:
+    type: list
+    required: true
+    since: v2
+    description: Non-empty check list.
+  contracts.clauses[].asserts.checks[].id:
+    type: string
+    required: true
+    since: v2
+    description: Stable check id.
+  contracts.clauses[].asserts.checks[].imports:
+    type: list
+    required: false
+    since: v2
+    description: 'Check-level imports merged over asserts.imports. Supports
+      canonical rows (`{from, names, service?, as?}`) and compact aliases
+      (bare-string/service/artifact grouping). For `from: artifact`, names
+      must resolve to suite-declared `artifacts[].id`.'
+  contracts.clauses[].asserts.checks[].imports[].from:
+    type: string
+    required: true
+    since: v2
+    description: 'Import source: artifact or service.'
+  contracts.clauses[].asserts.checks[].imports[].service:
+    type: string
+    required: false
+    since: v2
+    description: Required when from=service; references services[].id.
+  contracts.clauses[].asserts.checks[].imports[].names:
+    type: list
+    required: true
+    since: v2
+    description: Imported symbol names; from=artifact names must resolve to
+      suite-declared artifact ids.
+  contracts.clauses[].asserts.checks[].imports[].as:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional local alias map.
+  contracts.clauses[].asserts.checks[].purpose:
+    type: string
+    required: false
+    since: v2
+    description: Optional human-readable check intent.
+  contracts.clauses[].asserts.checks[].required:
     type: bool
     required: false
-    since: v1
+    since: v2
     description: Optional requiredness flag; defaults to true when omitted.
-  contracts[].clauses.predicates[].priority:
+  contracts.clauses[].asserts.checks[].priority:
     type: int
     required: false
-    since: v1
-    description: Optional positive integer priority metadata (default 1; lower means lower implementation value).
-  contracts[].clauses.predicates[].severity:
+    since: v2
+    description: Optional positive integer priority metadata (default 1).
+  contracts.clauses[].asserts.checks[].severity:
     type: int
     required: false
-    since: v1
-    description: Optional positive integer severity metadata (default 1; lower means lower impact).
+    since: v2
+    description: Optional positive integer severity metadata (default 1).
+  contracts.clauses[].asserts.checks[].assert:
+    type: any
+    required: true
+    since: v2
+    description: Non-empty expression mapping or non-empty expression list.

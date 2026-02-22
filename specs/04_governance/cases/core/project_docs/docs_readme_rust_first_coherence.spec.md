@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: /specs/01_schema/schema_v2.md
+spec_version: 1
+schema_ref: /specs/01_schema/schema_v1.md
 harness:
   type: unit.test
   profile: check
@@ -18,7 +18,7 @@ harness:
       required_paths:
       - /docs/book/index.md
       - /docs/book/99_generated_reference_index.md
-      - /specs/01_schema/schema_v2.md
+      - /specs/01_schema/schema_v1.md
       - /specs/02_contracts/index.md
       - /specs/02_contracts/25_compatibility_matrix.md
       forbidden_tokens:

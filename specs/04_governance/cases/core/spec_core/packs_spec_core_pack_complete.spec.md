@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+spec_version: 1
+schema_ref: "/specs/01_schema/schema_v1.md"
 contracts:
   clauses:
   - id: DCGOV-PACK-003
@@ -12,7 +12,7 @@ contracts:
         path: "/specs/00_core/packs/spec_core_maintenance_pack_v1.yaml"
         required_tokens:
         - pack_id: spec_core_maintenance_pack_v1
-        - "/specs/01_schema/schema_v2.md"
+        - "/specs/01_schema/schema_v1.md"
         - "/specs/01_schema/schema_catalog_v1.yaml"
         - "/specs/04_governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md"
       check:

@@ -6,13 +6,13 @@ Canonical schema sources for executable `contract-spec` documents.
 
 ## Canonical Files
 
-- `/specs/01_schema/schema_v2.md` (active)
+- `/specs/01_schema/schema_v1.md` (active)
 - `/specs/01_schema/schema_v1.md` (deprecated)
 - `/specs/01_schema/schema_catalog_v1.yaml`
-- `/specs/01_schema/registry/v2/core.yaml`
-- `/specs/01_schema/registry/v2/assertions.yaml`
-- `/specs/01_schema/registry/v2/harness.yaml`
-- `/specs/01_schema/registry/v2/core.yaml`
+- `/specs/01_schema/registry/v1/core.yaml`
+- `/specs/01_schema/registry/v1/assertions.yaml`
+- `/specs/01_schema/registry/v1/harness.yaml`
+- `/specs/01_schema/registry/v1/core.yaml`
 - `/specs/01_schema/service_contract_catalog_v1.yaml`
 - `/specs/01_schema/service_plugin_manifest_v1.yaml`
 - `/specs/01_schema/service_plugin_lock_v1.yaml`
@@ -25,15 +25,15 @@ v2 terminology baseline:
 
 Deprecated v2 type overlays (non-normative migration references):
 
-- `/specs/01_schema/registry/v2/types/contract_check.yaml`
-- `/specs/01_schema/registry/v2/types/contract_export.yaml`
-- `/specs/01_schema/registry/v2/types/contract_job.yaml`
+- `/specs/01_schema/registry/v1/types/contract_check.yaml`
+- `/specs/01_schema/registry/v1/types/contract_export.yaml`
+- `/specs/01_schema/registry/v1/types/contract_job.yaml`
 
 ## Generated and Machine Artifacts
 
 - `/specs/01_schema/spec_lang_stdlib_profile_v1.yaml`
-- `/specs/01_schema/runner_execution_certificate_v2.yaml`
-- `/specs/01_schema/runner_certification_registry_v2.yaml`
+- `/specs/01_schema/runner_execution_certificate_v1.yaml`
+- `/specs/01_schema/runner_certification_registry_v1.yaml`
 - `/specs/01_schema/runner_status_report_v1.yaml`
 - `/specs/01_schema/runner_status_matrix_v1.yaml`
 - `/specs/01_schema/runner_cli_contract_v1.yaml`

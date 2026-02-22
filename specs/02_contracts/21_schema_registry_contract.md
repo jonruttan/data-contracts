@@ -2,18 +2,18 @@
 
 ## Purpose
 
-The schema registry under `specs/01_schema/registry/v2/` is the machine source of truth for executable case-shape constraints.
+The schema registry under `specs/01_schema/registry/v1/` is the machine source of truth for executable case-shape constraints.
 
 ## Normative Rules
 
 - Runtime schema validation MUST be driven from compiled registry data.
 - Governance runner contact files MUST be read from `/specs/governance/**`, which is a generated interface surface sourced from `/specs/04_governance/**`.
 - Shared governance/check behavior MUST be represented by executable spec cases and policy libraries; shell scripts MUST remain transport-only entrypoints.
-- Canonical field grammar MUST be driven from `/specs/01_schema/registry/v2/core.yaml` and `/specs/01_schema/registry/v2/assertions.yaml`.
+- Canonical field grammar MUST be driven from `/specs/01_schema/registry/v1/core.yaml` and `/specs/01_schema/registry/v1/assertions.yaml`.
 - Unknown top-level case keys MUST fail with `schema`.
 - Suite top-level validation MUST enforce `spec_version`, `schema_ref`, and non-empty `contracts`.
 - Contract-item validation MUST enforce per-item `id` and `asserts` shape.
-- `specs/01_schema/schema_v2.md` MUST contain generated registry snapshot content and stay synchronized.
+- `specs/01_schema/schema_v1.md` MUST contain generated registry snapshot content and stay synchronized.
 - Suite runtime metadata MUST define root `harness` (`type`, `profile`, optional `config`).
 - Suite runtime adapters/services are optional at root.
 - When `services` is present, it MUST define non-empty `services[]`.

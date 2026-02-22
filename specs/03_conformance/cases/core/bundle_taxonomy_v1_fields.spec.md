@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+spec_version: 1
+schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
@@ -64,10 +64,10 @@ contracts:
               - 'bundle.domains[].modules[].artifacts[].kind:'
 artifacts:
 - id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/01_schema/schema_v2.md"
+  ref: "/specs/01_schema/schema_v1.md"
   direction: input
 - id: art.svc.assert_check.text_file.2.source.1
-  ref: "/specs/01_schema/registry/v2/core.yaml"
+  ref: "/specs/01_schema/registry/v1/core.yaml"
   direction: input
 adapters:
 - type: io.fs

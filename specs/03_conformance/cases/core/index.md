@@ -5,7 +5,7 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/specs/03_conformance/cases/core/api_http.spec.md`
-- `/specs/03_conformance/cases/core/bundle_taxonomy_v2_fields.spec.md`
+- `/specs/03_conformance/cases/core/bundle_taxonomy_v1_fields.spec.md`
 - `/specs/03_conformance/cases/core/chain_exports.spec.md`
 - `/specs/03_conformance/cases/core/cli_run_entrypoint.spec.md`
 - `/specs/03_conformance/cases/core/domain_libraries.spec.md`
@@ -25,4 +25,4 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/03_conformance/cases/core/report_job_contracts.spec.md`
 - `/specs/03_conformance/cases/core/script_job_contracts.spec.md`
 - `/specs/03_conformance/cases/core/services_entries_imports_compact.spec.md`
-- `/specs/03_conformance/cases/core/implicit_ids_v2.spec.md`
+- `/specs/03_conformance/cases/core/implicit_ids_v1.spec.md`

@@ -236,7 +236,7 @@ Canonical domain index for executable specs in this subtree.
 - /specs/04_governance/cases/core/spec_core/library_single_public_symbol_per_case_required.spec.md
 - /specs/04_governance/cases/core/spec_core/library_verb_first_schema_keys_required.spec.md
 - /specs/04_governance/cases/core/spec_core/naming_filename_policy.spec.md
-- /specs/04_governance/cases/core/spec_core/normalization_contract_spec_key_order_v2.spec.md
+- /specs/04_governance/cases/core/spec_core/normalization_contract_spec_key_order_v1.spec.md
 - /specs/04_governance/cases/core/spec_core/normalization_docs_token_sync.spec.md
 - /specs/04_governance/cases/core/spec_core/normalization_library_mapping_ast_only.spec.md
 - /specs/04_governance/cases/core/spec_core/normalization_mapping_ast_only.spec.md

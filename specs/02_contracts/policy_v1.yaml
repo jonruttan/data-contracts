@@ -17,7 +17,7 @@ rules:
   references:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   introduced_in: v2
   scope: case
@@ -34,7 +34,7 @@ rules:
   references:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: BINDINGS_SERVICE_REQUIRED
   introduced_in: v2
   scope: case
@@ -48,7 +48,7 @@ rules:
   risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
   references:
   - specs/02_contracts/21_schema_registry_contract.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: ROOT_BINDINGS_FORBIDDEN
   introduced_in: v2
   scope: case
@@ -62,7 +62,7 @@ rules:
   risk_if_violated: Ambiguous ownership and legacy shape drift.
   references:
   - specs/02_contracts/21_schema_registry_contract.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: V2_DEFAULTS_SURFACE_NARROWED
   introduced_in: v2
   scope: case
@@ -77,9 +77,9 @@ rules:
   risk_if_violated: Authors must reason about implicit values across too many
     scopes, increasing ambiguity.
   references:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/schema_v1.md
 - id: HARNESS_LEGACY_CONTRACT_PAYLOAD_FORBIDDEN
   introduced_in: v2
   scope: case
@@ -93,9 +93,9 @@ rules:
   risk_if_violated: Hidden config semantics, duplicated payload strings, and low-auditability
     case setup.
   references:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/harness.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/harness.yaml
+  - specs/01_schema/schema_v1.md
   - specs/02_contracts/04_harness.md
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
@@ -113,7 +113,7 @@ rules:
   references:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: SHARED_RUNNER_LOGIC_SPEC_OWNED
   introduced_in: v2
   scope: governance
@@ -1338,7 +1338,7 @@ rules:
   risk_if_violated: Compatibility telemetry becomes ad-hoc or silently absent.
   references:
   - scripts/runner_status_ingest.sh
-  - specs/01_schema/runner_certification_registry_v2.yaml
+  - specs/01_schema/runner_certification_registry_v1.yaml
   - specs/04_governance/cases/core/runner_contract/runtime_compatibility_status_ingestion_configured.spec.md
 - id: RUNTIME_COMPATIBILITY_STATUS_FRESHNESS_WITHIN_SLO
   introduced_in: v1
@@ -4347,7 +4347,7 @@ rules:
   rationale: Improves readability and keeps diffs minimal.
   risk_if_violated: Authoring churn and non-deterministic review diffs increase.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/02_contracts/29_runner_cli_interface.md
   - specs/03_conformance/style.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
@@ -4364,9 +4364,9 @@ rules:
   risk_if_violated: Authoring remains noisy and implementations diverge on
     accepted service import declaration shapes.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
@@ -4380,8 +4380,8 @@ rules:
   rationale: Reduces repetitive syntax while keeping normalized runtime semantics.
   risk_if_violated: Fixture style drifts and cognitive overhead increases.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
@@ -4396,8 +4396,8 @@ rules:
     fixtures.
   risk_if_violated: Equivalent import bindings drift in style and increase cognitive load.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/03_assertions.md
 - id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   introduced_in: v2
@@ -4411,8 +4411,8 @@ rules:
   rationale: Improves readability and keeps binding requiredness semantics explicit.
   risk_if_violated: Binding blocks become repetitive and harder to maintain.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/04_harness.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
   introduced_in: v2
@@ -4425,9 +4425,9 @@ rules:
   rationale: Reduces boilerplate in binding I/O declarations while preserving deterministic semantics.
   risk_if_violated: Runners diverge on accepted binding authoring forms.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
@@ -4440,8 +4440,8 @@ rules:
   rationale: Keeps compact binding I/O behavior deterministic and portable.
   risk_if_violated: Binding wiring becomes ambiguous and validation weakens across runners.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
@@ -4454,8 +4454,8 @@ rules:
   rationale: Improves readability and reduces repetitive endpoint-only rows.
   risk_if_violated: Equivalent binding blocks drift in style and increase cognitive load.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   - specs/02_contracts/04_harness.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
@@ -4470,9 +4470,9 @@ rules:
   risk_if_violated: Compact import declarations become ambiguous and drift across
     runner implementations.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/schema_case_validation.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
   introduced_in: v2
@@ -4488,9 +4488,9 @@ rules:
   risk_if_violated: Contract import authoring remains noisy and runner behavior
     diverges on accepted compact forms.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   introduced_in: v2
@@ -4506,9 +4506,9 @@ rules:
     service resolution.
   risk_if_violated: Alias resolution becomes ambiguous and validation weakens.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
   - specs/03_conformance/cases/core/services_entries_imports_compact.spec.md
 - id: ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
   introduced_in: v2
@@ -4517,15 +4517,15 @@ rules:
   norm: MUST
   requirement: v2_alias_grammar_must_be_defined_in_core_and_assertions_registries
   description: Alias grammar for compact/short forms must be defined in
-    `/specs/01_schema/registry/v2/core.yaml` and `/specs/01_schema/registry/v2/assertions.yaml`
+    `/specs/01_schema/registry/v1/core.yaml` and `/specs/01_schema/registry/v1/assertions.yaml`
     with one deterministic normalization contract.
   rationale: Eliminates duplicated alias semantics and reduces ambiguity.
   risk_if_violated: Alias behavior drifts between registry surfaces and docs.
   references:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/schema_v1.md
 - id: REQUIREDNESS_MODEL_HARMONIZED_V2
   introduced_in: v2
   scope: governance
@@ -4539,7 +4539,7 @@ rules:
     statements.
   risk_if_violated: Implementers infer inconsistent validation behavior.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
 - id: SERVICES_INTEGRATION_TYPES_ONLY_V2
@@ -4554,7 +4554,7 @@ rules:
   rationale: Separates system integration concerns from assertion/export/job orchestration semantics.
   risk_if_violated: Service identity becomes ambiguous and runner behavior drifts across implementations.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
   - specs/02_contracts/21_schema_registry_contract.md
 - id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
@@ -4569,7 +4569,7 @@ rules:
   rationale: Eliminates duplicated identity semantics between service type and profile.
   risk_if_violated: Type/profile combinations become non-portable and validation weakens.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
   - specs/02_contracts/04_harness.md
 - id: SERVICE_IMPLEMENTATIONS_MUST_OWN_INTEGRATION_LIBS
@@ -4586,7 +4586,7 @@ rules:
   references:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/35_service_plugin_runtime.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: RUNTIME_PLUGIN_LOAD_REQUIRES_SIGNATURE_AND_LOCK_PIN
   introduced_in: v2
   scope: runtime
@@ -4626,7 +4626,7 @@ rules:
   risk_if_violated: CI and production mode divergence undermines portability.
   references:
   - specs/02_contracts/35_service_plugin_runtime.md
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
 - id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   introduced_in: v2
   scope: runtime
@@ -4640,10 +4640,10 @@ rules:
   risk_if_violated: Ambiguous identity resolution and runner-specific behavior
     drift.
   references:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/03_conformance/cases/core/implicit_ids_v2.spec.md
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/03_conformance/cases/core/implicit_ids_v1.spec.md
 - id: SYNTHETIC_LABELS_DIAGNOSTICS_ONLY
   introduced_in: v2
   scope: runtime
@@ -4656,9 +4656,9 @@ rules:
   rationale: Preserves concise authoring while preventing hidden identity channels.
   risk_if_violated: Diagnostic labels become accidental API surface and break portability.
   references:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/02_contracts/21_schema_registry_contract.md
-  - specs/03_conformance/cases/core/implicit_ids_v2.spec.md
+  - specs/03_conformance/cases/core/implicit_ids_v1.spec.md
 - id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   introduced_in: v1
   scope: runtime

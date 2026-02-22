@@ -1,4 +1,4 @@
-# Spec-Test Schema (v1)
+# Spec-Test Schema (v2)
 
 This schema defines the stable shape of executable spec tests embedded in
 Markdown files selected by case-file pattern (default `*.spec.md`) as fenced blocks:
@@ -38,20 +38,155 @@ Related docs/reference schemas:
 
 - `spec_version` (int, required): schema major used by this suite
 - `schema_ref` (string, required): canonical virtual-root schema path
-- `contracts` (list, required): non-empty list of executable contract items
-- `defaults` (mapping, optional): shallow defaults merged into each contract item
+- `contracts` (mapping, required): contains `contracts.clauses[]` (non-empty list)
+- `artifacts` (list, optional): suite-level artifact reference declarations
+  - `id` (string, required)
+  - `ref` (string, required): supports moustache template expressions (`{{...}}`)
+    resolved from suite context
+  - `direction` (string, required): `input|output|bidirectional`
+  - `type` (string, optional): expected MIME type for resolved `ref`
+  - `inputs` (mapping, optional)
+  - `outputs` (mapping, optional)
+  - `options` (mapping, optional)
+  - `docs` (list, optional): documentation metadata entries
+- `exports` (list, optional): function export declarations only
+  - `exports[].as` (string, required): exported function symbol name
+  - `exports[].from` (string, required): must be `assert.function`
+  - `exports[].path` (string, required): producer function body path
+  - `exports[].params` (list, optional): ordered parameter names
+  - `exports[].required` (bool, optional): export requirement flag
+  - `exports[].docs` (list, optional): function documentation metadata entries
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
+- `docs` (list, optional): suite-level documentation metadata entries
+  - required entry keys: `summary`, `audience`, `status`
+  - `id` is optional metadata; when omitted, runners may emit deterministic
+    report labels only (not schema/reference identity)
+  - optional entry keys: `description`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`, `examples`
+  - `docs[].type` enum: `overview|reference|howto|policy|contract|changelog`
+  - unknown entry keys are invalid in v2
+  - explicit `docs[].id` values MUST be unique within each containing `docs[]` array scope
 
-Each `contracts[]` item:
+Bundle/package management is not part of `contract-spec` suite shape in v2.
+Bundle taxonomy, lock, and package semantics are defined at package-contract
+level in:
+
+- `specs/02_contracts/32_contract_bundle_taxonomy.md`
+- `specs/02_contracts/33_bundle_package_management.md`
+- `specs/02_contracts/34_runner_implementation_spec_bundles.md`
+- `specs/01_schema/bundle_manifest_v1.yaml`
+- `specs/01_schema/resolved_bundle_lock_v1.yaml`
+- `specs/01_schema/project_bundle_lock_v1.yaml`
+- `specs/01_schema/implementation_bundle_overlay_v1.yaml`
+- `specs/01_schema/implementation_bundle_build_lock_v1.yaml`
+
+## v2 Canonical Key Order (Formatter Scope)
+
+`contract-spec-format` v2 scope is intentionally narrow:
+
+- suite root mapping keys
+- each `contracts.clauses[]` mapping item
+
+No recursive nested-map sorting and no array-item reordering are performed.
+
+Suite root canonical order:
+
+1. `spec_version`
+2. `schema_ref`
+3. `title`
+4. `purpose`
+5. `docs`
+6. `domain`
+7. `harness`
+8. `services`
+9. `artifacts`
+10. `exports`
+11. `contracts`
+
+`contracts.clauses[]` canonical order:
+
+1. `id`
+2. `title`
+3. `purpose`
+4. `docs`
+5. `domain`
+6. `expect`
+7. `requires`
+8. `bindings`
+9. `asserts`
+10. `library`
+11. `when`
+
+Ordering rules:
+
+- known keys are emitted in canonical order
+- unknown keys are preserved after known keys in stable original order
+
+Alias grammar source of truth:
+
+- `/specs/01_schema/registry/v1/core.yaml and /specs/01_schema/registry/v1/assertions.yaml` defines compact/short alias
+  grammars, normalization targets, mixed-form rules, and collision/failure
+  contracts.
+- core/assertions registries enumerate canonical fields and accepted compact
+  aliases for v2 surfaces.
+- list item order is preserved as-authored
+
+Terminology contract (uniform across v2 docs/registry/policy):
+
+- accepted input forms: parser-supported authoring shapes
+- preferred authoring form: style guidance for low-overhead authoring
+- canonical normalized form: deterministic internal row/map shape after
+  alias/default normalization and before validation/runtime execution
+
+Each `contracts.clauses[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
-- `type` (string, required directly or inherited from `defaults.type`)
-- `clauses` (mapping, required)
+- `asserts` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
-- `expect`/`requires`/`harness`/`when` (optional)
+- `expect`/`requires`/`when` (optional)
+- `contracts.clauses[].bindings` (mapping, optional): contract-local service
+  binding declarations
+  - mapping form (preferred compaction):
+    `contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`
+  - defaults keys (optional): `service`, `import`, `mode`, `predicates`
+  - row keys: `id`, optional `service`, optional `import`, `inputs`, `outputs`,
+    `predicates`, `mode`
+  - effective row = shallow merge(defaults, row), row overrides defaults
 
+Suite runtime surfaces:
+
+- `harness` (mapping, required): suite orchestration surface
+  - `harness.type` (string, required)
+  - `harness.profile` (string, required)
+  - `harness.config` (mapping, optional)
+  - scan-style structured config keys:
+    - `harness.config.root` (string, optional)
+    - `harness.config.check.profile` (string, optional)
+    - `harness.config.check.config.check` (string, optional)
+    - `harness.config.use[]` (`ref`, `as`, `symbols`) (optional)
+- `services` (list, optional): suite service type blocks
+  - `adapters[].type` (string, required): service type token resolved by
+    `/specs/01_schema/service_contract_catalog_v1.yaml` (for example `io.http`)
+  - `adapters[].defaults` (mapping, optional): per-type defaults merged into each
+    `adapters[].actions[]` row
+  - `adapters[].actions` (list, required): non-empty concrete service instance rows
+  - `adapters[].actions[].id` (string, required): concrete service instance id used by
+    `contracts.clauses[].bindings` and `from: service` imports
+  - `adapters[].actions[].profile` (string, optional): effective mode token
+  - `adapters[].actions[].direction` (string, optional): `input|output|bidirectional`
+  - `adapters[].actions[].config` (mapping, optional): service config values that
+    reference external locations MUST use artifact-id fields (`*_artifact_id`)
+    and must not embed direct locators
+  - `adapters[].actions[].imports` (list, optional): canonical mapping rows
+    (`names`, optional `as`)
+  - effective entry = shallow merge(`adapters[].defaults`, `adapters[].actions[]` row),
+    with row keys overriding defaults
+  - service implementations may be built-in or runtime-loaded plugins; suite
+    authoring shape is unchanged
+  - runtime plugin contracts:
+    - `/specs/01_schema/service_plugin_manifest_v1.yaml`
+    - `/specs/01_schema/service_plugin_lock_v1.yaml`
 Parser behavior:
 
 - discovery scans files matching case-file pattern (default `*.spec.md`) in
@@ -69,15 +204,143 @@ Parser behavior:
 - `contracts` is required and must be non-empty
 - `spec_version` is required
 - `schema_ref` is required
-- each `contracts[]` item requires `id`
+- each `contracts.clauses[]` item requires `id`
+- suite `harness` mapping is required
+- suite `services` is optional
+- when `services` is present, `services[]` must be non-empty
+- `contracts.defaults` is invalid in v2 (hard cut)
+- `contracts.clauses[].asserts.defaults` is invalid in v2 (hard cut)
+- `harness.config.legacy_contract_harnesses` is invalid in v2 (hard cut)
 - `schema_ref` MUST resolve in `/specs/01_schema/schema_catalog_v1.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
+- root `imports` is invalid in v2
+- root `bindings` is invalid in v2
+- `artifacts[].ref` MUST be strings
+- `artifacts[].ref` template expressions
+  use moustache syntax and resolve from suite context only
+- unresolved `artifacts[].ref` template
+  expressions are schema/runtime failures
+- root `exports[]` is function-only:
+  - `exports[].from` MUST be `assert.function`
+  - `exports[].mode` is invalid
+  - `exports[].id` is invalid
+  - `exports[].ref` is invalid
+- singular `doc` surfaces are invalid in v2; use `docs[]`
+- `contracts.clauses[].harness` is invalid in v2 (hard cut)
+- `contracts.clauses[].asserts.profile` and `contracts.clauses[].asserts.config` are invalid in v2 runtime ownership
+- `contracts.clauses[].asserts.checks[].id` is required
+- unknown `adapters[].type` MUST hard-fail during schema validation
+- invalid `adapters[].actions[].direction` MUST hard-fail during schema validation
+- service-specific integration behavior (for example HTTP client operations) is
+  implementation-owned by resolved service implementations, not core runner
+  orchestration logic
+- runtime-loaded service implementations MUST pass lock + digest + signature
+  verification before invocation
+- `adapters[].actions[].imports` accepts canonical list[mapping] rows and compact
+  list[string] aliases
+- compact `adapters[].actions[].imports` names MUST be unique per adapter action
+  and valid for resolved `adapters[].type/profile` in
+  `/specs/01_schema/service_contract_catalog_v1.yaml`
+- if any contract declares `contracts.clauses[].bindings.rows[]`, `services` MUST be present and valid
+- if any `asserts.imports[]` or `asserts.checks[].imports[]` item uses
+  `from: service`, `services` MUST be present and valid
+- clause/predicate bare-string import rows (for example `- pipe_identity`) are
+  compact service aliases normalized to
+  `{from: service, names:[pipe_identity], service:<resolved>}`
+- `<resolved>` service id for clause/predicate bare-string rows MUST come from
+  `contracts.clauses[].bindings.defaults.service`; missing/empty defaults service is
+  schema failure
+- clause/predicate bare-string rows with unknown resolved service id are schema
+  failures
+- clause/predicate bare-string rows with import names not supported by resolved
+  service `id/mode` are schema failures
+- empty/whitespace-only clause/predicate bare-string import rows are schema failures
+- bindings execute once per contract before predicate evaluation
+- bindings use additive mapping form (contracts.clauses[].bindings.defaults + contracts.clauses[].bindings.rows[])
+- binding shape/alias grammar source:
+  `/specs/01_schema/registry/v1/core.yaml and /specs/01_schema/registry/v1/assertions.yaml`
+- legacy row key `contract` under `contracts.clauses[].bindings.rows[]` is invalid
+- each effective binding row MUST include `id`, `service`, and `import` after defaults merge
+- effective row = shallow merge(`contracts.clauses[].bindings.defaults`, row), row values override defaults
+- effective `service` MUST reference an existing `adapters[].actions[].id`
+- `contracts.clauses[].bindings.rows[].inputs[].from` MUST reference `artifacts[].id` where artifact
+  entry `direction` is `input` or `bidirectional`
+- `contracts.clauses[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id` where artifact
+  entry `direction` is `output` or `bidirectional`
+- binding I/O accepted input forms:
+  - `inputs` accepts canonical list[mapping] and compact list[string]
+  - `outputs` accepts canonical list[mapping] and compact list[string]
+- compact binding I/O canonical normalized forms:
+  - input string `"x"` -> `{from: x}`
+  - output string `"y"` -> `{to: y}`
+- mixed item kinds (string + mapping) in one binding inputs/outputs list are invalid
+- empty/whitespace compact binding I/O strings are invalid
+- compact binding I/O rows encode `from`/`to` only; `as`/`path` require canonical mapping rows
+- binding runtime payload adapter_action MUST use artifact ids only (`artifacts[]`)
+- direct external locator keys in `adapters[].actions[].config` are invalid:
+  `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
+- every `*_artifact_id` in service config MUST resolve to
+  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
+- every `*_artifact_ids[]` entry in service config MUST resolve to
+  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
+- mixed direct-locator and artifact-id forms for the same semantic field are
+  invalid
+- `asserts.imports[].from=artifact` and `asserts.checks[].imports[].from=artifact`
+  names MUST resolve to suite-declared artifact ids (`artifacts[].id`)
+- implicit harness/service target symbol injection is invalid; artifact symbols are
+  declaration-and-binding derived only
+- synthetic labels may be emitted for reporting when optional docs/docs-owner ids
+  are omitted, but these labels are diagnostics-only and must not be accepted as
+  schema reference identities
+- `contracts.clauses[].bindings.rows[].mode` supports `merge|override` on effective rows:
+  - `merge`: explicit imports win collisions
+  - `override`: binding-piped symbols overwrite same-name imports
+- legacy `type` on contract items is invalid in v2
+
+Binding defaults semantics:
+
+- mapping-form `contracts.clauses[].bindings.defaults` applies only to rows in
+  `contracts.clauses[].bindings.rows[]`
+- bindings list-form is invalid in v2
+- row conflicts with defaults resolve in favor of row values
+- missing effective `service` or `import` is schema failure
+- requiredness model terminology:
+  - explicit-required: key must be authored
+  - optional: key may be omitted
+  - effective-required: key may be inherited but must exist after merge
+
+Clause import canonical semantics:
+
+- compact alias rows are preferred authoring style; canonical rows remain valid
+- canonical rows and compact alias rows may coexist in one imports list
+- compact artifact alias requires non-empty list of artifact ids
+- compact service alias requires `id` and non-empty `names`
+- compact bare-string alias is supported and means a service import using
+  `contracts.clauses[].bindings.defaults.service`
+- unknown keys in compact alias rows are schema failures
+- canonical alias grammar source:
+  `/specs/01_schema/registry/v1/core.yaml and /specs/01_schema/registry/v1/assertions.yaml`
+
+Binding I/O canonical semantics:
+
+- preferred authoring form for simple binding I/O rows is compact list[string]
+- canonical mapping rows remain valid and required when alias/path fields are needed
+- compact outputs:
+  - `outputs: [body_json, status]` normalizes to canonical rows
+    `{to: body_json}`, `{to: status}`
+- compact inputs:
+  - `inputs: [request_payload]` normalizes to canonical row
+    `{from: request_payload}`
+- canonical examples for advanced rows:
+  - `- to: body_json`
+  - `  as: subject`
+  - `  path: $.items[0]`
 
 `expect` (conformance metadata):
 
 - `portable` (mapping): shared expectation baseline
-- `impl` (mapping): per-implementation overlays keyed by runtime name
-- expected keys in `portable`/`impl.*`:
+- `overrides` (list, optional): runtime-specific overlays with explicit `runner`
+- expected keys in `portable`/`overrides[]`:
   - `status`: `pass`, `fail`, or `skip`
   - `category`: `schema` / `assertion` / `runtime` / `null`
   - `message_tokens`: optional list of expected message tokens
@@ -94,7 +357,7 @@ For implementation-independent conformance specs:
 
 - Canonical case set lives in `specs/03_conformance/cases/**/*.spec.md`.
 - Portable expectations are defined in `expect.portable`.
-- Runtime deltas are expressed via `expect.impl.<runtime>`.
+- Runtime deltas are expressed via `expect.overrides[]`.
 - Portable cases SHOULD be deterministic and avoid ambient dependency on:
   - time/date/timezone
   - randomness without explicit seeded input
@@ -106,25 +369,22 @@ Normative contract details:
 - `specs/02_contracts/06_conformance.md`
 - `specs/02_contracts/07_portable_spec_authoring.md`
 
-## Type-Specific Fields
+## Harness-Profile Fields
 
-### `type: text.file`
+### `harness.type: unit.test` with `adapters[].actions[].profile: read.text`
 
-`text.file` asserts against file content.
+`read.text` asserts against file content.
 
-- If `path` is omitted, the runner asserts against the spec document that
-  contains the `yaml contract-spec` block.
-- If `path` is provided, it MUST be a relative path and is resolved relative to
-  contract root (virtual `/`) and normalized to canonical `/...`.
-- Resolved `path` MUST remain within the implementation's configured contract
-  root/workspace boundary (path traversal outside that boundary is invalid).
+- External file locators must be declared in `artifacts[]` and referenced
+  by id from service config.
+- Direct `config.path` is invalid in v2.
 
 Fields:
 
-- `path` (string, optional): virtual-root path (`/docs/...`) or root-relative
-  path string normalized to `/...`
+- `source_artifact_id` (string, required): id referencing
+  `artifacts[].id` for the text/file source payload.
 
-Assertion targets for `text.file`:
+Assertion targets for `read.text`:
 
 - `text`
 - `context_json`: JSON subject profile envelope
@@ -139,17 +399,15 @@ Markdown library authoring guidance:
   - raw markdown string
   - markdown profile envelope (`value` + optional `context`)
 
-## `harness` Namespace
+## Harness Dispatch
 
-Runner-only inputs MUST live under `harness:` to preserve separation of
-concerns and keep the spec format portable.
+Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `adapters[].actions[].profile`/`adapters[].actions[].config`.
 
 Governance assertion contract:
 
-- For `type: governance.check` cases, decision obligations MUST be encoded in
+- For governance check profiles, decision obligations MUST be encoded in
   `clauses` blocks.
-- `harness.evaluate` and
-  `harness.orchestration_policy.evaluate` are forbidden.
+- ad-hoc service evaluate surfaces are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
@@ -164,14 +422,14 @@ Assertion targets for `governance.check`:
 
 Security model:
 
-- Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute
+- Spec tests are trusted inputs. `exec.command` and hook entrypoints can execute
   project code/commands with runner process privileges.
-- Running untrusted spec documents is unsafe and out of scope for v1.
-- Implementations MAY pass process environment variables to `cli.run`; keep
+- Running untrusted spec documents is unsafe and out of scope for v2.
+- Implementations MAY pass process environment variables to `exec.command`; keep
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `type: cli.run`, supported `harness` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: exec.command`, supported `adapters[].actions[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -185,9 +443,9 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
 - `spec_lang` (mapping): evaluator budgets for `evaluate` leaves
 - `orchestration` (mapping): orchestration tool dispatch contract for
-  `type: orchestration.run`
+  orchestration profiles
 
-For `type: api.http`, supported `harness` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: request.http`, supported `adapters[].actions[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -199,9 +457,9 @@ For `type: api.http`, supported `harness` keys include:
   - `teardown.cwd` (virtual-root path, optional)
   - `teardown.env` (mapping, optional)
   - `fail_fast` (bool, default `true`)
-- `harness.api_http.auth.oauth` (mapping):
+- `api_http.auth.oauth` (mapping):
   - `grant_type`: `client_credentials`
-  - `token_url`: token endpoint URL or contract path
+  - `token_artifact_id`: artifacts import id for token endpoint locator
   - `client_id_env`: env var name for OAuth client id
   - `client_secret_env`: env var name for OAuth client secret
   - `scope` (optional)
@@ -214,16 +472,16 @@ For `type: api.http`, supported `harness` keys include:
 OAuth and execution rules:
 
 - credentials MUST be env references (`*_env`) only; inline secrets are invalid
-- network `http(s)` token/request URLs require `harness.api_http.mode: live`
+- network `http(s)` token/request URLs require `api_http.mode: live`
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
 
-`api.http` request shape:
+`request.http` request shape:
 
 - `request` (mapping) for single-request cases, or `requests` (non-empty list) for scenario cases
 - request fields:
   - `method`: `GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`
-  - `url`
+  - `artifact_id`: artifact id for request locator
   - `headers` (optional mapping)
   - `query` (optional mapping; merged into URL deterministically)
   - `body_text` / `body_json` (mutually exclusive)
@@ -233,32 +491,32 @@ OAuth and execution rules:
     - `request_headers` (optional list)
     - `preflight` (optional bool, default `false`)
 
-`api.http` additional assert targets:
+`request.http` common service result symbols (must be explicitly declared/wired before import):
 
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `type: docs.generate`, supported `harness` keys include:
+For `harness.type: unit.test` with `adapters[].actions[].profile: generate.docs`, supported `adapters[].actions[].config` keys include:
 
-- `harness.docs_generate.surface_id` (required)
-- `harness.docs_generate.mode` (required): `write|check`
-- `harness.docs_generate.output_mode` (required): `markers|full_file`
-- `harness.docs_generate.template_path` (required): virtual-root path
-- `harness.docs_generate.output_path` (required): virtual-root path
-- `harness.docs_generate.marker_surface_id` (required when `output_mode=markers`)
-- `harness.docs_generate.data_sources` (required list):
+- `docs_generate.surface_id` (required)
+- `docs_generate.mode` (required): `write|check`
+- `docs_generate.output_mode` (required): `markers|full_file`
+- `docs_generate.template_artifact_id` (required): artifacts import id
+- `docs_generate.output_artifact_id` (required): artifacts import id
+- `docs_generate.marker_surface_id` (required when `output_mode=markers`)
+- `docs_generate.data_sources` (required list):
   - `id`
   - `source_type`: `json_file|yaml_file|generated_artifact|command_output`
-  - `path` for file/artifact source types
+  - `artifact_id` for file/artifacts source types
   - `command` for `command_output` source type
-- `harness.docs_generate.strict` (optional bool, default `true`)
+- `docs_generate.strict` (optional bool, default `true`)
 
 `setup_files[*].path` constraints:
 
 - MUST be relative
 - MUST resolve within the runner temp directory (no path escape)
 
-`harness.spec_lang` fields:
+`clauses.config.spec_lang` fields:
 
 - `max_steps` (int, >=1)
 - `max_nodes` (int, >=1)
@@ -277,7 +535,7 @@ For `type: docs.generate`, supported `harness` keys include:
 - `capabilities` (list[string], optional): explicit evaluator capabilities
   (for example `ops.os`).
 
-`harness.spec_lang.includes` format scope:
+`clauses.config.spec_lang.includes` format scope:
 
 - library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
   files
@@ -285,13 +543,13 @@ For `type: docs.generate`, supported `harness` keys include:
   root-relative values normalize to canonical `/...`
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
-- `type: spec.export` producer cases define reusable symbols through
-  `harness.exports` entries using `from: assert.function`; function
+- producer cases define reusable symbols through root `exports[]` entries using
+  `from: assert.function`; function
   bodies are sourced from producer contract-step `asserts` expression mappings
 - Canonical export source marker is ``assert.function``.
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
-- executable case types MUST NOT declare `harness.spec_lang.includes`;
+- executable case types MUST NOT declare `clauses.config.spec_lang.includes`;
   executable symbol loading is chain-first via `harness.chain`
 
 `harness.chain` fields:
@@ -347,7 +605,7 @@ Chain execution model:
 
 Chain template interpolation:
 
-- `api.http` request `url`, header values, and `body_text` support
+- `request.http` request `url`, header values, and `body_text` support
   `{{chain.<step_id>.<export_name>}}` lookups from exported chain state.
 - unresolved chain template references are schema/runtime failures.
 
@@ -362,14 +620,14 @@ Documentation generator model:
 
 Implementation note:
 
-- `harness.entrypoint` is required for `cli.run` execution.
-- Conformance fixtures SHOULD always set `harness.entrypoint` explicitly.
+- `clauses.config.entrypoint` is required for `exec.command` execution.
+- Conformance fixtures SHOULD always set explicit entrypoint config.
 - Runners MAY provide a safe mode (for example `SPEC_RUNNER_SAFE_MODE=1`) that
-  disables hook execution for `cli.run`.
+  disables hook execution for `exec.command`.
 - Runners MAY provide environment allowlisting for subprocess execution (for
   example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
-Assertion targets for `cli.run`:
+Assertion targets for `exec.command`:
 
 - `stdout`: text output from command stdout
 - `stderr`: text output from command stderr
@@ -379,25 +637,39 @@ Assertion targets for `cli.run`:
 - `context_json`: JSON subject profile envelope
 - `meta_json`: runtime metadata envelope
 
-## Types
+## Profiles
 
-Currently supported types:
+Currently supported `adapters[].actions[].profile` values include:
 
-- `cli.run` (core)
-- `text.file` (core)
-- `docs.generate` (core extension)
-- `orchestration.run` (core extension)
+- `read.text`
+- `fs.readwrite`
+- `request.http`
+- `exec.command`
+- `system.exec`
+- `mysql.query`
+- `mysql.migrate`
+- `generate.docs`
 
-Type contracts live under:
+Profile contracts live under:
 
 - `specs/02_contracts/types/`
 
-Domain-specific adapters are expected to publish a matching type contract doc
+Domain-specific adapters are expected to publish a matching profile contract doc
 before portable conformance usage.
 
-Published extension type contracts:
+Published extension profile contracts:
 
-- `api.http` (see `specs/02_contracts/types/api_http.md`)
+- `request.http` (see `specs/02_contracts/types/api_http.md`)
+
+Service model (hard cut in v2):
+
+- `adapters[].type` is integration-only and MUST be one of:
+  `io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`
+- `adapters[].actions[].profile` is mode-style and validated against the resolved
+  type via `service_contract_catalog_v1.yaml`
+- legacy service types are invalid: `assert.check`, `assert.export`, `ops.job`
+- legacy profiles are invalid: `text.file`, `api.http`, `cli.run`,
+  `docs.generate`
 
 ## Assertion Capability Model (Universal Core)
 
@@ -411,12 +683,12 @@ Universal core assertion model:
 
 ## Assertion Predicate Shape
 
-`clauses` is a mapping with:
+`asserts` is a mapping with:
 
-- `defaults` (optional mapping)
-- `predicates` (required list)
+- `imports` (optional list)
+- `checks` (required list)
 
-Each `predicates[]` entry requires:
+Each `checks[]` entry requires:
 
 - `id` (string, unique per case)
 - `assert` (non-empty expression mapping or list)
@@ -428,23 +700,36 @@ Each `predicates[]` entry requires:
 
 Forbidden prior forms:
 
-- `clauses` list form
-- predicate key `asserts`
+- `asserts` list form
 - predicate keys `target` and `on`
 
 Import binding shape:
 
-- `imports` is a list of mapping items
-- each item requires `from` and `names`, with optional `as`
-- canonical assertion imports are artifact-only (`from: artifact`)
-- `names` must be a non-empty list of artifact keys
+- `imports` is a list that accepts canonical mapping items and compact alias items
+- canonical item requires `from` and `names`, with optional `as`
+- compact grouped aliases are allowed per row:
+  - artifact alias: `{artifact: [id_a, id_b]}`
+  - service alias: `{service: {id: svc.x, names: [...], as?: {...}}}`
+  - service short alias: `"pipe_identity"` (normalized using
+    `contracts.clauses[].bindings.defaults.service`)
+- compact aliases normalize to canonical rows before validation/execution
+- canonical assertion imports may use `from: artifact` or `from: service`
+- short string aliases are always interpreted as `from: service` imports
+- when `from: artifact`, `names` must be a non-empty list of suite-declared
+  artifact ids (and be explicitly wired when runtime-produced)
+- for short string aliases, `contracts.clauses[].bindings.defaults.service` must exist
+  and resolve to `adapters[].actions[].id`
 - `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:
 
-- effective predicate imports = `clauses.imports` merged with
-  `clauses.predicates[].imports`
-- predicate imports override defaults on key collision
+- effective check imports = `asserts.imports` merged with
+  `asserts.checks[].imports`
+- check imports override assertion-level imports on key collision
+- binding-piped symbols are then merged into effective predicate context
+  according to `contracts.clauses[].bindings.rows[].mode`:
+  - `merge`: existing explicit import symbols are preserved
+  - `override`: binding symbols replace same-name explicit imports
 
 Symbol resolution:
 
@@ -453,7 +738,7 @@ Symbol resolution:
 
 Supported operators:
 
-- universal core operator: spec-lang v1 operator-keyed mappings at each leaf
+- universal core operator: spec-lang v2 operator-keyed mappings at each leaf
 
 Core executable-surface rule:
 
@@ -470,7 +755,7 @@ Operator constraints:
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
   `specs/02_contracts/03b_spec_lang_v1.md`
-- spec-lang v1 includes deep-equality set algebra (`union`, `intersection`,
+- spec-lang v2 includes deep-equality set algebra (`union`, `intersection`,
   `difference`, `symmetric_difference`, `is_subset`, `is_superset`,
   `set_equals`) and collection transforms (`map`, `filter`, `reduce`, etc.)
   with automatic builtin currying semantics
@@ -478,7 +763,7 @@ Operator constraints:
   (`mul`, `div`, `mod`, `pow`, `abs`, `negate`, `inc`, `dec`, `clamp`,
   `round`, `floor`, `ceil`), comparison/logical helpers (`compare`, `between`,
   `xor`), list utilities (`slice`, `reverse`, `zip`, `zip_with`, `range`,
-  `repeat`), object helpers (`keys`, `values`, `entries`, `merge`, `assoc`,
+  `repeat`), object helpers (`keys`, `values`, `actions`, `merge`, `assoc`,
   `dissoc`, `pick`, `omit`), and compositional predicates/combinators
   (`prop_eq`, `where`, `compose`, `pipe`, `identity`, `always`, `replace`,
   `pad_left`, `pad_right`) plus explicit JSON-type predicates (`is_null`,
@@ -506,24 +791,24 @@ Operator constraints:
 
 Step metadata constraints:
 
-- `clauses.predicates[].required` is optional and defaults to `true`
-- `clauses.predicates[].priority` is optional integer metadata (`>=1`, default `1`)
-- `clauses.predicates[].severity` is optional integer metadata (`>=1`, default `1`)
-- `clauses.predicates[].purpose` is optional human-readable text
-- optional predicates (`required: false`) are non-blocking for overall case verdict
+- `asserts.checks[].required` is optional and defaults to `true`
+- `asserts.checks[].priority` is optional integer metadata (`>=1`, default `1`)
+- `asserts.checks[].severity` is optional integer metadata (`>=1`, default `1`)
+- `asserts.checks[].purpose` is optional human-readable text
+- optional checks (`required: false`) are non-blocking for overall case verdict
 - prohibition intent is expressed directly with negation operators
   (for example `std.logic.not`)
 
 Canonical negation form:
 
 ```yaml
-clauses:
+asserts:
   imports:
   - from: artifact
     names: [text]
     as:
       text: subject
-  predicates:
+  checks:
   - id: assert_no_error
     required: true
     assert:
@@ -541,16 +826,16 @@ Author in canonical form:
 - use direct operator mappings in `assert` (no `evaluate` wrapper)
 - put every operator value in a list
 
-Example with defaults + step override imports:
+Example with check-level import override:
 
 ```yaml
-clauses:
+asserts:
   imports:
   - from: artifact
     names: [summary_json]
     as:
       summary_json: subject
-  predicates:
+  checks:
   - id: assert_passed
     assert:
       std.logic.eq:
@@ -570,7 +855,7 @@ clauses:
       - 0
 ```
 
-`when` lifecycle hooks (v1):
+`when` lifecycle hooks:
 
 - optional `when` mapping on executable cases
 - non-canonical `harness.on` is forbidden (hard cut)
@@ -590,117 +875,511 @@ Lifecycle order:
 - `fail` runs once on first blocking step or hook failure
 - `complete` runs only after all steps and hooks pass
 
-`contract.job` executable type (v1):
+Job orchestration note:
 
-- `type: contract.job`
-- required:
-  - `harness.jobs` (metadata map)
-  - `contract`
-- optional:
-  - `harness.jobs.<name>.mode`
-  - `harness.jobs.<name>.inputs`
-  - `harness.jobs.<name>.outputs`
+- `ops.job.dispatch` remains a spec-lang capability surface.
+- job/export orchestration semantics are not modeled as service types in v2.
 
-Dispatch clauses:
-
-- dispatch is contract-driven using `ops.job.dispatch`
-- dispatch metadata is read from `harness.jobs.<name>`
-- `harness.job` non-canonical singular form is forbidden
-- `ops.job.dispatch` requires `harness.spec_lang.capabilities` to include `ops.job`
-
-Job ref grammar:
-
-- absolute/virtual ref: `/path/to/file.spec.md#CASE-ID`
-- same-doc ref: `#CASE-ID` (requires caller-provided document context)
-- non-scalar refs are invalid
-- missing path/case resolution is schema/runtime error
-
-<!-- BEGIN GENERATED: SCHEMA_REGISTRY_V1 -->
+<!-- BEGIN GENERATED: SCHEMA_REGISTRY_V2 -->
 
 ## Generated Registry Snapshot
 
 This section is generated from `specs/01_schema/registry/v1/*.yaml`.
 
-- profile_count: 7
-- top_level_fields: 23
-- type_profiles: 3
+- profile_count: 4
+- top_level_fields: 221
+- service_catalog: `/specs/01_schema/service_contract_catalog_v1.yaml`
 
 ### Top-Level Keys
 
 | key | type | required | since |
 |---|---|---|---|
-| `contract` | `any` | `false` | `v1` |
-| `doc` | `mapping` | `false` | `v1` |
-| `doc.audience` | `string` | `false` | `v1` |
-| `doc.description` | `string` | `false` | `v1` |
-| `doc.see_also` | `list` | `false` | `v1` |
-| `doc.since` | `string` | `false` | `v1` |
-| `doc.summary` | `string` | `false` | `v1` |
-| `doc.tags` | `list` | `false` | `v1` |
-| `domain` | `string` | `false` | `v1` |
-| `expect` | `mapping` | `false` | `v1` |
-| `harness` | `mapping` | `false` | `v1` |
-| `id` | `string` | `true` | `v1` |
-| `path` | `string` | `false` | `v1` |
-| `purpose` | `string` | `false` | `v1` |
-| `requires` | `mapping` | `false` | `v1` |
-| `title` | `string` | `false` | `v1` |
-| `type` | `string` | `true` | `v1` |
-| `when` | `mapping` | `false` | `v1` |
-| `when.complete` | `list` | `false` | `v1` |
-| `when.fail` | `list` | `false` | `v1` |
-| `when.optional` | `list` | `false` | `v1` |
-| `when.required` | `list` | `false` | `v1` |
+| `spec_version` | `int` | `true` | `v2` |
+| `schema_ref` | `string` | `true` | `v2` |
+| `harness` | `mapping` | `true` | `v2` |
+| `harness.type` | `string` | `true` | `v2` |
+| `harness.profile` | `string` | `true` | `v2` |
+| `harness.config` | `mapping` | `false` | `v2` |
+| `harness.docs` | `list` | `false` | `v2` |
+| `harness.docs[].id` | `string` | `false` | `v2` |
+| `harness.docs[].summary` | `string` | `true` | `v2` |
+| `harness.docs[].audience` | `string` | `true` | `v2` |
+| `harness.docs[].status` | `string` | `true` | `v2` |
+| `harness.docs[].description` | `string` | `false` | `v2` |
+| `harness.docs[].type` | `string` | `false` | `v2` |
+| `harness.docs[].since` | `string` | `false` | `v2` |
+| `harness.docs[].updated_at` | `string` | `false` | `v2` |
+| `harness.docs[].tags` | `list` | `false` | `v2` |
+| `harness.docs[].owners` | `list` | `false` | `v2` |
+| `harness.docs[].owners[].id` | `string` | `false` | `v2` |
+| `harness.docs[].owners[].role` | `string` | `true` | `v2` |
+| `harness.docs[].links` | `list` | `false` | `v2` |
+| `harness.docs[].links[].rel` | `string` | `true` | `v2` |
+| `harness.docs[].links[].ref` | `string` | `true` | `v2` |
+| `harness.docs[].links[].title` | `string` | `false` | `v2` |
+| `harness.docs[].examples` | `list` | `false` | `v2` |
+| `harness.docs[].examples[].title` | `string` | `true` | `v2` |
+| `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
+| `services` | `mapping` | `false` | `v2` |
+| `adapters[].type` | `string` | `true` | `v2` |
+| `adapters[].type` | `string` | `false` | `v2` |
+| `adapters[].actions[].direction` | `string` | `false` | `v2` |
+| `adapters[].actions[].profile` | `string` | `false` | `v2` |
+| `adapters[].actions[].config` | `mapping` | `false` | `v2` |
+| `adapters[].actions[].imports` | `list` | `false` | `v2` |
+| `adapters[].actions[].imports[].names` | `list` | `true` | `v2` |
+| `adapters[].actions[].imports[].as` | `mapping` | `false` | `v2` |
+| `services[].docs` | `list` | `false` | `v2` |
+| `services[].docs[].id` | `string` | `false` | `v2` |
+| `services[].docs[].summary` | `string` | `true` | `v2` |
+| `services[].docs[].audience` | `string` | `true` | `v2` |
+| `services[].docs[].status` | `string` | `true` | `v2` |
+| `services[].docs[].description` | `string` | `false` | `v2` |
+| `services[].docs[].type` | `string` | `false` | `v2` |
+| `services[].docs[].since` | `string` | `false` | `v2` |
+| `services[].docs[].updated_at` | `string` | `false` | `v2` |
+| `services[].docs[].tags` | `list` | `false` | `v2` |
+| `services[].docs[].owners` | `list` | `false` | `v2` |
+| `services[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `services[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `services[].docs[].links` | `list` | `false` | `v2` |
+| `services[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `services[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `services[].docs[].links[].title` | `string` | `false` | `v2` |
+| `services[].docs[].examples` | `list` | `false` | `v2` |
+| `services[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `services[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings` | `any` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.mode` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | `false` | `v2` |
+| `artifacts` | `mapping` | `false` | `v2` |
+| `artifacts` | `list` | `false` | `v2` |
+| `artifacts[].id` | `string` | `true` | `v2` |
+| `artifacts[].ref` | `string` | `true` | `v2` |
+| `artifacts[].type` | `string` | `false` | `v2` |
+| `artifacts[].inputs` | `mapping` | `false` | `v2` |
+| `artifacts[].options` | `mapping` | `false` | `v2` |
+| `artifacts[].docs` | `list` | `false` | `v2` |
+| `artifacts[].docs[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].summary` | `string` | `true` | `v2` |
+| `artifacts[].docs[].audience` | `string` | `true` | `v2` |
+| `artifacts[].docs[].status` | `string` | `true` | `v2` |
+| `artifacts[].docs[].description` | `string` | `false` | `v2` |
+| `artifacts[].docs[].type` | `string` | `false` | `v2` |
+| `artifacts[].docs[].since` | `string` | `false` | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifacts[].docs[].tags` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links` | `list` | `false` | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifacts[].docs[].examples` | `list` | `false` | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `artifacts` | `list` | `false` | `v2` |
+| `artifacts[].id` | `string` | `true` | `v2` |
+| `artifacts[].ref` | `string` | `true` | `v2` |
+| `artifacts[].type` | `string` | `false` | `v2` |
+| `artifacts[].options` | `mapping` | `false` | `v2` |
+| `artifacts[].docs` | `list` | `false` | `v2` |
+| `artifacts[].docs[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].summary` | `string` | `true` | `v2` |
+| `artifacts[].docs[].audience` | `string` | `true` | `v2` |
+| `artifacts[].docs[].status` | `string` | `true` | `v2` |
+| `artifacts[].docs[].description` | `string` | `false` | `v2` |
+| `artifacts[].docs[].type` | `string` | `false` | `v2` |
+| `artifacts[].docs[].since` | `string` | `false` | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | `false` | `v2` |
+| `artifacts[].docs[].tags` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners` | `list` | `false` | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links` | `list` | `false` | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | `false` | `v2` |
+| `artifacts[].docs[].examples` | `list` | `false` | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `exports` | `list` | `false` | `v2` |
+| `exports[].as` | `string` | `true` | `v2` |
+| `exports[].from` | `string` | `true` | `v2` |
+| `exports[].path` | `string` | `true` | `v2` |
+| `exports[].params` | `list` | `false` | `v2` |
+| `exports[].required` | `bool` | `false` | `v2` |
+| `exports[].docs` | `list` | `false` | `v2` |
+| `exports[].docs[].id` | `string` | `false` | `v2` |
+| `exports[].docs[].summary` | `string` | `true` | `v2` |
+| `exports[].docs[].audience` | `string` | `true` | `v2` |
+| `exports[].docs[].status` | `string` | `true` | `v2` |
+| `exports[].docs[].description` | `string` | `false` | `v2` |
+| `exports[].docs[].type` | `string` | `false` | `v2` |
+| `exports[].docs[].since` | `string` | `false` | `v2` |
+| `exports[].docs[].updated_at` | `string` | `false` | `v2` |
+| `exports[].docs[].tags` | `list` | `false` | `v2` |
+| `exports[].docs[].owners` | `list` | `false` | `v2` |
+| `exports[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `exports[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `exports[].docs[].links` | `list` | `false` | `v2` |
+| `exports[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `exports[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `exports[].docs[].links[].title` | `string` | `false` | `v2` |
+| `exports[].docs[].examples` | `list` | `false` | `v2` |
+| `exports[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts` | `list` | `true` | `v2` |
+| `contracts.clauses[].id` | `string` | `true` | `v2` |
+| `title` | `string` | `false` | `v2` |
+| `purpose` | `string` | `false` | `v2` |
+| `docs` | `list` | `false` | `v2` |
+| `docs[].id` | `string` | `false` | `v2` |
+| `docs[].summary` | `string` | `true` | `v2` |
+| `docs[].audience` | `string` | `true` | `v2` |
+| `docs[].status` | `string` | `true` | `v2` |
+| `docs[].description` | `string` | `false` | `v2` |
+| `docs[].type` | `string` | `false` | `v2` |
+| `docs[].since` | `string` | `false` | `v2` |
+| `docs[].updated_at` | `string` | `false` | `v2` |
+| `docs[].tags` | `list` | `false` | `v2` |
+| `docs[].owners` | `list` | `false` | `v2` |
+| `docs[].owners[].id` | `string` | `false` | `v2` |
+| `docs[].owners[].role` | `string` | `true` | `v2` |
+| `docs[].links` | `list` | `false` | `v2` |
+| `docs[].links[].rel` | `string` | `true` | `v2` |
+| `docs[].links[].ref` | `string` | `true` | `v2` |
+| `docs[].links[].title` | `string` | `false` | `v2` |
+| `docs[].examples` | `list` | `false` | `v2` |
+| `docs[].examples[].title` | `string` | `true` | `v2` |
+| `docs[].examples[].ref` | `string` | `true` | `v2` |
+| `domain` | `string` | `false` | `v2` |
+| `contracts.clauses[].title` | `string` | `false` | `v2` |
+| `contracts.clauses[].purpose` | `string` | `false` | `v2` |
+| `contracts.clauses[].domain` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].id` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].summary` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].audience` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].status` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].description` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].type` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].since` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].updated_at` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].tags` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links[].title` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].examples` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts.clauses[].when` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].when.required` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.optional` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.fail` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.complete` | `list` | `false` | `v2` |
+| `contracts.clauses[].asserts` | `mapping` | `true` | `v2` |
+| `contracts.clauses[].expect` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].expect.portable` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.status` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.category` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.message_tokens` | `list` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides` | `list` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].runner` | `string` | `true` | `v2` |
+| `contracts.clauses[].expect.overrides[].status` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].category` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].message_tokens` | `list` | `false` | `v2` |
+| `contracts.clauses[].requires` | `mapping` | `false` | `v2` |
 
-### Type Profiles
+### Runtime Surfaces
 
-| type | required keys | extra keys |
+| surface | required keys | catalog |
 |---|---|---|
-| `contract.check` | `harness`, `contract` | - |
-| `contract.export` | `contract`, `harness`, `library`, `doc` | `imports` |
-| `contract.job` | `harness`, `contract` | - |
+| `harness` | `harness.type`, `harness.profile` | n/a |
+| `services[]` | `adapters[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/01_schema/service_contract_catalog_v1.yaml` |
+| `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/01_schema/service_contract_catalog_v1.yaml` |
 
-<!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
+<!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 23
-- type_profile_count: 3
-- total_type_field_count: 40
+- top_level_field_count: 221
+- harness_surface: suite-root `harness`
+- service_catalog: `/specs/01_schema/service_contract_catalog_v1.yaml`
 
 ### Top-Level Fields
 
 | key | type | required | since |
 |---|---|---|---|
-| `contract` | `any` | false | `v1` |
-| `doc` | `mapping` | false | `v1` |
-| `doc.audience` | `string` | false | `v1` |
-| `doc.description` | `string` | false | `v1` |
-| `doc.see_also` | `list` | false | `v1` |
-| `doc.since` | `string` | false | `v1` |
-| `doc.summary` | `string` | false | `v1` |
-| `doc.tags` | `list` | false | `v1` |
-| `domain` | `string` | false | `v1` |
-| `expect` | `mapping` | false | `v1` |
-| `harness` | `mapping` | false | `v1` |
-| `id` | `string` | true | `v1` |
-| `path` | `string` | false | `v1` |
-| `purpose` | `string` | false | `v1` |
-| `requires` | `mapping` | false | `v1` |
-| `title` | `string` | false | `v1` |
-| `type` | `string` | true | `v1` |
-| `when` | `mapping` | false | `v1` |
-| `when.complete` | `list` | false | `v1` |
-| `when.fail` | `list` | false | `v1` |
-| `when.optional` | `list` | false | `v1` |
-| `when.required` | `list` | false | `v1` |
+| `spec_version` | `int` | true | `v2` |
+| `schema_ref` | `string` | true | `v2` |
+| `harness` | `mapping` | true | `v2` |
+| `harness.type` | `string` | true | `v2` |
+| `harness.profile` | `string` | true | `v2` |
+| `harness.config` | `mapping` | false | `v2` |
+| `harness.docs` | `list` | false | `v2` |
+| `harness.docs[].id` | `string` | false | `v2` |
+| `harness.docs[].summary` | `string` | true | `v2` |
+| `harness.docs[].audience` | `string` | true | `v2` |
+| `harness.docs[].status` | `string` | true | `v2` |
+| `harness.docs[].description` | `string` | false | `v2` |
+| `harness.docs[].type` | `string` | false | `v2` |
+| `harness.docs[].since` | `string` | false | `v2` |
+| `harness.docs[].updated_at` | `string` | false | `v2` |
+| `harness.docs[].tags` | `list` | false | `v2` |
+| `harness.docs[].owners` | `list` | false | `v2` |
+| `harness.docs[].owners[].id` | `string` | false | `v2` |
+| `harness.docs[].owners[].role` | `string` | true | `v2` |
+| `harness.docs[].links` | `list` | false | `v2` |
+| `harness.docs[].links[].rel` | `string` | true | `v2` |
+| `harness.docs[].links[].ref` | `string` | true | `v2` |
+| `harness.docs[].links[].title` | `string` | false | `v2` |
+| `harness.docs[].examples` | `list` | false | `v2` |
+| `harness.docs[].examples[].title` | `string` | true | `v2` |
+| `harness.docs[].examples[].ref` | `string` | true | `v2` |
+| `services` | `mapping` | false | `v2` |
+| `adapters[].type` | `string` | true | `v2` |
+| `adapters[].type` | `string` | false | `v2` |
+| `adapters[].actions[].direction` | `string` | false | `v2` |
+| `adapters[].actions[].profile` | `string` | false | `v2` |
+| `adapters[].actions[].config` | `mapping` | false | `v2` |
+| `adapters[].actions[].imports` | `list` | false | `v2` |
+| `adapters[].actions[].imports[].names` | `list` | true | `v2` |
+| `adapters[].actions[].imports[].as` | `mapping` | false | `v2` |
+| `services[].docs` | `list` | false | `v2` |
+| `services[].docs[].id` | `string` | false | `v2` |
+| `services[].docs[].summary` | `string` | true | `v2` |
+| `services[].docs[].audience` | `string` | true | `v2` |
+| `services[].docs[].status` | `string` | true | `v2` |
+| `services[].docs[].description` | `string` | false | `v2` |
+| `services[].docs[].type` | `string` | false | `v2` |
+| `services[].docs[].since` | `string` | false | `v2` |
+| `services[].docs[].updated_at` | `string` | false | `v2` |
+| `services[].docs[].tags` | `list` | false | `v2` |
+| `services[].docs[].owners` | `list` | false | `v2` |
+| `services[].docs[].owners[].id` | `string` | false | `v2` |
+| `services[].docs[].owners[].role` | `string` | true | `v2` |
+| `services[].docs[].links` | `list` | false | `v2` |
+| `services[].docs[].links[].rel` | `string` | true | `v2` |
+| `services[].docs[].links[].ref` | `string` | true | `v2` |
+| `services[].docs[].links[].title` | `string` | false | `v2` |
+| `services[].docs[].examples` | `list` | false | `v2` |
+| `services[].docs[].examples[].title` | `string` | true | `v2` |
+| `services[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts.clauses[].bindings` | `any` | false | `v2` |
+| `contracts.clauses[].bindings.defaults` | `mapping` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.mode` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | false | `v2` |
+| `artifacts` | `mapping` | false | `v2` |
+| `artifacts` | `list` | false | `v2` |
+| `artifacts[].id` | `string` | true | `v2` |
+| `artifacts[].ref` | `string` | true | `v2` |
+| `artifacts[].type` | `string` | false | `v2` |
+| `artifacts[].inputs` | `mapping` | false | `v2` |
+| `artifacts[].options` | `mapping` | false | `v2` |
+| `artifacts[].docs` | `list` | false | `v2` |
+| `artifacts[].docs[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].summary` | `string` | true | `v2` |
+| `artifacts[].docs[].audience` | `string` | true | `v2` |
+| `artifacts[].docs[].status` | `string` | true | `v2` |
+| `artifacts[].docs[].description` | `string` | false | `v2` |
+| `artifacts[].docs[].type` | `string` | false | `v2` |
+| `artifacts[].docs[].since` | `string` | false | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | false | `v2` |
+| `artifacts[].docs[].tags` | `list` | false | `v2` |
+| `artifacts[].docs[].owners` | `list` | false | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifacts[].docs[].links` | `list` | false | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | false | `v2` |
+| `artifacts[].docs[].examples` | `list` | false | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | true | `v2` |
+| `artifacts` | `list` | false | `v2` |
+| `artifacts[].id` | `string` | true | `v2` |
+| `artifacts[].ref` | `string` | true | `v2` |
+| `artifacts[].type` | `string` | false | `v2` |
+| `artifacts[].options` | `mapping` | false | `v2` |
+| `artifacts[].docs` | `list` | false | `v2` |
+| `artifacts[].docs[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].summary` | `string` | true | `v2` |
+| `artifacts[].docs[].audience` | `string` | true | `v2` |
+| `artifacts[].docs[].status` | `string` | true | `v2` |
+| `artifacts[].docs[].description` | `string` | false | `v2` |
+| `artifacts[].docs[].type` | `string` | false | `v2` |
+| `artifacts[].docs[].since` | `string` | false | `v2` |
+| `artifacts[].docs[].updated_at` | `string` | false | `v2` |
+| `artifacts[].docs[].tags` | `list` | false | `v2` |
+| `artifacts[].docs[].owners` | `list` | false | `v2` |
+| `artifacts[].docs[].owners[].id` | `string` | false | `v2` |
+| `artifacts[].docs[].owners[].role` | `string` | true | `v2` |
+| `artifacts[].docs[].links` | `list` | false | `v2` |
+| `artifacts[].docs[].links[].rel` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].ref` | `string` | true | `v2` |
+| `artifacts[].docs[].links[].title` | `string` | false | `v2` |
+| `artifacts[].docs[].examples` | `list` | false | `v2` |
+| `artifacts[].docs[].examples[].title` | `string` | true | `v2` |
+| `artifacts[].docs[].examples[].ref` | `string` | true | `v2` |
+| `exports` | `list` | false | `v2` |
+| `exports[].as` | `string` | true | `v2` |
+| `exports[].from` | `string` | true | `v2` |
+| `exports[].path` | `string` | true | `v2` |
+| `exports[].params` | `list` | false | `v2` |
+| `exports[].required` | `bool` | false | `v2` |
+| `exports[].docs` | `list` | false | `v2` |
+| `exports[].docs[].id` | `string` | false | `v2` |
+| `exports[].docs[].summary` | `string` | true | `v2` |
+| `exports[].docs[].audience` | `string` | true | `v2` |
+| `exports[].docs[].status` | `string` | true | `v2` |
+| `exports[].docs[].description` | `string` | false | `v2` |
+| `exports[].docs[].type` | `string` | false | `v2` |
+| `exports[].docs[].since` | `string` | false | `v2` |
+| `exports[].docs[].updated_at` | `string` | false | `v2` |
+| `exports[].docs[].tags` | `list` | false | `v2` |
+| `exports[].docs[].owners` | `list` | false | `v2` |
+| `exports[].docs[].owners[].id` | `string` | false | `v2` |
+| `exports[].docs[].owners[].role` | `string` | true | `v2` |
+| `exports[].docs[].links` | `list` | false | `v2` |
+| `exports[].docs[].links[].rel` | `string` | true | `v2` |
+| `exports[].docs[].links[].ref` | `string` | true | `v2` |
+| `exports[].docs[].links[].title` | `string` | false | `v2` |
+| `exports[].docs[].examples` | `list` | false | `v2` |
+| `exports[].docs[].examples[].title` | `string` | true | `v2` |
+| `exports[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts` | `list` | true | `v2` |
+| `contracts.clauses[].id` | `string` | true | `v2` |
+| `title` | `string` | false | `v2` |
+| `purpose` | `string` | false | `v2` |
+| `docs` | `list` | false | `v2` |
+| `docs[].id` | `string` | false | `v2` |
+| `docs[].summary` | `string` | true | `v2` |
+| `docs[].audience` | `string` | true | `v2` |
+| `docs[].status` | `string` | true | `v2` |
+| `docs[].description` | `string` | false | `v2` |
+| `docs[].type` | `string` | false | `v2` |
+| `docs[].since` | `string` | false | `v2` |
+| `docs[].updated_at` | `string` | false | `v2` |
+| `docs[].tags` | `list` | false | `v2` |
+| `docs[].owners` | `list` | false | `v2` |
+| `docs[].owners[].id` | `string` | false | `v2` |
+| `docs[].owners[].role` | `string` | true | `v2` |
+| `docs[].links` | `list` | false | `v2` |
+| `docs[].links[].rel` | `string` | true | `v2` |
+| `docs[].links[].ref` | `string` | true | `v2` |
+| `docs[].links[].title` | `string` | false | `v2` |
+| `docs[].examples` | `list` | false | `v2` |
+| `docs[].examples[].title` | `string` | true | `v2` |
+| `docs[].examples[].ref` | `string` | true | `v2` |
+| `domain` | `string` | false | `v2` |
+| `contracts.clauses[].title` | `string` | false | `v2` |
+| `contracts.clauses[].purpose` | `string` | false | `v2` |
+| `contracts.clauses[].domain` | `string` | false | `v2` |
+| `contracts.clauses[].docs` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].id` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].summary` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].audience` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].status` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].description` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].type` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].since` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].updated_at` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].tags` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].owners` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].owners[].id` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].owners[].role` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].links[].rel` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links[].ref` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links[].title` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].examples` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].examples[].title` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts.clauses[].when` | `mapping` | false | `v2` |
+| `contracts.clauses[].when.required` | `list` | false | `v2` |
+| `contracts.clauses[].when.optional` | `list` | false | `v2` |
+| `contracts.clauses[].when.fail` | `list` | false | `v2` |
+| `contracts.clauses[].when.complete` | `list` | false | `v2` |
+| `contracts.clauses[].asserts` | `mapping` | true | `v2` |
+| `contracts.clauses[].expect` | `mapping` | false | `v2` |
+| `contracts.clauses[].expect.portable` | `mapping` | false | `v2` |
+| `contracts.clauses[].expect.portable.status` | `string` | false | `v2` |
+| `contracts.clauses[].expect.portable.category` | `string` | false | `v2` |
+| `contracts.clauses[].expect.portable.message_tokens` | `list` | false | `v2` |
+| `contracts.clauses[].expect.overrides` | `list` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].runner` | `string` | true | `v2` |
+| `contracts.clauses[].expect.overrides[].status` | `string` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].category` | `string` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].message_tokens` | `list` | false | `v2` |
+| `contracts.clauses[].requires` | `mapping` | false | `v2` |
 
-### Type Profiles
+### Runtime Surface Matrix
 
-| case_type | field_count | required_top_level |
+| surface | required_keys | catalog |
 |---|---|---|
-| `contract.check` | 5 | `harness`, `contract` |
-| `contract.export` | 28 | `contract`, `harness`, `library`, `doc` |
-| `contract.job` | 7 | `harness`, `contract` |
+| `harness` | `harness.type`, `harness.profile` | n/a |
+| `services[]` | `adapters[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/01_schema/service_contract_catalog_v1.yaml` |
+| `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/01_schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

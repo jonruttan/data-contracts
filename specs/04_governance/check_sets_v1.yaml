@@ -209,7 +209,7 @@ profiles:
         must_contain:
           - schema_id: contract_spec
           - major: 2
-          - path: /specs/01_schema/schema_v2.md
+          - path: /specs/01_schema/schema_v1.md
           - status: active
       - id: governance.policy_source_spec_lang_required
         kind: file_tokens

@@ -53,7 +53,7 @@ Import binding shape:
 - `imports` is a list of canonical mapping rows
 - canonical row form is `{from, names, service?, as?}`
 - compact/short alias rows are supported in v2 where defined by
-  `/specs/01_schema/registry/v2/assertions.yaml`
+  `/specs/01_schema/registry/v1/assertions.yaml`
 - canonical sources are `artifact` and `service`
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)

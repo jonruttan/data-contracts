@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: /specs/01_schema/schema_v2.md
+spec_version: 1
+schema_ref: /specs/01_schema/schema_v1.md
 harness:
   type: unit.test
   profile: check
@@ -9,7 +9,7 @@ harness:
     status_ingestion:
       files:
       - /scripts/runner_status_ingest.sh
-      - /specs/01_schema/runner_certification_registry_v2.yaml
+      - /specs/01_schema/runner_certification_registry_v1.yaml
       required_tokens:
       - release_api_url
       - report_asset_name

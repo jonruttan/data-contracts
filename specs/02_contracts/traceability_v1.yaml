@@ -7,7 +7,7 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-022
   unit_test_refs: []
@@ -19,7 +19,7 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-026
   unit_test_refs: []
@@ -30,7 +30,7 @@ links:
   contract_refs:
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-025
   unit_test_refs: []
@@ -42,7 +42,7 @@ links:
   contract_refs:
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-BIND-ROOT-001
   unit_test_refs: []
@@ -54,9 +54,9 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-001
   unit_test_refs: []
@@ -68,9 +68,9 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/harness.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/harness.yaml
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-035
   unit_test_refs: []
@@ -83,7 +83,7 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids: []
   unit_test_refs: []
   implementation_refs: []
@@ -3772,7 +3772,7 @@ links:
   - specs/02_contracts/25_compatibility_matrix.md
   - specs/02_contracts/27_runner_status_exchange.md
   schema_refs:
-  - specs/01_schema/runner_certification_registry_v2.yaml
+  - specs/01_schema/runner_certification_registry_v1.yaml
   conformance_case_ids:
   - DCCONF-RSTAT-003
   unit_test_refs:
@@ -4019,12 +4019,12 @@ links:
   contract_refs:
   - specs/02_contracts/29_runner_cli_interface.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids: []
   unit_test_refs: []
   implementation_refs:
   - specs/03_conformance/style.md
-  - specs/04_governance/cases/core/spec_core/normalization_contract_spec_key_order_v2.spec.md
+  - specs/04_governance/cases/core/spec_core/normalization_contract_spec_key_order_v1.spec.md
   notes: Phase-in governance check starts report-only before blocking rollout.
 - rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
   policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
@@ -4032,9 +4032,9 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-027
   - DCCONF-SCHEMA-CASE-028
@@ -4048,8 +4048,8 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-027
   - DCCONF-SCHEMA-CASE-028
@@ -4063,8 +4063,8 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-002
   unit_test_refs: []
@@ -4077,8 +4077,8 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-003
   unit_test_refs: []
@@ -4091,9 +4091,9 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-037
   - DCCONF-SCHEMA-CASE-038
@@ -4106,8 +4106,8 @@ links:
   contract_refs:
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-039
   - DCCONF-SCHEMA-CASE-040
@@ -4121,8 +4121,8 @@ links:
   contract_refs:
   - specs/02_contracts/04_harness.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-037
   - DCCONF-SCHEMA-CASE-038
@@ -4135,9 +4135,9 @@ links:
   contract_refs:
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-029
   - DCCONF-SCHEMA-CASE-030
@@ -4152,9 +4152,9 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-032
   - DCCONF-SCHEMA-CASE-033
@@ -4169,9 +4169,9 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-034
   - DCCONF-SCHEMA-CASE-035
@@ -4185,9 +4185,9 @@ links:
   contract_refs:
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/registry/v2/core.yaml
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/registry/v1/core.yaml
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-001
   - DCCONF-SCHEMA-ALIAS-002
@@ -4201,7 +4201,7 @@ links:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-SCHEMA-ALIAS-003
   unit_test_refs: []
@@ -4214,7 +4214,7 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
   conformance_case_ids: []
   unit_test_refs: []
@@ -4227,7 +4227,7 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   - specs/01_schema/service_contract_catalog_v1.yaml
   conformance_case_ids: []
   unit_test_refs: []
@@ -4240,7 +4240,7 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/35_service_plugin_runtime.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids: []
   unit_test_refs: []
   implementation_refs:
@@ -4273,7 +4273,7 @@ links:
   contract_refs:
   - specs/02_contracts/35_service_plugin_runtime.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids: []
   unit_test_refs: []
   implementation_refs: []
@@ -4285,15 +4285,15 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
-  - specs/01_schema/registry/v2/assertions.yaml
-  - specs/01_schema/registry/v2/core.yaml
+  - specs/01_schema/schema_v1.md
+  - specs/01_schema/registry/v1/assertions.yaml
+  - specs/01_schema/registry/v1/core.yaml
   conformance_case_ids:
   - DCCONF-IMPLICIT-ID-003
   - DCCONF-IMPLICIT-ID-004
   unit_test_refs: []
   implementation_refs:
-  - specs/03_conformance/cases/core/implicit_ids_v2.spec.md
+  - specs/03_conformance/cases/core/implicit_ids_v1.spec.md
   notes: Reference identity surfaces require explicit authored ids; synthetic labels are invalid reference values.
 - rule_id: SYNTHETIC_LABELS_DIAGNOSTICS_ONLY
   policy_ref: specs/02_contracts/policy_v1.yaml#SYNTHETIC_LABELS_DIAGNOSTICS_ONLY
@@ -4301,14 +4301,14 @@ links:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
   schema_refs:
-  - specs/01_schema/schema_v2.md
+  - specs/01_schema/schema_v1.md
   conformance_case_ids:
   - DCCONF-IMPLICIT-ID-001
   - DCCONF-IMPLICIT-ID-002
   - DCCONF-IMPLICIT-ID-004
   unit_test_refs: []
   implementation_refs:
-  - specs/03_conformance/cases/core/implicit_ids_v2.spec.md
+  - specs/03_conformance/cases/core/implicit_ids_v1.spec.md
   notes: Optional docs/docs-owner ids may omit explicit ids; runtimes may emit diagnostics-only synthetic labels.
 - rule_id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNNER_BUILD_TOOL_CONTRACT_REQUIRED

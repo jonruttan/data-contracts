@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: /specs/01_schema/schema_v2.md
+spec_version: 1
+schema_ref: /specs/01_schema/schema_v1.md
 harness:
   type: unit.test
   profile: check
@@ -31,7 +31,7 @@ contracts:
             - Generated Registry Snapshot
 artifacts:
 - id: art.svc.check.text_file.1.source.1
-  ref: /specs/01_schema/schema_v2.md
+  ref: /specs/01_schema/schema_v1.md
   direction: input
 - id: art.svc.check.text_file.1.use_1.1
   ref: /specs/05_libraries/policy/policy_text.spec.md

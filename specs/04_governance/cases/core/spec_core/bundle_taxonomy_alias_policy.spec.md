@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+spec_version: 1
+schema_ref: "/specs/01_schema/schema_v1.md"
 contracts:
   clauses:
   - id: DCGOV-BUNDLE-TAXONOMY-001
@@ -38,7 +38,7 @@ contracts:
       check:
         profile: read.text
         config:
-          path: "/specs/01_schema/schema_v2.md"
+          path: "/specs/01_schema/schema_v1.md"
     asserts:
       imports:
       - from: artifact

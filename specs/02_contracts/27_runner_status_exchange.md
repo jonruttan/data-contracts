@@ -43,11 +43,11 @@ artifact via `runner-certify`.
 
 Required certificate schema:
 
-- `/specs/01_schema/runner_execution_certificate_v2.yaml`
+- `/specs/01_schema/runner_execution_certificate_v1.yaml`
 
 Required certificate registry:
 
-- `/specs/01_schema/runner_certification_registry_v2.yaml`
+- `/specs/01_schema/runner_certification_registry_v1.yaml`
 
 Required certificate outputs:
 

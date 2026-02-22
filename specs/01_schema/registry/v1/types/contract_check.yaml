@@ -1,42 +1,11 @@
-version: 1
-id: schema.registry.v1.type.contract_check
-type: type
+version: 2
+id: schema.registry.v2.type.contract_check
+type: deprecated
 case_type: contract.check
-required_top_level:
-  - harness
-  - clauses
-allowed_top_level_extra: []
+status: non_normative
+superseded_by: /specs/01_schema/service_contract_catalog_v1.yaml
 fields:
-  harness:
-    type: mapping
-    required: true
-    since: v1
-  harness.check:
-    type: mapping
-    required: false
-    since: v1
-  harness.check.profile:
+  note:
     type: string
-    required: false
-    since: v1
-    enum:
-      - text.file
-      - cli.run
-      - api.http
-      - governance.scan
-  harness.check.config:
-    type: mapping
-    required: false
-    since: v1
-  clauses:
-    type: mapping
     required: true
-    since: v1
-  clauses.imports:
-    type: list
-    required: false
-    since: v1
-  clauses.predicates[].imports:
-    type: list
-    required: false
-    since: v1
+    since: v2

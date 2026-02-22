@@ -207,8 +207,8 @@ surfaces:
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /.artifacts/spec-lang-builtin-catalog.json
@@ -241,8 +241,8 @@ surfaces:
 - surface_id: spec_lang_namespace_core
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93a_std_core.md
@@ -264,8 +264,8 @@ surfaces:
 - surface_id: spec_lang_namespace_logic
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93b_std_logic.md
@@ -287,8 +287,8 @@ surfaces:
 - surface_id: spec_lang_namespace_math
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93c_std_math.md
@@ -310,8 +310,8 @@ surfaces:
 - surface_id: spec_lang_namespace_string
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93d_std_string.md
@@ -333,8 +333,8 @@ surfaces:
 - surface_id: spec_lang_namespace_collection
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93e_std_collection.md
@@ -356,8 +356,8 @@ surfaces:
 - surface_id: spec_lang_namespace_object
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93f_std_object.md
@@ -379,8 +379,8 @@ surfaces:
 - surface_id: spec_lang_namespace_type
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93g_std_type.md
@@ -402,8 +402,8 @@ surfaces:
 - surface_id: spec_lang_namespace_set
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93h_std_set.md
@@ -425,8 +425,8 @@ surfaces:
 - surface_id: spec_lang_namespace_json_schema_fn_null
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/01_schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93i_std_json_schema_fn_null.md
@@ -496,7 +496,7 @@ surfaces:
 - surface_id: governance_check_catalog
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/04_governance/cases/core
   outputs:
   - /.artifacts/governance-check-catalog.json
@@ -521,7 +521,7 @@ surfaces:
 - surface_id: metrics_field_catalog
   source_type: code_scan
   inputs:
-  - /specs/01_schema/runner_certification_registry_v2.yaml
+  - /specs/01_schema/runner_certification_registry_v1.yaml
   - /specs/metrics
   outputs:
   - /.artifacts/metrics-field-catalog.json

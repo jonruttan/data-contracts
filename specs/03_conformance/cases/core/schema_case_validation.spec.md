@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: /specs/01_schema/schema_v2.md
+spec_version: 1
+schema_ref: /specs/01_schema/schema_v1.md
 title: schema case validation suite
 harness:
   type: unit.test
@@ -150,7 +150,7 @@ contracts:
         category: schema
     imports:
     - id: legacy_import
-      ref: /specs/01_schema/schema_v2.md
+      ref: /specs/01_schema/schema_v1.md
     asserts:
       checks:
       - id: assert_1
@@ -198,7 +198,7 @@ contracts:
     - as: schema.validation.invalid_ref
       from: assert.function
       path: /__export__schema.validation.ok
-      ref: /specs/01_schema/schema_v2.md
+      ref: /specs/01_schema/schema_v1.md
     asserts:
       checks:
       - id: assert_1
@@ -241,7 +241,7 @@ contracts:
         category: schema
     artifacts:
     - id: invalid_artifact
-      ref: /specs/01_schema/schema_v2.md
+      ref: /specs/01_schema/schema_v1.md
     asserts:
       checks:
       - id: assert_1
@@ -255,7 +255,7 @@ contracts:
         category: schema
     artifacts:
     - id: bad_io
-      ref: /specs/01_schema/schema_v2.md
+      ref: /specs/01_schema/schema_v1.md
       io: inbound
     asserts:
       checks:
@@ -656,7 +656,7 @@ artifacts:
     status: active
   direction: output
 - id: schema_registry_core_yaml
-  ref: /specs/01_schema/registry/v2/core.yaml
+  ref: /specs/01_schema/registry/v1/core.yaml
   type: application/yaml
   docs:
   - summary: schema registry core yaml input
@@ -664,7 +664,7 @@ artifacts:
     status: active
   direction: input
 - id: schema_registry_assertions_yaml
-  ref: /specs/01_schema/registry/v2/assertions.yaml
+  ref: /specs/01_schema/registry/v1/assertions.yaml
   type: application/yaml
   docs:
   - summary: schema registry assertions yaml input

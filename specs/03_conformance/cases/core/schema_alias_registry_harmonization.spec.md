@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 2
-schema_ref: "/specs/01_schema/schema_v2.md"
+spec_version: 1
+schema_ref: "/specs/01_schema/schema_v1.md"
 title: schema alias registry harmonization
 harness:
   type: unit.test
@@ -213,10 +213,10 @@ contracts:
           lit: true
 artifacts:
 - id: alias_output
-  ref: "/specs/01_schema/schema_v2.md"
+  ref: "/specs/01_schema/schema_v1.md"
   direction: output
 - id: alias_input
-  ref: "/specs/01_schema/schema_v2.md"
+  ref: "/specs/01_schema/schema_v1.md"
   direction: input
 adapters:
 - type: io.fs
