@@ -59,6 +59,8 @@ fields:
     required: false
     description: Service callable imports. Supports canonical list[mapping] (`names`,
       optional `as`) and compact list[string] alias. Mixed item kinds are invalid.
+      Alias grammar and normalization are defined in
+      `/specs/schema/registry/v2/aliases.yaml`.
     since: v2
   services.actions[].imports[].names:
     type: list

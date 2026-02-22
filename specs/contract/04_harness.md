@@ -16,6 +16,8 @@
   canonical mapping rows.
 - Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
+- Alias grammar source for services imports and contract bindings:
+  `/specs/schema/registry/v2/aliases.yaml`.
 - Contract-scoped `contracts[].bindings` connects contracts to services and artifact channels.
   It supports canonical `contracts[].bindings[]` rows and additive compaction form
   `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`.

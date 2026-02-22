@@ -429,7 +429,7 @@ contracts:
       assert:
         lit: true
 - id: DCCONF-SCHEMA-CASE-025
-  title: binding service is required
+  title: binding service is effective-required after defaults merge
   expect:
     portable:
       status: fail

@@ -55,6 +55,8 @@ Import binding shape:
   - `{service: {id: svc.x, names: [...], as?: {...}}}`
   - `"pipe_identity"` short alias row
 - compact alias rows normalize to canonical rows before validation/evaluation
+- canonical alias grammar source:
+  `/specs/schema/registry/v2/aliases.yaml`
 - short alias rows always normalize to `from: service` rows with
   `service` resolved from `contracts[].bindings.defaults.service`
 - missing/empty `contracts[].bindings.defaults.service` with short alias rows
@@ -72,6 +74,10 @@ Import binding shape:
 - `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`
 - when `as` is omitted, local symbol defaults to each `names[]` entry
+- requiredness terminology:
+  - explicit-required: key must be authored
+  - optional: key may be omitted
+  - effective-required: key may be inherited but must exist after merge
 
 Import merge semantics:
 

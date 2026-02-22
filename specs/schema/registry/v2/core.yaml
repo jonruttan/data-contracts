@@ -255,7 +255,8 @@ fields:
       rows (`names`, optional `as`) or compact list[string] alias.
       `imports: [a, b]` normalizes to canonical `{names:[a,b]}`; compact rows
       do not support aliasing. Mixed list item kinds in one `imports` list are
-      invalid.
+      invalid. Alias grammar and normalization are defined in
+      `/specs/schema/registry/v2/aliases.yaml`.
   services.actions[].imports[].names:
     type: list
     required: true
@@ -896,7 +897,8 @@ fields:
     description: Supports either canonical list form (`contracts[].bindings[]`)
       or additive mapping form (`contracts[].bindings.defaults` +
       `contracts[].bindings.rows[]`), normalized to effective binding rows before
-      validation.
+      validation. Alias/shape grammar and effective-row normalization are
+      defined in `/specs/schema/registry/v2/aliases.yaml`.
   contracts[].bindings.defaults:
     type: mapping
     required: false

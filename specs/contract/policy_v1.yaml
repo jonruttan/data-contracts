@@ -4315,6 +4315,7 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
+  - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
@@ -4331,6 +4332,7 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
+  - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
   introduced_in: v2
@@ -4348,6 +4350,7 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   introduced_in: v2
@@ -4365,7 +4368,40 @@ rules:
   references:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+- id: ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
+  introduced_in: v2
+  scope: governance
+  applies_to: schema.v2.registry.aliases
+  norm: MUST
+  requirement: v2_alias_grammar_must_be_defined_in_aliases_registry
+  description: Alias grammar for compact/short forms must be defined in
+    `/specs/schema/registry/v2/aliases.yaml`, with core/assertion registries
+    containing canonical fields only.
+  rationale: Eliminates duplicated alias semantics and reduces ambiguity.
+  risk_if_violated: Alias behavior drifts between registry surfaces and docs.
+  references:
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/schema_v2.md
+- id: REQUIREDNESS_MODEL_HARMONIZED_V2
+  introduced_in: v2
+  scope: governance
+  applies_to: schema.v2.requiredness_model
+  norm: MUST
+  requirement: v2_requiredness_language_uses_explicit_optional_effective_required
+  description: v2 schema/contract docs must use harmonized requiredness
+    terminology (`explicit-required`, `optional`, `effective-required`) and
+    align effective-required checks with deterministic merge rules.
+  rationale: Reduces cognitive load and avoids contradictory requiredness
+    statements.
+  risk_if_violated: Implementers infer inconsistent validation behavior.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/contract/03_assertions.md
+  - specs/contract/21_schema_registry_contract.md
 - id: SERVICES_INTEGRATION_TYPES_ONLY_V2
   introduced_in: v2
   scope: runtime

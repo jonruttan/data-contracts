@@ -7,6 +7,7 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 ## Normative Rules
 
 - Runtime schema validation MUST be driven from compiled registry data.
+- Canonical alias grammar MUST be driven from `/specs/schema/registry/v2/aliases.yaml`.
 - Unknown top-level case keys MUST fail with `schema`.
 - Suite top-level validation MUST enforce `spec_version`, `schema_ref`, and non-empty `contracts`.
 - Contract-item validation MUST enforce per-item `id` and `clauses` shape.
@@ -85,12 +86,17 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   authored.
 - Suite defaults and clause defaults are optional compression surfaces; empty
   defaults mappings are non-canonical.
+- Requiredness language is standardized as:
+  - explicit-required
+  - optional
+  - effective-required (required after deterministic merge)
 
 ## Profile Types
 
 - `core`
 - `assertions`
 - `harness`
+- `aliases`
 - `path_model`
 - `deprecated type overlays` (migration-only; non-normative)
 

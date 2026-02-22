@@ -4005,6 +4005,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
+  - specs/schema/registry/v2/aliases.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-027
   - DCCONF-SCHEMA-CASE-028
@@ -4019,6 +4020,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
+  - specs/schema/registry/v2/aliases.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-029
   - DCCONF-SCHEMA-CASE-030
@@ -4035,6 +4037,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/aliases.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-032
   - DCCONF-SCHEMA-CASE-033
@@ -4051,6 +4054,7 @@ links:
   schema_refs:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/registry/v2/aliases.yaml
   conformance_case_ids:
   - DCCONF-SCHEMA-CASE-034
   - DCCONF-SCHEMA-CASE-035
@@ -4059,6 +4063,35 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Clause short alias requires bindings.defaults.service and valid service import resolution.
+- rule_id: ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
+  policy_ref: specs/contract/policy_v1.yaml#ALIAS_GRAMMAR_SINGLE_SOURCE_REQUIRED_V2
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/assertions.yaml
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-ALIAS-001
+  - DCCONF-SCHEMA-ALIAS-002
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
+  notes: Alias grammar is centralized in v2 aliases registry and consumed by core/assertion surfaces.
+- rule_id: REQUIREDNESS_MODEL_HARMONIZED_V2
+  policy_ref: specs/contract/policy_v1.yaml#REQUIREDNESS_MODEL_HARMONIZED_V2
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  conformance_case_ids:
+  - DCCONF-SCHEMA-ALIAS-003
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
+  notes: Requiredness semantics are explicitly defined as explicit-required/optional/effective-required.
 - rule_id: SERVICES_INTEGRATION_TYPES_ONLY_V2
   policy_ref: specs/contract/policy_v1.yaml#SERVICES_INTEGRATION_TYPES_ONLY_V2
   contract_refs:

@@ -9,6 +9,7 @@ Machine-readable normative policy:
 - `/specs/contract/policy_v1.yaml`
 - `/specs/contract/traceability_v1.yaml`
 - `/specs/contract/rule_template.md`
+- schema alias grammar source: `/specs/schema/registry/v2/aliases.yaml`
 
 Read in order:
 
@@ -52,6 +53,7 @@ Read in order:
 38. `/specs/contract/32_contract_bundle_taxonomy.md`
 39. `/specs/contract/33_bundle_package_management.md`
 40. `/specs/contract/34_runner_implementation_spec_bundles.md`
+41. `/specs/contract/35_service_plugin_runtime.md`
 
 Type contracts:
 

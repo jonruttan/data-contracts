@@ -1,0 +1,102 @@
+version: 2
+id: schema.registry.v2.aliases
+type: aliases
+alias_registry:
+  intent: Centralized alias grammar for v2 authoring forms that normalize to canonical core/assertion field shapes before validation/runtime.
+  requiredness_model:
+    explicit_required: key must be authored at the row/surface.
+    optional: key may be omitted.
+    effective_required: key may be inherited but must be present after deterministic merge.
+  surfaces:
+  - path: services.actions[].imports
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - names
+      optional:
+      - as
+    aliases:
+    - shape: list[string]
+      normalized_to: one canonical row `{names:[...]}`
+    mixed_item_kinds: invalid
+    collisions:
+      duplicate_effective_names: hard_fail
+    validation:
+    - names must exist for resolved services.actions[].type/profile in service catalog
+  - path: contracts[].clauses.imports
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - from
+      - names
+      conditional_required:
+      - key: service
+        when: from=service
+      optional:
+      - as
+    aliases:
+    - shape: bare string
+      example: pipe_identity
+      normalized_to: `{from: service, names:[pipe_identity], service:<resolved>}`
+      resolution:
+        service: contracts[].bindings.defaults.service
+    - shape: mapping
+      key: artifact
+      normalized_to: `{from: artifact, names:[...]}`
+    - shape: mapping
+      key: service
+      normalized_to: `{from: service, service:<id>, names:[...], as?}`
+    mixed_row_forms: allowed
+    collisions:
+      duplicate_effective_local_symbols: hard_fail
+    validation:
+    - bare string aliases require contracts[].bindings.defaults.service
+    - resolved service must exist in services.actions[].id
+    - service import names must exist for resolved services.actions[].type/profile in service catalog
+  - path: contracts[].clauses.predicates[].imports
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - from
+      - names
+      conditional_required:
+      - key: service
+        when: from=service
+      optional:
+      - as
+    aliases:
+    - shape: bare string
+      example: pipe_identity
+      normalized_to: `{from: service, names:[pipe_identity], service:<resolved>}`
+      resolution:
+        service: contracts[].bindings.defaults.service
+    - shape: mapping
+      key: artifact
+      normalized_to: `{from: artifact, names:[...]}`
+    - shape: mapping
+      key: service
+      normalized_to: `{from: service, service:<id>, names:[...], as?}`
+    mixed_row_forms: allowed
+    collisions:
+      duplicate_effective_local_symbols: hard_fail
+    validation:
+    - bare string aliases require contracts[].bindings.defaults.service
+    - resolved service must exist in services.actions[].id
+    - service import names must exist for resolved services.actions[].type/profile in service catalog
+  - path: contracts[].bindings
+    canonical_shapes:
+    - list form: contracts[].bindings[]
+    - mapping form: contracts[].bindings.defaults + contracts[].bindings.rows[]
+    normalization:
+      effective_row: shallow_merge(defaults, row)
+      precedence: row overrides defaults
+    mixed_shapes_same_contract: invalid
+    requiredness:
+      explicit_required:
+      - id
+      effective_required:
+      - service
+      - import
+    validation:
+    - effective service must resolve to services.actions[].id
+    - effective import must be valid for resolved service type/profile

@@ -27,7 +27,8 @@ fields:
       Bare string rows (for example `- pipe_identity`) are compact service
       aliases normalized to `{from: service, names:[pipe_identity], service:<resolved>}`,
       where `<resolved>` is `contracts[].bindings.defaults.service` for the same
-      contract.
+      contract. Alias grammar and normalization are defined in
+      `/specs/schema/registry/v2/aliases.yaml`.
   contracts[].clauses.imports[].artifact:
     type: list
     required: false
@@ -50,13 +51,6 @@ fields:
     required: false
     since: v2
     description: Compact service import alias map.
-  contracts[].clauses.imports[].compact:
-    type: string
-    required: false
-    since: v2
-    description: Bare string compact service alias row. Normalized using
-      `contracts[].bindings.defaults.service`; missing defaults service is
-      schema hard-fail.
   contracts[].clauses.imports[].from:
     type: string
     required: true
@@ -98,7 +92,8 @@ fields:
       Bare string rows (for example `- pipe_identity`) are compact service
       aliases normalized to `{from: service, names:[pipe_identity], service:<resolved>}`,
       where `<resolved>` is `contracts[].bindings.defaults.service` for the same
-      contract.
+      contract. Alias grammar and normalization are defined in
+      `/specs/schema/registry/v2/aliases.yaml`.
   contracts[].clauses.predicates[].imports[].artifact:
     type: list
     required: false
@@ -120,13 +115,6 @@ fields:
     required: false
     since: v2
     description: Compact service import alias map.
-  contracts[].clauses.predicates[].imports[].compact:
-    type: string
-    required: false
-    since: v2
-    description: Bare string compact service alias row. Normalized using
-      `contracts[].bindings.defaults.service`; missing defaults service is
-      schema hard-fail.
   contracts[].clauses.predicates[].imports[].from:
     type: string
     required: true

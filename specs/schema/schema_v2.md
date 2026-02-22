@@ -126,6 +126,14 @@ Ordering rules:
 
 - known keys are emitted in canonical order
 - unknown keys are preserved after known keys in stable original order
+
+Alias grammar source of truth:
+
+- `/specs/schema/registry/v2/aliases.yaml` defines compact/short alias
+  grammars, normalization targets, mixed-form rules, and collision/failure
+  contracts.
+- core/assertions registries enumerate canonical fields only and reference the
+  alias registry for non-canonical authoring forms.
 - list item order is preserved as-authored
 
 Each `contracts[]` item:
@@ -164,6 +172,8 @@ Suite runtime surfaces:
       expands to one canonical row `{names:[...]}`; compact form does not support aliasing
     - per-item short form is supported (`imports: [pipe_identity]`)
     - mixed item kinds (string + mapping) in one `imports` list are invalid
+    - canonical alias grammar source:
+      `/specs/schema/registry/v2/aliases.yaml`
   - `services.actions[].imports[].names` (list, required)
   - `services.actions[].imports[].as` (mapping, optional)
   - service implementations may be built-in or runtime-loaded plugins; suite
@@ -239,6 +249,8 @@ Parser behavior:
 - empty/whitespace-only clause/predicate bare-string import rows are schema failures
 - bindings execute once per contract before predicate evaluation
 - bindings support canonical list form (`contracts[].bindings[]`) and additive mapping form (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`)
+- binding shape/alias grammar source:
+  `/specs/schema/registry/v2/aliases.yaml`
 - legacy row key `contract` under `contracts[].bindings[]` is invalid
 - mixed `contracts[].bindings[]` list-form and `contracts[].bindings.rows[]`
   mapping-form in the same contract is invalid
@@ -278,6 +290,10 @@ Binding defaults semantics:
   `contracts[].bindings.defaults` when both are present
 - row conflicts with defaults resolve in favor of row values
 - missing effective `service` or `import` is schema failure
+- requiredness model terminology:
+  - explicit-required: key must be authored
+  - optional: key may be omitted
+  - effective-required: key may be inherited but must exist after merge
 
 Clause import compact semantics:
 
@@ -287,6 +303,8 @@ Clause import compact semantics:
 - compact bare-string alias is supported and means a service import using
   `contracts[].bindings.defaults.service`
 - unknown keys in compact alias rows are schema failures
+- canonical alias grammar source:
+  `/specs/schema/registry/v2/aliases.yaml`
 
 `expect` (conformance metadata):
 

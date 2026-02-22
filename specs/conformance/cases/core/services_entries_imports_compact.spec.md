@@ -14,7 +14,7 @@ services:
     - pipe_identity
 contracts:
 - id: DCCONF-SCHEMA-CASE-027
-  title: service imports compact single-name list is accepted
+  title: service imports compact single-name list is accepted via alias grammar
   expect:
     portable:
       status: pass
@@ -205,7 +205,7 @@ services:
     - assert_truth
 contracts:
 - id: DCCONF-SCHEMA-CASE-028
-  title: service imports compact multi-name list is accepted
+  title: service imports compact multi-name list is accepted via alias grammar
   expect:
     portable:
       status: pass
