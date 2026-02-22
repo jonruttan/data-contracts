@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-005
   title: implementation overlay bundle contract is defined
-  purpose: Ensures implementation overlay bundle contract documents canonical base source, checksum requirements, and patch-based semantics.
+  purpose: Ensures implementation overlay bundle contract documents canonical base
+    source, checksum requirements, and patch-based semantics.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

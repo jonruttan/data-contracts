@@ -21,8 +21,7 @@ contracts:
   purpose: Ensures runner-certify generates contract-shaped JSON and markdown artifacts.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

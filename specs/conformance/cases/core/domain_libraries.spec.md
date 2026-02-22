@@ -98,8 +98,7 @@ contracts:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -255,14 +254,14 @@ contracts:
         - 'type: spec.export'
 - id: DCCONF-DOMAIN-LIB-002
   title: domain library index references all domain library files
-  purpose: Ensures domain index remains synchronized with all domain library spec files.
+  purpose: Ensures domain index remains synchronized with all domain library spec
+    files.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

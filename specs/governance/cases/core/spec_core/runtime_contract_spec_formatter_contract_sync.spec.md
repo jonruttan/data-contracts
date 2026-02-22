@@ -21,11 +21,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-RCLI-006
   title: contract spec formatter command contract is synchronized
-  purpose: Ensures runner CLI contract docs and schema include the contract-spec-format command surface and mode metadata.
+  purpose: Ensures runner CLI contract docs and schema include the contract-spec-format
+    command surface and mode metadata.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

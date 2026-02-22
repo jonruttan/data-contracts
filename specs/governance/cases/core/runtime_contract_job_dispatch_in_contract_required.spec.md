@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-001
   title: contract.job dispatch must be declared in contract
-  purpose: Ensures contract.job cases dispatch jobs via ops.job.dispatch in contract assertions.
+  purpose: Ensures contract.job cases dispatch jobs via ops.job.dispatch in contract
+    assertions.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

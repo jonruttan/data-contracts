@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-004
   title: runner build tool contract defines optional task catalog
-  purpose: Portable build tool contract should declare the MAY task catalog for optional capabilities.
+  purpose: Portable build tool contract should declare the MAY task catalog for optional
+    capabilities.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

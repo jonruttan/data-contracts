@@ -8,7 +8,9 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'required_lane_policy': {'path': '/scripts/runner_status_ingest.sh', 'required_tokens': ['lane_class', 'required', 'blocking_fail']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.required_lane_status_blocking_enforced'}}}"
+    - "{'root': '.', 'required_lane_policy': {'path': '/scripts/runner_status_ingest.sh',
+      'required_tokens': ['lane_class', 'required', 'blocking_fail']}, 'check': {'profile':
+      'governance.scan', 'config': {'check': 'runtime.required_lane_status_blocking_enforced'}}}"
 services:
   actions:
   - id: svc.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced.default.1
@@ -21,8 +23,7 @@ contracts:
   purpose: Ensures required-lane status outcomes map to blocking policy effects.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

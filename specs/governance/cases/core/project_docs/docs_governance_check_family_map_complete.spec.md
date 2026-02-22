@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-DOCS-CANON-002
   title: governance check family map covers all registered checks
-  purpose: Ensures each governance check id is mapped to a canonical check family prefix.
+  purpose: Ensures each governance check id is mapped to a canonical check family
+    prefix.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

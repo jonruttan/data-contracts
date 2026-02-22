@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-001
   title: runner build tool contract defines required core tasks
-  purpose: Portable build tool contract must define build, test, and verify required tasks.
+  purpose: Portable build tool contract must define build, test, and verify required
+    tasks.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

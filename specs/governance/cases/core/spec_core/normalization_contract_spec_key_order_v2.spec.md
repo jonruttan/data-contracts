@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-NORM-007
   title: v2 contract spec key order contract is documented
-  purpose: Ensures schema v2 documents canonical suite-root and contract-item key ordering for formatter enforcement.
+  purpose: Ensures schema v2 documents canonical suite-root and contract-item key
+    ordering for formatter enforcement.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

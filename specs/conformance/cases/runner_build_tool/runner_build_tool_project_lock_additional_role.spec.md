@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-011
   title: project bundle lock schema supports additional role entries
-  purpose: Project lock schema must allow role additional for implementation-specific bundles.
+  purpose: Project lock schema must allow role additional for implementation-specific
+    bundles.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

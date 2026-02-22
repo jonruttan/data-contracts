@@ -40,8 +40,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -53,7 +52,8 @@ contracts:
           - 'version: 1'
 - id: DCCONF-EXPR-002
   title: evaluate composed boolean passes
-  purpose: Verifies composed boolean expressions evaluate correctly across both runner implementations.
+  purpose: Verifies composed boolean expressions evaluate correctly across both runner
+    implementations.
   expect:
     portable:
       status: pass
@@ -63,8 +63,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -79,7 +78,8 @@ contracts:
           - "#"
 - id: DCCONF-EXPR-003
   title: evaluate tail recursion is stack safe
-  purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically under mapping AST hard-cut rules.
+  purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically
+    under mapping AST hard-cut rules.
   expect:
     portable:
       status: fail
@@ -91,8 +91,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -137,8 +136,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -160,8 +158,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -182,8 +179,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -193,7 +189,8 @@ contracts:
           - 1
 - id: DCCONF-EXPR-007
   title: evaluate recursive literal-expression shape fails schema
-  purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically as schema.
+  purpose: Verifies unsupported recursive literal-expression authoring shape fails
+    deterministically as schema.
   expect:
     portable:
       status: fail
@@ -205,8 +202,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -232,7 +228,8 @@ contracts:
             - 1000
 - id: DCCONF-EXPR-008
   title: evaluate contains supports explicit subject form
-  purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same target subject.
+  purpose: Verifies evaluate contains succeeds with explicit subject arguments for
+    the same target subject.
   expect:
     portable:
       status: pass
@@ -242,8 +239,7 @@ contracts:
     - evaluate.spec_lang.v1
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -260,7 +256,8 @@ contracts:
           - 'version: 1'
 - id: DCCONF-EXPR-009
   title: evaluate set intersection supports deep structural equality
-  purpose: Verifies intersection deduplicates and compares nested values structurally with stable left-first output.
+  purpose: Verifies intersection deduplicates and compares nested values structurally
+    with stable left-first output.
   expect:
     portable:
       status: skip
@@ -271,8 +268,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -287,7 +283,8 @@ contracts:
           - '[{"k":1},{"k":2}]'
 - id: DCCONF-EXPR-010
   title: evaluate set union keeps stable left-first unique ordering
-  purpose: Verifies union preserves first-seen ordering while removing deep-equal duplicates.
+  purpose: Verifies union preserves first-seen ordering while removing deep-equal
+    duplicates.
   expect:
     portable:
       status: skip
@@ -298,8 +295,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -325,8 +321,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -350,7 +345,8 @@ contracts:
             - '[{"k":1},{"k":3},{"k":4}]'
 - id: DCCONF-EXPR-012
   title: evaluate set predicates compare by deep equality
-  purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural equality.
+  purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural
+    equality.
   expect:
     portable:
       status: skip
@@ -361,8 +357,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -401,8 +396,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -428,7 +422,8 @@ contracts:
             - "[4,5]"
 - id: DCCONF-EXPR-014
   title: evaluate reduce and collection helpers are deterministic
-  purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried predicates.
+  purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior
+    with curried predicates.
   expect:
     portable:
       status: skip
@@ -439,8 +434,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -517,8 +511,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -568,7 +561,8 @@ contracts:
             - "[3]"
 - id: DCCONF-EXPR-016
   title: evaluate currying chain with nested call succeeds
-  purpose: Verifies repeated partial application resolves deterministically to a final non-callable value.
+  purpose: Verifies repeated partial application resolves deterministically to a final
+    non-callable value.
   expect:
     portable:
       status: skip
@@ -579,8 +573,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -594,7 +587,8 @@ contracts:
         - 5
 - id: DCCONF-EXPR-017
   title: evaluate over-application of non-callable result is schema failure
-  purpose: Verifies deterministic schema failure when extra call arguments remain after returning non-callable value.
+  purpose: Verifies deterministic schema failure when extra call arguments remain
+    after returning non-callable value.
   expect:
     portable:
       status: skip
@@ -607,8 +601,7 @@ contracts:
       - over-application error
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -635,8 +628,7 @@ contracts:
       - expects list
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -647,7 +639,8 @@ contracts:
           - "[]"
 - id: DCCONF-EXPR-019
   title: evaluate ramda v1 arithmetic and list utilities behave deterministically
-  purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
+  purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed,
+    and deterministic.
   expect:
     portable:
       status: skip
@@ -658,8 +651,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -738,8 +730,7 @@ contracts:
             - 3
           - std.json.parse:
             - '["x","x","x"]'
-        - std.type.is_null:
-          -
+        - std.type.is_null: []
         - std.type.is_bool:
           - true
         - std.type.is_number:
@@ -765,8 +756,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -841,7 +831,8 @@ contracts:
             - '{"a":1,"b":2}'
 - id: DCCONF-EXPR-021
   title: evaluate ramda v1 combinators and string helpers
-  purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
+  purpose: Verifies compose/pipe, constant-function behavior, and string transforms
+    are deterministic.
   expect:
     portable:
       status: skip
@@ -852,8 +843,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -906,7 +896,8 @@ contracts:
           - '700'
 - id: DCCONF-EXPR-022
   title: evaluate ramda v1 unary numeric and compare helpers
-  purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values for policy expressions.
+  purpose: Verifies unary numeric helpers and comparison helpers produce deterministic
+    values for policy expressions.
   expect:
     portable:
       status: skip
@@ -917,8 +908,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -976,7 +966,8 @@ contracts:
             - true
 - id: DCCONF-EXPR-023
   title: evaluate ramda v1 utility and predicate helpers
-  purpose: Verifies utility and predicate helpers used by governance logic are deterministic and pure.
+  purpose: Verifies utility and predicate helpers used by governance logic are deterministic
+    and pure.
   expect:
     portable:
       status: skip
@@ -987,8 +978,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -1036,7 +1026,6 @@ contracts:
           - a-b-c
         - std.logic.eq:
           - std.null.coalesce:
-            -
             - x
           - x
         - std.logic.eq:
@@ -1141,7 +1130,8 @@ contracts:
           - 8
 - id: DCCONF-EXPR-024
   title: evaluate ramda v1 schema failures are deterministic
-  purpose: Verifies representative arity and type failures stay in schema category for the expanded builtin surface.
+  purpose: Verifies representative arity and type failures stay in schema category
+    for the expanded builtin surface.
   expect:
     portable:
       status: skip
@@ -1154,8 +1144,7 @@ contracts:
       - arity error
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

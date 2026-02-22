@@ -39,14 +39,14 @@ services:
 contracts:
 - id: DCCONF-LIB-CONTRACT-001
   title: policy library uses producer harness exports
-  purpose: Ensures policy library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+  purpose: Ensures policy library authoring uses producer-owned root exports mode=function
+    with assert.function source mappings.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -66,14 +66,14 @@ contracts:
           - 'defines:'
 - id: DCCONF-LIB-CONTRACT-002
   title: path library uses producer harness exports
-  purpose: Ensures path library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+  purpose: Ensures path library authoring uses producer-owned root exports mode=function
+    with assert.function source mappings.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -99,8 +99,7 @@ contracts:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

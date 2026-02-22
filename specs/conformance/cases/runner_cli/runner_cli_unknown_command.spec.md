@@ -21,8 +21,7 @@ contracts:
   purpose: Portable CLI contract requires unknown commands to fail with non-zero status.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

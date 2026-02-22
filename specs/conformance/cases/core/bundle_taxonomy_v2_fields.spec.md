@@ -19,15 +19,15 @@ services:
 contracts:
 - id: DCCONF-BUNDLE-001
   title: v2 schema docs forbid bundle suite metadata in contract-spec shape
-  purpose: Ensures schema_v2 does not define top-level bundle metadata on executable suites.
+  purpose: Ensures schema_v2 does not define top-level bundle metadata on executable
+    suites.
   expect:
     portable:
       status: pass
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -47,15 +47,15 @@ contracts:
             - "- `bundle.maintainers` (list, optional)"
 - id: DCCONF-BUNDLE-002
   title: v2 core registry excludes bundle taxonomy fields
-  purpose: Ensures schema registry v2 core profile does not codify top-level bundle mappings.
+  purpose: Ensures schema registry v2 core profile does not codify top-level bundle
+    mappings.
   expect:
     portable:
       status: pass
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

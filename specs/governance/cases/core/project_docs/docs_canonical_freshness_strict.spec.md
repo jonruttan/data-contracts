@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-DOCS-CANON-003
   title: docs freshness strict checker passes
-  purpose: Ensures specs freshness checks are strict, deterministic, and currently clean.
+  purpose: Ensures specs freshness checks are strict, deterministic, and currently
+    clean.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-003
   title: harness exports schema is valid
-  purpose: Ensures harness.exports entries enforce as/from/path/params/required schema requirements.
+  purpose: Ensures harness.exports entries enforce as/from/path/params/required schema
+    requirements.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - summary_json
     predicates:
     - id: assert_1

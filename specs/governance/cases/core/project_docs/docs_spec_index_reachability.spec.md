@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-DOCS-CANON-001
   title: specs index links all canonical spec entrypoints
-  purpose: Ensures /specs/index.md links every canonical spec subtree and current snapshot.
+  purpose: Ensures /specs/index.md links every canonical spec subtree and current
+    snapshot.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

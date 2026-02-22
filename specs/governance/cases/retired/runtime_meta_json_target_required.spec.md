@@ -8,7 +8,10 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'meta_json_targets': {'files': ['/dc-runner-python', '/dc-runner-python', '/dc-runner-python', '/dc-runner-python', '/dc-runner-python'], 'required_tokens': ['meta_json']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.meta_json_target_required'}}}"
+    - "{'root': '.', 'meta_json_targets': {'files': ['/dc-runner-python', '/dc-runner-python',
+      '/dc-runner-python', '/dc-runner-python', '/dc-runner-python'], 'required_tokens':
+      ['meta_json']}, 'check': {'profile': 'governance.scan', 'config': {'check':
+      'runtime.meta_json_target_required'}}}"
 services:
   actions:
   - id: svc.root_meta_json_targets_files_dc_runner_python_dc_runner_python_dc_runner_python_dc_runner_python_dc_runner_python_required_tokens_meta_json_check_profile_governance_scan_config_check_runtime_meta_json_target_required.default.1
@@ -21,8 +24,7 @@ contracts:
   purpose: Ensures all core executable harness adapters project meta_json.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

@@ -6,11 +6,305 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES', 'as': 'lib_path_normalize', 'symbols': ['path.normalize_slashes']}]}"
-    - '{''exports'': [{''as'': ''path.basename'', ''from'': ''assert.function'', ''path'': ''/__export__path.basename'', ''params'': [''path''], ''docs'': [{''id'': ''path.basename.doc.1'', ''summary'': ''Contract export for `path.basename`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'': ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''], ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'', ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'': ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'', ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'', ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'', ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'': ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'', ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'': ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'', ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
-    - '{''exports'': [{''as'': ''path.extension'', ''from'': ''assert.function'', ''path'': ''/__export__path.extension'', ''params'': [''path''], ''docs'': [{''id'': ''path.extension.doc.1'', ''summary'': ''Contract export for `path.extension`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'': ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''], ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'', ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'': ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'', ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'', ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'', ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'': ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'', ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'': ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'', ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
-    - '{''exports'': [{''as'': ''path.normalize_slashes'', ''from'': ''assert.function'', ''path'': ''/__export__path.normalize_slashes'', ''params'': [''path''], ''docs'': [{''id'': ''path.normalize_slashes.doc.1'', ''summary'': ''Contract export for `path.normalize_slashes`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'': ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''], ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'', ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'': ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'', ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'', ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'', ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\ n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'': ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'', ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\ n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'': ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'', ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
-    - '{''exports'': [{''as'': ''path.segments'', ''from'': ''assert.function'', ''path'': ''/__export__path.segments'', ''params'': [''path''], ''docs'': [{''id'': ''path.segments.doc.1'', ''summary'': ''Contract export for `path.segments`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'': ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''], ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'', ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'': ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'', ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'', ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'', ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type: any\n  required: true\n  description: Input parameter `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'': ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'', ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'': ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'', ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES',
+      'as': 'lib_path_normalize', 'symbols': ['path.normalize_slashes']}]}"
+    - '{''exports'': [{''as'': ''path.basename'', ''from'': ''assert.function'', ''path'':
+      ''/__export__path.basename'', ''params'': [''path''], ''docs'': [{''id'': ''path.basename.doc.1'',
+      ''summary'': ''Contract export for `path.basename`.'', ''audience'': ''spec-authors'',
+      ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace
+      with authored reference text.\n\nLegacy doc fields migrated to description:\n-
+      examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''],
+      ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export
+      for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a
+      concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description:
+      Input parameter `path`.\n- returns: type: any\ndescription: Result payload for
+      this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not
+      satisfy contract shape requirements.\n  category: schema\n- portability: python:
+      true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'',
+      ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'':
+      ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'',
+      ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'',
+      ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'',
+      ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'',
+      ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace
+      with authored reference text.\n\nLegacy doc fields migrated to description:\n-
+      examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type:
+      any\n  required: true\n  description: Input parameter `ext`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'',
+      ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract
+      export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required:
+      true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'',
+      ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract
+      export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required:
+      true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''path.extension'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.extension'', ''params'': [''path''], ''docs'': [{''id'':
+      ''path.extension.doc.1'', ''summary'': ''Contract export for `path.extension`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''],
+      ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export
+      for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a
+      concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description:
+      Input parameter `path`.\n- returns: type: any\ndescription: Result payload for
+      this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not
+      satisfy contract shape requirements.\n  category: schema\n- portability: python:
+      true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'',
+      ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'':
+      ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'',
+      ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'',
+      ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'',
+      ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'',
+      ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace
+      with authored reference text.\n\nLegacy doc fields migrated to description:\n-
+      examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type:
+      any\n  required: true\n  description: Input parameter `ext`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'',
+      ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract
+      export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required:
+      true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'',
+      ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract
+      export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required:
+      true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''path.normalize_slashes'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.normalize_slashes'', ''params'': [''path''], ''docs'':
+      [{''id'': ''path.normalize_slashes.doc.1'', ''summary'': ''Contract export for
+      `path.normalize_slashes`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a
+      concrete scenario.\n- params: - name: path\n  type: any\n  required: true\n  description:
+      Input parameter `path`.\n- returns: type: any\ndescription: Result payload for
+      this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not
+      satisfy contract shape requirements.\n  category: schema\n- portability: python:
+      true\nphp: true\ nrust: true\nnotes: Confirm per-runtime behavior and caveats.'',
+      ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.trim_dot'', ''params'': [''path''], ''docs'': [{''id'':
+      ''path.trim_dot.doc.1'', ''summary'': ''Contract export for `path.trim_dot`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.dirname'', ''params'': [''path''],
+      ''docs'': [{''id'': ''path.dirname.doc.1'', ''summary'': ''Contract export for
+      `path.dirname`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'':
+      ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy
+      doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  path:
+      "<path>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\ n-
+      params: - name: path\n  type: any\n  required: true\n  description: Input parameter
+      `path`.\n- returns: type: any\ndescription: Result payload for this symbol.\n-
+      errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract
+      shape requirements.\n  category: schema\n- portability: python: true\ nphp:
+      true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'':
+      ''v1''}]}, {''as'': ''path.has_extension'', ''from'': ''assert.function'', ''path'':
+      ''/__export__path.has_extension'', ''params'': [''path'', ''ext''], ''docs'':
+      [{''id'': ''path.has_extension.doc.1'', ''summary'': ''Contract export for `path.has_extension`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext:
+      "<ext>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params:
+      - name: path\n  type: any\n  required: true\n  description: Input parameter
+      `path`.\n- name: ext\n  type: any\n  required: true\n  description: Input parameter
+      `ext`.\n- returns: type: any\ndescription: Result payload for this symbol.\n-
+      errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract
+      shape requirements.\n  category: schema\ n- portability: python: true\nphp:
+      true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'':
+      ''v1''}]}, {''as'': ''path.is_under'', ''from'': ''assert.function'', ''path'':
+      ''/__export__path.is_under'', ''params'': [''path'', ''prefix''], ''docs'':
+      [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract export for `path.is_under`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  prefix:
+      "<prefix>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n-
+      params: - name: path\n  type: any\n  required: true\n  description: Input parameter
+      `path`.\n- name: prefix\n  type: any\n  required: true\n  description: Input
+      parameter `prefix`.\n- returns: type: any\ndescription: Result payload for this
+      symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy
+      contract shape requirements.\n  category: schema\ n- portability: python: true\nphp:
+      true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'':
+      ''v1''}]}, {''as'': ''path.matches'', ''from'': ''assert.function'', ''path'':
+      ''/__export__path.matches'', ''params'': [''path'', ''pattern''], ''docs'':
+      [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract export for `path.matches`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  pattern:
+      "<pattern>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n-
+      params: - name: path\n  type: any\n  required: true\n  description: Input parameter
+      `path`.\n- name: pattern\n  type: any\n  required: true\n  description: Input
+      parameter `pattern`.\n- returns: type: any\ndescription: Result payload for
+      this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not
+      satisfy contract shape requirements.\n  category: schema\n- portability: python:
+      true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'',
+      ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''path.segments'', ''from'': ''assert.function'', ''path'':
+      ''/__export__path.segments'', ''params'': [''path''], ''docs'': [{''id'': ''path.segments.doc.1'',
+      ''summary'': ''Contract export for `path.segments`.'', ''audience'': ''spec-authors'',
+      ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace
+      with authored reference text.\n\nLegacy doc fields migrated to description:\n-
+      examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.trim_dot'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.trim_dot'', ''params'': [''path''],
+      ''docs'': [{''id'': ''path.trim_dot.doc.1'', ''summary'': ''Contract export
+      for `path.trim_dot`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\nexpected: "<result>"\nnotes: Replace with a
+      concrete scenario.\ n- params: - name: path\n  type: any\n  required: true\n  description:
+      Input parameter `path`.\n- returns: type: any\ndescription: Result payload for
+      this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not
+      satisfy contract shape requirements.\n  category: schema\n- portability: python:
+      true\ nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'',
+      ''since'': ''v1''}]}, {''as'': ''path.dirname'', ''from'': ''assert.function'',
+      ''path'': ''/__export__path.dirname'', ''params'': [''path''], ''docs'': [{''id'':
+      ''path.dirname.doc.1'', ''summary'': ''Contract export for `path.dirname`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  path: "<path>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\ nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.has_extension'',
+      ''from'': ''assert.function'', ''path'': ''/__export__path.has_extension'',
+      ''params'': [''path'', ''ext''], ''docs'': [{''id'': ''path.has_extension.doc.1'',
+      ''summary'': ''Contract export for `path.has_extension`.'', ''audience'': ''spec-authors'',
+      ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace
+      with authored reference text.\n\nLegacy doc fields migrated to description:\n-
+      examples[]: title: Basic usage\ninput:\n  path: "<path>"\n  ext: "<ext>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: path\n  type:
+      any\n  required: true\n  description: Input parameter `path`.\ n- name: ext\n  type:
+      any\n  required: true\n  description: Input parameter `ext`.\n- returns: type:
+      any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when:
+      Input payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.is_under'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.is_under'', ''params'': [''path'',
+      ''prefix''], ''docs'': [{''id'': ''path.is_under.doc.1'', ''summary'': ''Contract
+      export for `path.is_under`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  prefix: "<prefix>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: prefix\n  type: any\n  required:
+      true\n  description: Input parameter `prefix`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}, {''as'': ''path.matches'', ''from'':
+      ''assert.function'', ''path'': ''/__export__path.matches'', ''params'': [''path'',
+      ''pattern''], ''docs'': [{''id'': ''path.matches.doc.1'', ''summary'': ''Contract
+      export for `path.matches`.'', ''audience'': ''spec-authors'', ''status'': ''active'',
+      ''description'': ''Auto-generated metadata stub. Replace with authored reference
+      text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic
+      usage\ninput:\n  path: "<path>"\n  pattern: "<pattern>"\nexpected: "<result>"\nnotes:
+      Replace with a concrete scenario.\ n- params: - name: path\n  type: any\n  required:
+      true\n  description: Input parameter `path`.\n- name: pattern\n  type: any\n  required:
+      true\n  description: Input parameter `pattern`.\n- returns: type: any\ndescription:
+      Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input
+      payload does not satisfy contract shape requirements.\n  category: schema\n-
+      portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
+      behavior and caveats.'', ''since'': ''v1''}]}]}'
 services:
   defaults:
     profile: default
@@ -31,7 +325,8 @@ contracts:
   - summary: Case `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -109,7 +404,8 @@ contracts:
   - summary: Case `LIB-PATH-001-002-PATH-SEGMENTS` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -188,7 +484,8 @@ contracts:
   - summary: Case `LIB-PATH-001-003-PATH-BASENAME` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -279,7 +576,8 @@ contracts:
   - summary: Case `LIB-PATH-001-004-PATH-EXTENSION` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -376,8 +674,7 @@ contracts:
 - id: LIB-PATH-001-900-PATH-SMOKE
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

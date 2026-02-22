@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-004
   title: ops.job.dispatch requires ops.job capability
-  purpose: Ensures cases that call ops.job.dispatch declare harness.spec_lang.capabilities including ops.job.
+  purpose: Ensures cases that call ops.job.dispatch declare harness.spec_lang.capabilities
+    including ops.job.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

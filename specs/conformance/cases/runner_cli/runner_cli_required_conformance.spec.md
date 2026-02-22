@@ -21,8 +21,7 @@ contracts:
   purpose: Portable CLI contract requires conformance command.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

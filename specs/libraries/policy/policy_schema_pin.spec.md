@@ -6,8 +6,19 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001', 'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero', 'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero', 'policy.schema_pin.version_match_zero']}]}"
-    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero', 'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero', 'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-SCHEMA-PIN-001',
+      'as': 'lib_policy_schema_pin', 'symbols': ['policy.schema_pin.missing_spec_version_zero',
+      'policy.schema_pin.missing_schema_ref_zero', 'policy.schema_pin.unknown_schema_ref_zero',
+      'policy.schema_pin.version_match_zero']}]}"
+    - "{'exports': [{'as': 'policy.schema_pin.missing_spec_version_zero', 'from':
+      'assert.function', 'path': '/__export__policy.schema_pin.missing_spec_version_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.missing_schema_ref_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.missing_schema_ref_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.unknown_schema_ref_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.unknown_schema_ref_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.schema_pin.version_match_zero',
+      'from': 'assert.function', 'path': '/__export__policy.schema_pin.version_match_zero',
+      'params': ['subject'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -62,8 +73,7 @@ contracts:
   title: schema pin policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

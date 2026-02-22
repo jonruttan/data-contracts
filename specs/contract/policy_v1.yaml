@@ -4317,6 +4317,21 @@ rules:
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  introduced_in: v2
+  scope: authoring
+  applies_to: schema.v2.services.actions.imports.style
+  norm: SHOULD
+  requirement: services_imports_compact_alias_is_preferred_authoring_form
+  description: Authoring should prefer compact list[string] alias rows for
+    `services.actions[].imports`; canonical mapping rows should be used when
+    aliasing (`as`) is required.
+  rationale: Reduces repetitive syntax while keeping normalized runtime semantics.
+  risk_if_violated: Fixture style drifts and cognitive overhead increases.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
   scope: runtime

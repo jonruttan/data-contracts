@@ -4013,6 +4013,21 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Service imports support compact list[string] aliases normalized to canonical rows.
+- rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-027
+  - DCCONF-SCHEMA-CASE-028
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+  notes: Compact service-import aliases are the preferred authoring style; canonical rows remain valid for alias mapping.
 - rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   contract_refs:

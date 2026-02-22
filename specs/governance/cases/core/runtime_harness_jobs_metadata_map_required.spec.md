@@ -21,8 +21,7 @@ contracts:
   purpose: Ensures contract.job cases declare helper metadata under harness.jobs entries.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

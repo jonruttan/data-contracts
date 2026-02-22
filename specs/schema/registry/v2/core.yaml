@@ -251,11 +251,11 @@ fields:
     type: list
     required: false
     since: v2
-    description: Service import declarations. Accepts either canonical list[mapping]
-      rows (`names`, optional `as`) or compact list[string] alias.
-      `imports: [a, b]` normalizes to canonical `{names:[a,b]}`; compact rows
-      do not support aliasing. Mixed list item kinds in one `imports` list are
-      invalid. Alias grammar and normalization are defined in
+    description: Service import declarations. Accepts compact list[string]
+      alias (preferred) and canonical list[mapping] rows (`names`,
+      optional `as`). `imports: [a, b]` normalizes to canonical
+      `{names:[a,b]}`; compact rows do not support aliasing. Mixed list item
+      kinds in one `imports` list are invalid. Alias grammar and normalization are defined in
       `/specs/schema/registry/v2/aliases.yaml`.
   services.actions[].imports[].names:
     type: list
@@ -894,10 +894,10 @@ fields:
     type: any
     required: false
     since: v2
-    description: Supports either canonical list form (`contracts[].bindings[]`)
-      or additive mapping form (`contracts[].bindings.defaults` +
-      `contracts[].bindings.rows[]`), normalized to effective binding rows before
-      validation. Alias/shape grammar and effective-row normalization are
+    description: Supports additive mapping form (preferred)
+      (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`) and
+      direct list form (`contracts[].bindings[]`), normalized to effective
+      binding rows before validation. Alias/shape grammar and effective-row normalization are
       defined in `/specs/schema/registry/v2/aliases.yaml`.
   contracts[].bindings.defaults:
     type: mapping

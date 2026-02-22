@@ -23,15 +23,15 @@ services:
 contracts:
 - id: DCCONF-SCHEMA-REG-001
   title: schema docs include generated registry snapshot markers
-  purpose: Ensures generated schema registry snapshot markers and section header are present in schema_v1 documentation.
+  purpose: Ensures generated schema registry snapshot markers and section header are
+    present in schema_v1 documentation.
   expect:
     portable:
       status: pass
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

@@ -22,8 +22,7 @@ contracts:
   purpose: Ensures the producer-facing status report schema exists.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -38,8 +37,7 @@ contracts:
   purpose: Ensures the aggregate status matrix schema exists.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -54,8 +52,7 @@ contracts:
   purpose: Ensures ingest includes max-age controls and enforcement flag.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -70,8 +67,7 @@ contracts:
   purpose: Ensures missing compatibility status is represented and policy-scored.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -86,8 +82,7 @@ contracts:
   purpose: Ensures required lane status maps to blocking policy effect.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

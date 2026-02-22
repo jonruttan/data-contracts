@@ -21,8 +21,7 @@ contracts:
   purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

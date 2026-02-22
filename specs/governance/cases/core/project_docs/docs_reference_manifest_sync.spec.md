@@ -8,7 +8,11 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml', 'index_out': '/docs/book/reference_index.md'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.reference_manifest_sync'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml',
+      'index_out': '/docs/book/reference_index.md'}, 'check': {'profile': 'governance.scan',
+      'config': {'check': 'docs.reference_manifest_sync'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md',
+      'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
+      'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
   actions:
   - id: svc.root_docs_quality_manifest_docs_book_reference_manifest_yaml_index_out_docs_book_reference_index_md_check_profile_governance_scan_config_check_docs_reference_manifest_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
@@ -18,11 +22,11 @@ services:
 contracts:
 - id: DCGOV-DOCS-QUAL-002
   title: reference index is generated from manifest
-  purpose: Ensures reference index markdown remains synchronized with the manifest source of truth.
+  purpose: Ensures reference index markdown remains synchronized with the manifest
+    source of truth.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1
@@ -49,7 +53,6 @@ contracts:
           - lit: {}
         - docs.reference_manifest_sync
       imports:
-      - from: artifact
-        names:
+      - artifact:
         - summary_json
 ```

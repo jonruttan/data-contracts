@@ -49,6 +49,7 @@ Scope separation:
 Import binding shape:
 
 - `imports` is a list of canonical mapping items and compact alias items
+- compact alias rows are preferred authoring style
 - canonical row form is `{from, names, service?, as?}`
 - compact grouped alias rows are allowed:
   - `{artifact: [id_a, id_b]}`

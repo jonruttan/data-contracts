@@ -21,8 +21,7 @@ contracts:
   purpose: Enforces hard-cut fence rename to contract-spec across specs cases.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

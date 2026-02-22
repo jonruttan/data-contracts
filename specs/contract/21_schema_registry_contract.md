@@ -36,9 +36,9 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   `assert.check`, `assert.export`, `ops.job`.
 - legacy service profile tokens are hard-fail schema errors in v2:
   `text.file`, `api.http`, `cli.run`, `docs.generate`.
-- `services.actions[].imports` MUST accept canonical list[mapping] rows and
-  compact list[string] aliases, normalized to canonical mapping rows before
-  runtime evaluation.
+- `services.actions[].imports` MUST accept compact list[string] aliases
+  (preferred) and canonical list[mapping] rows, normalized to canonical
+  mapping rows before runtime evaluation.
 - Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
 - Effective declared service import names MUST be unique per service entry and
@@ -49,9 +49,9 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - Any external locator consumed by service config MUST be declared in
   `artifacts[]` and referenced by `*_artifact_id` (or
   `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
-- `contracts[].bindings` supports canonical list rows (`contracts[].bindings[]`)
-  and additive mapping form (`contracts[].bindings.defaults` +
-  `contracts[].bindings.rows[]`), normalized to effective rows.
+- `contracts[].bindings` supports additive mapping form (preferred)
+  (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`) and direct
+  list rows (`contracts[].bindings[]`), normalized to effective rows.
 - Mixed list-form and mapping-form bindings in the same contract are invalid.
 - Effective binding row = shallow merge(defaults, row), with row values
   overriding defaults.

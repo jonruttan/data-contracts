@@ -21,8 +21,7 @@ contracts:
   purpose: Enforces when shape and hook expression list requirements.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

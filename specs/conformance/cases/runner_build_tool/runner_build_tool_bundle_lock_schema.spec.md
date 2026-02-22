@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-008
   title: project bundle lock schema defines canonical multi-bundle fields
-  purpose: Project bundle lock schema must define bundles array, install directories, and source checksums.
+  purpose: Project bundle lock schema must define bundles array, install directories,
+    and source checksums.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

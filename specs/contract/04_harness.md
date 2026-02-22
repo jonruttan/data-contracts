@@ -11,16 +11,17 @@
   `assert.export`, `ops.job`) are invalid as service types.
 - `services.actions[].profile` is a mode token validated per integration type
   (`read.text`, `request.http`, `exec.command`, `generate.docs`, etc.).
-- `services.actions[].imports` supports canonical list mappings
-  (`names` + optional `as`) and compact list string aliases that normalize to
+- `services.actions[].imports` supports compact list string aliases (preferred)
+  and canonical list mappings (`names` + optional `as`) that normalize to
   canonical mapping rows.
 - Mixed string/mapping item kinds in one `services.actions[].imports` list are
   invalid.
 - Alias grammar source for services imports and contract bindings:
   `/specs/schema/registry/v2/aliases.yaml`.
 - Contract-scoped `contracts[].bindings` connects contracts to services and artifact channels.
-  It supports canonical `contracts[].bindings[]` rows and additive compaction form
-  `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`.
+  It supports additive compaction form (preferred)
+  `contracts[].bindings.defaults` + `contracts[].bindings.rows[]` and
+  direct `contracts[].bindings[]` rows.
 - Clause/predicate short import rows (`- pipe_identity`) resolve their service
   id from `contracts[].bindings.defaults.service`; there is no implicit
   single-service fallback.

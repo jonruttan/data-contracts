@@ -6,8 +6,16 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-TEXT-001', 'as': 'lib_policy_text', 'symbols': ['policy.text.contains_all', 'policy.text.contains_none', 'policy.text.contains_pair']}]}"
-    - "{'exports': [{'as': 'policy.text.contains_all', 'from': 'assert.function', 'path': '/__export__policy.text.contains_all', 'params': ['text', 'required_tokens'], 'required': True}, {'as': 'policy.text.contains_none', 'from': 'assert.function', 'path': '/__export__policy.text.contains_none', 'params': ['text', 'forbidden_tokens'], 'required': True}, {'as': 'policy.text.contains_pair', 'from': 'assert.function', 'path': '/__export__policy.text.contains_pair', 'params': ['text', 'token_a', 'token_b'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-TEXT-001',
+      'as': 'lib_policy_text', 'symbols': ['policy.text.contains_all', 'policy.text.contains_none',
+      'policy.text.contains_pair']}]}"
+    - "{'exports': [{'as': 'policy.text.contains_all', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_all', 'params': ['text', 'required_tokens'],
+      'required': True}, {'as': 'policy.text.contains_none', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_none', 'params': ['text', 'forbidden_tokens'],
+      'required': True}, {'as': 'policy.text.contains_pair', 'from': 'assert.function',
+      'path': '/__export__policy.text.contains_pair', 'params': ['text', 'token_a',
+      'token_b'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -66,8 +74,7 @@ contracts:
   title: text policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

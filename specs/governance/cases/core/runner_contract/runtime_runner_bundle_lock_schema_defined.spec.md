@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-002
   title: project bundle lock schema is indexed
-  purpose: Ensures schema index includes project bundle lock schema for multi-bundle installs.
+  purpose: Ensures schema index includes project bundle lock schema for multi-bundle
+    installs.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

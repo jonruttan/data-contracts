@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-BTOOL-001
   title: runner build tool contract document is defined
-  purpose: Ensures tool-agnostic build tool contract document is present in the portable contract index.
+  purpose: Ensures tool-agnostic build tool contract document is present in the portable
+    contract index.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

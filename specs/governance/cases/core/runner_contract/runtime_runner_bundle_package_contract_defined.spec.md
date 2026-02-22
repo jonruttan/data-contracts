@@ -21,11 +21,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-001
   title: runner bundle package management contract is defined
-  purpose: Ensures bundle package management contract describes release-asset and checksum requirements.
+  purpose: Ensures bundle package management contract describes release-asset and
+    checksum requirements.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -65,11 +65,11 @@ contracts:
         - dc-runner-rust-specs
 - id: DCGOV-RUNTIME-BUNDLE-003
   title: runner build tool schema declares bundle sync tasks
-  purpose: Ensures runner build tool schema uses bundle-sync task ids and does not include legacy spec-sync task ids.
+  purpose: Ensures runner build tool schema uses bundle-sync task ids and does not
+    include legacy spec-sync task ids.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

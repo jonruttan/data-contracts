@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-009
   title: implementation overlay schema defines patch overlay fields
-  purpose: Implementation overlay schema must define add/replace/delete patch surfaces and output bundle metadata.
+  purpose: Implementation overlay schema must define add/replace/delete patch surfaces
+    and output bundle metadata.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

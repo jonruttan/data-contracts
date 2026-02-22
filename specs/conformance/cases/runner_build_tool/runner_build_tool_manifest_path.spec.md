@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-005
   title: runner build tool contract declares manifest path requirement
-  purpose: Build tool command contract must require each runner repository to publish a task map manifest path.
+  purpose: Build tool command contract must require each runner repository to publish
+    a task map manifest path.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

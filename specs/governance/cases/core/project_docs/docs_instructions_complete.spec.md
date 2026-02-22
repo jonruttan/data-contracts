@@ -8,7 +8,11 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml'}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.instructions_complete'}}, 'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
+    - "{'root': '.', 'docs_quality': {'manifest': 'docs/book/reference_manifest.yaml'},
+      'check': {'profile': 'governance.scan', 'config': {'check': 'docs.instructions_complete'}},
+      'use': [{'ref': '/specs/libraries/policy/policy_assertions.spec.md', 'as': 'lib_policy_core_spec',
+      'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
+      'policy.assert.scan_pass']}]}"
 services:
   actions:
   - id: svc.root_docs_quality_manifest_docs_book_reference_manifest_yaml_check_profile_governance_scan_config_check_docs_instructions_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
@@ -18,11 +22,11 @@ services:
 contracts:
 - id: DCGOV-DOCS-QUAL-005
   title: instruction pages contain required operational sections
-  purpose: Ensures docs metadata required sections are present in canonical chapter content.
+  purpose: Ensures docs metadata required sections are present in canonical chapter
+    content.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1
@@ -49,7 +53,6 @@ contracts:
           - lit: {}
         - docs.instructions_complete
       imports:
-      - from: artifact
-        names:
+      - artifact:
         - summary_json
 ```

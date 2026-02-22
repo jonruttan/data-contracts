@@ -6,8 +6,19 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-GOV-CATALOG-001', 'as': 'lib_policy_gov_catalog', 'symbols': ['policy.catalog.duplicate_ids_zero', 'policy.catalog.unmapped_checks_zero', 'policy.catalog.multi_tier_collisions_zero', 'policy.catalog.check_field_presence_zero']}]}"
-    - "{'exports': [{'as': 'policy.catalog.duplicate_ids_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.duplicate_ids_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.unmapped_checks_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.unmapped_checks_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.multi_tier_collisions_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.multi_tier_collisions_zero', 'params': ['subject'], 'required': True}, {'as': 'policy.catalog.check_field_presence_zero', 'from': 'assert.function', 'path': '/__export__policy.catalog.check_field_presence_zero', 'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-GOV-CATALOG-001',
+      'as': 'lib_policy_gov_catalog', 'symbols': ['policy.catalog.duplicate_ids_zero',
+      'policy.catalog.unmapped_checks_zero', 'policy.catalog.multi_tier_collisions_zero',
+      'policy.catalog.check_field_presence_zero']}]}"
+    - "{'exports': [{'as': 'policy.catalog.duplicate_ids_zero', 'from': 'assert.function',
+      'path': '/__export__policy.catalog.duplicate_ids_zero', 'params': ['subject'],
+      'required': True}, {'as': 'policy.catalog.unmapped_checks_zero', 'from': 'assert.function',
+      'path': '/__export__policy.catalog.unmapped_checks_zero', 'params': ['subject'],
+      'required': True}, {'as': 'policy.catalog.multi_tier_collisions_zero', 'from':
+      'assert.function', 'path': '/__export__policy.catalog.multi_tier_collisions_zero',
+      'params': ['subject'], 'required': True}, {'as': 'policy.catalog.check_field_presence_zero',
+      'from': 'assert.function', 'path': '/__export__policy.catalog.check_field_presence_zero',
+      'params': ['subject'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -62,8 +73,7 @@ contracts:
   title: governance catalog policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

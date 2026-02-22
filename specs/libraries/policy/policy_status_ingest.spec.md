@@ -6,8 +6,18 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-INGEST-001', 'as': 'lib_policy_ingest', 'symbols': ['policy.ingest.matrix_has_rows', 'policy.ingest.required_lane_policy_effect_valid', 'policy.ingest.compat_stale_missing_count_within_limit', 'policy.ingest.log_entries_correlate_matrix_rows']}]}"
-    - "{'exports': [{'as': 'policy.ingest.matrix_has_rows', 'from': 'assert.function', 'path': '/__export__policy.ingest.matrix_has_rows', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.required_lane_policy_effect_valid', 'from': 'assert.function', 'path': '/__export__policy.ingest.required_lane_policy_effect_valid', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.compat_stale_missing_count_within_limit', 'from': 'assert.function', 'path': '/__export__policy.ingest.compat_stale_missing_count_within_limit', 'params': ['subject'], 'required': True}, {'as': 'policy.ingest.log_entries_correlate_matrix_rows', 'from': 'assert.function', 'path': '/__export__policy.ingest.log_entries_correlate_matrix_rows', 'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-INGEST-001',
+      'as': 'lib_policy_ingest', 'symbols': ['policy.ingest.matrix_has_rows', 'policy.ingest.required_lane_policy_effect_valid',
+      'policy.ingest.compat_stale_missing_count_within_limit', 'policy.ingest.log_entries_correlate_matrix_rows']}]}"
+    - "{'exports': [{'as': 'policy.ingest.matrix_has_rows', 'from': 'assert.function',
+      'path': '/__export__policy.ingest.matrix_has_rows', 'params': ['subject'], 'required':
+      True}, {'as': 'policy.ingest.required_lane_policy_effect_valid', 'from': 'assert.function',
+      'path': '/__export__policy.ingest.required_lane_policy_effect_valid', 'params':
+      ['subject'], 'required': True}, {'as': 'policy.ingest.compat_stale_missing_count_within_limit',
+      'from': 'assert.function', 'path': '/__export__policy.ingest.compat_stale_missing_count_within_limit',
+      'params': ['subject'], 'required': True}, {'as': 'policy.ingest.log_entries_correlate_matrix_rows',
+      'from': 'assert.function', 'path': '/__export__policy.ingest.log_entries_correlate_matrix_rows',
+      'params': ['subject'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -79,8 +89,7 @@ contracts:
   title: status ingest policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

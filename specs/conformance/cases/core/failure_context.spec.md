@@ -20,7 +20,8 @@ services:
 contracts:
 - id: DCCONF-ERR-001
   title: failing assertion includes context tokens in message
-  purpose: Guarantees failure messages carry deterministic context tokens for debugging and parity.
+  purpose: Guarantees failure messages carry deterministic context tokens for debugging
+    and parity.
   expect:
     portable:
       status: fail
@@ -32,8 +33,7 @@ contracts:
       - op=evaluate
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

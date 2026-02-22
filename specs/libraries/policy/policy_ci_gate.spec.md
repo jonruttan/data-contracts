@@ -6,8 +6,16 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-CI-001', 'as': 'lib_policy_ci', 'symbols': ['policy.ci.required_profiles_pass', 'policy.ci.optional_profile_report_only', 'policy.ci.artifacts_present']}]}"
-    - "{'exports': [{'as': 'policy.ci.required_profiles_pass', 'from': 'assert.function', 'path': '/__export__policy.ci.required_profiles_pass', 'params': ['subject'], 'required': True}, {'as': 'policy.ci.optional_profile_report_only', 'from': 'assert.function', 'path': '/__export__policy.ci.optional_profile_report_only', 'params': ['subject'], 'required': True}, {'as': 'policy.ci.artifacts_present', 'from': 'assert.function', 'path': '/__export__policy.ci.artifacts_present', 'params': ['subject'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-CI-001',
+      'as': 'lib_policy_ci', 'symbols': ['policy.ci.required_profiles_pass', 'policy.ci.optional_profile_report_only',
+      'policy.ci.artifacts_present']}]}"
+    - "{'exports': [{'as': 'policy.ci.required_profiles_pass', 'from': 'assert.function',
+      'path': '/__export__policy.ci.required_profiles_pass', 'params': ['subject'],
+      'required': True}, {'as': 'policy.ci.optional_profile_report_only', 'from':
+      'assert.function', 'path': '/__export__policy.ci.optional_profile_report_only',
+      'params': ['subject'], 'required': True}, {'as': 'policy.ci.artifacts_present',
+      'from': 'assert.function', 'path': '/__export__policy.ci.artifacts_present',
+      'params': ['subject'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -61,8 +69,7 @@ contracts:
   title: ci gate policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-RCLI-007
   title: runner cli exposes contract spec format write command
-  purpose: Portable CLI contract requires the write mode for contract-spec key order formatting.
+  purpose: Portable CLI contract requires the write mode for contract-spec key order
+    formatting.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

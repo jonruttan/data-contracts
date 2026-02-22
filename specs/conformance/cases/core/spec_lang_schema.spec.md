@@ -21,8 +21,7 @@ contracts:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -43,14 +42,14 @@ contracts:
         - true
 - id: DCCONF-SCHEMA-STDLIB-004
   title: parsed payload predicates support deterministic error-shape checks
-  purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value checks.
+  purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value
+    checks.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

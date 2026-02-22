@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-010
   title: implementation bundle contract defines build and package command surface
-  purpose: Runner implementation spec bundle contract must expose build-impl, package-impl, and package-check command vocabulary.
+  purpose: Runner implementation spec bundle contract must expose build-impl, package-impl,
+    and package-check command vocabulary.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

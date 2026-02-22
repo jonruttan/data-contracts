@@ -24,14 +24,14 @@ services:
 contracts:
 - id: DCCONF-PROFILE-001
   title: subject profile schema defines canonical envelope fields
-  purpose: Ensures subject profile schema defines JSON-core envelope and deterministic projection constraints.
+  purpose: Ensures subject profile schema defines JSON-core envelope and deterministic
+    projection constraints.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -46,14 +46,14 @@ contracts:
           - deterministic_projection
 - id: DCCONF-PROFILE-002
   title: text.file exposes context_json subject profile envelope
-  purpose: Ensures text.file harness provides context_json target with profile metadata and JSON value payload.
+  purpose: Ensures text.file harness provides context_json target with profile metadata
+    and JSON value payload.
   expect:
     portable:
       status: pass
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - context_json
     predicates:
     - id: assert_1

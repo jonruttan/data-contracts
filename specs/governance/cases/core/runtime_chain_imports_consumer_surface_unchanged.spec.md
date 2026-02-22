@@ -21,8 +21,7 @@ contracts:
   purpose: Ensures consumer bindings continue to use harness.chain.imports semantics.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - summary_json
     predicates:
     - id: assert_1

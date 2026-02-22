@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-RCLI-005
   title: runner cli supports optional capability negotiation
-  purpose: Portable CLI contract allows optional capability flags such as structured output mode.
+  purpose: Portable CLI contract allows optional capability flags such as structured
+    output mode.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

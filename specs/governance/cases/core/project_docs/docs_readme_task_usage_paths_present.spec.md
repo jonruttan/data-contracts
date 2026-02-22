@@ -8,7 +8,11 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'readme_usage_paths': {'path': '/README.md', 'required_tokens': ['How Users Use This Project', 'Author a spec change', 'Validate docs and contract coherence', 'Read compatibility and status telemetry', 'Debug governance or documentation drift']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'docs.readme_task_usage_paths_present'}}}"
+    - "{'root': '.', 'readme_usage_paths': {'path': '/README.md', 'required_tokens':
+      ['How Users Use This Project', 'Author a spec change', 'Validate docs and contract
+      coherence', 'Read compatibility and status telemetry', 'Debug governance or
+      documentation drift']}, 'check': {'profile': 'governance.scan', 'config': {'check':
+      'docs.readme_task_usage_paths_present'}}}"
 services:
   actions:
   - id: svc.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present.default.1
@@ -21,8 +25,7 @@ contracts:
   purpose: Ensures README is user-oriented and includes concrete task navigation.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

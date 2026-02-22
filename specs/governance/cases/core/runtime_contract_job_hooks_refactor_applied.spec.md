@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-JOB-HOOKS-001
   title: rust contract.job specs adopt fail and complete lifecycle hooks
-  purpose: Ensures Rust job contract-spec cases include when fail and complete dispatches with matching hook job metadata.
+  purpose: Ensures Rust job contract-spec cases include when fail and complete dispatches
+    with matching hook job metadata.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

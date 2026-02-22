@@ -21,8 +21,7 @@ contracts:
   purpose: Ensures rust required lane certification passes and remains blocking.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

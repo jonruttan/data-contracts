@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-BTOOL-002
   title: runner build tool contract defines required bundle sync tasks
-  purpose: Portable build tool contract must define bundle-sync and bundle-sync-check required tasks.
+  purpose: Portable build tool contract must define bundle-sync and bundle-sync-check
+    required tasks.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

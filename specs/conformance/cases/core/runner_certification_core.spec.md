@@ -19,11 +19,11 @@ services:
 contracts:
 - id: DCCONF-RCERT-001
   title: runner execution certificate v2 schema is declared
-  purpose: Ensures the v2 runner execution certificate schema is present with core sections.
+  purpose: Ensures the v2 runner execution certificate schema is present with core
+    sections.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1
@@ -43,8 +43,7 @@ contracts:
   purpose: Ensures v2 schema defines deterministic intent and payload proof fields.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

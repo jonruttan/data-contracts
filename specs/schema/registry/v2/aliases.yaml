@@ -9,6 +9,7 @@ alias_registry:
     effective_required: key may be inherited but must be present after deterministic merge.
   surfaces:
   - path: services.actions[].imports
+    preferred_shape: list[string]
     canonical_shape: list[mapping]
     canonical_row:
       required:
@@ -24,6 +25,10 @@ alias_registry:
     validation:
     - names must exist for resolved services.actions[].type/profile in service catalog
   - path: contracts[].clauses.imports
+    preferred_shapes:
+    - bare string
+    - mapping with key `artifact`
+    - mapping with key `service`
     canonical_shape: list[mapping]
     canonical_row:
       required:
@@ -54,6 +59,10 @@ alias_registry:
     - resolved service must exist in services.actions[].id
     - service import names must exist for resolved services.actions[].type/profile in service catalog
   - path: contracts[].clauses.predicates[].imports
+    preferred_shapes:
+    - bare string
+    - mapping with key `artifact`
+    - mapping with key `service`
     canonical_shape: list[mapping]
     canonical_row:
       required:
@@ -84,6 +93,7 @@ alias_registry:
     - resolved service must exist in services.actions[].id
     - service import names must exist for resolved services.actions[].type/profile in service catalog
   - path: contracts[].bindings
+    preferred_shape: mapping form
     canonical_shapes:
     - list form: contracts[].bindings[]
     - mapping form: contracts[].bindings.defaults + contracts[].bindings.rows[]

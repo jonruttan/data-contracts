@@ -8,7 +8,10 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'root': '.', 'contract_language': {'files': ['/specs/contract/10_docs_quality.md', '/specs/contract/12_runner_interface.md', '/specs/contract/25_compatibility_matrix.md'], 'forbidden_tokens': ['implementation-agnostic', 'required lane']}, 'check': {'profile': 'governance.scan', 'config': {'check': 'runtime.contracts_no_rust_primary_language'}}}"
+    - "{'root': '.', 'contract_language': {'files': ['/specs/contract/10_docs_quality.md',
+      '/specs/contract/12_runner_interface.md', '/specs/contract/25_compatibility_matrix.md'],
+      'forbidden_tokens': ['implementation-agnostic', 'required lane']}, 'check':
+      {'profile': 'governance.scan', 'config': {'check': 'runtime.contracts_no_rust_primary_language'}}}"
 services:
   actions:
   - id: svc.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language.default.1
@@ -21,8 +24,7 @@ contracts:
   purpose: Ensures active contracts remain implementation-agnostic.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

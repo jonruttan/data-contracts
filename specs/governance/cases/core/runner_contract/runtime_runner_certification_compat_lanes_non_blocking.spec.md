@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-CERT-005
   title: compatibility lanes remain non-blocking in certification
-  purpose: Ensures compatibility lanes are classified and emitted as non-blocking in certification artifacts.
+  purpose: Ensures compatibility lanes are classified and emitted as non-blocking
+    in certification artifacts.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - violation_count
     predicates:
     - id: assert_1

@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-004
   title: canonical bundle librarian repository is documented
-  purpose: Ensures canonical bundle source points to data-contracts-bundles and not local specs/bundles manifests.
+  purpose: Ensures canonical bundle source points to data-contracts-bundles and not
+    local specs/bundles manifests.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

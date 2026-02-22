@@ -21,8 +21,7 @@ contracts:
   purpose: Portable CLI contract requires help surface.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

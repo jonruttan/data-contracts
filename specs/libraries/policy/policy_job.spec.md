@@ -6,8 +6,16 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-JOB-001', 'as': 'lib_policy_job', 'symbols': ['policy.job.dispatch_ok', 'policy.job.written_path_contains', 'policy.job.hooks_present']}]}"
-    - "{'exports': [{'as': 'policy.job.dispatch_ok', 'from': 'assert.function', 'path': '/__export__policy.job.dispatch_ok', 'params': ['summary_json'], 'required': True}, {'as': 'policy.job.written_path_contains', 'from': 'assert.function', 'path': '/__export__policy.job.written_path_contains', 'params': ['summary_json', 'expected_path'], 'required': True}, {'as': 'policy.job.hooks_present', 'from': 'assert.function', 'path': '/__export__policy.job.hooks_present', 'params': ['job_map'], 'required': True}]}"
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-JOB-001',
+      'as': 'lib_policy_job', 'symbols': ['policy.job.dispatch_ok', 'policy.job.written_path_contains',
+      'policy.job.hooks_present']}]}"
+    - "{'exports': [{'as': 'policy.job.dispatch_ok', 'from': 'assert.function', 'path':
+      '/__export__policy.job.dispatch_ok', 'params': ['summary_json'], 'required':
+      True}, {'as': 'policy.job.written_path_contains', 'from': 'assert.function',
+      'path': '/__export__policy.job.written_path_contains', 'params': ['summary_json',
+      'expected_path'], 'required': True}, {'as': 'policy.job.hooks_present', 'from':
+      'assert.function', 'path': '/__export__policy.job.hooks_present', 'params':
+      ['job_map'], 'required': True}]}"
 services:
   defaults:
     profile: default
@@ -57,8 +65,7 @@ contracts:
   title: job policy library smoke
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

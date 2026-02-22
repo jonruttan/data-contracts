@@ -6,9 +6,44 @@ harness:
   profile: check
   config:
     legacy_contract_harnesses:
-    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE', 'as': 'lib_non_decrease', 'symbols': ['policy.metric_non_decrease']}, {'ref': '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE', 'as': 'lib_non_increase', 'symbols': ['policy.metric_non_increase']}]}"
-    - '{''exports'': [{''as'': ''policy.metric_non_decrease'', ''from'': ''assert.function'', ''path'': ''/__export__policy.metric_non_decrease'', ''params'': [''subject'', ''field'', ''baseline_field'', ''epsilon''], ''required'': True, ''docs'': [{''id'': ''policy.metric_non_decrease.doc.1'', ''summary'': ''Contract export for `policy.metric_non_decrease`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: "<subject>"\n  field: "<field>"\n  baseline_field: "<baseline_field>"\n  epsilon: "<epsilon>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: field\n  type: any\n  required: true\n  description: Input parameter `field`.\n- name: baseline_field\n  type: any\n  required: true\n  description: Input parameter `baseline_field`.\n- name: epsilon\n  type: any\n  required: true\n  description: Input parameter `epsilon`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
-    - '{''exports'': [{''as'': ''policy.metric_non_increase'', ''from'': ''assert.function'', ''path'': ''/__export__policy.metric_non_increase'', ''params'': [''subject'', ''field'', ''baseline_field'', ''epsilon''], ''required'': True, ''docs'': [{''id'': ''policy.metric_non_increase.doc.1'', ''summary'': ''Contract export for `policy.metric_non_increase`.'', ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated to description:\n- examples[]: title: Basic usage\ninput:\n  subject: "<subject>"\n  field: "<field>"\n  baseline_field: "<baseline_field>"\n  epsilon: "<epsilon>"\nexpected: "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type: any\n  required: true\n  description: Input parameter `subject`.\n- name: field\n  type: any\n  required: true\n  description: Input parameter `field`.\n- name: baseline_field\n  type: any\n  required: true\n  description: Input parameter `baseline_field`.\n- name: epsilon\n  type: any\n  required: true\n  description: Input parameter `epsilon`.\n- returns: type: any\ndescription: Result payload for this symbol.\ n- errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - "{'check': {'profile': 'text.file', 'config': {}}, 'use': [{'ref': '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE',
+      'as': 'lib_non_decrease', 'symbols': ['policy.metric_non_decrease']}, {'ref':
+      '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE', 'as': 'lib_non_increase',
+      'symbols': ['policy.metric_non_increase']}]}"
+    - '{''exports'': [{''as'': ''policy.metric_non_decrease'', ''from'': ''assert.function'',
+      ''path'': ''/__export__policy.metric_non_decrease'', ''params'': [''subject'',
+      ''field'', ''baseline_field'', ''epsilon''], ''required'': True, ''docs'': [{''id'':
+      ''policy.metric_non_decrease.doc.1'', ''summary'': ''Contract export for `policy.metric_non_decrease`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  subject: "<subject>"\n  field:
+      "<field>"\n  baseline_field: "<baseline_field>"\n  epsilon: "<epsilon>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type:
+      any\n  required: true\n  description: Input parameter `subject`.\n- name: field\n  type:
+      any\n  required: true\n  description: Input parameter `field`.\n- name: baseline_field\n  type:
+      any\n  required: true\n  description: Input parameter `baseline_field`.\n- name:
+      epsilon\n  type: any\n  required: true\n  description: Input parameter `epsilon`.\n-
+      returns: type: any\ndescription: Result payload for this symbol.\ n- errors:
+      - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape
+      requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust:
+      true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
+    - '{''exports'': [{''as'': ''policy.metric_non_increase'', ''from'': ''assert.function'',
+      ''path'': ''/__export__policy.metric_non_increase'', ''params'': [''subject'',
+      ''field'', ''baseline_field'', ''epsilon''], ''required'': True, ''docs'': [{''id'':
+      ''policy.metric_non_increase.doc.1'', ''summary'': ''Contract export for `policy.metric_non_increase`.'',
+      ''audience'': ''spec-authors'', ''status'': ''active'', ''description'': ''Auto-generated
+      metadata stub. Replace with authored reference text.\n\nLegacy doc fields migrated
+      to description:\n- examples[]: title: Basic usage\ninput:\n  subject: "<subject>"\n  field:
+      "<field>"\n  baseline_field: "<baseline_field>"\n  epsilon: "<epsilon>"\nexpected:
+      "<result>"\nnotes: Replace with a concrete scenario.\n- params: - name: subject\n  type:
+      any\n  required: true\n  description: Input parameter `subject`.\n- name: field\n  type:
+      any\n  required: true\n  description: Input parameter `field`.\n- name: baseline_field\n  type:
+      any\n  required: true\n  description: Input parameter `baseline_field`.\n- name:
+      epsilon\n  type: any\n  required: true\n  description: Input parameter `epsilon`.\n-
+      returns: type: any\ndescription: Result payload for this symbol.\ n- errors:
+      - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract shape
+      requirements.\n  category: schema\n- portability: python: true\nphp: true\nrust:
+      true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'': ''v1''}]}]}'
 services:
   defaults:
     profile: default
@@ -26,7 +61,8 @@ contracts:
   - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -57,7 +93,8 @@ contracts:
   - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
     audience: spec-authors
     status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference text.
+    description: Auto-generated root doc metadata stub. Replace with authored reference
+      text.
     since: v1
     tags:
     - contract.export
@@ -86,8 +123,7 @@ contracts:
   title: policy metric helpers execute as colocated executable checks
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

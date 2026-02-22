@@ -39,7 +39,8 @@ services:
 contracts:
 - id: DCCONF-CLI-001
   title: conformance fixture sets explicit cli.run harness.entrypoint
-  purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
+  purpose: Defines portable behavior for explicit cli.run entrypoint when capability
+    is present.
   expect:
     portable:
       status: skip
@@ -63,8 +64,7 @@ contracts:
       category:
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - stdout
     predicates:
     - id: assert_1

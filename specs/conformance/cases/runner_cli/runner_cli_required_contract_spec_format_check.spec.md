@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCCONF-RCLI-006
   title: runner cli exposes contract spec format check command
-  purpose: Portable CLI contract requires the check mode for contract-spec key order formatting.
+  purpose: Portable CLI contract requires the check mode for contract-spec key order
+    formatting.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - text
     predicates:
     - id: assert_1

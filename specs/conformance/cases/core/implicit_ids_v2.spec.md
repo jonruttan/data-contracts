@@ -95,11 +95,13 @@ contracts:
       status: fail
       category: schema
   bindings:
-  - id: bind.invalid.synthetic
-    service: svc.default.4
-    import: pipe_identity
-    outputs:
-    - to: out_json
+    defaults:
+      service: svc.default.4
+      import: pipe_identity
+    rows:
+    - id: bind.invalid.synthetic
+      outputs:
+      - to: out_json
   clauses:
     predicates:
     - id: assert_1

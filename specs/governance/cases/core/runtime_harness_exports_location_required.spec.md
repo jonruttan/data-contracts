@@ -18,11 +18,11 @@ services:
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-001
   title: producer exports are declared at harness.exports
-  purpose: Ensures producer symbol declarations are declared at harness.exports and non-canonical harness.chain.exports is rejected.
+  purpose: Ensures producer symbol declarations are declared at harness.exports and
+    non-canonical harness.chain.exports is rejected.
   clauses:
     imports:
-    - from: artifact
-      names:
+    - artifact:
       - summary_json
     predicates:
     - id: assert_1

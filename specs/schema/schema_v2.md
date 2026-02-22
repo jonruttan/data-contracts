@@ -144,9 +144,9 @@ Each `contracts[]` item:
 - `expect`/`requires`/`when` (optional)
 - `contracts[].bindings` (list|mapping, optional): contract-local service
   binding declarations
-  - list form (canonical): `contracts[].bindings[]` rows
-  - mapping form (additive compaction):
+  - mapping form (preferred compaction):
     `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`
+  - list form: `contracts[].bindings[]` rows
   - defaults keys (optional): `service`, `import`, `mode`, `predicates`
   - row keys: `id`, optional `service`, optional `import`, `inputs`, `outputs`,
     `predicates`, `mode`
@@ -167,9 +167,9 @@ Suite runtime surfaces:
     reference external locations MUST use artifact-id fields (`*_artifact_id`)
     and must not embed direct locators
   - `services.actions[].imports` (list, optional): declarative callable service-import surface
-    - canonical: list of mappings with `names` and optional `as`
-    - compact alias: list of strings (`imports: [pipe_identity, get_json]`)
+    - compact alias (preferred): list of strings (`imports: [pipe_identity, get_json]`)
       expands to one canonical row `{names:[...]}`; compact form does not support aliasing
+    - canonical: list of mappings with `names` and optional `as`
     - per-item short form is supported (`imports: [pipe_identity]`)
     - mixed item kinds (string + mapping) in one `imports` list are invalid
     - canonical alias grammar source:
@@ -297,6 +297,7 @@ Binding defaults semantics:
 
 Clause import compact semantics:
 
+- compact alias rows are preferred authoring style; canonical rows remain valid
 - canonical rows and compact alias rows may coexist in one imports list
 - compact artifact alias requires non-empty list of artifact ids
 - compact service alias requires `id` and non-empty `names`
