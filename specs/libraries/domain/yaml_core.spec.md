@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.export
 harness:
   type: unit.test
   profile: check
@@ -38,61 +36,66 @@ harness:
       portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
       behavior and caveats.'', ''since'': ''v1''}]}]}'
 services:
-- id: svc.exports_as_domain_yaml_parse_get_or_from_assert_function_path_export_domain_yaml_parse_get_or_params_yaml_text_path_segments_fallback_required_true_docs_id_domain_yaml_parse_get_or_doc_1_summary_contract_export_for_domain_yaml_parse_get_or_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_yaml_text_yaml_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_yaml_text_n_type_any_n_required_true_n_description_input_parameter_yaml_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-  type: legacy.exports_as_domain_yaml_parse_get_or_from_assert_function_path_export_domain_yaml_parse_get_or_params_yaml_text_path_segments_fallback_required_true_docs_id_domain_yaml_parse_get_or_doc_1_summary_contract_export_for_domain_yaml_parse_get_or_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_yaml_text_yaml_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_yaml_text_n_type_any_n_required_true_n_description_input_parameter_yaml_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  mode: default
-- id: svc.exports_as_domain_yaml_stringify_from_assert_function_path_export_domain_yaml_stringify_params_value_required_true_docs_id_domain_yaml_stringify_doc_1_summary_contract_export_for_domain_yaml_stringify_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-  type: legacy.exports_as_domain_yaml_stringify_from_assert_function_path_export_domain_yaml_stringify_params_value_required_true_docs_id_domain_yaml_stringify_doc_1_summary_contract_export_for_domain_yaml_stringify_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  mode: default
+- type: legacy.exports_as_domain_yaml_parse_get_or_from_assert_function_path_export_domain_yaml_parse_get_or_params_yaml_text_path_segments_fallback_required_true_docs_id_domain_yaml_parse_get_or_doc_1_summary_contract_export_for_domain_yaml_parse_get_or_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_yaml_text_yaml_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_yaml_text_n_type_any_n_required_true_n_description_input_parameter_yaml_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  operations:
+  - id: svc.exports_as_domain_yaml_parse_get_or_from_assert_function_path_export_domain_yaml_parse_get_or_params_yaml_text_path_segments_fallback_required_true_docs_id_domain_yaml_parse_get_or_doc_1_summary_contract_export_for_domain_yaml_parse_get_or_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_yaml_text_yaml_text_n_path_segments_path_segments_n_fallback_fallback_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_yaml_text_n_type_any_n_required_true_n_description_input_parameter_yaml_text_n_name_path_segments_n_type_any_n_required_true_n_description_input_parameter_path_segments_n_name_fallback_n_type_any_n_required_true_n_description_input_parameter_fallback_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    mode: default
+- type: legacy.exports_as_domain_yaml_stringify_from_assert_function_path_export_domain_yaml_stringify_params_value_required_true_docs_id_domain_yaml_stringify_doc_1_summary_contract_export_for_domain_yaml_stringify_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  operations:
+  - id: svc.exports_as_domain_yaml_stringify_from_assert_function_path_export_domain_yaml_stringify_params_value_required_true_docs_id_domain_yaml_stringify_doc_1_summary_contract_export_for_domain_yaml_stringify_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    mode: default
 contracts:
-- id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR
-  docs:
-  - summary: Case `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` for `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference
-      text.
-    since: v1
-    tags:
-    - contract.export
+  defaults:
+    type: contract.export
   clauses:
-    predicates:
-    - id: __export__domain.yaml.parse_get_or
-      assert:
-        ops.fs.yaml.get_or:
-        - ops.fs.yaml.parse:
-          - var: yaml_text
-        - var: path_segments
-        - var: fallback
-  library:
-    id: domain.yaml.core
-    module: domain
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - domain
-- id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
-  docs:
-  - summary: Case `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` for `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference
-      text.
-    since: v1
-    tags:
-    - contract.export
-  clauses:
-    predicates:
-    - id: __export__domain.yaml.stringify
-      assert:
-        ops.fs.yaml.stringify:
-        - var: value
-  library:
-    id: domain.yaml.core
-    module: domain
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - domain
+  - id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR
+    docs:
+    - summary: Case `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` for `contract.export`.
+      audience: spec-authors
+      status: active
+      description: Auto-generated root doc metadata stub. Replace with authored reference
+        text.
+      since: v1
+      tags:
+      - contract.export
+    library:
+      id: domain.yaml.core
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - domain
+    asserts:
+      checks:
+      - id: __export__domain.yaml.parse_get_or
+        assert:
+          ops.fs.yaml.get_or:
+          - ops.fs.yaml.parse:
+            - var: yaml_text
+          - var: path_segments
+          - var: fallback
+  - id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
+    docs:
+    - summary: Case `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` for `contract.export`.
+      audience: spec-authors
+      status: active
+      description: Auto-generated root doc metadata stub. Replace with authored reference
+        text.
+      since: v1
+      tags:
+      - contract.export
+    library:
+      id: domain.yaml.core
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - domain
+    asserts:
+      checks:
+      - id: __export__domain.yaml.stringify
+        assert:
+          ops.fs.yaml.stringify:
+          - var: value
 ```
 

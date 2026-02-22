@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PACK-002
     title: runner contract pack is complete
     purpose: Ensures runner-contract pack includes CLI and status exchange surfaces.
@@ -32,17 +33,17 @@ contracts:
         profile: governance.scan
         config:
           check: packs.runner_contract_pack_complete
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names: [violation_count]
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
 ```

@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-RUNTIME-CORE-001
     title: core script allowlist enforced
     purpose: Ensures canonical script allowlist is declared and stable.
@@ -26,17 +27,17 @@ contracts:
         profile: governance.scan
         config:
           check: runtime.core_script_allowlist_enforced
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names: [violation_count]
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
 ```

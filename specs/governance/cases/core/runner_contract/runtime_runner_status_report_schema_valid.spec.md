@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -13,27 +11,32 @@ harness:
       'generated_at', 'fresh_until', 'command_results', 'artifact_refs']}, 'check':
       {'profile': 'governance.scan', 'config': {'check': 'runtime.runner_status_report_schema_valid'}}}"
 services:
-- id: svc.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid.default.1
-  type: legacy.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid
-  mode: default
-  direction: bidirectional
+- type: legacy.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid
+  operations:
+  - id: svc.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-RUNTIME-STATUS-001
-  title: runner status report schema is defined
-  purpose: Ensures runner status exchange producer payload shape is declared and stable.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
+  - id: DCGOV-RUNTIME-STATUS-001
+    title: runner status report schema is defined
+    purpose: Ensures runner status exchange producer payload shape is declared and
+      stable.
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
 ```
 

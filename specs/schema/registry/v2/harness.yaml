@@ -26,35 +26,53 @@ fields:
     type: list
     required: false
     since: v2
-    description: Optional suite-level service bindings; required when service
+    description: Optional suite-level service type blocks; required when service
       imports or contract bindings are used.
-  services[].config:
-    type: mapping
-    required: false
-    since: v2
-    description: Service runtime configuration. External locators must be routed
-      through artifact ids (`*_artifact_id`/`*_artifact_ids`); direct locator
-      keys are invalid.
-  services[].id:
+  services[].type:
     type: string
     required: true
     since: v2
-  services[].type:
+    description: Service type token resolved by service_contract_catalog_v1.
+  services[].defaults:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional defaults merged into each `services[].operations[]` row.
+  services[].defaults.config:
+    type: mapping
+    required: false
+    since: v2
+    description: Default service runtime configuration. External locators must be
+      routed through artifact ids (`*_artifact_id`/`*_artifact_ids`);
+      direct locator keys are invalid.
+  services[].operations:
+    type: list
+    required: true
+    since: v2
+  services[].operations[].id:
+    type: string
+    required: true
+    since: v2
+    description: Concrete service instance id used by bindings/imports.
+  services[].operations[].mode:
     type: string
     required: false
     since: v2
-    description: Service type resolved by service_contract_catalog_v1.
-  services[].imports:
+  services[].operations[].config:
+    type: mapping
+    required: false
+    since: v2
+  services[].operations[].imports:
     type: list
     required: false
     description: Canonical service callable import rows (`names`, optional `as`).
     since: v2
-  services[].imports[].names:
+  services[].operations[].imports[].names:
     type: list
     required: true
     since: v2
     description: Service import names bound as service_id.import_name.
-  services[].imports[].as:
+  services[].operations[].imports[].as:
     type: mapping
     required: false
     since: v2

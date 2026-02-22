@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PIPE-CATALOG-001
     title: governance catalog pipeline is chained and policy-backed
     purpose: Ensures governance catalog policy checks are composed through harness.chain and validated by reusable policy predicates.
@@ -36,21 +37,21 @@ contracts:
             - policy.catalog.unmapped_checks_zero
             - policy.catalog.multi_tier_collisions_zero
             - policy.catalog.check_field_presence_zero
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names:
             - violation_count
             - context_json
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
         - id: assert_2
           assert:
             - call:

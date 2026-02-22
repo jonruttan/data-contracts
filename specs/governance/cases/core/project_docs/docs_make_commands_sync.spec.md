@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -17,46 +15,50 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-- id: svc.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-  type: legacy.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-  mode: default
-  direction: bidirectional
+- type: legacy.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  operations:
+  - id: svc.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-DOCS-REF-007
-  title: docs use canonical make command entrypoints
-  purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints
-    for verification and gate execution.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
-    - id: assert_2
-      assert:
-      - call:
-        - var: policy.assert.summary_passed
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-      - call:
-        - var: policy.assert.summary_check_id
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-        - docs.make_commands_sync
+  - id: DCGOV-DOCS-REF-007
+    title: docs use canonical make command entrypoints
+    purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints
+      for verification and gate execution.
+    asserts:
       imports:
       - from: artifact
         names:
-        - summary_json
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
+      - id: assert_2
+        assert:
+        - call:
+          - var: policy.assert.summary_passed
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+        - call:
+          - var: policy.assert.summary_check_id
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+          - docs.make_commands_sync
+        imports:
+        - from: artifact
+          names:
+          - summary_json
 ```

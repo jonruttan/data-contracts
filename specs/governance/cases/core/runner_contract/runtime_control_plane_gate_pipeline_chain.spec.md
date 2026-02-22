@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PIPE-GATE-001
     title: control-plane gate pipeline is chained
     purpose: Ensures governance, docs, and ingest gates are chained and enforced through contract checks.
@@ -35,21 +36,21 @@ contracts:
             - policy.ci.required_profiles_pass
             - policy.ci.optional_profile_report_only
             - policy.ci.artifacts_present
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names:
             - violation_count
             - context_json
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
         - id: assert_2
           assert:
             - call:

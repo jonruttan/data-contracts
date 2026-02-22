@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -16,46 +14,50 @@ harness:
       'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
       'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
-- id: svc.root_python_bin_resolver_helper_scripts_lib_python_bin_sh_files_scripts_lib_python_bin_sh_required_tokens_resolve_python_bin_root_dir_venv_bin_python_root_dir_venv_bin_python_python3_forbidden_tokens_check_profile_governance_scan_config_check_runtime_compatibility_python_lane_bin_resolver_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-  type: legacy.root_python_bin_resolver_helper_scripts_lib_python_bin_sh_files_scripts_lib_python_bin_sh_required_tokens_resolve_python_bin_root_dir_venv_bin_python_root_dir_venv_bin_python_python3_forbidden_tokens_check_profile_governance_scan_config_check_runtime_compatibility_python_lane_bin_resolver_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-  mode: default
-  direction: bidirectional
+- type: legacy.root_python_bin_resolver_helper_scripts_lib_python_bin_sh_files_scripts_lib_python_bin_sh_required_tokens_resolve_python_bin_root_dir_venv_bin_python_root_dir_venv_bin_python_python3_forbidden_tokens_check_profile_governance_scan_config_check_runtime_compatibility_python_lane_bin_resolver_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  operations:
+  - id: svc.root_python_bin_resolver_helper_scripts_lib_python_bin_sh_files_scripts_lib_python_bin_sh_required_tokens_resolve_python_bin_root_dir_venv_bin_python_root_dir_venv_bin_python_python3_forbidden_tokens_check_profile_governance_scan_config_check_runtime_compatibility_python_lane_bin_resolver_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-RUNTIME-CONFIG-002
-  title: python-invoking adapter scripts use shared python-bin resolver helper
-  purpose: Keeps shared Python resolver helper contract stable for remaining tooling
-    paths.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
-    - id: assert_2
-      assert:
-      - call:
-        - var: policy.assert.summary_passed
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-      - call:
-        - var: policy.assert.summary_check_id
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-        - runtime.compatibility_python_lane_bin_resolver_sync
+  - id: DCGOV-RUNTIME-CONFIG-002
+    title: python-invoking adapter scripts use shared python-bin resolver helper
+    purpose: Keeps shared Python resolver helper contract stable for remaining tooling
+      paths.
+    asserts:
       imports:
       - from: artifact
         names:
-        - summary_json
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
+      - id: assert_2
+        assert:
+        - call:
+          - var: policy.assert.summary_passed
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+        - call:
+          - var: policy.assert.summary_check_id
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+          - runtime.compatibility_python_lane_bin_resolver_sync
+        imports:
+        - from: artifact
+          names:
+          - summary_json
 ```

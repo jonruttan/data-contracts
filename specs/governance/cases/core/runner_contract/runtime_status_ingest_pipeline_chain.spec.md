@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PIPE-INGEST-001
     title: status ingest pipeline is chained and contract-verified
     purpose: Ensures ingest artifact checks are linked in chain order and validated with status-ingest policy library exports.
@@ -36,21 +37,21 @@ contracts:
             - policy.ingest.required_lane_policy_effect_valid
             - policy.ingest.compat_stale_missing_count_within_limit
             - policy.ingest.log_entries_correlate_matrix_rows
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names:
             - violation_count
             - context_json
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
         - id: assert_2
           assert:
             - call:

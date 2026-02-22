@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -14,26 +12,30 @@ harness:
       documentation drift']}, 'check': {'profile': 'governance.scan', 'config': {'check':
       'docs.readme_task_usage_paths_present'}}}"
 services:
-- id: svc.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present.default.1
-  type: legacy.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present
-  mode: default
-  direction: bidirectional
+- type: legacy.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present
+  operations:
+  - id: svc.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-DOCS-REF-025
-  title: readme includes task-based usage paths
-  purpose: Ensures README is user-oriented and includes concrete task navigation.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
+  - id: DCGOV-DOCS-REF-025
+    title: readme includes task-based usage paths
+    purpose: Ensures README is user-oriented and includes concrete task navigation.
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
 ```

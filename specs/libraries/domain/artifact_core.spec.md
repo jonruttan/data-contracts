@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.export
 harness:
   type: unit.test
   profile: check
@@ -39,61 +37,67 @@ harness:
       true\nrust: true\nnotes: Confirm per-runtime behavior and caveats.'', ''since'':
       ''v1''}]}]}'
 services:
-- id: svc.exports_as_domain_artifact_write_yaml_from_assert_function_path_export_domain_artifact_write_yaml_params_path_value_required_true_docs_id_domain_artifact_write_yaml_doc_1_summary_contract_export_for_domain_artifact_write_yaml_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-  type: legacy.exports_as_domain_artifact_write_yaml_from_assert_function_path_export_domain_artifact_write_yaml_params_path_value_required_true_docs_id_domain_artifact_write_yaml_doc_1_summary_contract_export_for_domain_artifact_write_yaml_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  mode: default
-- id: svc.exports_as_domain_artifact_append_text_from_assert_function_path_export_domain_artifact_append_text_params_path_content_required_true_docs_id_domain_artifact_append_text_doc_1_summary_contract_export_for_domain_artifact_append_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_content_content_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_content_n_type_any_n_required_true_n_description_input_parameter_content_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-  type: legacy.exports_as_domain_artifact_append_text_from_assert_function_path_export_domain_artifact_append_text_params_path_content_required_true_docs_id_domain_artifact_append_text_doc_1_summary_contract_export_for_domain_artifact_append_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_content_content_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_content_n_type_any_n_required_true_n_description_input_parameter_content_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  mode: default
+- type: legacy.exports_as_domain_artifact_write_yaml_from_assert_function_path_export_domain_artifact_write_yaml_params_path_value_required_true_docs_id_domain_artifact_write_yaml_doc_1_summary_contract_export_for_domain_artifact_write_yaml_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  operations:
+  - id: svc.exports_as_domain_artifact_write_yaml_from_assert_function_path_export_domain_artifact_write_yaml_params_path_value_required_true_docs_id_domain_artifact_write_yaml_doc_1_summary_contract_export_for_domain_artifact_write_yaml_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_value_value_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_value_n_type_any_n_required_true_n_description_input_parameter_value_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    mode: default
+- type: legacy.exports_as_domain_artifact_append_text_from_assert_function_path_export_domain_artifact_append_text_params_path_content_required_true_docs_id_domain_artifact_append_text_doc_1_summary_contract_export_for_domain_artifact_append_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_content_content_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_content_n_type_any_n_required_true_n_description_input_parameter_content_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  operations:
+  - id: svc.exports_as_domain_artifact_append_text_from_assert_function_path_export_domain_artifact_append_text_params_path_content_required_true_docs_id_domain_artifact_append_text_doc_1_summary_contract_export_for_domain_artifact_append_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_n_content_content_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_name_content_n_type_any_n_required_true_n_description_input_parameter_content_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    mode: default
 contracts:
-- id: LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML
-  docs:
-  - summary: Case `LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML` for `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference
-      text.
-    since: v1
-    tags:
-    - contract.export
+  defaults:
+    type: contract.export
   clauses:
-    predicates:
-    - id: __export__domain.artifact.write_yaml
-      assert:
-        ops.fs.file.set:
-        - var: path
-        - ops.fs.yaml.stringify:
-          - var: value
-  library:
-    id: domain.artifact.core
-    module: domain
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - domain
-- id: LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT
-  docs:
-  - summary: Case `LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT` for `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference
-      text.
-    since: v1
-    tags:
-    - contract.export
-  clauses:
-    predicates:
-    - id: __export__domain.artifact.append_text
-      assert:
-        ops.fs.file.append:
-        - var: path
-        - var: content
-  library:
-    id: domain.artifact.core
-    module: domain
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - domain
+  - id: LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML
+    docs:
+    - summary: Case `LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML` for `contract.export`.
+      audience: spec-authors
+      status: active
+      description: Auto-generated root doc metadata stub. Replace with authored reference
+        text.
+      since: v1
+      tags:
+      - contract.export
+    library:
+      id: domain.artifact.core
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - domain
+    asserts:
+      checks:
+      - id: __export__domain.artifact.write_yaml
+        assert:
+          ops.fs.file.set:
+          - var: path
+          - ops.fs.yaml.stringify:
+            - var: value
+  - id: LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT
+    docs:
+    - summary: Case `LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT` for
+        `contract.export`.
+      audience: spec-authors
+      status: active
+      description: Auto-generated root doc metadata stub. Replace with authored reference
+        text.
+      since: v1
+      tags:
+      - contract.export
+    library:
+      id: domain.artifact.core
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - domain
+    asserts:
+      checks:
+      - id: __export__domain.artifact.append_text
+        assert:
+          ops.fs.file.append:
+          - var: path
+          - var: content
 ```
 

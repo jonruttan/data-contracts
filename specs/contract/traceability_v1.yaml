@@ -1509,7 +1509,7 @@ links:
   - dc-runner-python
   - dc-runner-python
   - specs/governance/cases/core/spec_core/assert_sugar_compile_only_sync.spec.md
-  notes: Sugar ops remain authoring convenience only; runtime uses compiled predicates.
+  notes: Sugar ops remain authoring convenience only; runtime uses compiled checks.
 - rule_id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
   policy_ref: specs/contract/policy_v1.yaml#ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
   contract_refs:
@@ -3066,7 +3066,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - specs/libraries/domain/markdown_core.spec.md
-  notes: Markdown docs assertions should use structured helper predicates over plain
+  notes: Markdown docs assertions should use structured helper checks over plain
     contains checks.
 - rule_id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED
@@ -4041,7 +4041,7 @@ links:
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
-  notes: Clause and predicate imports prefer canonical rowes while keeping canonical rows valid.
+  notes: Clause and check imports prefer canonical rowes while keeping canonical rows valid.
 - rule_id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
   contract_refs:
@@ -4132,7 +4132,7 @@ links:
   unit_test_refs: []
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
-  notes: Clause and predicate bare-string aliases normalize to canonical from=service rows.
+  notes: Clause and check bare-string aliases normalize to canonical from=service rows.
 - rule_id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   contract_refs:

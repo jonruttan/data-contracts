@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -24,46 +22,50 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-- id: svc.root_spec_lang_builtin_sync_required_ops_std_math_mul_std_math_div_std_math_mod_std_math_pow_std_math_abs_std_math_negate_std_math_inc_std_math_dec_std_math_clamp_std_math_round_std_math_floor_std_math_ceil_std_logic_compare_std_logic_between_std_logic_xor_std_collection_slice_std_collection_reverse_std_collection_zip_std_collection_zip_with_std_math_range_std_collection_repeat_std_object_keys_std_object_values_std_object_entries_std_object_merge_std_object_assoc_std_object_dissoc_std_object_pick_std_object_omit_std_object_prop_eq_std_object_where_std_fn_compose_std_fn_pipe_std_fn_identity_std_fn_always_std_string_replace_std_string_pad_left_std_string_pad_right_std_type_is_null_std_type_is_bool_std_type_is_number_std_type_is_string_std_type_is_list_std_type_is_dict_check_profile_governance_scan_config_check_assert_spec_lang_builtin_surface_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-  type: legacy.root_spec_lang_builtin_sync_required_ops_std_math_mul_std_math_div_std_math_mod_std_math_pow_std_math_abs_std_math_negate_std_math_inc_std_math_dec_std_math_clamp_std_math_round_std_math_floor_std_math_ceil_std_logic_compare_std_logic_between_std_logic_xor_std_collection_slice_std_collection_reverse_std_collection_zip_std_collection_zip_with_std_math_range_std_collection_repeat_std_object_keys_std_object_values_std_object_entries_std_object_merge_std_object_assoc_std_object_dissoc_std_object_pick_std_object_omit_std_object_prop_eq_std_object_where_std_fn_compose_std_fn_pipe_std_fn_identity_std_fn_always_std_string_replace_std_string_pad_left_std_string_pad_right_std_type_is_null_std_type_is_bool_std_type_is_number_std_type_is_string_std_type_is_list_std_type_is_dict_check_profile_governance_scan_config_check_assert_spec_lang_builtin_surface_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-  mode: default
-  direction: bidirectional
+- type: legacy.root_spec_lang_builtin_sync_required_ops_std_math_mul_std_math_div_std_math_mod_std_math_pow_std_math_abs_std_math_negate_std_math_inc_std_math_dec_std_math_clamp_std_math_round_std_math_floor_std_math_ceil_std_logic_compare_std_logic_between_std_logic_xor_std_collection_slice_std_collection_reverse_std_collection_zip_std_collection_zip_with_std_math_range_std_collection_repeat_std_object_keys_std_object_values_std_object_entries_std_object_merge_std_object_assoc_std_object_dissoc_std_object_pick_std_object_omit_std_object_prop_eq_std_object_where_std_fn_compose_std_fn_pipe_std_fn_identity_std_fn_always_std_string_replace_std_string_pad_left_std_string_pad_right_std_type_is_null_std_type_is_bool_std_type_is_number_std_type_is_string_std_type_is_list_std_type_is_dict_check_profile_governance_scan_config_check_assert_spec_lang_builtin_surface_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  operations:
+  - id: svc.root_spec_lang_builtin_sync_required_ops_std_math_mul_std_math_div_std_math_mod_std_math_pow_std_math_abs_std_math_negate_std_math_inc_std_math_dec_std_math_clamp_std_math_round_std_math_floor_std_math_ceil_std_logic_compare_std_logic_between_std_logic_xor_std_collection_slice_std_collection_reverse_std_collection_zip_std_collection_zip_with_std_math_range_std_collection_repeat_std_object_keys_std_object_values_std_object_entries_std_object_merge_std_object_assoc_std_object_dissoc_std_object_pick_std_object_omit_std_object_prop_eq_std_object_where_std_fn_compose_std_fn_pipe_std_fn_identity_std_fn_always_std_string_replace_std_string_pad_left_std_string_pad_right_std_type_is_null_std_type_is_bool_std_type_is_number_std_type_is_string_std_type_is_list_std_type_is_dict_check_profile_governance_scan_config_check_assert_spec_lang_builtin_surface_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-ASSERT-SYNC-005
-  title: spec-lang builtin surface remains synced across contract and runners
-  purpose: Ensures builtin operators documented in the spec-lang contract are implemented
-    in both Python and PHP runner evaluators.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
-    - id: assert_2
-      assert:
-      - call:
-        - var: policy.assert.summary_passed
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-      - call:
-        - var: policy.assert.summary_check_id
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-        - assert.spec_lang_builtin_surface_sync
+  - id: DCGOV-ASSERT-SYNC-005
+    title: spec-lang builtin surface remains synced across contract and runners
+    purpose: Ensures builtin operators documented in the spec-lang contract are implemented
+      in both Python and PHP runner evaluators.
+    asserts:
       imports:
       - from: artifact
         names:
-        - summary_json
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
+      - id: assert_2
+        assert:
+        - call:
+          - var: policy.assert.summary_passed
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+        - call:
+          - var: policy.assert.summary_check_id
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+          - assert.spec_lang_builtin_surface_sync
+        imports:
+        - from: artifact
+          names:
+          - summary_json
 ```

@@ -106,11 +106,11 @@ services:
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
   io_transport: artifact_ids_only
-  binding_service_requirement: contracts[].bindings.rows[].service is required;
+  binding_service_requirement: contracts.clauses[].bindings.rows[].service is required;
     no implicit/default service resolution
   required_mappings:
-    inputs: contracts[].bindings.rows[].inputs[].from -> artifacts[].id (direction=input|bidirectional)
-    outputs: contracts[].bindings.rows[].outputs[].to -> artifacts[].id (direction=output|bidirectional)
+    inputs: contracts.clauses[].bindings.rows[].inputs[].from -> artifacts[].id (direction=input|bidirectional)
+    outputs: contracts.clauses[].bindings.rows[].outputs[].to -> artifacts[].id (direction=output|bidirectional)
   service_config_usage: static_only_no_runtime_payload_transport
   bound_symbol_format: service_id.import_name
   binding_import_validation:
@@ -128,21 +128,32 @@ service_locator_contract_v2:
     artifacts ids using `*_artifact_id` fields.
   profile_locator_fields:
     read.text:
-    - services[].config.source_artifact_id
+    - services[].defaults.config.source_artifact_id
+    - services[].operations[].config.source_artifact_id
     request.http:
-    - services[].config.request.artifact_id
-    - services[].config.requests[].artifact_id
-    - services[].config.api_http.auth.oauth.token_artifact_id
-    - services[].config.use[].artifact_id
+    - services[].defaults.config.request.artifact_id
+    - services[].operations[].config.request.artifact_id
+    - services[].defaults.config.requests[].artifact_id
+    - services[].operations[].config.requests[].artifact_id
+    - services[].defaults.config.api_http.auth.oauth.token_artifact_id
+    - services[].operations[].config.api_http.auth.oauth.token_artifact_id
+    - services[].defaults.config.use[].artifact_id
+    - services[].operations[].config.use[].artifact_id
     generate.docs:
-    - services[].config.docs_generate.template_artifact_id
-    - services[].config.docs_generate.output_artifact_id
-    - services[].config.docs_generate.data_sources[].artifact_id
+    - services[].defaults.config.docs_generate.template_artifact_id
+    - services[].operations[].config.docs_generate.template_artifact_id
+    - services[].defaults.config.docs_generate.output_artifact_id
+    - services[].operations[].config.docs_generate.output_artifact_id
+    - services[].defaults.config.docs_generate.data_sources[].artifact_id
+    - services[].operations[].config.docs_generate.data_sources[].artifact_id
   artifact_resolution:
   - every *_artifact_id resolves to artifacts[].id (direction=input|bidirectional)
   - every *_artifact_ids[] entry resolves to artifacts[].id (direction=input|bidirectional)
 import_declaration_shape_v2:
-  services[].imports: list[mapping]
-  services[].imports[].names: list[string]
-  services[].imports[].as: mapping(optional)
+  services[].defaults.imports: list[mapping]
+  services[].defaults.imports[].names: list[string]
+  services[].defaults.imports[].as: mapping(optional)
+  services[].operations[].imports: list[mapping]
+  services[].operations[].imports[].names: list[string]
+  services[].operations[].imports[].as: mapping(optional)
   legacy_compact_form: invalid

@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -13,27 +11,31 @@ harness:
       '25_system_topology.md', 'Mermaid diagram block']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'docs.visual_aids_core_chapters_present'}}}"
 services:
-- id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
-  type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
-  mode: default
-  direction: bidirectional
+- type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
+  operations:
+  - id: svc.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-DOCS-REF-022
-  title: visual aids required in core chapters
-  purpose: Ensures docs quality contract enforces Mermaid visual aid requirements
-    for core narrative chapters.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
+  - id: DCGOV-DOCS-REF-022
+    title: visual aids required in core chapters
+    purpose: Ensures docs quality contract enforces Mermaid visual aid requirements
+      for core narrative chapters.
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
 ```

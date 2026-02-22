@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PACK-005
     title: pack paths resolve in repository
     purpose: Ensures all pack manifests and referenced case paths exist.
@@ -22,17 +23,17 @@ contracts:
         profile: governance.scan
         config:
           check: packs.pack_paths_resolve
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names: [violation_count]
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
 ```

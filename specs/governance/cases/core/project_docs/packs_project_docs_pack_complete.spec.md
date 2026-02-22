@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PACK-004
     title: project-docs maintenance pack is complete
     purpose: Ensures docs maintenance pack includes README/book coherence surfaces.
@@ -19,17 +20,17 @@ contracts:
         profile: governance.scan
         config:
           check: packs.project_docs_pack_complete
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names: [violation_count]
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
 ```

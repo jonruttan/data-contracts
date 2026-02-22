@@ -17,90 +17,93 @@ harness:
       'assert.function', 'path': '/__export__policy.job.hooks_present', 'params':
       ['job_map'], 'required': True}]}"
 services:
-- id: svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
-  type: legacy.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true
-  mode: default
-- id: svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
-  type: legacy.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present
-  mode: default
+- type: legacy.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true
+  operations:
+  - id: svc.exports_as_policy_job_dispatch_ok_from_assert_function_path_export_policy_job_dispatch_ok_params_summary_json_required_true_as_policy_job_written_path_contains_from_assert_function_path_export_policy_job_written_path_contains_params_summary_json_expected_path_required_true_as_policy_job_hooks_present_from_assert_function_path_export_policy_job_hooks_present_params_job_map_required_true.default.1
+    mode: default
+- type: legacy.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present
+  operations:
+  - id: svc.check_profile_text_file_config_use_ref_lib_policy_job_001_as_lib_policy_job_symbols_policy_job_dispatch_ok_policy_job_written_path_contains_policy_job_hooks_present.default.1
+    mode: default
 contracts:
-- id: LIB-POLICY-JOB-001
-  title: reusable contract.job assertions
-  clauses:
-    predicates:
-    - id: __export__policy.job.dispatch_ok
-      assert:
-        std.logic.eq:
-        - std.object.get:
-          - var: summary_json
-          - ok
-        - true
-    - id: __export__policy.job.written_path_contains
-      assert:
-        std.string.contains:
-        - std.object.get:
-          - var: summary_json
-          - written_path
-        - var: expected_path
-    - id: __export__policy.job.hooks_present
-      assert:
-        std.logic.and:
-        - std.object.has_key:
-          - var: job_map
-          - on_fail
-        - std.object.has_key:
-          - var: job_map
-          - on_complete
-  library:
-    id: policy.job
-    module: policy
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - policy
-    - job
-  type: contract.export
-- id: LIB-POLICY-JOB-900
-  title: job policy library smoke
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - text
-    predicates:
-    - id: assert_1
-      assert:
-      - call:
-        - var: policy.job.dispatch_ok
-        - lit:
-            ok: true
-      - std.logic.not:
+  asserts:
+  - id: LIB-POLICY-JOB-001
+    title: reusable contract.job assertions
+    library:
+      id: policy.job
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - policy
+      - job
+    type: contract.export
+    asserts:
+      checks:
+      - id: __export__policy.job.dispatch_ok
+        assert:
+          std.logic.eq:
+          - std.object.get:
+            - var: summary_json
+            - ok
+          - true
+      - id: __export__policy.job.written_path_contains
+        assert:
+          std.string.contains:
+          - std.object.get:
+            - var: summary_json
+            - written_path
+          - var: expected_path
+      - id: __export__policy.job.hooks_present
+        assert:
+          std.logic.and:
+          - std.object.has_key:
+            - var: job_map
+            - on_fail
+          - std.object.has_key:
+            - var: job_map
+            - on_complete
+  - id: LIB-POLICY-JOB-900
+    title: job policy library smoke
+    type: contract.check
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - text
+      checks:
+      - id: assert_1
+        assert:
         - call:
           - var: policy.job.dispatch_ok
           - lit:
-              ok: false
-      - call:
-        - var: policy.job.written_path_contains
-        - lit:
-            written_path: ".artifacts/example.json"
-        - ".artifacts/example.json"
-      - std.logic.not:
+              ok: true
+        - std.logic.not:
+          - call:
+            - var: policy.job.dispatch_ok
+            - lit:
+                ok: false
         - call:
           - var: policy.job.written_path_contains
           - lit:
               written_path: ".artifacts/example.json"
-          - ".artifacts/other.json"
-      - call:
-        - var: policy.job.hooks_present
-        - lit:
-            on_fail: {}
-            on_complete: {}
-      - std.logic.not:
+          - ".artifacts/example.json"
+        - std.logic.not:
+          - call:
+            - var: policy.job.written_path_contains
+            - lit:
+                written_path: ".artifacts/example.json"
+            - ".artifacts/other.json"
         - call:
           - var: policy.job.hooks_present
           - lit:
               on_fail: {}
-  type: contract.check
+              on_complete: {}
+        - std.logic.not:
+          - call:
+            - var: policy.job.hooks_present
+            - lit:
+                on_fail: {}
 ```
 
 

@@ -9,12 +9,12 @@
 - `services[].type` is integration-only in v2 (`io.fs`, `io.http`,
   `io.system`, `io.mysql`, `io.docs`); orchestration categories (`assert.check`,
   `assert.export`, `ops.job`) are invalid as service types.
-- `services[].mode` is a mode token validated per integration type
+- `services[].operations[].mode` is a mode token validated per integration type
   (`read.text`, `request.http`, `exec.command`, `generate.docs`, etc.).
-- `services[].imports` uses canonical list mappings (`names` + optional `as`).
+- `services[].operations[].imports` uses canonical list mappings (`names` + optional `as`).
 - compact service import aliases are invalid in v2.
-- Contract-scoped `contracts[].bindings` connects contracts to services and
-  artifact channels using `contracts[].bindings.defaults + contracts[].bindings.rows[]`.
+- Contract-scoped `contracts.clauses[].bindings` connects contracts to services and
+  artifact channels using `contracts.clauses[].bindings.defaults + contracts.clauses[].bindings.rows[]`.
 - Binding I/O uses canonical mapping rows:
   - `outputs`: `{to, as?, path?}`
   - `inputs`: `{from, as?}`
@@ -34,9 +34,9 @@ Suite-root external references:
 - `artifacts[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
-  `artifacts[]` through `contracts[].bindings.rows[]` mappings.
+  `artifacts[]` through `contracts.clauses[].bindings.rows[]` mappings.
 - services MUST NOT reference external locations directly in
-  `services[].config`; direct locator keys (`path`, `url`, `token_url`,
+  `services[].operations[].config`; direct locator keys (`path`, `url`, `token_url`,
   `template_path`, `output_path`, `ref`) are invalid.
 - service config locators MUST be routed via artifact IDs using
   profile-specific `*_artifact_id` fields (for example
@@ -53,7 +53,7 @@ Suite-root external references:
   `/specs/contract/35_service_plugin_runtime.md`.
 - artifact symbols are available to predicates only when explicitly declared
   and wired.
-- when `contracts[].bindings.rows[]` or `from: service` imports are present, `services` MUST be
+- when `contracts.clauses[].bindings.rows[]` or `from: service` imports are present, `services` MUST be
   declared and valid.
 - binding defaults are additive only: explicit row values override defaults.
 - `service` and `import` are effective-required after defaults merge.
@@ -70,9 +70,9 @@ Suite-root external references:
 
 ## Entrypoint
 
-For `harness.type: unit.test` with `services[].mode: exec.command`:
+For `harness.type: unit.test` with `services[].operations[].mode: exec.command`:
 
-- `services[].config.entrypoint` MUST be provided by the spec.
+- `services[].operations[].config.entrypoint` MUST be provided by the spec.
 - Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).
@@ -112,16 +112,16 @@ For `request.http`:
 
 `request.http` auth/runtime profile:
 
-- `services[].config.api_http.mode` (optional): `deterministic` (default) or `live`
+- `services[].operations[].config.api_http.mode` (optional): `deterministic` (default) or `live`
   - `deterministic` forbids network `http(s)` fetches for request/token URLs
   - `live` allows network `http(s)` fetches
-- `services[].config.api_http.scenario` (optional mapping):
+- `services[].operations[].config.api_http.scenario` (optional mapping):
   - `setup.command` / `teardown.command` for lifecycle shell commands
   - optional `setup.ready_probe` polling (`url`, `method`, expected status list,
     timeout/interval)
   - optional `cwd` / `env` for setup/teardown commands
   - `fail_fast` (default `true`)
-- `services[].config.api_http.auth.oauth` (optional mapping):
+- `services[].operations[].config.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
   - `token_artifact_id` (required): artifacts import id containing token endpoint
     locator payload
@@ -288,7 +288,7 @@ Subject profile envelope contract:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
 - `read.text` locator payloads MUST be declared under `artifacts[]` and
-  referenced through `services[].config.source_artifact_id`.
+  referenced through `services[].operations[].config.source_artifact_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 

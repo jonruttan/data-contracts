@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -16,46 +14,50 @@ harness:
       'as': 'lib_policy_core_spec', 'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed',
       'policy.assert.summary_check_id', 'policy.assert.scan_pass']}]}"
 services:
-- id: svc.root_docs_examples_files_docs_book_10_getting_started_md_docs_book_20_case_model_md_docs_book_30_assertion_model_md_docs_book_40_spec_lang_authoring_md_docs_book_60_runner_and_gates_md_docs_book_80_troubleshooting_md_docs_book_90_reference_guide_md_docs_development_md_check_profile_governance_scan_config_check_docs_examples_runnable_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-  type: legacy.root_docs_examples_files_docs_book_10_getting_started_md_docs_book_20_case_model_md_docs_book_30_assertion_model_md_docs_book_40_spec_lang_authoring_md_docs_book_60_runner_and_gates_md_docs_book_80_troubleshooting_md_docs_book_90_reference_guide_md_docs_development_md_check_profile_governance_scan_config_check_docs_examples_runnable_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-  mode: default
-  direction: bidirectional
+- type: legacy.root_docs_examples_files_docs_book_10_getting_started_md_docs_book_20_case_model_md_docs_book_30_assertion_model_md_docs_book_40_spec_lang_authoring_md_docs_book_60_runner_and_gates_md_docs_book_80_troubleshooting_md_docs_book_90_reference_guide_md_docs_development_md_check_profile_governance_scan_config_check_docs_examples_runnable_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  operations:
+  - id: svc.root_docs_examples_files_docs_book_10_getting_started_md_docs_book_20_case_model_md_docs_book_30_assertion_model_md_docs_book_40_spec_lang_authoring_md_docs_book_60_runner_and_gates_md_docs_book_80_troubleshooting_md_docs_book_90_reference_guide_md_docs_development_md_check_profile_governance_scan_config_check_docs_examples_runnable_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-DOCS-REF-004
-  title: reference examples parse or are explicitly opted out
-  purpose: Ensures reference examples are trustworthy by requiring parseable or statically
-    valid fenced examples unless explicitly opted out.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
-    - id: assert_2
-      assert:
-      - call:
-        - var: policy.assert.summary_passed
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-      - call:
-        - var: policy.assert.summary_check_id
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-        - docs.examples_runnable
+  - id: DCGOV-DOCS-REF-004
+    title: reference examples parse or are explicitly opted out
+    purpose: Ensures reference examples are trustworthy by requiring parseable or
+      statically valid fenced examples unless explicitly opted out.
+    asserts:
       imports:
       - from: artifact
         names:
-        - summary_json
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
+      - id: assert_2
+        assert:
+        - call:
+          - var: policy.assert.summary_passed
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+        - call:
+          - var: policy.assert.summary_check_id
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+          - docs.examples_runnable
+        imports:
+        - from: artifact
+          names:
+          - summary_json
 ```

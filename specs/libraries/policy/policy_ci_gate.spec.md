@@ -17,79 +17,82 @@ harness:
       'from': 'assert.function', 'path': '/__export__policy.ci.artifacts_present',
       'params': ['subject'], 'required': True}]}"
 services:
-- id: svc.exports_as_policy_ci_required_profiles_pass_from_assert_function_path_export_policy_ci_required_profiles_pass_params_subject_required_true_as_policy_ci_optional_profile_report_only_from_assert_function_path_export_policy_ci_optional_profile_report_only_params_subject_required_true_as_policy_ci_artifacts_present_from_assert_function_path_export_policy_ci_artifacts_present_params_subject_required_true.default.1
-  type: legacy.exports_as_policy_ci_required_profiles_pass_from_assert_function_path_export_policy_ci_required_profiles_pass_params_subject_required_true_as_policy_ci_optional_profile_report_only_from_assert_function_path_export_policy_ci_optional_profile_report_only_params_subject_required_true_as_policy_ci_artifacts_present_from_assert_function_path_export_policy_ci_artifacts_present_params_subject_required_true
-  mode: default
-- id: svc.check_profile_text_file_config_use_ref_lib_policy_ci_001_as_lib_policy_ci_symbols_policy_ci_required_profiles_pass_policy_ci_optional_profile_report_only_policy_ci_artifacts_present.default.1
-  type: legacy.check_profile_text_file_config_use_ref_lib_policy_ci_001_as_lib_policy_ci_symbols_policy_ci_required_profiles_pass_policy_ci_optional_profile_report_only_policy_ci_artifacts_present
-  mode: default
+- type: legacy.exports_as_policy_ci_required_profiles_pass_from_assert_function_path_export_policy_ci_required_profiles_pass_params_subject_required_true_as_policy_ci_optional_profile_report_only_from_assert_function_path_export_policy_ci_optional_profile_report_only_params_subject_required_true_as_policy_ci_artifacts_present_from_assert_function_path_export_policy_ci_artifacts_present_params_subject_required_true
+  operations:
+  - id: svc.exports_as_policy_ci_required_profiles_pass_from_assert_function_path_export_policy_ci_required_profiles_pass_params_subject_required_true_as_policy_ci_optional_profile_report_only_from_assert_function_path_export_policy_ci_optional_profile_report_only_params_subject_required_true_as_policy_ci_artifacts_present_from_assert_function_path_export_policy_ci_artifacts_present_params_subject_required_true.default.1
+    mode: default
+- type: legacy.check_profile_text_file_config_use_ref_lib_policy_ci_001_as_lib_policy_ci_symbols_policy_ci_required_profiles_pass_policy_ci_optional_profile_report_only_policy_ci_artifacts_present
+  operations:
+  - id: svc.check_profile_text_file_config_use_ref_lib_policy_ci_001_as_lib_policy_ci_symbols_policy_ci_required_profiles_pass_policy_ci_optional_profile_report_only_policy_ci_artifacts_present.default.1
+    mode: default
 contracts:
-- id: LIB-POLICY-CI-001
-  title: ci gate predicates
-  clauses:
-    predicates:
-    - id: __export__policy.ci.required_profiles_pass
-      assert:
-        std.logic.eq:
-        - std.object.get:
+  asserts:
+  - id: LIB-POLICY-CI-001
+    title: ci gate predicates
+    library:
+      id: policy.ci.gate
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - policy
+      - ci
+    type: contract.export
+    asserts:
+      checks:
+      - id: __export__policy.ci.required_profiles_pass
+        assert:
+          std.logic.eq:
           - std.object.get:
+            - std.object.get:
+              - var: subject
+              - gate_summary
+            - status
+          - pass
+      - id: __export__policy.ci.optional_profile_report_only
+        assert:
+          std.logic.eq:
+          - std.object.get:
+            - std.object.get:
+              - var: subject
+              - optional_report
+            - status
+          - report-only
+      - id: __export__policy.ci.artifacts_present
+        assert:
+          std.logic.and:
+          - std.object.has:
             - var: subject
             - gate_summary
-          - status
-        - pass
-    - id: __export__policy.ci.optional_profile_report_only
-      assert:
-        std.logic.eq:
-        - std.object.get:
-          - std.object.get:
+          - std.object.has:
             - var: subject
             - optional_report
-          - status
-        - report-only
-    - id: __export__policy.ci.artifacts_present
-      assert:
-        std.logic.and:
-        - std.object.has:
-          - var: subject
-          - gate_summary
-        - std.object.has:
-          - var: subject
-          - optional_report
-  library:
-    id: policy.ci.gate
-    module: policy
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - policy
-    - ci
-  type: contract.export
-- id: LIB-POLICY-CI-900
-  title: ci gate policy library smoke
-  clauses:
-    imports:
-    - from: artifact
-      names:
-      - text
-    predicates:
-    - id: assert_1
-      assert:
-      - call:
-        - var: policy.ci.required_profiles_pass
-        - lit:
-            gate_summary:
-              status: pass
-      - call:
-        - var: policy.ci.optional_profile_report_only
-        - lit:
-            optional_report:
-              status: report-only
-      - call:
-        - var: policy.ci.artifacts_present
-        - lit:
-            gate_summary: {}
-            optional_report: {}
-  type: contract.check
+  - id: LIB-POLICY-CI-900
+    title: ci gate policy library smoke
+    type: contract.check
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - text
+      checks:
+      - id: assert_1
+        assert:
+        - call:
+          - var: policy.ci.required_profiles_pass
+          - lit:
+              gate_summary:
+                status: pass
+        - call:
+          - var: policy.ci.optional_profile_report_only
+          - lit:
+              optional_report:
+                status: report-only
+        - call:
+          - var: policy.ci.artifacts_present
+          - lit:
+              gate_summary: {}
+              optional_report: {}
 ```
 
 

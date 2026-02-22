@@ -2,12 +2,12 @@
 
 ## Tree Model
 
-`clauses` uses mapping form:
+`asserts` uses mapping form:
 
 - `defaults` (optional mapping)
-- `predicates` (required non-empty list)
+- `checks` (required non-empty list)
 
-Each predicate has:
+Each check has:
 
 - `id` (required string)
 - `purpose` (optional string)
@@ -17,14 +17,14 @@ Each predicate has:
 - `imports` (optional list of import items)
 - `assert` (non-empty expression mapping or list)
 
-Predicate id uniqueness:
+Check id uniqueness:
 
 - predicate ids must be unique within each predicate list
 - missing predicate ids are schema hard-fail
 
 prior forms are forbidden:
 
-- top-level list `clauses: [...]`
+- top-level list `asserts: [...]`
 - predicate key `asserts`
 - predicate keys `target` / `on`
 
@@ -34,11 +34,11 @@ Assertions must consume explicitly imported values.
 
 Scope separation:
 
-- assertion import bindings are declared only under `clauses.imports` and
-  `clauses.predicates[].imports`.
+- assertion import bindings are declared only under `asserts.imports` and
+  `asserts.checks[].imports`.
 - suite-root `artifacts[]` are external
   reference declarations and do not implicitly bind assertion symbols.
-- `contracts[].bindings.rows[]` materializes service-produced symbols into predicate
+- `contracts.clauses[].bindings.rows[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
 - binding I/O rows accept canonical mappings and compact string aliases; compact
   rows are endpoint-only (`to` for outputs, `from` for inputs).
@@ -57,10 +57,10 @@ Import binding shape:
 - for `from: artifact`, imported names MUST be explicitly declared at suite
   root (`artifacts[].id`)
 - runtime-produced artifact symbols MUST be explicitly wired through
-  `contracts[].bindings.rows[].outputs` before predicate import use
+  `contracts.clauses[].bindings.rows[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
-- when `from: service`, `service` key is required and must reference suite `services[].id`
+- when `from: service`, `service` key is required and must reference suite `services[].operations[].id`
 - referenced service actions must use integration-only catalog types (`io.*`);
   legacy orchestration service types are invalid in v2
 - `names` is a non-empty list of imported symbol keys
@@ -79,11 +79,11 @@ Uniform terminology:
 
 Import merge semantics:
 
-- effective imports = `clauses.imports` + `clauses.predicates[].imports`
+- effective imports = `asserts.imports` + `asserts.checks[].imports`
 - predicate imports override same-name defaults
-- `clauses.defaults` may provide inherited clause-level defaults; explicit row
+- `asserts.defaults` may provide inherited assertion-level defaults; explicit row
   values always override inherited defaults
-- binding-piped symbols from `contracts[].bindings.rows[]` are applied after import merge:
+- binding-piped symbols from `contracts.clauses[].bindings.rows[]` are applied after import merge:
   - `mode: merge` preserves explicit import values on collisions
   - `mode: override` replaces explicit import values on collisions
 - implicit harness/service symbol injection is forbidden
@@ -113,14 +113,14 @@ For `harness: check` governance profiles (for example
 Example:
 
 ```yaml
-clauses:
+asserts:
   defaults: {}
   imports:
   - from: artifact
     names: [violation_count]
     as:
       violation_count: subject
-  predicates:
+  checks:
   - id: assert_1
     purpose: Ensures no governance violations are reported.
     required: true

@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -12,27 +10,31 @@ harness:
       'required_tokens': ['missing_schema_ref_count']}, 'check': {'profile': 'governance.scan',
       'config': {'check': 'schema.spec_case_schema_ref_present'}}}"
 services:
-- id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present.default.1
-  type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present
-  mode: default
-  direction: bidirectional
+- type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present
+  operations:
+  - id: svc.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-SCHEMA-PIN-002
-  title: spec cases include schema_ref
-  purpose: Ensures schema pin validator enforces presence of schema_ref for all executable
-    contract-spec blocks.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
+  - id: DCGOV-SCHEMA-PIN-002
+    title: spec cases include schema_ref
+    purpose: Ensures schema pin validator enforces presence of schema_ref for all
+      executable contract-spec blocks.
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
 ```

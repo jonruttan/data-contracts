@@ -11,17 +11,18 @@ bindings:
   outputs:
   - to: status
 contracts:
-- id: DCCONF-BIND-ROOT-001
-  title: root bindings are forbidden in v2
-  expect:
-    portable:
-      status: fail
-      category: schema
-  clauses:
-    predicates:
-    - id: assert_1
-      assert:
-        lit: true
+  asserts:
+  - id: DCCONF-BIND-ROOT-001
+    title: root bindings are forbidden in v2
+    expect:
+      portable:
+        status: fail
+        category: schema
+    asserts:
+      checks:
+      - id: assert_1
+        assert:
+          lit: true
 artifacts:
 - id: status
   ref: artifact://root_bindings_forbidden/status

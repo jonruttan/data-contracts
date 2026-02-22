@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PIPE-SHELL-001
     title: shell extractors are fact emitters only
     purpose: Ensures extractor scripts do not emit direct policy failure exits for governance domains.
@@ -18,17 +19,17 @@ contracts:
         profile: governance.scan
         config:
           check: runtime.shell_extractors_fact_only_enforced
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names: [violation_count]
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
 ```

@@ -89,7 +89,7 @@ level in:
 `contract-spec-format` v2 scope is intentionally narrow:
 
 - suite root mapping keys
-- each `contracts[]` mapping item
+- each `contracts.clauses[]` mapping item
 
 No recursive nested-map sorting and no array-item reordering are performed.
 
@@ -108,7 +108,7 @@ Suite root canonical order:
 11. `exports`
 12. `contracts`
 
-`contracts[]` canonical order:
+`contracts.clauses[]` canonical order:
 
 1. `id`
 2. `title`
@@ -143,17 +143,17 @@ Terminology contract (uniform across v2 docs/registry/policy):
 - canonical normalized form: deterministic internal row/map shape after
   alias/default normalization and before validation/runtime execution
 
-Each `contracts[]` item:
+Each `contracts.clauses[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
 - `clauses` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
 - `expect`/`requires`/`when` (optional)
-- `contracts[].bindings` (list|mapping, optional): contract-local service
+- `contracts.clauses[].bindings` (list|mapping, optional): contract-local service
   binding declarations
   - mapping form (preferred compaction):
-    `contracts[].bindings.defaults` + `contracts[].bindings.rows[]`
-  - list form: `contracts[].bindings.rows[]` rows
+    `contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`
+  - list form: `contracts.clauses[].bindings.rows[]` rows
   - defaults keys (optional): `service`, `import`, `mode`, `predicates`
   - row keys: `id`, optional `service`, optional `import`, `inputs`, `outputs`,
     `predicates`, `mode`
@@ -165,24 +165,23 @@ Suite runtime surfaces:
   - `harness.type` (string, required)
   - `harness.profile` (string, required)
   - `harness.config` (mapping, optional)
-- `services` (mapping, optional): suite system service bindings with defaults and concrete entries (effective type/io/profile/config)
-  - `services[].id` (string, required; unique in suite)
-  - `services[].type` (string, optional; resolved by `/specs/schema/service_contract_catalog_v1.yaml`)
-  - `services[].direction` (string, optional): `input|output|bidirectional` (defaults to `bidirectional` via `services[].direction` when omitted)
-  - `services[].mode` (string, optional)
-  - `services[].config` (mapping, optional): service config values that
+- `services` (list, optional): suite service type blocks
+  - `services[].type` (string, required): service type token resolved by
+    `/specs/schema/service_contract_catalog_v1.yaml` (for example `io.http`)
+  - `services[].defaults` (mapping, optional): per-type defaults merged into each
+    `services[].operations[]` row
+  - `services[].operations` (list, required): non-empty concrete service instance rows
+  - `services[].operations[].id` (string, required): concrete service instance id used by
+    `contracts.clauses[].bindings` and `from: service` imports
+  - `services[].operations[].mode` (string, optional): effective mode token
+  - `services[].operations[].direction` (string, optional): `input|output|bidirectional`
+  - `services[].operations[].config` (mapping, optional): service config values that
     reference external locations MUST use artifact-id fields (`*_artifact_id`)
     and must not embed direct locators
-  - `services[].imports` (list, optional): declarative callable service-import surface
-    - compact alias (preferred): list of strings (`imports: [pipe_identity, get_json]`)
-      expands to one canonical row `{names:[...]}`; compact form does not support aliasing
-    - canonical: list of mappings with `names` and optional `as`
-    - per-item short form is supported (`imports: [pipe_identity]`)
-    - mixed item kinds (string + mapping) in one `imports` list are invalid
-    - canonical alias grammar source:
-      `/specs/schema/registry/v2/core.yaml and /specs/schema/registry/v2/assertions.yaml`
-  - `services[].imports[].names` (list, required)
-  - `services[].imports[].as` (mapping, optional)
+  - `services[].operations[].imports` (list, optional): canonical mapping rows
+    (`names`, optional `as`)
+  - effective entry = shallow merge(`services[].defaults`, `services[].operations[]` row),
+    with row keys overriding defaults
   - service implementations may be built-in or runtime-loaded plugins; suite
     authoring shape is unchanged
   - runtime plugin contracts:
@@ -205,7 +204,7 @@ Parser behavior:
 - `contracts` is required and must be non-empty
 - `spec_version` is required
 - `schema_ref` is required
-- each `contracts[]` item requires `id`
+- each `contracts.clauses[]` item requires `id`
 - suite `harness` mapping is required
 - suite `services` is optional
 - when `services` is present, `services[]` must be non-empty
@@ -224,49 +223,49 @@ Parser behavior:
   - `exports[].id` is invalid
   - `exports[].ref` is invalid
 - singular `doc` surfaces are invalid in v2; use `docs[]`
-- `contracts[].harness` is invalid in v2 (hard cut)
-- `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
-- `contracts[].clauses.predicates[].id` is required
+- `contracts.clauses[].harness` is invalid in v2 (hard cut)
+- `contracts.clauses[].asserts.profile` and `contracts.clauses[].asserts.config` are invalid in v2 runtime ownership
+- `contracts.clauses[].asserts.checks[].id` is required
 - unknown `services[].type` MUST hard-fail during schema validation
-- invalid `services[].direction` MUST hard-fail during schema validation
+- invalid `services[].operations[].direction` MUST hard-fail during schema validation
 - service-specific integration behavior (for example HTTP client operations) is
   implementation-owned by resolved service implementations, not core runner
   orchestration logic
 - runtime-loaded service implementations MUST pass lock + digest + signature
   verification before invocation
-- `services[].imports` requires canonical list[mapping] rows; compact list[string] aliases are invalid
-- services[].imports must use canonical mapping rows only
-- compact `services[].imports` names MUST be unique per service entry
-  and valid for resolved `services[].type/profile` in
+- `services[].operations[].imports` requires canonical list[mapping] rows; compact list[string] aliases are invalid
+- services[].operations[].imports must use canonical mapping rows only
+- compact `services[].operations[].imports` names MUST be unique per service entry
+  and valid for resolved `services[].type/mode` in
   `/specs/schema/service_contract_catalog_v1.yaml`
-- if any contract declares `contracts[].bindings.rows[]`, `services` MUST be present and valid
-- if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
+- if any contract declares `contracts.clauses[].bindings.rows[]`, `services` MUST be present and valid
+- if any `asserts.imports[]` or `asserts.checks[].imports[]` item uses
   `from: service`, `services` MUST be present and valid
 - clause/predicate bare-string import rows (for example `- pipe_identity`) are
   compact service aliases normalized to
   `{from: service, names:[pipe_identity], service:<resolved>}`
 - `<resolved>` service id for clause/predicate bare-string rows MUST come from
-  `contracts[].bindings.defaults.service`; missing/empty defaults service is
+  `contracts.clauses[].bindings.defaults.service`; missing/empty defaults service is
   schema failure
 - clause/predicate bare-string rows with unknown resolved service id are schema
   failures
 - clause/predicate bare-string rows with import names not supported by resolved
-  service `type/profile` are schema failures
+  service `id/mode` are schema failures
 - empty/whitespace-only clause/predicate bare-string import rows are schema failures
 - bindings execute once per contract before predicate evaluation
-- bindings use additive mapping form (contracts[].bindings.defaults + contracts[].bindings.rows[])
+- bindings use additive mapping form (contracts.clauses[].bindings.defaults + contracts.clauses[].bindings.rows[])
 - binding shape/alias grammar source:
   `/specs/schema/registry/v2/core.yaml and /specs/schema/registry/v2/assertions.yaml`
-- legacy row key `contract` under `contracts[].bindings.rows[]` is invalid
-- mixed `contracts[].bindings.rows[]` list-form and `contracts[].bindings.rows[]`
+- legacy row key `contract` under `contracts.clauses[].bindings.rows[]` is invalid
+- mixed `contracts.clauses[].bindings.rows[]` list-form and `contracts.clauses[].bindings.rows[]`
   mapping-form in the same contract is invalid
 - each effective binding row MUST include `id`, `service`, and `import` after defaults merge
-- effective row = shallow merge(`contracts[].bindings.defaults`, row), row values override defaults
-- effective `service` MUST reference an existing `services[].id`
-- `contracts[].bindings.rows[].inputs[].from` MUST reference `artifacts[].id` where artifact
-  entry `bidirectional` is `input` or `bidirectional`
-- `contracts[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id` where artifact
-  entry `bidirectional` is `output` or `bidirectional`
+- effective row = shallow merge(`contracts.clauses[].bindings.defaults`, row), row values override defaults
+- effective `service` MUST reference an existing `services[].operations[].id`
+- `contracts.clauses[].bindings.rows[].inputs[].from` MUST reference `artifacts[].id` where artifact
+  entry `direction` is `input` or `bidirectional`
+- `contracts.clauses[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id` where artifact
+  entry `direction` is `output` or `bidirectional`
 - binding I/O accepted input forms:
   - `inputs` accepts canonical list[mapping] and compact list[string]
   - `outputs` accepts canonical list[mapping] and compact list[string]
@@ -277,30 +276,30 @@ Parser behavior:
 - empty/whitespace compact binding I/O strings are invalid
 - compact binding I/O rows encode `from`/`to` only; `as`/`path` require canonical mapping rows
 - binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
-- direct external locator keys in `services[].config` are invalid:
+- direct external locator keys in `services[].operations[].config` are invalid:
   `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
 - every `*_artifact_id` in service config MUST resolve to
-  `artifacts[].id` where artifact entry `bidirectional` is `input` or `bidirectional`
+  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
 - every `*_artifact_ids[]` entry in service config MUST resolve to
-  `artifacts[].id` where artifact entry `bidirectional` is `input` or `bidirectional`
+  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
 - mixed direct-locator and artifact-id forms for the same semantic field are
   invalid
-- `clauses.imports[].from=artifact` and `clauses.predicates[].imports[].from=artifact`
+- `asserts.imports[].from=artifact` and `asserts.checks[].imports[].from=artifact`
   names MUST resolve to suite-declared artifact ids (`artifacts[].id`)
 - implicit harness/service target symbol injection is invalid; artifact symbols are
   declaration-and-binding derived only
 - synthetic labels may be emitted for reporting when optional docs/docs-owner ids
   are omitted, but these labels are diagnostics-only and must not be accepted as
   schema reference identities
-- `contracts[].bindings.rows[].mode` supports `merge|override` on effective rows:
+- `contracts.clauses[].bindings.rows[].mode` supports `merge|override` on effective rows:
   - `merge`: explicit imports win collisions
   - `override`: binding-piped symbols overwrite same-name imports
 - legacy `type` on contract items is invalid in v2
 
 Binding defaults semantics:
 
-- mapping-form `contracts[].bindings.defaults` applies only to rows in
-  `contracts[].bindings.rows[]`
+- mapping-form `contracts.clauses[].bindings.defaults` applies only to rows in
+  `contracts.clauses[].bindings.rows[]`
 - bindings list-form is invalid in v2
 - row conflicts with defaults resolve in favor of row values
 - missing effective `service` or `import` is schema failure
@@ -316,7 +315,7 @@ Clause import canonical semantics:
 - compact artifact alias requires non-empty list of artifact ids
 - compact service alias requires `id` and non-empty `names`
 - compact bare-string alias is supported and means a service import using
-  `contracts[].bindings.defaults.service`
+  `contracts.clauses[].bindings.defaults.service`
 - unknown keys in compact alias rows are schema failures
 - canonical alias grammar source:
   `/specs/schema/registry/v2/core.yaml and /specs/schema/registry/v2/assertions.yaml`
@@ -371,7 +370,7 @@ Normative contract details:
 
 ## Harness-Profile Fields
 
-### `harness.type: unit.test` with `services[].mode: read.text`
+### `harness.type: unit.test` with `services[].operations[].mode: read.text`
 
 `read.text` asserts against file content.
 
@@ -401,7 +400,7 @@ Markdown library authoring guidance:
 
 ## Harness Dispatch
 
-Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services[].mode`/`services[].config`.
+Harness dispatch is selected by suite-root `harness` and service execution/binding is selected by suite-root `services[]`. Runtime profile/config data is declared in `harness.profile`/`harness.config` and `services[].operations[].mode`/`services[].operations[].config`.
 
 Governance assertion contract:
 
@@ -429,7 +428,7 @@ Security model:
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `harness.type: unit.test` with `services[].mode: exec.command`, supported `services[].config` keys include:
+For `harness.type: unit.test` with `services[].operations[].mode: exec.command`, supported `services[].operations[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -445,7 +444,7 @@ For `harness.type: unit.test` with `services[].mode: exec.command`, supported `s
 - `orchestration` (mapping): orchestration tool dispatch contract for
   orchestration profiles
 
-For `harness.type: unit.test` with `services[].mode: request.http`, supported `services[].config` keys include:
+For `harness.type: unit.test` with `services[].operations[].mode: request.http`, supported `services[].operations[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -496,7 +495,7 @@ OAuth and execution rules:
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `harness.type: unit.test` with `services[].mode: generate.docs`, supported `services[].config` keys include:
+For `harness.type: unit.test` with `services[].operations[].mode: generate.docs`, supported `services[].operations[].config` keys include:
 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
@@ -639,7 +638,7 @@ Assertion targets for `exec.command`:
 
 ## Profiles
 
-Currently supported `services[].mode` values include:
+Currently supported `services[].operations[].mode` values include:
 
 - `read.text`
 - `fs.readwrite`
@@ -665,7 +664,7 @@ Service model (hard cut in v2):
 
 - `services[].type` is integration-only and MUST be one of:
   `io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`
-- `services[].mode` is mode-style and validated against the resolved
+- `services[].operations[].mode` is mode-style and validated against the resolved
   type via `service_contract_catalog_v1.yaml`
 - legacy service types are invalid: `assert.check`, `assert.export`, `ops.job`
 - legacy profiles are invalid: `text.file`, `api.http`, `cli.run`,
@@ -688,7 +687,7 @@ Universal core assertion model:
 - `defaults` (optional mapping)
 - `predicates` (required list)
 
-Each `predicates[]` entry requires:
+Each `checks[]` entry requires:
 
 - `id` (string, unique per case)
 - `assert` (non-empty expression mapping or list)
@@ -712,23 +711,23 @@ Import binding shape:
   - artifact alias: `{artifact: [id_a, id_b]}`
   - service alias: `{service: {id: svc.x, names: [...], as?: {...}}}`
   - service short alias: `"pipe_identity"` (normalized using
-    `contracts[].bindings.defaults.service`)
+    `contracts.clauses[].bindings.defaults.service`)
 - compact aliases normalize to canonical rows before validation/execution
 - canonical assertion imports may use `from: artifact` or `from: service`
 - short string aliases are always interpreted as `from: service` imports
 - when `from: artifact`, `names` must be a non-empty list of suite-declared
   artifact ids (and be explicitly wired when runtime-produced)
-- for short string aliases, `contracts[].bindings.defaults.service` must exist
-  and resolve to `services[].id`
+- for short string aliases, `contracts.clauses[].bindings.defaults.service` must exist
+  and resolve to `services[].operations[].id`
 - `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:
 
-- effective predicate imports = `clauses.imports` merged with
-  `clauses.predicates[].imports`
+- effective predicate imports = `asserts.imports` merged with
+  `asserts.checks[].imports`
 - predicate imports override defaults on key collision
 - binding-piped symbols are then merged into effective predicate context
-  according to `contracts[].bindings.rows[].mode`:
+  according to `contracts.clauses[].bindings.rows[].mode`:
   - `merge`: existing explicit import symbols are preserved
   - `override`: binding symbols replace same-name explicit imports
 
@@ -764,7 +763,7 @@ Operator constraints:
   (`mul`, `div`, `mod`, `pow`, `abs`, `negate`, `inc`, `dec`, `clamp`,
   `round`, `floor`, `ceil`), comparison/logical helpers (`compare`, `between`,
   `xor`), list utilities (`slice`, `reverse`, `zip`, `zip_with`, `range`,
-  `repeat`), object helpers (`keys`, `values`, `entries`, `merge`, `assoc`,
+  `repeat`), object helpers (`keys`, `values`, `actions`, `merge`, `assoc`,
   `dissoc`, `pick`, `omit`), and compositional predicates/combinators
   (`prop_eq`, `where`, `compose`, `pipe`, `identity`, `always`, `replace`,
   `pad_left`, `pad_right`) plus explicit JSON-type predicates (`is_null`,
@@ -792,10 +791,10 @@ Operator constraints:
 
 Step metadata constraints:
 
-- `clauses.predicates[].required` is optional and defaults to `true`
-- `clauses.predicates[].priority` is optional integer metadata (`>=1`, default `1`)
-- `clauses.predicates[].severity` is optional integer metadata (`>=1`, default `1`)
-- `clauses.predicates[].purpose` is optional human-readable text
+- `asserts.checks[].required` is optional and defaults to `true`
+- `asserts.checks[].priority` is optional integer metadata (`>=1`, default `1`)
+- `asserts.checks[].severity` is optional integer metadata (`>=1`, default `1`)
+- `asserts.checks[].purpose` is optional human-readable text
 - optional predicates (`required: false`) are non-blocking for overall case verdict
 - prohibition intent is expressed directly with negation operators
   (for example `std.logic.not`)
@@ -923,14 +922,14 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | `true` | `v2` |
 | `harness.docs[].examples[].ref` | `string` | `true` | `v2` |
 | `services` | `mapping` | `false` | `v2` |
-| `services[].id` | `string` | `true` | `v2` |
+| `services[].type` | `string` | `true` | `v2` |
 | `services[].type` | `string` | `false` | `v2` |
-| `services[].direction` | `string` | `false` | `v2` |
-| `services[].mode` | `string` | `false` | `v2` |
-| `services[].config` | `mapping` | `false` | `v2` |
-| `services[].imports` | `list` | `false` | `v2` |
-| `services[].imports[].names` | `list` | `true` | `v2` |
-| `services[].imports[].as` | `mapping` | `false` | `v2` |
+| `services[].operations[].direction` | `string` | `false` | `v2` |
+| `services[].operations[].mode` | `string` | `false` | `v2` |
+| `services[].operations[].config` | `mapping` | `false` | `v2` |
+| `services[].operations[].imports` | `list` | `false` | `v2` |
+| `services[].operations[].imports[].names` | `list` | `true` | `v2` |
+| `services[].operations[].imports[].as` | `mapping` | `false` | `v2` |
 | `services[].docs` | `list` | `false` | `v2` |
 | `services[].docs[].id` | `string` | `false` | `v2` |
 | `services[].docs[].summary` | `string` | `true` | `v2` |
@@ -951,37 +950,37 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services[].docs[].examples` | `list` | `false` | `v2` |
 | `services[].docs[].examples[].title` | `string` | `true` | `v2` |
 | `services[].docs[].examples[].ref` | `string` | `true` | `v2` |
-| `contracts[].bindings` | `any` | `false` | `v2` |
-| `contracts[].bindings.defaults` | `mapping` | `false` | `v2` |
-| `contracts[].bindings.defaults.service` | `string` | `false` | `v2` |
-| `contracts[].bindings.defaults.import` | `string` | `false` | `v2` |
-| `contracts[].bindings.defaults.mode` | `string` | `false` | `v2` |
-| `contracts[].bindings.defaults.predicates` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].id` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].service` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].import` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].inputs` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].outputs` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].predicates` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].mode` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].id` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].service` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].import` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].inputs` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].outputs` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
-| `contracts[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
-| `contracts[].bindings.rows[].predicates` | `list` | `false` | `v2` |
-| `contracts[].bindings.rows[].mode` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings` | `any` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.mode` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.defaults.predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | `true` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | `false` | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | `false` | `v2` |
 | `artifacts` | `mapping` | `false` | `v2` |
 | `artifacts` | `list` | `false` | `v2` |
 | `artifacts[].id` | `string` | `true` | `v2` |
@@ -1061,7 +1060,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].examples[].title` | `string` | `true` | `v2` |
 | `exports[].docs[].examples[].ref` | `string` | `true` | `v2` |
 | `contracts` | `list` | `true` | `v2` |
-| `contracts[].id` | `string` | `true` | `v2` |
+| `contracts.clauses[].id` | `string` | `true` | `v2` |
 | `title` | `string` | `false` | `v2` |
 | `purpose` | `string` | `false` | `v2` |
 | `docs` | `list` | `false` | `v2` |
@@ -1085,54 +1084,54 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `docs[].examples[].title` | `string` | `true` | `v2` |
 | `docs[].examples[].ref` | `string` | `true` | `v2` |
 | `domain` | `string` | `false` | `v2` |
-| `contracts[].title` | `string` | `false` | `v2` |
-| `contracts[].purpose` | `string` | `false` | `v2` |
-| `contracts[].domain` | `string` | `false` | `v2` |
-| `contracts[].docs` | `list` | `false` | `v2` |
-| `contracts[].docs[].id` | `string` | `false` | `v2` |
-| `contracts[].docs[].summary` | `string` | `true` | `v2` |
-| `contracts[].docs[].audience` | `string` | `true` | `v2` |
-| `contracts[].docs[].status` | `string` | `true` | `v2` |
-| `contracts[].docs[].description` | `string` | `false` | `v2` |
-| `contracts[].docs[].type` | `string` | `false` | `v2` |
-| `contracts[].docs[].since` | `string` | `false` | `v2` |
-| `contracts[].docs[].updated_at` | `string` | `false` | `v2` |
-| `contracts[].docs[].tags` | `list` | `false` | `v2` |
-| `contracts[].docs[].owners` | `list` | `false` | `v2` |
-| `contracts[].docs[].owners[].id` | `string` | `false` | `v2` |
-| `contracts[].docs[].owners[].role` | `string` | `true` | `v2` |
-| `contracts[].docs[].links` | `list` | `false` | `v2` |
-| `contracts[].docs[].links[].rel` | `string` | `true` | `v2` |
-| `contracts[].docs[].links[].ref` | `string` | `true` | `v2` |
-| `contracts[].docs[].links[].title` | `string` | `false` | `v2` |
-| `contracts[].docs[].examples` | `list` | `false` | `v2` |
-| `contracts[].docs[].examples[].title` | `string` | `true` | `v2` |
-| `contracts[].docs[].examples[].ref` | `string` | `true` | `v2` |
-| `contracts[].when` | `mapping` | `false` | `v2` |
-| `contracts[].when.required` | `list` | `false` | `v2` |
-| `contracts[].when.optional` | `list` | `false` | `v2` |
-| `contracts[].when.fail` | `list` | `false` | `v2` |
-| `contracts[].when.complete` | `list` | `false` | `v2` |
-| `contracts[].clauses` | `mapping` | `true` | `v2` |
-| `contracts[].expect` | `mapping` | `false` | `v2` |
-| `contracts[].expect.portable` | `mapping` | `false` | `v2` |
-| `contracts[].expect.portable.status` | `string` | `false` | `v2` |
-| `contracts[].expect.portable.category` | `string` | `false` | `v2` |
-| `contracts[].expect.portable.message_tokens` | `list` | `false` | `v2` |
-| `contracts[].expect.overrides` | `list` | `false` | `v2` |
-| `contracts[].expect.overrides[].runner` | `string` | `true` | `v2` |
-| `contracts[].expect.overrides[].status` | `string` | `false` | `v2` |
-| `contracts[].expect.overrides[].category` | `string` | `false` | `v2` |
-| `contracts[].expect.overrides[].message_tokens` | `list` | `false` | `v2` |
-| `contracts[].requires` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].title` | `string` | `false` | `v2` |
+| `contracts.clauses[].purpose` | `string` | `false` | `v2` |
+| `contracts.clauses[].domain` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].id` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].summary` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].audience` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].status` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].description` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].type` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].since` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].updated_at` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].tags` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners[].id` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].owners[].role` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].links[].rel` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links[].ref` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].links[].title` | `string` | `false` | `v2` |
+| `contracts.clauses[].docs[].examples` | `list` | `false` | `v2` |
+| `contracts.clauses[].docs[].examples[].title` | `string` | `true` | `v2` |
+| `contracts.clauses[].docs[].examples[].ref` | `string` | `true` | `v2` |
+| `contracts.clauses[].when` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].when.required` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.optional` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.fail` | `list` | `false` | `v2` |
+| `contracts.clauses[].when.complete` | `list` | `false` | `v2` |
+| `contracts.clauses[].asserts` | `mapping` | `true` | `v2` |
+| `contracts.clauses[].expect` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].expect.portable` | `mapping` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.status` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.category` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.portable.message_tokens` | `list` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides` | `list` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].runner` | `string` | `true` | `v2` |
+| `contracts.clauses[].expect.overrides[].status` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].category` | `string` | `false` | `v2` |
+| `contracts.clauses[].expect.overrides[].message_tokens` | `list` | `false` | `v2` |
+| `contracts.clauses[].requires` | `mapping` | `false` | `v2` |
 
 ### Runtime Surfaces
 
 | surface | required keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services[]` | `services[].id` (required when `services` is present, or when `contracts[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `contracts[].bindings.rows[]` | `contracts[].bindings.rows[].id`, `contracts[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services[]` | `services[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V2 -->
 <!-- GENERATED:START spec_schema_field_catalog -->
@@ -1175,14 +1174,14 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `harness.docs[].examples[].title` | `string` | true | `v2` |
 | `harness.docs[].examples[].ref` | `string` | true | `v2` |
 | `services` | `mapping` | false | `v2` |
-| `services[].id` | `string` | true | `v2` |
+| `services[].type` | `string` | true | `v2` |
 | `services[].type` | `string` | false | `v2` |
-| `services[].direction` | `string` | false | `v2` |
-| `services[].mode` | `string` | false | `v2` |
-| `services[].config` | `mapping` | false | `v2` |
-| `services[].imports` | `list` | false | `v2` |
-| `services[].imports[].names` | `list` | true | `v2` |
-| `services[].imports[].as` | `mapping` | false | `v2` |
+| `services[].operations[].direction` | `string` | false | `v2` |
+| `services[].operations[].mode` | `string` | false | `v2` |
+| `services[].operations[].config` | `mapping` | false | `v2` |
+| `services[].operations[].imports` | `list` | false | `v2` |
+| `services[].operations[].imports[].names` | `list` | true | `v2` |
+| `services[].operations[].imports[].as` | `mapping` | false | `v2` |
 | `services[].docs` | `list` | false | `v2` |
 | `services[].docs[].id` | `string` | false | `v2` |
 | `services[].docs[].summary` | `string` | true | `v2` |
@@ -1203,37 +1202,37 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `services[].docs[].examples` | `list` | false | `v2` |
 | `services[].docs[].examples[].title` | `string` | true | `v2` |
 | `services[].docs[].examples[].ref` | `string` | true | `v2` |
-| `contracts[].bindings` | `any` | false | `v2` |
-| `contracts[].bindings.defaults` | `mapping` | false | `v2` |
-| `contracts[].bindings.defaults.service` | `string` | false | `v2` |
-| `contracts[].bindings.defaults.import` | `string` | false | `v2` |
-| `contracts[].bindings.defaults.mode` | `string` | false | `v2` |
-| `contracts[].bindings.defaults.predicates` | `list` | false | `v2` |
-| `contracts[].bindings.rows` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].id` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].service` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].import` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].inputs` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].outputs` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].predicates` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].mode` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].id` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].service` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].import` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].inputs` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].outputs` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
-| `contracts[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
-| `contracts[].bindings.rows[].predicates` | `list` | false | `v2` |
-| `contracts[].bindings.rows[].mode` | `string` | false | `v2` |
+| `contracts.clauses[].bindings` | `any` | false | `v2` |
+| `contracts.clauses[].bindings.defaults` | `mapping` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.mode` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.defaults.predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].id` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].service` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].import` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].from` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].inputs[].as` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].to` | `string` | true | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].as` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].outputs[].path` | `string` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].predicates` | `list` | false | `v2` |
+| `contracts.clauses[].bindings.rows[].mode` | `string` | false | `v2` |
 | `artifacts` | `mapping` | false | `v2` |
 | `artifacts` | `list` | false | `v2` |
 | `artifacts[].id` | `string` | true | `v2` |
@@ -1313,7 +1312,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `exports[].docs[].examples[].title` | `string` | true | `v2` |
 | `exports[].docs[].examples[].ref` | `string` | true | `v2` |
 | `contracts` | `list` | true | `v2` |
-| `contracts[].id` | `string` | true | `v2` |
+| `contracts.clauses[].id` | `string` | true | `v2` |
 | `title` | `string` | false | `v2` |
 | `purpose` | `string` | false | `v2` |
 | `docs` | `list` | false | `v2` |
@@ -1337,52 +1336,52 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 | `docs[].examples[].title` | `string` | true | `v2` |
 | `docs[].examples[].ref` | `string` | true | `v2` |
 | `domain` | `string` | false | `v2` |
-| `contracts[].title` | `string` | false | `v2` |
-| `contracts[].purpose` | `string` | false | `v2` |
-| `contracts[].domain` | `string` | false | `v2` |
-| `contracts[].docs` | `list` | false | `v2` |
-| `contracts[].docs[].id` | `string` | false | `v2` |
-| `contracts[].docs[].summary` | `string` | true | `v2` |
-| `contracts[].docs[].audience` | `string` | true | `v2` |
-| `contracts[].docs[].status` | `string` | true | `v2` |
-| `contracts[].docs[].description` | `string` | false | `v2` |
-| `contracts[].docs[].type` | `string` | false | `v2` |
-| `contracts[].docs[].since` | `string` | false | `v2` |
-| `contracts[].docs[].updated_at` | `string` | false | `v2` |
-| `contracts[].docs[].tags` | `list` | false | `v2` |
-| `contracts[].docs[].owners` | `list` | false | `v2` |
-| `contracts[].docs[].owners[].id` | `string` | false | `v2` |
-| `contracts[].docs[].owners[].role` | `string` | true | `v2` |
-| `contracts[].docs[].links` | `list` | false | `v2` |
-| `contracts[].docs[].links[].rel` | `string` | true | `v2` |
-| `contracts[].docs[].links[].ref` | `string` | true | `v2` |
-| `contracts[].docs[].links[].title` | `string` | false | `v2` |
-| `contracts[].docs[].examples` | `list` | false | `v2` |
-| `contracts[].docs[].examples[].title` | `string` | true | `v2` |
-| `contracts[].docs[].examples[].ref` | `string` | true | `v2` |
-| `contracts[].when` | `mapping` | false | `v2` |
-| `contracts[].when.required` | `list` | false | `v2` |
-| `contracts[].when.optional` | `list` | false | `v2` |
-| `contracts[].when.fail` | `list` | false | `v2` |
-| `contracts[].when.complete` | `list` | false | `v2` |
-| `contracts[].clauses` | `mapping` | true | `v2` |
-| `contracts[].expect` | `mapping` | false | `v2` |
-| `contracts[].expect.portable` | `mapping` | false | `v2` |
-| `contracts[].expect.portable.status` | `string` | false | `v2` |
-| `contracts[].expect.portable.category` | `string` | false | `v2` |
-| `contracts[].expect.portable.message_tokens` | `list` | false | `v2` |
-| `contracts[].expect.overrides` | `list` | false | `v2` |
-| `contracts[].expect.overrides[].runner` | `string` | true | `v2` |
-| `contracts[].expect.overrides[].status` | `string` | false | `v2` |
-| `contracts[].expect.overrides[].category` | `string` | false | `v2` |
-| `contracts[].expect.overrides[].message_tokens` | `list` | false | `v2` |
-| `contracts[].requires` | `mapping` | false | `v2` |
+| `contracts.clauses[].title` | `string` | false | `v2` |
+| `contracts.clauses[].purpose` | `string` | false | `v2` |
+| `contracts.clauses[].domain` | `string` | false | `v2` |
+| `contracts.clauses[].docs` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].id` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].summary` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].audience` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].status` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].description` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].type` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].since` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].updated_at` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].tags` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].owners` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].owners[].id` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].owners[].role` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].links[].rel` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links[].ref` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].links[].title` | `string` | false | `v2` |
+| `contracts.clauses[].docs[].examples` | `list` | false | `v2` |
+| `contracts.clauses[].docs[].examples[].title` | `string` | true | `v2` |
+| `contracts.clauses[].docs[].examples[].ref` | `string` | true | `v2` |
+| `contracts.clauses[].when` | `mapping` | false | `v2` |
+| `contracts.clauses[].when.required` | `list` | false | `v2` |
+| `contracts.clauses[].when.optional` | `list` | false | `v2` |
+| `contracts.clauses[].when.fail` | `list` | false | `v2` |
+| `contracts.clauses[].when.complete` | `list` | false | `v2` |
+| `contracts.clauses[].asserts` | `mapping` | true | `v2` |
+| `contracts.clauses[].expect` | `mapping` | false | `v2` |
+| `contracts.clauses[].expect.portable` | `mapping` | false | `v2` |
+| `contracts.clauses[].expect.portable.status` | `string` | false | `v2` |
+| `contracts.clauses[].expect.portable.category` | `string` | false | `v2` |
+| `contracts.clauses[].expect.portable.message_tokens` | `list` | false | `v2` |
+| `contracts.clauses[].expect.overrides` | `list` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].runner` | `string` | true | `v2` |
+| `contracts.clauses[].expect.overrides[].status` | `string` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].category` | `string` | false | `v2` |
+| `contracts.clauses[].expect.overrides[].message_tokens` | `list` | false | `v2` |
+| `contracts.clauses[].requires` | `mapping` | false | `v2` |
 
 ### Runtime Surface Matrix
 
 | surface | required_keys | catalog |
 |---|---|---|
 | `harness` | `harness.type`, `harness.profile` | n/a |
-| `services[]` | `services[].id` (required when `services` is present, or when `contracts[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
-| `contracts[].bindings.rows[]` | `contracts[].bindings.rows[].id`, `contracts[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `services[]` | `services[].type` (required when `services` is present, or when `contracts.clauses[].bindings.rows[]` / `from: service` imports are used) | `/specs/schema/service_contract_catalog_v1.yaml` |
+| `contracts.clauses[].bindings.rows[]` | `contracts.clauses[].bindings.rows[].id`, `contracts.clauses[].bindings.rows[].import` | `/specs/schema/service_contract_catalog_v1.yaml` |
 <!-- GENERATED:END spec_schema_field_catalog -->

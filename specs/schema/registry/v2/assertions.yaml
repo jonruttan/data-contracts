@@ -2,107 +2,107 @@ version: 2
 id: schema.registry.v2.assertions
 type: assertions
 fields:
-  contracts[].clauses:
+  contracts.clauses[].asserts:
     type: mapping
     required: true
     since: v2
-    description: Canonical clause tree root mapping with defaults/predicates; 
+    description: Canonical assertion tree root mapping with defaults/checks; 
       leaves are direct spec-lang operator mappings. Binding-piped symbols are 
-      merged into effective predicate import context after clause/predicate 
+      merged into effective check import context after assertion/check 
       import merge.
-  contracts[].clauses.defaults:
+  contracts.clauses[].asserts.defaults:
     type: mapping
     required: false
     since: v2
-    description: Optional clause-level defaults mapping.
-  contracts[].clauses.imports:
+    description: Optional assertion-level defaults mapping.
+  contracts.clauses[].asserts.imports:
     type: list
     required: false
     since: v2
-    description: 'Clause-level default import bindings inherited by predicates.
+    description: 'Assertion-level default import bindings inherited by checks.
       Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
       imported names must resolve to suite-declared `artifacts[].id` and be
       explicitly wired when runtime-produced.'
-  contracts[].clauses.imports[].from:
+  contracts.clauses[].asserts.imports[].from:
     type: string
     required: true
     since: v2
     description: 'Import source: artifact or service.'
-  contracts[].clauses.imports[].service:
+  contracts.clauses[].asserts.imports[].service:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services[].id.
-  contracts[].clauses.imports[].names:
+    description: Required when from=service; references services[].operations[].id.
+  contracts.clauses[].asserts.imports[].names:
     type: list
     required: true
     since: v2
     description: Imported symbol names; from=artifact names must resolve to
       suite-declared artifact ids.
-  contracts[].clauses.imports[].as:
+  contracts.clauses[].asserts.imports[].as:
     type: mapping
     required: false
     since: v2
     description: Optional local alias map.
-  contracts[].clauses.predicates:
+  contracts.clauses[].asserts.checks:
     type: list
     required: true
     since: v2
-    description: Non-empty predicate list.
-  contracts[].clauses.predicates[].id:
+    description: Non-empty check list.
+  contracts.clauses[].asserts.checks[].id:
     type: string
     required: true
     since: v2
-    description: Stable predicate id.
-  contracts[].clauses.predicates[].imports:
+    description: Stable check id.
+  contracts.clauses[].asserts.checks[].imports:
     type: list
     required: false
     since: v2
-    description: 'Predicate-level imports merged over clauses.imports.
+    description: 'Check-level imports merged over asserts.imports.
       Canonical row shape is `{from, names, service?, as?}`. For `from: artifact`,
       names must resolve to suite-declared `artifacts[].id`.'
-  contracts[].clauses.predicates[].imports[].from:
+  contracts.clauses[].asserts.checks[].imports[].from:
     type: string
     required: true
     since: v2
     description: 'Import source: artifact or service.'
-  contracts[].clauses.predicates[].imports[].service:
+  contracts.clauses[].asserts.checks[].imports[].service:
     type: string
     required: false
     since: v2
-    description: Required when from=service; references services[].id.
-  contracts[].clauses.predicates[].imports[].names:
+    description: Required when from=service; references services[].operations[].id.
+  contracts.clauses[].asserts.checks[].imports[].names:
     type: list
     required: true
     since: v2
     description: Imported symbol names; from=artifact names must resolve to
       suite-declared artifact ids.
-  contracts[].clauses.predicates[].imports[].as:
+  contracts.clauses[].asserts.checks[].imports[].as:
     type: mapping
     required: false
     since: v2
     description: Optional local alias map.
-  contracts[].clauses.predicates[].purpose:
+  contracts.clauses[].asserts.checks[].purpose:
     type: string
     required: false
     since: v2
-    description: Optional human-readable predicate intent.
-  contracts[].clauses.predicates[].required:
+    description: Optional human-readable check intent.
+  contracts.clauses[].asserts.checks[].required:
     type: bool
     required: false
     since: v2
     description: Optional requiredness flag; defaults to true when omitted.
-  contracts[].clauses.predicates[].priority:
+  contracts.clauses[].asserts.checks[].priority:
     type: int
     required: false
     since: v2
     description: Optional positive integer priority metadata (default 1).
-  contracts[].clauses.predicates[].severity:
+  contracts.clauses[].asserts.checks[].severity:
     type: int
     required: false
     since: v2
     description: Optional positive integer severity metadata (default 1).
-  contracts[].clauses.predicates[].assert:
+  contracts.clauses[].asserts.checks[].assert:
     type: any
     required: true
     since: v2

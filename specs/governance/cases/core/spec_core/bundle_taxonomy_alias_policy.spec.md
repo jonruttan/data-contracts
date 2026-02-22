@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-BUNDLE-TAXONOMY-001
     title: bundle taxonomy contract defines canonical metadata names
     purpose: Ensures canonical naming guidance prefers bundle_version and maintainers.
@@ -12,12 +13,12 @@ contracts:
         profile: read.text
         config:
           path: /specs/contract/32_contract_bundle_taxonomy.md
-    clauses:
+    asserts:
       imports:
       - from: artifact
         names:
         - text
-      predicates:
+      checks:
       - id: assert_1
         assert:
         - std.string.contains:
@@ -40,19 +41,19 @@ contracts:
         profile: read.text
         config:
           path: /specs/schema/schema_v2.md
-    clauses:
+    asserts:
       imports:
       - from: artifact
         names:
         - text
-      predicates:
+      checks:
       - id: assert_1
         assert:
           std.logic.and:
           - std.logic.not:
             - std.string.contains:
               - {var: text}
-              - - `bundle` (mapping, optional)
+              - "- `bundle` (mapping, optional)"
           - std.string.contains:
             - {var: text}
             - Bundle/package management is not part of `contract-spec` suite shape in v2.

@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.export
 harness:
   type: unit.test
   profile: check
@@ -23,36 +21,40 @@ harness:
       n- portability: python: true\nphp: true\nrust: true\nnotes: Confirm per-runtime
       behavior and caveats.'', ''since'': ''v1''}]}]}'
 services:
-- id: svc.exports_as_make_has_target_from_assert_function_path_export_make_has_target_params_subject_target_required_true_docs_id_make_has_target_doc_1_summary_contract_export_for_make_has_target_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_n_target_target_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_name_target_n_type_any_n_required_true_n_description_input_parameter_target_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
-  type: legacy.exports_as_make_has_target_from_assert_function_path_export_make_has_target_params_subject_target_required_true_docs_id_make_has_target_doc_1_summary_contract_export_for_make_has_target_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_n_target_target_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_name_target_n_type_any_n_required_true_n_description_input_parameter_target_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
-  mode: default
-  direction: bidirectional
+- type: legacy.exports_as_make_has_target_from_assert_function_path_export_make_has_target_params_subject_target_required_true_docs_id_make_has_target_doc_1_summary_contract_export_for_make_has_target_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_n_target_target_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_name_target_n_type_any_n_required_true_n_description_input_parameter_target_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
+  operations:
+  - id: svc.exports_as_make_has_target_from_assert_function_path_export_make_has_target_params_subject_target_required_true_docs_id_make_has_target_doc_1_summary_contract_export_for_make_has_target_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_n_target_target_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_name_target_n_type_any_n_required_true_n_description_input_parameter_target_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: LIB-DOMAIN-MAKE-001
-  title: makefile projection helper functions
-  docs:
-  - summary: Case `LIB-DOMAIN-MAKE-001` for `contract.export`.
-    audience: spec-authors
-    status: active
-    description: Auto-generated root doc metadata stub. Replace with authored reference
-      text.
-    since: v1
-    tags:
-    - contract.export
+  defaults:
+    type: contract.export
   clauses:
-    predicates:
-    - id: __export__make.has_target
-      assert:
-        std.string.contains:
-        - std.object.get:
-          - var: subject
-          - value
-        - var: target
-  library:
-    id: domain.make.core
-    module: domain
-    stability: alpha
-    owner: data-contracts
-    tags:
-    - domain
+  - id: LIB-DOMAIN-MAKE-001
+    title: makefile projection helper functions
+    docs:
+    - summary: Case `LIB-DOMAIN-MAKE-001` for `contract.export`.
+      audience: spec-authors
+      status: active
+      description: Auto-generated root doc metadata stub. Replace with authored reference
+        text.
+      since: v1
+      tags:
+      - contract.export
+    library:
+      id: domain.make.core
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      tags:
+      - domain
+    asserts:
+      checks:
+      - id: __export__make.has_target
+        assert:
+          std.string.contains:
+          - std.object.get:
+            - var: subject
+            - value
+          - var: target
 ```

@@ -1,9 +1,10 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: /specs/schema/schema_v2.md
-defaults:
-  type: contract.check
 contracts:
+  defaults:
+    type: contract.check
+  clauses:
   - id: DCGOV-PIPE-SCHEMA-001
     title: schema pin pipeline is chained and policy-backed
     purpose: Ensures schema pin checks are linked as a chain and validated through policy library exports.
@@ -36,21 +37,21 @@ contracts:
             - policy.schema_pin.missing_schema_ref_zero
             - policy.schema_pin.unknown_schema_ref_zero
             - policy.schema_pin.version_match_zero
-    clauses:
+    asserts:
       imports:
         - from: artifact
           names:
             - violation_count
             - context_json
-      predicates:
+      checks:
         - id: assert_1
           assert:
             call:
-          - {var: policy.assert.no_violations}
-          - std.object.assoc:
-            - violation_count
-            - {var: violation_count}
-            - lit: {}
+            - {var: policy.assert.no_violations}
+            - std.object.assoc:
+              - violation_count
+              - {var: violation_count}
+              - lit: {}
         - id: assert_2
           assert:
             - call:

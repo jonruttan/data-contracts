@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -10,39 +8,43 @@ harness:
     legacy_contract_harnesses:
     - "{'check': {'profile': 'text.file', 'config': {'path': '/specs/contract/34_runner_implementation_spec_bundles.md'}}}"
 services:
-- id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
-  type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
-  mode: default
-  direction: bidirectional
+- type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
+  operations:
+  - id: svc.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCCONF-BTOOL-010
-  title: implementation bundle contract defines build and package command surface
-  purpose: Runner implementation spec bundle contract must expose build-impl, package-impl,
-    and package-check command vocabulary.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - text
-    predicates:
-    - id: assert_1
-      assert:
-        std.string.contains:
-        - var: text
-        - build-impl
-    - id: assert_2
-      assert:
-        std.string.contains:
-        - var: text
-        - package-impl
-    - id: assert_3
-      assert:
-        std.string.contains:
-        - var: text
-        - package-check
-    - id: assert_4
-      assert:
-        std.string.contains:
-        - var: text
-        - data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz
+  - id: DCCONF-BTOOL-010
+    title: implementation bundle contract defines build and package command surface
+    purpose: Runner implementation spec bundle contract must expose build-impl, package-impl,
+      and package-check command vocabulary.
+    asserts:
+      imports:
+      - from: artifact
+        names:
+        - text
+      checks:
+      - id: assert_1
+        assert:
+          std.string.contains:
+          - var: text
+          - build-impl
+      - id: assert_2
+        assert:
+          std.string.contains:
+          - var: text
+          - package-impl
+      - id: assert_3
+        assert:
+          std.string.contains:
+          - var: text
+          - package-check
+      - id: assert_4
+        assert:
+          std.string.contains:
+          - var: text
+          - data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz
 ```

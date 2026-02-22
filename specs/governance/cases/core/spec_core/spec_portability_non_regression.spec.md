@@ -1,8 +1,6 @@
 ```yaml contract-spec
 spec_version: 2
 schema_ref: "/specs/schema/schema_v2.md"
-defaults:
-  type: contract.check
 harness:
   type: unit.test
   profile: check
@@ -25,46 +23,50 @@ harness:
       'symbols': ['policy.assert.no_violations', 'policy.assert.summary_passed', 'policy.assert.summary_check_id',
       'policy.assert.scan_pass']}]}"
 services:
-- id: svc.root_portability_non_regression_baseline_path_specs_governance_metrics_spec_portability_baseline_json_summary_fields_overall_logic_self_contained_ratio_segment_fields_conformance_mean_logic_self_contained_ratio_governance_mean_logic_self_contained_ratio_impl_mean_logic_self_contained_ratio_epsilon_1e_12_portability_metric_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_core_types_text_file_cli_run_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_runtime_capability_tokens_api_http_governance_check_runtime_capability_prefixes_runtime_php_python_weights_non_evaluate_leaf_share_0_45_expect_impl_overlay_0_25_runtime_specific_capability_0_15_non_core_type_0_15_report_top_n_10_enforce_false_check_profile_governance_scan_config_check_spec_portability_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
-  type: legacy.root_portability_non_regression_baseline_path_specs_governance_metrics_spec_portability_baseline_json_summary_fields_overall_logic_self_contained_ratio_segment_fields_conformance_mean_logic_self_contained_ratio_governance_mean_logic_self_contained_ratio_impl_mean_logic_self_contained_ratio_epsilon_1e_12_portability_metric_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_core_types_text_file_cli_run_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_runtime_capability_tokens_api_http_governance_check_runtime_capability_prefixes_runtime_php_python_weights_non_evaluate_leaf_share_0_45_expect_impl_overlay_0_25_runtime_specific_capability_0_15_non_core_type_0_15_report_top_n_10_enforce_false_check_profile_governance_scan_config_check_spec_portability_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
-  mode: default
-  direction: bidirectional
+- type: legacy.root_portability_non_regression_baseline_path_specs_governance_metrics_spec_portability_baseline_json_summary_fields_overall_logic_self_contained_ratio_segment_fields_conformance_mean_logic_self_contained_ratio_governance_mean_logic_self_contained_ratio_impl_mean_logic_self_contained_ratio_epsilon_1e_12_portability_metric_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_core_types_text_file_cli_run_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_runtime_capability_tokens_api_http_governance_check_runtime_capability_prefixes_runtime_php_python_weights_non_evaluate_leaf_share_0_45_expect_impl_overlay_0_25_runtime_specific_capability_0_15_non_core_type_0_15_report_top_n_10_enforce_false_check_profile_governance_scan_config_check_spec_portability_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
+  operations:
+  - id: svc.root_portability_non_regression_baseline_path_specs_governance_metrics_spec_portability_baseline_json_summary_fields_overall_logic_self_contained_ratio_segment_fields_conformance_mean_logic_self_contained_ratio_governance_mean_logic_self_contained_ratio_impl_mean_logic_self_contained_ratio_epsilon_1e_12_portability_metric_roots_specs_conformance_cases_specs_governance_cases_runner_owned_implementation_specs_core_types_text_file_cli_run_segment_rules_prefix_specs_conformance_cases_segment_conformance_prefix_specs_governance_cases_segment_governance_prefix_runner_owned_implementation_specs_segment_impl_runtime_capability_tokens_api_http_governance_check_runtime_capability_prefixes_runtime_php_python_weights_non_evaluate_leaf_share_0_45_expect_impl_overlay_0_25_runtime_specific_capability_0_15_non_core_type_0_15_report_top_n_10_enforce_false_check_profile_governance_scan_config_check_spec_portability_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass.default.1
+    mode: default
+    direction: bidirectional
 contracts:
-- id: DCGOV-SPEC-PORT-002
-  title: spec-lang self-containment metric is non-regressing
-  purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics
-    cannot decrease from baseline.
+  defaults:
+    type: contract.check
   clauses:
-    imports:
-    - from: artifact
-      names:
-      - violation_count
-    predicates:
-    - id: assert_1
-      assert:
-        call:
-        - var: policy.assert.no_violations
-        - std.object.assoc:
-          - violation_count
-          - var: violation_count
-          - lit: {}
-    - id: assert_2
-      assert:
-      - call:
-        - var: policy.assert.summary_passed
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-      - call:
-        - var: policy.assert.summary_check_id
-        - std.object.assoc:
-          - summary_json
-          - var: summary_json
-          - lit: {}
-        - spec.portability_non_regression
+  - id: DCGOV-SPEC-PORT-002
+    title: spec-lang self-containment metric is non-regressing
+    purpose: Enforces a monotonic ratchet so configured spec-lang self-containment
+      metrics cannot decrease from baseline.
+    asserts:
       imports:
       - from: artifact
         names:
-        - summary_json
+        - violation_count
+      checks:
+      - id: assert_1
+        assert:
+          call:
+          - var: policy.assert.no_violations
+          - std.object.assoc:
+            - violation_count
+            - var: violation_count
+            - lit: {}
+      - id: assert_2
+        assert:
+        - call:
+          - var: policy.assert.summary_passed
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+        - call:
+          - var: policy.assert.summary_check_id
+          - std.object.assoc:
+            - summary_json
+            - var: summary_json
+            - lit: {}
+          - spec.portability_non_regression
+        imports:
+        - from: artifact
+          names:
+          - summary_json
 ```

@@ -4,7 +4,7 @@ rules:
 - id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
   introduced_in: v2
   scope: case
-  applies_to: contracts[].bindings.imports
+  applies_to: contracts.clauses[].bindings.imports
   norm: MUST
   requirement: service_binding_runtime_payloads_use_declared_artifact_ids
   description: 'Service-to-contract bindings must source runtime inputs from
@@ -26,10 +26,10 @@ rules:
   requirement: imported_artifact_symbols_must_be_declared_and_wired
   description: 'Any `from: artifact` import name must be explicitly declared in
     suite `artifacts[]`; runtime-produced symbols
-    must be explicitly wired through `contracts[].bindings.rows[].outputs`.
+    must be explicitly wired through `contracts.clauses[].bindings.rows[].outputs`.
 
     '
-  rationale: Eliminates implicit symbol magic and keeps predicate dataflow explicit.
+  rationale: Eliminates implicit symbol magic and keeps check dataflow explicit.
   risk_if_violated: Hidden runtime coupling and non-deterministic symbol availability.
   references:
   - specs/contract/03_assertions.md
@@ -38,11 +38,11 @@ rules:
 - id: BINDINGS_SERVICE_REQUIRED
   introduced_in: v2
   scope: case
-  applies_to: contracts[].bindings.imports
+  applies_to: contracts.clauses[].bindings.imports
   norm: MUST
   requirement: bindings_service_is_required
   description: Effective contract bindings must resolve `service` after defaults
-    merge (`contracts[].bindings.defaults` + row). Implicit runtime service resolution is
+    merge (`contracts.clauses[].bindings.defaults` + row). Implicit runtime service resolution is
     forbidden.
   rationale: Keeps service selection explicit and auditable.
   risk_if_violated: Ambiguous service resolution and hidden runtime behavior.
@@ -56,7 +56,7 @@ rules:
   norm: MUST
   requirement: root_bindings_are_invalid
   description: Legacy root `bindings` is invalid in v2; bindings must be declared
-    under `contracts[].bindings`.
+    under `contracts.clauses[].bindings`.
   rationale: Keeps service wiring owned by each contract and removes suite-level
     contract-dispatch coupling.
   risk_if_violated: Ambiguous ownership and legacy shape drift.
@@ -66,7 +66,7 @@ rules:
 - id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
   introduced_in: v2
   scope: case
-  applies_to: services[].config
+  applies_to: services[].defaults.config|services[].operations[].config
   norm: MUST
   requirement: service_config_locators_use_artifact_import_ids_only
   description: Service config must not embed direct locator values (`path`,
@@ -1837,9 +1837,9 @@ rules:
   scope: implementation
   applies_to: runtime.assertion_execution
   norm: MUST
-  requirement: compile_leaf_ops_to_spec_lang_predicates_before_execution
+  requirement: compile_leaf_ops_to_spec_lang_checks_before_execution
   description: 'Runtime assertion paths must compile external leaf ops to spec-lang
-    predicates and evaluate through the spec-lang engine, rather than direct ad-hoc
+    checks and evaluate through the spec-lang engine, rather than direct ad-hoc
     operator execution branches.
 
     '
@@ -1871,7 +1871,7 @@ rules:
   norm: MUST
   requirement: assertion_pass_fail_decisions_execute_via_compiled_spec_lang
   description: 'Runtime assertion pass/fail decisions must execute only through compiled
-    spec-lang predicates.
+    spec-lang checks.
 
     '
   rationale: Enforces one semantic decision plane across runner implementations.
@@ -1952,9 +1952,9 @@ rules:
   scope: governance
   applies_to: governance.check_decisions
   norm: MUST
-  requirement: governance_decision_predicates_defined_as_spec_lang_data
+  requirement: governance_decision_checks_defined_as_spec_lang_data
   description: 'Governance checks must keep data extraction in scanner substrate and
-    express pass/fail predicates as spec-lang expressions in governance spec harness
+    express pass/fail checks as spec-lang expressions in governance spec harness
     config.
 
     '
@@ -3644,7 +3644,7 @@ rules:
     when helper coverage exists.
 
     '
-  rationale: Structured markdown predicates reduce brittle token-only checks and keep
+  rationale: Structured markdown checks reduce brittle token-only checks and keep
     docs assertions reusable.
   risk_if_violated: Minor markdown edits can trigger avoidable false failures.
   references:
@@ -4234,7 +4234,7 @@ rules:
   applies_to: governance.policy.library.exports
   norm: MUST
   requirement: chain_entry_cases_must_use_exported_policy_symbols
-  description: Chained policy entry cases must use shared exported policy symbols instead of inlined duplicated predicates.
+  description: Chained policy entry cases must use shared exported policy symbols instead of inlined duplicated checks.
   rationale: Maintains consistency and testability across policy domains.
   risk_if_violated: Assertion drift causes inconsistent governance outcomes.
   references:
@@ -4324,7 +4324,7 @@ rules:
   norm: SHOULD
   requirement: services_imports_compact_alias_is_preferred_authoring_form
   description: Authoring should prefer compact list[string] alias rows for
-    `services[].imports`; canonical mapping rows should be used when
+    `services[].operations[].imports`; canonical mapping rows should be used when
     aliasing (`as`) is required.
   rationale: Reduces repetitive syntax while keeping normalized runtime semantics.
   risk_if_violated: Fixture style drifts and cognitive overhead increases.
@@ -4335,10 +4335,10 @@ rules:
 - id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
   introduced_in: v2
   scope: authoring
-  applies_to: schema.v2.contracts.clauses.imports.style
+  applies_to: schema.v2.contracts.clauses.asserts.imports.style
   norm: SHOULD
   requirement: clause_imports_prefer_compact_alias_rows
-  description: Authoring should prefer canonical row rows for clause/predicate
+  description: Authoring should prefer canonical row rows for clause/check
     imports (bare string, `artifact`, `service` object aliases), while retaining
     canonical rows when they express intent more clearly.
   rationale: Reduces repetitive import syntax and keeps style uniform across active
@@ -4355,7 +4355,7 @@ rules:
   norm: SHOULD
   requirement: contract_bindings_prefer_defaults_rows_form_when_repetitive
   description: Authoring should prefer mapping-form bindings
-    (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`) when
+    (`contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`) when
     repeated row keys can be inherited without semantic loss.
   rationale: Improves readability and keeps binding requiredness semantics explicit.
   risk_if_violated: Binding blocks become repetitive and harder to maintain.
@@ -4413,7 +4413,7 @@ rules:
   norm: MUST
   requirement: services_import_alias_mixed_duplicate_catalog_checks_enforced
   description: Mixed compact/mapping item kinds in one
-    `services[].imports` list, duplicate effective import names, and
+    `services[].operations[].imports` list, duplicate effective import names, and
     catalog-invalid import names must hard-fail schema validation.
   rationale: Keeps canonical row behavior deterministic and machine-checkable.
   risk_if_violated: Compact import declarations become ambiguous and drift across
@@ -4426,10 +4426,10 @@ rules:
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_SUPPORTED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.contracts.clauses.imports
+  applies_to: schema.v2.contracts.clauses.asserts.imports
   norm: MUST
   requirement: clauses_imports_accepts_bare_string_short_alias
-  description: Clause and predicate imports must accept bare-string short alias
+  description: Clause and check imports must accept bare-string short alias
     rows (for example `- pipe_identity`) that normalize to canonical
     `from: service` import rows.
   rationale: Reduces repetitive import authoring while preserving normalized
@@ -4444,11 +4444,11 @@ rules:
 - id: CLAUSE_IMPORTS_SHORT_ALIAS_RESOLUTION_REQUIRED
   introduced_in: v2
   scope: runtime
-  applies_to: schema.v2.contracts.clauses.imports.validation
+  applies_to: schema.v2.contracts.clauses.asserts.imports.validation
   norm: MUST
   requirement: clauses_short_alias_requires_bindings_default_service_and_valid_import
-  description: Bare-string clause/predicate import aliases must resolve service
-    id from `contracts[].bindings.defaults.service`; missing defaults service,
+  description: Bare-string clause/check import aliases must resolve service
+    id from `contracts.clauses[].bindings.defaults.service`; missing defaults service,
     unknown service id, empty alias names, or unsupported import names must
     hard-fail.
   rationale: Keeps canonical row behavior deterministic and prevents implicit
@@ -4512,7 +4512,7 @@ rules:
   applies_to: schema.v2.services.profile
   norm: MUST
   requirement: v2_service_profiles_must_be_mode_style_and_type_compatible
-  description: services[].mode must be a mode token validated against
+  description: services[].operations[].mode must be a mode token validated against
     the resolved integration type from service catalog. Legacy profile tokens
     (`text.file`, `api.http`, `cli.run`, `docs.generate`) are invalid.
   rationale: Eliminates duplicated identity semantics between service type and profile.
