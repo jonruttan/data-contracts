@@ -20,15 +20,12 @@ fields:
     required: false
     since: v2
     description: 'Clause-level default import bindings inherited by predicates.
-      For from=artifact, every imported name must be explicitly declared at suite
-      root (`artifacts[].id`) and wired through
-      `contracts[].bindings` when runtime-produced. Supports canonical rows (`from`, `names`,
-      optional `service`, optional `as`) and grouped compact alias rows.
-      Bare string rows (for example `- pipe_identity`) are compact service
-      aliases normalized to `{from: service, names:[pipe_identity], service:<resolved>}`,
-      where `<resolved>` is `contracts[].bindings.defaults.service` for the same
-      contract. Alias grammar and normalization are defined in
-      `/specs/schema/registry/v2/aliases.yaml`.'
+      Accepted input forms include canonical rows (`from`, `names`, optional
+      `service`, optional `as`) and compact alias rows defined in
+      `/specs/schema/registry/v2/aliases.yaml`. Canonical normalized form is
+      canonical row shape before validation/runtime. For `from: artifact`,
+      imported names must resolve to suite-declared `artifacts[].id` and be
+      explicitly wired when runtime-produced.'
   contracts[].clauses.imports[].from:
     type: string
     required: true
@@ -64,14 +61,11 @@ fields:
     type: list
     required: false
     since: v2
-    description: 'Predicate-level imports merged over clauses.imports. from=artifact
-      names must resolve to suite-declared artifact ids. Supports canonical
-      rows and grouped compact alias rows.
-      Bare string rows (for example `- pipe_identity`) are compact service
-      aliases normalized to `{from: service, names:[pipe_identity], service:<resolved>}`,
-      where `<resolved>` is `contracts[].bindings.defaults.service` for the same
-      contract. Alias grammar and normalization are defined in
-      `/specs/schema/registry/v2/aliases.yaml`.'
+    description: 'Predicate-level imports merged over clauses.imports.
+      Accepted input forms include canonical rows and compact alias rows as
+      defined in `/specs/schema/registry/v2/aliases.yaml`; canonical normalized
+      form is canonical row shape before validation/runtime. For
+      `from: artifact`, names must resolve to suite-declared `artifacts[].id`.'
   contracts[].clauses.predicates[].imports[].from:
     type: string
     required: true

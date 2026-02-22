@@ -4332,6 +4332,80 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/registry/v2/aliases.yaml
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+- id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  introduced_in: v2
+  scope: authoring
+  applies_to: schema.v2.contracts.clauses.imports.style
+  norm: SHOULD
+  requirement: clause_imports_prefer_compact_alias_rows
+  description: Authoring should prefer compact alias rows for clause/predicate
+    imports (bare string, `artifact`, `service` object aliases), while retaining
+    canonical rows when they express intent more clearly.
+  rationale: Reduces repetitive import syntax and keeps style uniform across active
+    fixtures.
+  risk_if_violated: Equivalent import bindings drift in style and increase cognitive load.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/contract/03_assertions.md
+- id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
+  introduced_in: v2
+  scope: authoring
+  applies_to: schema.v2.contracts.bindings.style
+  norm: SHOULD
+  requirement: contract_bindings_prefer_defaults_rows_form_when_repetitive
+  description: Authoring should prefer mapping-form bindings
+    (`contracts[].bindings.defaults` + `contracts[].bindings.rows[]`) when
+    repeated row keys can be inherited without semantic loss.
+  rationale: Improves readability and keeps binding requiredness semantics explicit.
+  risk_if_violated: Binding blocks become repetitive and harder to maintain.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/contract/04_harness.md
+- id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.contracts.bindings.io
+  norm: MUST
+  requirement: contract_bindings_io_accept_compact_string_aliases
+  description: Binding `inputs` and `outputs` must accept canonical mapping rows
+    and compact list[string] aliases, normalized before validation/runtime.
+  rationale: Reduces boilerplate in binding I/O declarations while preserving deterministic semantics.
+  risk_if_violated: Runners diverge on accepted binding authoring forms.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.contracts.bindings.io.validation
+  norm: MUST
+  requirement: contract_bindings_io_compact_mixed_empty_duplicate_checks_enforced
+  description: Binding I/O compact aliases must hard-fail on mixed item kinds in one list,
+    empty/whitespace string items, and duplicate effective endpoint ids after normalization.
+  rationale: Keeps compact binding I/O behavior deterministic and portable.
+  risk_if_violated: Binding wiring becomes ambiguous and validation weakens across runners.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
+  introduced_in: v2
+  scope: authoring
+  applies_to: schema.v2.contracts.bindings.io.style
+  norm: SHOULD
+  requirement: contract_bindings_io_prefer_compact_alias_when_lossless
+  description: Authoring should prefer compact list[string] binding I/O rows when
+    no `as` or `path` semantics are required.
+  rationale: Improves readability and reduces repetitive endpoint-only rows.
+  risk_if_violated: Equivalent binding blocks drift in style and increase cognitive load.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  - specs/contract/04_harness.md
 - id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   introduced_in: v2
   scope: runtime

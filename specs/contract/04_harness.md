@@ -22,6 +22,13 @@
   It supports additive compaction form (preferred)
   `contracts[].bindings.defaults` + `contracts[].bindings.rows[]` and
   direct `contracts[].bindings[]` rows.
+- Binding I/O accepted input forms:
+  - `outputs`: canonical row mappings or compact `list[string]`
+  - `inputs`: canonical row mappings or compact `list[string]`
+- Binding I/O compact rows encode only endpoint ids:
+  - output string `"x"` => canonical normalized `{to: x}`
+  - input string `"y"` => canonical normalized `{from: y}`
+- Canonical mapping rows remain required when `as` and/or `path` is needed.
 - Clause/predicate short import rows (`- pipe_identity`) resolve their service
   id from `contracts[].bindings.defaults.service`; there is no implicit
   single-service fallback.
@@ -68,6 +75,10 @@ Suite-root external references:
   runtimes may emit deterministic report labels only for diagnostics.
 - report labels are not schema identity and must not be accepted as reference
   targets.
+- terminology:
+  - accepted input forms: parser-supported surfaces and alias shapes
+  - preferred authoring form: compact aliases / defaults+rows where lossless
+  - canonical normalized form: deterministic post-normalization runtime shape
 
 ## Entrypoint
 

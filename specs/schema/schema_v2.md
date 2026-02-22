@@ -136,6 +136,13 @@ Alias grammar source of truth:
   alias registry for non-canonical authoring forms.
 - list item order is preserved as-authored
 
+Terminology contract (uniform across v2 docs/registry/policy):
+
+- accepted input forms: parser-supported authoring shapes
+- preferred authoring form: style guidance for low-overhead authoring
+- canonical normalized form: deterministic internal row/map shape after
+  alias/default normalization and before validation/runtime execution
+
 Each `contracts[]` item:
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
@@ -261,6 +268,15 @@ Parser behavior:
   entry `io` is `input` or `io`
 - `contracts[].bindings[].outputs[].to` MUST reference `artifacts[].id` where artifact
   entry `io` is `output` or `io`
+- binding I/O accepted input forms:
+  - `inputs` accepts canonical list[mapping] and compact list[string]
+  - `outputs` accepts canonical list[mapping] and compact list[string]
+- compact binding I/O canonical normalized forms:
+  - input string `"x"` -> `{from: x}`
+  - output string `"y"` -> `{to: y}`
+- mixed item kinds (string + mapping) in one binding inputs/outputs list are invalid
+- empty/whitespace compact binding I/O strings are invalid
+- compact binding I/O rows encode `from`/`to` only; `as`/`path` require canonical mapping rows
 - binding runtime payload transport MUST use artifact ids only (`artifacts[]`)
 - direct external locator keys in `services.actions[].config` are invalid:
   `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
@@ -306,6 +322,21 @@ Clause import compact semantics:
 - unknown keys in compact alias rows are schema failures
 - canonical alias grammar source:
   `/specs/schema/registry/v2/aliases.yaml`
+
+Binding I/O compact semantics:
+
+- preferred authoring form for simple binding I/O rows is compact list[string]
+- canonical mapping rows remain valid and required when alias/path fields are needed
+- compact outputs:
+  - `outputs: [body_json, status]` normalizes to canonical rows
+    `{to: body_json}`, `{to: status}`
+- compact inputs:
+  - `inputs: [request_payload]` normalizes to canonical row
+    `{from: request_payload}`
+- canonical examples for advanced rows:
+  - `- to: body_json`
+  - `  as: subject`
+  - `  path: $.items[0]`
 
 `expect` (conformance metadata):
 

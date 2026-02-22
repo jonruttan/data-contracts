@@ -17,6 +17,12 @@ Canonical schema sources for executable `contract-spec` documents.
 - `/specs/schema/service_plugin_manifest_v1.yaml`
 - `/specs/schema/service_plugin_lock_v1.yaml`
 
+v2 terminology baseline:
+
+- accepted input forms (parser-supported shapes)
+- preferred authoring form (style guidance)
+- canonical normalized form (deterministic pre-validation shape)
+
 Deprecated v2 type overlays (non-normative migration references):
 
 - `/specs/schema/registry/v2/types/contract_check.yaml`

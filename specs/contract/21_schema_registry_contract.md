@@ -57,6 +57,15 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   overriding defaults.
 - Effective binding rows MUST include `id`, `service`, and `import`.
 - Effective `service` MUST resolve to `services.actions[].id`.
+- Binding I/O surfaces (`contracts[].bindings[].inputs/outputs` and
+  `contracts[].bindings.rows[].inputs/outputs`) MUST accept canonical mapping
+  rows and compact list[string] aliases.
+- Compact binding output rows normalize to canonical normalized `{to:<id>}`.
+- Compact binding input rows normalize to canonical normalized `{from:<id>}`.
+- Mixed string/mapping item kinds in one binding I/O list are invalid.
+- Empty/whitespace compact binding I/O rows are invalid.
+- Compact binding I/O rows encode endpoint ids only; canonical mapping rows are
+  required for `as`/`path`.
 - `contracts[].clauses.imports` and `contracts[].clauses.predicates[].imports`
   MUST accept bare-string short alias rows that normalize to
   `from: service` rows.
@@ -90,6 +99,10 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
   - explicit-required
   - optional
   - effective-required (required after deterministic merge)
+- Terminology language is standardized as:
+  - accepted input forms
+  - preferred authoring form
+  - canonical normalized form
 
 ## Profile Types
 

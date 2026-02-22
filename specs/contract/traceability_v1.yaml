@@ -4028,6 +4028,79 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Compact service-import aliases are the preferred authoring style; canonical rows remain valid for alias mapping.
+- rule_id: CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  policy_ref: specs/contract/policy_v1.yaml#CLAUSE_IMPORTS_COMPACT_ALIAS_PREFERRED
+  contract_refs:
+  - specs/contract/03_assertions.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-ALIAS-002
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
+  notes: Clause and predicate imports prefer compact aliases while keeping canonical rows valid.
+- rule_id: CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_MAPPING_FORM_PREFERRED
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-ALIAS-003
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_alias_registry_harmonization.spec.md
+  notes: Mapping-form bindings are preferred when defaults can remove repeated row keys.
+- rule_id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_IO_COMPACT_ALIAS_SUPPORTED
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/core.yaml
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-037
+  - DCCONF-SCHEMA-CASE-038
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: Binding inputs/outputs support compact list[string] aliases normalized to canonical endpoint rows.
+- rule_id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_IO_COMPACT_ALIAS_VALIDATION_REQUIRED
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-039
+  - DCCONF-SCHEMA-CASE-040
+  - DCCONF-SCHEMA-CASE-041
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: Mixed-form, empty-string, and duplicate endpoint compact binding rows are hard-fail validation checks.
+- rule_id: CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTRACT_BINDINGS_IO_COMPACT_ALIAS_PREFERRED
+  contract_refs:
+  - specs/contract/04_harness.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/registry/v2/aliases.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-037
+  - DCCONF-SCHEMA-CASE-038
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: Compact binding I/O is preferred when no alias/path metadata is required.
 - rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
   contract_refs:

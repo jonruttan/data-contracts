@@ -40,6 +40,8 @@ Scope separation:
   reference declarations and do not implicitly bind assertion symbols.
 - `contracts[].bindings[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
+- binding I/O rows accept canonical mappings and compact string aliases; compact
+  rows are endpoint-only (`to` for outputs, `from` for inputs).
 - service locator values consumed by bindings/imports must be declared in
   `artifacts[]`; assertion/runtime surfaces must not rely on direct
   service config locators.
@@ -79,6 +81,12 @@ Import binding shape:
   - explicit-required: key must be authored
   - optional: key may be omitted
   - effective-required: key may be inherited but must exist after merge
+
+Uniform terminology:
+
+- accepted input forms: parser-supported import row shapes
+- preferred authoring form: compact aliases when lossless/readable
+- canonical normalized form: canonical row shape before validation/evaluation
 
 Import merge semantics:
 

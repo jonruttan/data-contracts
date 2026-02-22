@@ -101,7 +101,7 @@ contracts:
     rows:
     - id: bind.invalid.synthetic
       outputs:
-      - to: out_json
+      - out_json
   clauses:
     predicates:
     - id: assert_1

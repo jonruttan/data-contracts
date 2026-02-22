@@ -945,6 +945,10 @@ fields:
     type: list
     required: false
     since: v2
+    description: Accepted input forms are canonical mapping rows (`from`, `as`)
+      and compact list[string] alias rows. Compact strings normalize to
+      canonical normalized form `{from:<id>}` before validation/runtime.
+      Mixed item kinds in one list are invalid.
   contracts[].bindings.rows[].inputs[].from:
     type: string
     required: true
@@ -957,6 +961,10 @@ fields:
     type: list
     required: false
     since: v2
+    description: Accepted input forms are canonical mapping rows (`to`,
+      optional `as`, optional `path`) and compact list[string] alias rows.
+      Compact strings normalize to canonical normalized form `{to:<id>}`
+      before validation/runtime. Mixed item kinds in one list are invalid.
   contracts[].bindings.rows[].outputs[].to:
     type: string
     required: true
@@ -1000,6 +1008,10 @@ fields:
     type: list
     required: false
     since: v2
+    description: Accepted input forms are canonical mapping rows (`from`, `as`)
+      and compact list[string] alias rows. Compact strings normalize to
+      canonical normalized form `{from:<id>}` before validation/runtime.
+      Mixed item kinds in one list are invalid.
   contracts[].bindings[].inputs[].from:
     type: string
     required: true
@@ -1012,6 +1024,10 @@ fields:
     type: list
     required: false
     since: v2
+    description: Accepted input forms are canonical mapping rows (`to`,
+      optional `as`, optional `path`) and compact list[string] alias rows.
+      Compact strings normalize to canonical normalized form `{to:<id>}`
+      before validation/runtime. Mixed item kinds in one list are invalid.
   contracts[].bindings[].outputs[].to:
     type: string
     required: true

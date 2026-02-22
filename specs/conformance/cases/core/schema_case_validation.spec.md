@@ -462,6 +462,110 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+- id: DCCONF-SCHEMA-CASE-037
+  title: compact binding outputs are accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_037
+      service: svc.check.default.1
+      outputs:
+      - schema_ref_export
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-038
+  title: compact binding inputs are accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_038
+      service: svc.check.default.1
+      inputs:
+      - schema_ref_doc
+      outputs:
+      - schema_ref_export
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-039
+  title: mixed compact and mapping binding output rows are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_039
+      service: svc.check.default.1
+      outputs:
+      - schema_ref_export
+      - to: schema_ref_export
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-040
+  title: empty compact binding output row is rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_040
+      service: svc.check.default.1
+      outputs:
+      - " "
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-CASE-041
+  title: duplicate compact binding output rows are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_schema_case_041
+      service: svc.check.default.1
+      outputs:
+      - schema_ref_export
+      - schema_ref_export
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
 artifacts:
 - id: schema_ref_doc
   ref: "{{schema_ref}}"

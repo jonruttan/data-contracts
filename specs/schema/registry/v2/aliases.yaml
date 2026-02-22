@@ -3,6 +3,10 @@ id: schema.registry.v2.aliases
 type: aliases
 alias_registry:
   intent: Centralized alias grammar for v2 authoring forms that normalize to canonical core/assertion field shapes before validation/runtime.
+  terminology:
+    accepted_input_forms: parser-supported authoring shapes for a surface.
+    preferred_authoring_form: style guidance that reduces repetition while preserving explicitness.
+    canonical_normalized_form: deterministic shape produced before validation/runtime.
   requiredness_model:
     explicit_required: key must be authored at the row/surface.
     optional: key may be omitted.
@@ -110,3 +114,75 @@ alias_registry:
     validation:
     - effective service must resolve to services.actions[].id
     - effective import must be valid for resolved service type/profile
+  - path: contracts[].bindings[].outputs
+    preferred_shape: list[string]
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - to
+      optional:
+      - as
+      - path
+    aliases:
+    - shape: list[string]
+      normalized_to: canonical rows `{to:<id>}`
+    mixed_item_kinds: invalid
+    collisions:
+      duplicate_effective_to: hard_fail
+    validation:
+    - empty or whitespace-only compact rows are invalid
+    - compact rows encode `to` only; alias/path requires canonical row form
+    - effective `to` ids must resolve to artifacts with io `output|io`
+  - path: contracts[].bindings.rows[].outputs
+    preferred_shape: list[string]
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - to
+      optional:
+      - as
+      - path
+    aliases:
+    - shape: list[string]
+      normalized_to: canonical rows `{to:<id>}`
+    mixed_item_kinds: invalid
+    collisions:
+      duplicate_effective_to: hard_fail
+    validation:
+    - empty or whitespace-only compact rows are invalid
+    - compact rows encode `to` only; alias/path requires canonical row form
+    - effective `to` ids must resolve to artifacts with io `output|io`
+  - path: contracts[].bindings[].inputs
+    preferred_shape: list[string]
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - from
+      - as
+    aliases:
+    - shape: list[string]
+      normalized_to: canonical rows `{from:<id>}`
+    mixed_item_kinds: invalid
+    collisions:
+      duplicate_effective_from: hard_fail
+    validation:
+    - empty or whitespace-only compact rows are invalid
+    - compact rows encode `from` only; alias requires canonical row form
+    - effective `from` ids must resolve to artifacts with io `input|io`
+  - path: contracts[].bindings.rows[].inputs
+    preferred_shape: list[string]
+    canonical_shape: list[mapping]
+    canonical_row:
+      required:
+      - from
+      - as
+    aliases:
+    - shape: list[string]
+      normalized_to: canonical rows `{from:<id>}`
+    mixed_item_kinds: invalid
+    collisions:
+      duplicate_effective_from: hard_fail
+    validation:
+    - empty or whitespace-only compact rows are invalid
+    - compact rows encode `from` only; alias requires canonical row form
+    - effective `from` ids must resolve to artifacts with io `input|io`

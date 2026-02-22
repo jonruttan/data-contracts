@@ -76,8 +76,151 @@ contracts:
     - id: assert_1
       assert:
         lit: true
+- id: DCCONF-SCHEMA-ALIAS-004
+  title: terminology contract for accepted preferred canonical normalized forms is aligned
+  purpose: Captures harmonized terminology contract between alias registry and v2 schema docs.
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-005
+  title: bindings outputs compact list strings are accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_compact_output
+      outputs:
+      - alias_output
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-006
+  title: bindings inputs compact list strings are accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_compact_input
+      inputs:
+      - alias_input
+      outputs:
+      - alias_output
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-007
+  title: mixed compact and mapping output rows are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_mixed_output
+      outputs:
+      - alias_output
+      - to: alias_output
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-008
+  title: empty compact output row is rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_empty_output
+      outputs:
+      - " "
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-009
+  title: duplicate compact output rows are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_duplicate_output
+      outputs:
+      - alias_output
+      - alias_output
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+- id: DCCONF-SCHEMA-ALIAS-010
+  title: mixed compact and mapping input rows are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  bindings:
+    defaults:
+      service: svc.alias.harmonize.1
+      import: pipe_identity
+      mode: merge
+    rows:
+    - id: bind_alias_mixed_input
+      inputs:
+      - alias_input
+      - from: alias_input
+        as: alias_subject
+      outputs:
+      - alias_output
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
 artifacts:
 - id: alias_output
   ref: "/specs/schema/schema_v2.md"
   io: output
+- id: alias_input
+  ref: "/specs/schema/schema_v2.md"
+  io: input
 ```
