@@ -25,6 +25,12 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
 - `services.actions[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
+- v2 service types are integration-only (`io.fs`, `io.http`, `io.system`,
+  `io.mysql`, `io.docs`).
+- legacy service types are hard-fail schema errors in v2:
+  `assert.check`, `assert.export`, `ops.job`.
+- legacy service profile tokens are hard-fail schema errors in v2:
+  `text.file`, `api.http`, `cli.run`, `docs.generate`.
 - `services.actions[].imports` MUST accept canonical list[mapping] rows and
   compact list[string] aliases, normalized to canonical mapping rows before
   runtime evaluation.
@@ -85,6 +91,7 @@ Runtime catalog entries define service additions over common suite/contract keys
 - required suite runtime fields (`harness`; `services.actions[]` when services are used)
 - optional contract-local binding field (`contracts[].bindings[]`)
 - service type/profile/io compatibility and available function names
+- integration-mode profile compatibility (`type + profile`) from service catalog
 - allowed function operation prefixes per service type
 
 ## Determinism

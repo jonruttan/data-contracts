@@ -6,6 +6,11 @@
 - Harness receives parsed suite/case data and execution context.
 - Optional suite-root `services.actions[]` provides concrete system hook
   bindings (I/O and callable service import names).
+- `services.actions[].type` is integration-only in v2 (`io.fs`, `io.http`,
+  `io.system`, `io.mysql`, `io.docs`); orchestration categories (`assert.check`,
+  `assert.export`, `ops.job`) are invalid as service types.
+- `services.actions[].profile` is a mode token validated per integration type
+  (`read.text`, `request.http`, `exec.command`, `generate.docs`, etc.).
 - `services.actions[].imports` supports canonical list mappings
   (`names` + optional `as`) and compact list string aliases that normalize to
   canonical mapping rows.
@@ -53,13 +58,13 @@ Suite-root external references:
 
 ## Entrypoint
 
-For `harness.type: unit.test` with `services.actions[].profile: cli.run`:
+For `harness.type: unit.test` with `services.actions[].profile: exec.command`:
 
 - `services.actions[].config.entrypoint` MUST be provided by the spec.
 - Portable conformance fixtures MUST provide explicit entrypoint config.
 - Implementations SHOULD provide a safe mode that disables hook entrypoints
   (for example `SPEC_RUNNER_SAFE_MODE=1`).
-- Implementations SHOULD support a process-env allowlist control for `cli.run`
+- Implementations SHOULD support a process-env allowlist control for `exec.command`
   executions (for example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
 Policy ids for these requirements are listed in
@@ -67,7 +72,7 @@ Policy ids for these requirements are listed in
 
 ## Canonical Targets
 
-For `cli.run`:
+For `exec.command`:
 
 - `stdout`
 - `stderr`
@@ -76,13 +81,13 @@ For `cli.run`:
 - `chain_json`
 - `context_json` (JSON subject profile envelope)
 
-For `text.file`:
+For `read.text`:
 
 - `text`
 - `chain_json`
 - `context_json` (JSON subject profile envelope)
 
-For `api.http`:
+For `request.http`:
 
 - `status`
 - `headers`
@@ -93,18 +98,18 @@ For `api.http`:
 - `chain_json`
 - `context_json` (JSON subject profile envelope)
 
-`api.http` auth/runtime profile:
+`request.http` auth/runtime profile:
 
-- `harness.api_http.mode` (optional): `deterministic` (default) or `live`
+- `services.actions[].config.api_http.mode` (optional): `deterministic` (default) or `live`
   - `deterministic` forbids network `http(s)` fetches for request/token URLs
   - `live` allows network `http(s)` fetches
-- `harness.api_http.scenario` (optional mapping):
+- `services.actions[].config.api_http.scenario` (optional mapping):
   - `setup.command` / `teardown.command` for lifecycle shell commands
   - optional `setup.ready_probe` polling (`url`, `method`, expected status list,
     timeout/interval)
   - optional `cwd` / `env` for setup/teardown commands
   - `fail_fast` (default `true`)
-- `harness.api_http.auth.oauth` (optional mapping):
+- `services.actions[].config.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
   - `token_artifact_id` (required): artifacts import id containing token endpoint
     locator payload
@@ -120,7 +125,7 @@ OAuth behavior:
 - credentials are resolved from env references only (no inline secret fields)
 - bearer token is injected as `Authorization: Bearer <token>` unless request
   headers already define `Authorization`
-- `api.http` context metadata must not include raw secret/token values
+- `request.http` context metadata must not include raw secret/token values
 - request CORS helper (`request.cors`) supports preflight and actual request
   checks through normalized `cors_json` projection
 - scenario requests (`requests`) support `{{steps.<id>...}}` template lookups
@@ -171,13 +176,13 @@ Cycle and recursion safety:
 
 State interpolation:
 
-- downstream `api.http` request fields support
+- downstream `request.http` request fields support
   `{{chain.<step_id>.<export_name>...}}` template resolution in `url`, header
   values, and `body_text`.
 - `chain_json` exposes case-scoped chain payload (`state`, `trace`, `imports`)
   for assertions across all executable harness types.
 
-For `orchestration.run`:
+For orchestration runtime metadata:
 
 - `result_json`
 - `stdout`
@@ -186,7 +191,7 @@ For `orchestration.run`:
 - `chain_json`
 - `context_json` (JSON subject profile envelope)
 
-For `docs.generate`:
+For `generate.docs`:
 
 - `result_json`
 - `output_text`
@@ -265,23 +270,23 @@ Subject profile envelope contract:
 
 ## Path Safety
 
-- `cli.run` `harness.setup_files[*].path` MUST be relative and MUST resolve
+- `exec.command` `harness.setup_files[*].path` MUST be relative and MUST resolve
   within the runner temp directory.
 - spec-authored contract paths use virtual-root semantics:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
-- `text.file` locator payloads MUST be declared under `artifacts[]` and
+- `read.text` locator payloads MUST be declared under `artifacts[]` and
   referenced through `services.actions[].config.source_artifact_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 
 ## Trust Model
 
-- Spec files are trusted inputs. `cli.run` executes commands/module entrypoints
+- Spec files are trusted inputs. `exec.command` executes commands/module entrypoints
   declared in spec data and harness config.
 - Runner hook entrypoints (`hook_before` / `hook_after`) execute project code
   with the same process privileges as the test runner.
-- Implementations MAY inherit process environment variables for `cli.run`.
+- Implementations MAY inherit process environment variables for `exec.command`.
   Operators MUST treat process environment as potentially exposed to the system
   under test and SHOULD avoid loading unrelated secrets in runner environments.
 - Running specs from untrusted sources is out of scope for v1 and MUST be

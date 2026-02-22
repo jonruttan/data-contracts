@@ -14,9 +14,9 @@ harness:
 services:
   actions:
   - id: svc.check.text_file.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
 contracts:
 - id: DCCONF-ERR-001
   title: failing assertion includes context tokens in message

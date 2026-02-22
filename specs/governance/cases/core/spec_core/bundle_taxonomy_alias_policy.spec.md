@@ -9,7 +9,7 @@ contracts:
     purpose: Ensures canonical naming guidance prefers bundle_version and maintainers.
     harness:
       check:
-        profile: text.file
+        profile: read.text
         config:
           path: /specs/contract/32_contract_bundle_taxonomy.md
     clauses:
@@ -37,7 +37,7 @@ contracts:
     purpose: Ensures schema_v2 does not define top-level bundle metadata and points to package-level contracts.
     harness:
       check:
-        profile: text.file
+        profile: read.text
         config:
           path: /specs/schema/schema_v2.md
     clauses:

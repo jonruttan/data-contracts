@@ -6,9 +6,9 @@ harness:
   profile: check
 services:
   defaults:
-    type: assert.check
+    type: io.system
     io: input
-    profile: default
+    profile: exec.command
   actions:
   - id: svc.assert_check.default.1
     config:

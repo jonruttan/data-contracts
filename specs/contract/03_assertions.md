@@ -62,6 +62,8 @@ Import binding shape:
 - when any item uses `from: service`, suite-root `services` MUST be present and
   valid
 - when `from: service`, `service` key is required and must reference suite `services.actions[].id`
+- referenced service actions must use integration-only catalog types (`io.*`);
+  legacy orchestration service types are invalid in v2
 - `names` is a non-empty list of imported symbol keys
 - `as` is optional mapping of `source_name -> local_name`
 - when `as` is omitted, local symbol defaults to each `names[]` entry

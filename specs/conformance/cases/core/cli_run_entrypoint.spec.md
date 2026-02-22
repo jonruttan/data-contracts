@@ -20,9 +20,9 @@ harness:
   profile: check
 services:
   defaults:
-    type: assert.check
+    type: io.system
     io: input
-    profile: cli.run
+    profile: exec.command
   actions:
   - id: svc.assert_check.cli_run.1
     config:

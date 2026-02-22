@@ -7,9 +7,9 @@ harness:
 services:
   actions:
   - id: svc.assert_check.text_file.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     config:
       source_artifact_id: art.svc.assert_check.text_file.1.source.1
 contracts:

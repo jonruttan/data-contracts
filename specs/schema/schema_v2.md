@@ -299,9 +299,9 @@ Normative contract details:
 
 ## Harness-Profile Fields
 
-### `harness.type: unit.test` with `services.actions[].profile: text.file`
+### `harness.type: unit.test` with `services.actions[].profile: read.text`
 
-`text.file` asserts against file content.
+`read.text` asserts against file content.
 
 - External file locators must be declared in `artifacts[]` and referenced
   by id from service config.
@@ -312,7 +312,7 @@ Fields:
 - `source_artifact_id` (string, required): id referencing
   `artifacts[].id` for the text/file source payload.
 
-Assertion targets for `text.file`:
+Assertion targets for `read.text`:
 
 - `text`
 - `context_json`: JSON subject profile envelope
@@ -350,14 +350,14 @@ Assertion targets for `governance.check`:
 
 Security model:
 
-- Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute
+- Spec tests are trusted inputs. `exec.command` and hook entrypoints can execute
   project code/commands with runner process privileges.
 - Running untrusted spec documents is unsafe and out of scope for v2.
-- Implementations MAY pass process environment variables to `cli.run`; keep
+- Implementations MAY pass process environment variables to `exec.command`; keep
   sensitive env values out of runner contexts where possible.
 - `data-contracts` is not a sandbox and MUST NOT be presented/documented as one.
 
-For `harness.type: unit.test` with `services.actions[].profile: cli.run`, supported `services.actions[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: exec.command`, supported `services.actions[].config` keys include:
 
 - `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
@@ -373,7 +373,7 @@ For `harness.type: unit.test` with `services.actions[].profile: cli.run`, suppor
 - `orchestration` (mapping): orchestration tool dispatch contract for
   orchestration profiles
 
-For `harness.type: unit.test` with `services.actions[].profile: api.http`, supported `services.actions[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: request.http`, supported `services.actions[].config` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
 - `api_http.scenario` (mapping, optional):
@@ -404,7 +404,7 @@ OAuth and execution rules:
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
 
-`api.http` request shape:
+`request.http` request shape:
 
 - `request` (mapping) for single-request cases, or `requests` (non-empty list) for scenario cases
 - request fields:
@@ -419,12 +419,12 @@ OAuth and execution rules:
     - `request_headers` (optional list)
     - `preflight` (optional bool, default `false`)
 
-`api.http` common service result symbols (must be explicitly declared/wired before import):
+`request.http` common service result symbols (must be explicitly declared/wired before import):
 
 - `cors_json` (normalized CORS projection for final response)
 - `steps_json` (ordered step envelopes in scenario mode)
 
-For `harness.type: unit.test` with `services.actions[].profile: docs.generate`, supported `services.actions[].config` keys include:
+For `harness.type: unit.test` with `services.actions[].profile: generate.docs`, supported `services.actions[].config` keys include:
 
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
@@ -533,7 +533,7 @@ Chain execution model:
 
 Chain template interpolation:
 
-- `api.http` request `url`, header values, and `body_text` support
+- `request.http` request `url`, header values, and `body_text` support
   `{{chain.<step_id>.<export_name>}}` lookups from exported chain state.
 - unresolved chain template references are schema/runtime failures.
 
@@ -548,14 +548,14 @@ Documentation generator model:
 
 Implementation note:
 
-- `clauses.config.entrypoint` is required for `cli.run` execution.
+- `clauses.config.entrypoint` is required for `exec.command` execution.
 - Conformance fixtures SHOULD always set explicit entrypoint config.
 - Runners MAY provide a safe mode (for example `SPEC_RUNNER_SAFE_MODE=1`) that
-  disables hook execution for `cli.run`.
+  disables hook execution for `exec.command`.
 - Runners MAY provide environment allowlisting for subprocess execution (for
   example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
-Assertion targets for `cli.run`:
+Assertion targets for `exec.command`:
 
 - `stdout`: text output from command stdout
 - `stderr`: text output from command stderr
@@ -569,10 +569,14 @@ Assertion targets for `cli.run`:
 
 Currently supported `services.actions[].profile` values include:
 
-- `cli.run` (core)
-- `text.file` (core)
-- `docs.generate` (core extension)
-- `orchestration.run` (core extension)
+- `read.text`
+- `fs.readwrite`
+- `request.http`
+- `exec.command`
+- `system.exec`
+- `mysql.query`
+- `mysql.migrate`
+- `generate.docs`
 
 Profile contracts live under:
 
@@ -583,7 +587,17 @@ before portable conformance usage.
 
 Published extension profile contracts:
 
-- `api.http` (see `specs/contract/types/api_http.md`)
+- `request.http` (see `specs/contract/types/api_http.md`)
+
+Service model (hard cut in v2):
+
+- `services.actions[].type` is integration-only and MUST be one of:
+  `io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`
+- `services.actions[].profile` is mode-style and validated against the resolved
+  type via `service_contract_catalog_v1.yaml`
+- legacy service types are invalid: `assert.check`, `assert.export`, `ops.job`
+- legacy profiles are invalid: `text.file`, `api.http`, `cli.run`,
+  `docs.generate`
 
 ## Assertion Capability Model (Universal Core)
 
@@ -785,30 +799,10 @@ Lifecycle order:
 - `fail` runs once on first blocking step or hook failure
 - `complete` runs only after all steps and hooks pass
 
-`services.actions[].type: ops.job` executable profile (v2):
+Job orchestration note:
 
-- `harness.type: unit.test` + `services.actions[].type: ops.job`
-- required:
-  - `clauses.config.jobs` (metadata list)
-  - `clauses`
-- optional:
-  - `clauses.config.jobs[].mode`
-  - `clauses.config.jobs[].inputs`
-  - `clauses.config.jobs[].outputs`
-
-Dispatch clauses:
-
-- dispatch is contract-driven using `ops.job.dispatch`
-- dispatch metadata is read from `clauses.config.jobs[]` matched by `id`
-- `clauses.config.job` non-canonical singular form is forbidden
-- `ops.job.dispatch` requires `clauses.config.spec_lang.capabilities` to include `ops.job`
-
-Job ref grammar:
-
-- absolute/virtual ref: `/path/to/file.spec.md#CASE-ID`
-- same-doc ref: `#CASE-ID` (requires caller-provided document context)
-- non-scalar refs are invalid
-- missing path/case resolution is schema/runtime error
+- `ops.job.dispatch` remains a spec-lang capability surface.
+- job/export orchestration semantics are not modeled as service types in v2.
 
 <!-- BEGIN GENERATED: SCHEMA_REGISTRY_V2 -->
 

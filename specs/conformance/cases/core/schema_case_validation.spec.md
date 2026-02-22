@@ -13,17 +13,13 @@ harness:
 services:
   actions:
   - id: svc.check.text_file.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
-  - id: svc.export.default.1
-    type: assert.export
-    io: output
-    profile: contract.export
+    profile: read.text
   - id: svc.check.default.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - pipe_identity
 exports:
@@ -141,7 +137,7 @@ contracts:
       status: fail
       category: schema
   clauses:
-    profile: text.file
+    profile: read.text
     predicates:
     - id: assert_1
       assert:

@@ -10,9 +10,9 @@ harness:
   profile: check
 services:
   defaults:
-    type: assert.check
+    type: io.http
     io: input
-    profile: api.http
+    profile: request.http
     imports:
     - names:
       - pipe_identity

@@ -175,6 +175,9 @@ fields:
     type: string
     required: false
     since: v2
+    description: Integration service type from service catalog (`io.fs`, `io.http`,
+      `io.system`, `io.mysql`, `io.docs`). Legacy orchestration types (`assert.check`,
+      `assert.export`, `ops.job`) are invalid in v2.
   services.actions[].io:
     type: string
     required: false
@@ -187,6 +190,8 @@ fields:
     type: string
     required: false
     since: v2
+    description: Service mode token for resolved service type (for example `read.text`,
+      `request.http`, `exec.command`, `generate.docs`).
   services.actions[].config:
     type: mapping
     required: false
@@ -199,19 +204,19 @@ fields:
     type: string
     required: false
     since: v2
-    description: Artifact id for text/file source payloads; must resolve to
+    description: Artifact id for `read.text` source payloads; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
   services.actions[].config.request.artifact_id:
     type: string
     required: false
     since: v2
-    description: Artifact id for api.http single request url; must resolve to
+    description: Artifact id for `request.http` single request url; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
   services.actions[].config.requests[].artifact_id:
     type: string
     required: false
     since: v2
-    description: Artifact id for api.http scenario request url; must resolve to
+    description: Artifact id for `request.http` scenario request url; must resolve to
       `artifacts[].id` where `io` is `input` or `io`.
   services.actions[].config.api_http.auth.oauth.token_artifact_id:
     type: string

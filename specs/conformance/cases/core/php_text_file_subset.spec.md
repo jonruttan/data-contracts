@@ -7,9 +7,9 @@ harness:
 services:
   actions:
   - id: svc.assert_check.text_file.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
 contracts:
 - id: DCCONF-PHP-TEXT-001
   title: text.file contain assertion passes in php bootstrap

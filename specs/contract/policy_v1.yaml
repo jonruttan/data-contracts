@@ -83,10 +83,10 @@ rules:
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
   introduced_in: v1
   scope: case
-  applies_to: cli.run.harness.entrypoint
+  applies_to: exec.command.harness.entrypoint
   norm: MUST
   requirement: explicit_required
-  description: For cli.run, harness.entrypoint must be set in each case.
+  description: For exec.command, harness.entrypoint must be set in each case.
   rationale: Keeps invocation explicit and deterministic.
   risk_if_violated: Cases become under-specified and runtime-dependent.
   references:
@@ -95,11 +95,11 @@ rules:
 - id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS
   introduced_in: v1
   scope: implementation
-  applies_to: cli.run.safe_mode
+  applies_to: exec.command.safe_mode
   norm: SHOULD
   requirement: disable_hooks_when_safe_mode_enabled
   description: 'Implementations should provide a safe mode that disables hook entrypoints
-    for `cli.run`.
+    for `exec.command`.
 
     '
   rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
@@ -111,11 +111,11 @@ rules:
 - id: CLI_RUN_ENV_ALLOWLIST_CONTROL
   introduced_in: v1
   scope: implementation
-  applies_to: cli.run.process_environment
+  applies_to: exec.command.process_environment
   norm: SHOULD
   requirement: support_allowlist_for_inherited_environment
   description: 'Implementations should provide a control to limit inherited process
-    environment variables passed to cli.run executions.
+    environment variables passed to exec.command executions.
 
     '
   rationale: Limits accidental secret exposure from ambient CI/dev shells.
@@ -127,7 +127,7 @@ rules:
 - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
   introduced_in: v1
   scope: conformance
-  applies_to: fixtures.cli.run
+  applies_to: fixtures.exec.command
   norm: MUST
   requirement: explicit_harness_entrypoint
   description: Portable conformance fixtures must set harness.entrypoint.
@@ -139,7 +139,7 @@ rules:
 - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
   introduced_in: v1
   scope: conformance
-  applies_to: fixtures.cli.run
+  applies_to: fixtures.exec.command
   norm: MUST_NOT
   requirement: rely_on_ambient_entrypoint_values
   description: Portable conformance fixtures must not depend on ambient entrypoint
@@ -3155,10 +3155,10 @@ rules:
 - id: API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.harness.auth.oauth
+  applies_to: request.http.harness.auth.oauth
   norm: MUST
   requirement: support_harness_scoped_oauth_client_credentials_profile
-  description: 'api.http implementations must support harness-scoped OAuth client-credentials
+  description: 'request.http implementations must support harness-scoped OAuth client-credentials
     configuration under harness.api_http.auth.oauth.
 
     '
@@ -3171,10 +3171,10 @@ rules:
 - id: API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: api.http.harness.auth.oauth.credentials
+  applies_to: request.http.harness.auth.oauth.credentials
   norm: MUST
   requirement: oauth_credentials_must_use_env_refs_only
-  description: 'OAuth client credentials for api.http must be referenced by env-var
+  description: 'OAuth client credentials for request.http must be referenced by env-var
     names only; inline credential values are forbidden.
 
     '
@@ -3187,10 +3187,10 @@ rules:
 - id: API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.context_and_diagnostics
+  applies_to: request.http.context_and_diagnostics
   norm: MUST
   requirement: never_emit_raw_oauth_secret_or_token_values
-  description: 'api.http OAuth execution must redact token/secret values from context
+  description: 'request.http OAuth execution must redact token/secret values from context
     profiles, diagnostics, and summaries.
 
     '
@@ -3202,10 +3202,10 @@ rules:
 - id: API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.harness.mode
+  applies_to: request.http.harness.mode
   norm: MUST
   requirement: api_http_mode_defaults_to_deterministic
-  description: 'api.http execution mode must default to deterministic behavior.
+  description: 'request.http execution mode must default to deterministic behavior.
 
     '
   rationale: Preserves stable reproducibility for canonical conformance/governance
@@ -3217,10 +3217,10 @@ rules:
 - id: API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: api.http.network_execution
+  applies_to: request.http.network_execution
   norm: MUST
   requirement: network_token_and_request_fetches_require_explicit_live_mode
-  description: 'Network `http(s)` token/request fetches in api.http must require explicit
+  description: 'Network `http(s)` token/request fetches in request.http must require explicit
     harness.api_http.mode=live opt-in.
 
     '
@@ -3232,10 +3232,10 @@ rules:
 - id: API_HTTP_VERB_SUITE_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.request.method
+  applies_to: request.http.request.method
   norm: MUST
   requirement: api_http_supports_practical_rest_verbs
-  description: 'api.http request.method must support GET, POST, PUT, PATCH, DELETE,
+  description: 'request.http request.method must support GET, POST, PUT, PATCH, DELETE,
     HEAD, and OPTIONS.
 
     '
@@ -3249,10 +3249,10 @@ rules:
 - id: API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.request.cors
+  applies_to: request.http.request.cors
   norm: MUST
   requirement: api_http_supports_cors_preflight_and_actual_projection
-  description: 'api.http must support CORS request helpers and normalized response
+  description: 'request.http must support CORS request helpers and normalized response
     projection for preflight and actual calls.
 
     '
@@ -3266,10 +3266,10 @@ rules:
 - id: API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.requests.scenario
+  applies_to: request.http.requests.scenario
   norm: MUST
   requirement: api_http_supports_ordered_multi_step_roundtrip_execution
-  description: 'api.http must support ordered requests scenarios with step interpolation
+  description: 'request.http must support ordered requests scenarios with step interpolation
     for round-trip endpoint testing.
 
     '
@@ -3283,7 +3283,7 @@ rules:
 - id: API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: api.http.harness.scenario.lifecycle
+  applies_to: request.http.harness.scenario.lifecycle
   norm: MUST
   requirement: scenario_setup_probe_teardown_behavior_is_deterministic
   description: 'Scenario setup/probe/teardown execution must be deterministic and
@@ -3299,11 +3299,11 @@ rules:
 - id: API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
   introduced_in: v1
   scope: conformance
-  applies_to: api.http.shared_capability_fixtures
+  applies_to: request.http.shared_capability_fixtures
   norm: MUST
   requirement: python_and_php_api_http_shared_fixtures_must_match_status_category
   description: 'Python and PHP conformance runners must match status/category outcomes
-    for shared api.http fixtures.
+    for shared request.http fixtures.
 
     '
   rationale: Keeps extension behavior portable across declared implementations.
@@ -3318,7 +3318,7 @@ rules:
   applies_to: docs.book.rest_and_cors_tutorials
   norm: MUST
   requirement: docs_include_get_post_put_patch_delete_cors_roundtrip_guidance
-  description: 'Contributor docs must include practical api.http tutorials for REST
+  description: 'Contributor docs must include practical request.http tutorials for REST
     verbs, CORS preflight, and scenario round-trip usage.
 
     '
@@ -3706,7 +3706,7 @@ rules:
   norm: MUST
   requirement: contract_current_and_type_overlays_stay_in_sync
   description: 'Harness contract docs, current snapshot, and type overlays must remain
-    synchronized for orchestration.run and docs.generate.
+    synchronized for orchestration.run and generate.docs.
 
     '
   rationale: Prevents prose/schema/runtime drift.
@@ -4332,6 +4332,36 @@ rules:
   - specs/schema/schema_v2.md
   - specs/schema/service_contract_catalog_v1.yaml
   - specs/conformance/cases/core/schema_case_validation.spec.md
+- id: SERVICES_INTEGRATION_TYPES_ONLY_V2
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.services.actions.type
+  norm: MUST
+  requirement: v2_services_types_must_be_integration_only
+  description: services.actions[].type must resolve to integration service categories only
+    (`io.fs`, `io.http`, `io.system`, `io.mysql`, `io.docs`). Legacy orchestration
+    categories (`assert.check`, `assert.export`, `ops.job`) are invalid.
+  rationale: Separates system integration concerns from assertion/export/job orchestration semantics.
+  risk_if_violated: Service identity becomes ambiguous and runner behavior drifts across implementations.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  - specs/contract/21_schema_registry_contract.md
+- id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
+  introduced_in: v2
+  scope: runtime
+  applies_to: schema.v2.services.actions.profile
+  norm: MUST
+  requirement: v2_service_profiles_must_be_mode_style_and_type_compatible
+  description: services.actions[].profile must be a mode token validated against
+    the resolved integration type from service catalog. Legacy profile tokens
+    (`text.file`, `api.http`, `cli.run`, `docs.generate`) are invalid.
+  rationale: Eliminates duplicated identity semantics between service type and profile.
+  risk_if_violated: Type/profile combinations become non-portable and validation weakens.
+  references:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  - specs/contract/04_harness.md
 - id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   introduced_in: v2
   scope: runtime

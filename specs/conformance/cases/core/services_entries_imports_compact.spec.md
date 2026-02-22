@@ -7,9 +7,9 @@ harness:
 services:
   actions:
   - id: svc.check.compact.1
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - pipe_identity
 contracts:
@@ -35,9 +35,9 @@ harness:
 services:
   actions:
   - id: svc.check.compact.2
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - pipe_identity
     - assert_truth
@@ -64,9 +64,9 @@ harness:
 services:
   actions:
   - id: svc.check.compact.3
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - pipe_identity
     - names:
@@ -94,9 +94,9 @@ harness:
 services:
   actions:
   - id: svc.check.compact.4
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - pipe_identity
     - pipe_identity
@@ -123,9 +123,9 @@ harness:
 services:
   actions:
   - id: svc.check.compact.5
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
     imports:
     - unknown_import
 contracts:

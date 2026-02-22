@@ -71,7 +71,7 @@ links:
   - tests/test_conformance_runner_unit.py
   implementation_refs:
   - dc-runner-python
-  notes: Explicit entrypoint is required for all cli.run cases.
+  notes: Explicit entrypoint is required for all exec.command cases.
 - rule_id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS
   contract_refs:
@@ -95,7 +95,7 @@ links:
   - tests/test_php_spec_runner_unit.py
   implementation_refs:
   - dc-runner-php
-  notes: PHP runner supports allowlisting ambient env for cli.run subprocesses.
+  notes: PHP runner supports allowlisting ambient env for exec.command subprocesses.
 - rule_id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
   contract_refs:
@@ -2845,7 +2845,7 @@ links:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - dc-runner-python
-  notes: api.http harness supports OAuth client-credentials profile.
+  notes: request.http harness supports OAuth client-credentials profile.
 - rule_id: API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
   contract_refs:
@@ -2883,7 +2883,7 @@ links:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - dc-runner-python
-  notes: Deterministic mode is the default api.http execution lane.
+  notes: Deterministic mode is the default request.http execution lane.
 - rule_id: API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
   contract_refs:
@@ -2965,7 +2965,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - dc-runner-php
-  notes: Shared api.http fixture outcomes stay parity-consistent across python/php
+  notes: Shared request.http fixture outcomes stay parity-consistent across python/php
     lanes.
 - rule_id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED
@@ -4027,6 +4027,32 @@ links:
   implementation_refs:
   - specs/conformance/cases/core/services_entries_imports_compact.spec.md
   notes: Mixed item-kind imports, duplicate names, and catalog-invalid names are hard-fail schema checks.
+- rule_id: SERVICES_INTEGRATION_TYPES_ONLY_V2
+  policy_ref: specs/contract/policy_v1.yaml#SERVICES_INTEGRATION_TYPES_ONLY_V2
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: v2 service type surface is integration-only and rejects legacy assert/ops categories.
+- rule_id: SERVICES_MODE_PROFILE_COMPATIBILITY_V2
+  policy_ref: specs/contract/policy_v1.yaml#SERVICES_MODE_PROFILE_COMPATIBILITY_V2
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/schema_case_validation.spec.md
+  notes: Service profile tokens are mode-style and validated against integration type catalog.
 - rule_id: EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#EXPLICIT_REFERENCE_IDENTITY_REQUIRED
   contract_refs:

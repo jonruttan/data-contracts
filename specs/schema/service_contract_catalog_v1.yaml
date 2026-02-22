@@ -3,69 +3,9 @@ title: service_contract_catalog_v1
 kind: service_contract_catalog
 unknown_service_type_behavior: hard_fail
 services:
-- type: assert.check
-  allowed_profiles:
-  - text.file
-  - cli.run
-  - api.http
-  - docs.generate
-  required_config_keys: []
-  allowed_function_op_prefixes:
-  - ops.assert.
-  - assert.
-  allowed_io:
-  - input
-  available_imports_by_profile:
-    text.file:
-    - pipe_identity
-    - assert_truth
-    cli.run:
-    - pipe_identity
-    - assert_truth
-    api.http:
-    - pipe_identity
-    - assert_truth
-    docs.generate:
-    - pipe_identity
-    - assert_truth
-  import_validation_scope: type_profile
-- type: assert.export
-  allowed_profiles:
-  - contract.export
-  - spec.export
-  required_config_keys: []
-  allowed_function_op_prefixes:
-  - assert.function
-  allowed_io:
-  - output
-  available_imports_by_profile:
-    contract.export:
-    - export_symbol
-    spec.export:
-    - export_symbol
-  import_validation_scope: type_profile
-- type: ops.job
-  allowed_profiles:
-  - job.dispatch
-  - report.generate
-  required_config_keys: []
-  allowed_function_op_prefixes:
-  - ops.job.
-  allowed_io:
-  - input
-  - output
-  - io
-  available_imports_by_profile:
-    job.dispatch:
-    - run_job
-    - report_job
-    report.generate:
-    - run_job
-    - report_job
-  import_validation_scope: type_profile
 - type: io.http
   allowed_profiles:
-  - api.http
+  - request.http
   required_config_keys: []
   allowed_function_op_prefixes:
   - ops.http.
@@ -75,7 +15,9 @@ services:
   - output
   - io
   available_imports_by_profile:
-    api.http:
+    request.http:
+    - pipe_identity
+    - assert_truth
     - get_json
     - post_json
   import_validation_scope: type_profile
@@ -101,8 +43,8 @@ services:
   import_validation_scope: type_profile
 - type: io.fs
   allowed_profiles:
+  - read.text
   - fs.readwrite
-  - text.file
   required_config_keys: []
   allowed_function_op_prefixes:
   - ops.fs.
@@ -112,17 +54,19 @@ services:
   - output
   - io
   available_imports_by_profile:
-    fs.readwrite:
+    read.text:
+    - pipe_identity
+    - assert_truth
     - read_text
     - write_text
-    text.file:
+    fs.readwrite:
     - read_text
     - write_text
   import_validation_scope: type_profile
 - type: io.system
   allowed_profiles:
+  - exec.command
   - system.exec
-  - cli.run
   required_config_keys: []
   allowed_function_op_prefixes:
   - ops.proc.
@@ -133,21 +77,40 @@ services:
   - output
   - io
   available_imports_by_profile:
+    exec.command:
+    - pipe_identity
+    - assert_truth
+    - exec
+    - now
     system.exec:
     - exec
     - now
-    cli.run:
-    - exec
-    - now
+  import_validation_scope: type_profile
+- type: io.docs
+  allowed_profiles:
+  - generate.docs
+  required_config_keys: []
+  allowed_function_op_prefixes:
+  - ops.docs.
+  - domain.docs.
+  allowed_io:
+  - input
+  - output
+  - io
+  available_imports_by_profile:
+    generate.docs:
+    - pipe_identity
+    - assert_truth
+    - render_docs
   import_validation_scope: type_profile
 binding_runtime_contract:
   execution_timing: once_per_contract_before_predicates
   io_transport: artifact_ids_only
-  binding_service_requirement: bindings[].service is required; no implicit/default
+  binding_service_requirement: contracts[].bindings[].service is required; no implicit/default
     service resolution
   required_mappings:
-    inputs: bindings[].inputs[].from -> artifacts[].id (io=input|io)
-    outputs: bindings[].outputs[].to -> artifacts[].id (io=output|io)
+    inputs: contracts[].bindings[].inputs[].from -> artifacts[].id (io=input|io)
+    outputs: contracts[].bindings[].outputs[].to -> artifacts[].id (io=output|io)
   service_config_usage: static_only_no_runtime_payload_transport
   bound_symbol_format: service_id.import_name
   binding_import_validation:
@@ -164,14 +127,14 @@ service_locator_contract_v2:
   locator_reference_rule: service config external locators must route through
     artifacts ids using `*_artifact_id` fields.
   profile_locator_fields:
-    text.file:
+    read.text:
     - services.actions[].config.source_artifact_id
-    api.http:
+    request.http:
     - services.actions[].config.request.artifact_id
     - services.actions[].config.requests[].artifact_id
     - services.actions[].config.api_http.auth.oauth.token_artifact_id
     - services.actions[].config.use[].artifact_id
-    docs.generate:
+    generate.docs:
     - services.actions[].config.docs_generate.template_artifact_id
     - services.actions[].config.docs_generate.output_artifact_id
     - services.actions[].config.docs_generate.data_sources[].artifact_id

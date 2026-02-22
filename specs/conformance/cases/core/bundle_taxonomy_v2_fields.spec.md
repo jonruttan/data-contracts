@@ -6,9 +6,9 @@ harness:
   profile: check
 services:
   defaults:
-    type: assert.check
+    type: io.fs
     io: input
-    profile: text.file
+    profile: read.text
   actions:
   - id: svc.assert_check.text_file.1
     config:
