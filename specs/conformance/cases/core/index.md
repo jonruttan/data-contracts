@@ -22,3 +22,4 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/conformance/cases/core/subject_profiles.spec.md`
 - `/specs/conformance/cases/core/report_job_contracts.spec.md`
 - `/specs/conformance/cases/core/script_job_contracts.spec.md`
+- `/specs/conformance/cases/core/services_entries_imports_compact.spec.md`

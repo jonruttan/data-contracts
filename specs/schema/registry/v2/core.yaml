@@ -193,6 +193,9 @@ fields:
     type: list
     required: false
     since: v2
+    description: Service import declarations. Accepts either canonical list[mapping]
+      rows (`names`, optional `as`) or compact list[string] alias. Mixed list
+      item kinds in one `imports` list are invalid.
   services.entries[].imports[].names:
     type: list
     required: true

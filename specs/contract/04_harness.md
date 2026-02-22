@@ -6,6 +6,11 @@
 - Harness receives parsed suite/case data and execution context.
 - Optional suite-root `services.entries[]` provides concrete system hook
   bindings (I/O and callable service import names).
+- `services.entries[].imports` supports canonical list mappings
+  (`names` + optional `as`) and compact list string aliases that normalize to
+  canonical mapping rows.
+- Mixed string/mapping item kinds in one `services.entries[].imports` list are
+  invalid.
 - Suite-root `bindings[]` connects `contract` + optional `service` + artifact
   ids so service results are piped into predicate contexts.
 - Harness runtime workflow is componentized and MUST use shared components:

@@ -152,6 +152,10 @@ Suite runtime surfaces:
   - `services.entries[].profile` (string, optional)
   - `services.entries[].config` (mapping, optional)
   - `services.entries[].imports` (list, optional): declarative callable service-import surface
+    - canonical: list of mappings with `names` and optional `as`
+    - compact alias: list of strings (`imports: [pipe_identity, get_json]`)
+      expands to one canonical row `{names:[...]}`; compact form does not support aliasing
+    - mixed item kinds (string + mapping) in one `imports` list are invalid
   - `services.entries[].imports[].names` (list, required)
   - `services.entries[].imports[].as` (mapping, optional)
 - `bindings` (list, optional): suite-root service-to-contract binding declarations
@@ -203,6 +207,12 @@ Parser behavior:
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership
 - unknown `services.entries[].type` MUST hard-fail during schema validation
 - invalid `services.entries[].io` MUST hard-fail during schema validation
+- `services.entries[].imports` supports canonical list[mapping] and compact
+  list[string] alias forms
+- mixed item kinds in one `services.entries[].imports` list are invalid
+- compact `services.entries[].imports` names MUST be unique per service entry
+  and valid for resolved `services.entries[].type/profile` in
+  `/specs/schema/service_contract_catalog_v1.yaml`
 - if `bindings[]` is present, `services` MUST be present and valid
 - if any `clauses.imports[]` or `clauses.predicates[].imports[]` item uses
   `from: service`, `services` MUST be present and valid

@@ -156,7 +156,10 @@ binding_runtime_contract:
   - binding_import_must_be_declared_on_service_entry
   - declared_import_must_exist_in_available_imports_by_profile
 import_declaration_shape_v2:
-  services.entries[].imports: list[mapping]
+  services.entries[].imports: list[mapping]|list[string]
   services.entries[].imports[].names: list[string]
   services.entries[].imports[].as: mapping(optional)
+  services.entries[].imports_compact: list[string] expands to one canonical
+    row `{names:[...]}` (no aliasing support in compact form)
+  services.entries[].imports_mixed_item_kinds: invalid
   legacy_object_form: invalid

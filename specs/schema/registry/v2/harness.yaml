@@ -50,6 +50,8 @@ fields:
   services.entries[].imports:
     type: list
     required: false
+    description: Service callable imports. Supports canonical list[mapping] (`names`,
+      optional `as`) and compact list[string] alias. Mixed item kinds are invalid.
     since: v2
   bindings:
     type: list

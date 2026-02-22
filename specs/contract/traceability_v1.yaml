@@ -3974,6 +3974,36 @@ links:
   - specs/conformance/style.md
   - specs/governance/cases/core/spec_core/normalization_contract_spec_key_order_v2.spec.md
   notes: Phase-in governance check starts report-only before blocking rollout.
+- rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_SUPPORTED
+  contract_refs:
+  - specs/contract/04_harness.md
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-027
+  - DCCONF-SCHEMA-CASE-028
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+  notes: Service imports support compact list[string] aliases normalized to canonical rows.
+- rule_id: SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#SERVICE_IMPORTS_COMPACT_ALIAS_VALIDATION_REQUIRED
+  contract_refs:
+  - specs/contract/21_schema_registry_contract.md
+  schema_refs:
+  - specs/schema/schema_v2.md
+  - specs/schema/service_contract_catalog_v1.yaml
+  conformance_case_ids:
+  - DCCONF-SCHEMA-CASE-029
+  - DCCONF-SCHEMA-CASE-030
+  - DCCONF-SCHEMA-CASE-031
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/core/services_entries_imports_compact.spec.md
+  notes: Mixed item-kind imports, duplicate names, and catalog-invalid names are hard-fail schema checks.
 - rule_id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
   contract_refs:

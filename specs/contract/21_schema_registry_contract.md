@@ -24,6 +24,14 @@ The schema registry under `specs/schema/registry/v2/` is the machine source of t
 - `contracts[].clauses.profile` and `contracts[].clauses.config` are invalid in v2 runtime ownership.
 - `services.entries[].type` MUST resolve to an entry in `/specs/schema/service_contract_catalog_v1.yaml`;
   unknown service types are hard-fail schema errors.
+- `services.entries[].imports` MUST accept canonical list[mapping] rows and
+  compact list[string] aliases, normalized to canonical mapping rows before
+  runtime evaluation.
+- Mixed string/mapping item kinds in one `services.entries[].imports` list are
+  invalid.
+- Effective declared service import names MUST be unique per service entry and
+  MUST exist in catalog `available_imports_by_profile` for resolved
+  `type/profile`.
 - `bindings[].contract` MUST resolve to `contracts[].id`; `bindings[].service`
   MUST resolve to `services.entries[].id`.
 - `bindings[].inputs[].from` MUST resolve to `artifact.imports[].id` and

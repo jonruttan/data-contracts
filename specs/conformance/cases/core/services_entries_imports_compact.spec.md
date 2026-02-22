@@ -1,0 +1,143 @@
+```yaml contract-spec
+spec_version: 2
+schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.check.compact.1
+    type: assert.check
+    io: input
+    profile: text.file
+    imports:
+    - pipe_identity
+contracts:
+- id: DCCONF-SCHEMA-CASE-027
+  title: service imports compact single-name list is accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+```
+
+```yaml contract-spec
+spec_version: 2
+schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.check.compact.2
+    type: assert.check
+    io: input
+    profile: text.file
+    imports:
+    - pipe_identity
+    - assert_truth
+contracts:
+- id: DCCONF-SCHEMA-CASE-028
+  title: service imports compact multi-name list is accepted
+  expect:
+    portable:
+      status: pass
+      category:
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+```
+
+```yaml contract-spec
+spec_version: 2
+schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.check.compact.3
+    type: assert.check
+    io: input
+    profile: text.file
+    imports:
+    - pipe_identity
+    - names:
+      - assert_truth
+contracts:
+- id: DCCONF-SCHEMA-CASE-029
+  title: service imports mixed compact and mapping item kinds are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+```
+
+```yaml contract-spec
+spec_version: 2
+schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.check.compact.4
+    type: assert.check
+    io: input
+    profile: text.file
+    imports:
+    - pipe_identity
+    - pipe_identity
+contracts:
+- id: DCCONF-SCHEMA-CASE-030
+  title: service imports compact duplicate names are rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+```
+
+```yaml contract-spec
+spec_version: 2
+schema_ref: "/specs/schema/schema_v2.md"
+harness:
+  type: unit.test
+  profile: check
+services:
+  entries:
+  - id: svc.check.compact.5
+    type: assert.check
+    io: input
+    profile: text.file
+    imports:
+    - unknown_import
+contracts:
+- id: DCCONF-SCHEMA-CASE-031
+  title: service imports compact unknown catalog name is rejected
+  expect:
+    portable:
+      status: fail
+      category: schema
+  clauses:
+    predicates:
+    - id: assert_1
+      assert:
+        lit: true
+```
