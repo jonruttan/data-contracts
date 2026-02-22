@@ -15,7 +15,6 @@ services:
     type: legacy.root_doc_sync_files_docs_book_30_assertion_model_md_specs_contract_03_assertions_md_specs_schema_schema_v1_md_tokens_must_may_must_not_contract_imports_check_profile_governance_scan_config_check_docs_contract_schema_book_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-006
   title: assertion tokens stay aligned across book contract and schema docs

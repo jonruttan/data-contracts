@@ -15,7 +15,6 @@ services:
     type: legacy.root_adoption_profiles_files_readme_md_docs_development_md_required_tokens_core_profile_full_profile_make_core_check_make_check_check_profile_governance_scan_config_check_docs_adoption_profiles_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-009
   title: core and full adoption profile docs stay synchronized

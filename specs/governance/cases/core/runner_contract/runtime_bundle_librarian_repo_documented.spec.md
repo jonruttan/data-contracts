@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_readme_md
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-004
   title: canonical bundle librarian repository is documented

@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_schema_schema_v2_md
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-NORM-007
   title: v2 contract spec key order contract is documented

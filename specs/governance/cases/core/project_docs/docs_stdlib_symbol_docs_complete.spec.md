@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_docs_stdlib_symbol_docs_complete_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-GEN-021
   title: stdlib symbols include semantic docs payload

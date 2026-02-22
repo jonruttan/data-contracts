@@ -15,7 +15,6 @@ services:
     type: legacy.root_when_ordering_path_dc_runner_python_required_tokens_def_on_clause_pass_event_map_must_must_may_may_must_not_must_not_event_event_map_get_cls_run_event_def_on_complete_complete_check_profile_governance_scan_config_check_runtime_when_ordering_contract_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-HOOKS-002
   title: when class hook ordering contract required

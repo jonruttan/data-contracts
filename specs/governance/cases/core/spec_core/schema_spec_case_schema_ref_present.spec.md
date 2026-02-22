@@ -15,7 +15,6 @@ services:
     type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_missing_schema_ref_count_check_profile_governance_scan_config_check_schema_spec_case_schema_ref_present
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-SCHEMA-PIN-002
   title: spec cases include schema_ref

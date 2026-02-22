@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_governance_scan_config_check_runtime_contract_step_asserts_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CONTRACT-STEP-001
   title: contract steps must declare asserts

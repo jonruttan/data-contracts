@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-RCLI-003
   title: runner cli exposes conformance command

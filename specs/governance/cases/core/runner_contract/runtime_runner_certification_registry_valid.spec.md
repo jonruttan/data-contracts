@@ -15,7 +15,6 @@ services:
     type: legacy.root_runner_certification_path_specs_schema_runner_certification_registry_v2_yaml_required_runner_ids_rust_python_php_node_c_check_profile_governance_scan_config_check_runtime_runner_certification_registry_valid
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CERT-001
   title: runner certification registry shape is valid

@@ -15,7 +15,6 @@ services:
     type: legacy.root_profile_on_fail_files_dc_runner_python_dc_runner_rust_required_tokens_profile_on_fail_artifacts_run_trace_json_artifacts_run_trace_summary_md_check_profile_governance_scan_config_check_runtime_profile_artifacts_on_fail_required_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-FAILFAST-003
   title: gate failures emit profile artifacts when profile-on-fail is enabled

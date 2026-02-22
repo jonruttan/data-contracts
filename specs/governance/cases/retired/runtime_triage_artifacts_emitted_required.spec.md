@@ -15,7 +15,6 @@ services:
     type: legacy.root_triage_artifacts_files_scripts_governance_triage_sh_dc_runner_python_required_tokens_failing_check_ids_failing_check_prefixes_check_profile_governance_scan_config_check_runtime_triage_artifacts_emitted_required_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-004
   title: triage artifacts are emitted by triage and gate flows

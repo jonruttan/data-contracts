@@ -15,7 +15,6 @@ services:
     type: legacy.root_objective_tripwires_manifest_path_specs_governance_metrics_objective_manifest_yaml_cases_path_specs_governance_cases_case_file_pattern_spec_md_check_profile_governance_scan_config_check_objective_tripwires_clean_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-OBJECTIVE-003
   title: objective tripwires are clean

@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_required_lane_passes
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CERT-004
   title: required rust runner certification lane passes

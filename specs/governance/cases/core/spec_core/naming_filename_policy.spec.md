@@ -15,7 +15,6 @@ services:
     type: legacy.root_filename_policy_paths_docs_include_extensions_md_yaml_yml_json_allow_exact_readme_md_allowed_name_regex_a_z0_9_a_z0_9_a_z0_9_a_z0_9_spec_md_yaml_yml_json_check_profile_governance_scan_config_check_naming_filename_policy_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-NAME-001
   title: docs filenames follow lowercase separator policy

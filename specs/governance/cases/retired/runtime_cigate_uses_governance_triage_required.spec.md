@@ -15,7 +15,6 @@ services:
     type: legacy.root_cigate_governance_triage_files_dc_runner_python_dc_runner_rust_required_tokens_governance_broad_triage_attempted_triage_mode_triage_result_failing_check_ids_failing_check_prefixes_stall_detected_stall_phase_check_profile_governance_scan_config_check_runtime_cigate_uses_governance_triage_required_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-003
   title: ci gate summary uses governance triage and emits triage metadata

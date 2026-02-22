@@ -21,7 +21,6 @@ harness:
 services:
   defaults:
     profile: default
-    config: {}
   entries:
   - id: svc.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
     type: legacy.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
@@ -46,8 +45,7 @@ services:
 contracts:
 - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
   docs:
-  - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -76,8 +74,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
   docs:
-  - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -101,8 +98,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -127,8 +123,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -152,8 +147,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
   docs:
-  - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -176,8 +170,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
   docs:
-  - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -201,8 +194,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -226,8 +218,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
   docs:
-  - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -254,8 +245,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
   docs:
-  - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -278,8 +268,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
   docs:
-  - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL.doc.1
-    summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.

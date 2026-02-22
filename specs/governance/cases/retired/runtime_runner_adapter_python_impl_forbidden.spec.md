@@ -15,7 +15,6 @@ services:
     type: legacy.root_runner_adapter_python_impl_path_scripts_runner_bin_sh_required_tokens_python_runner_impl_is_no_longer_supported_on_the_runtime_path_use_rust_impl_instead_forbidden_tokens_exec_root_dir_dc_runner_python_check_profile_governance_scan_config_check_runtime_runner_adapter_python_impl_forbidden_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-ENTRY-003
   title: runner adapter hard-fails python impl selection

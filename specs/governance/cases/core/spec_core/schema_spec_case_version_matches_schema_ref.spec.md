@@ -15,7 +15,6 @@ services:
     type: legacy.root_schema_pin_validator_path_scripts_spec_schema_pin_validate_sh_required_tokens_mismatched_version_count_check_profile_governance_scan_config_check_schema_spec_case_version_matches_schema_ref
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-SCHEMA-PIN-004
   title: spec_version matches schema_ref major

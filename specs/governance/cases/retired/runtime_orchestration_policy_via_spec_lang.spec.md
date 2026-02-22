@@ -15,7 +15,6 @@ services:
     type: legacy.root_orchestration_policy_files_path_dc_runner_python_required_tokens_evaluate_gate_policy_all_str_row_get_status_pass_policy_verdict_path_specs_governance_cases_core_runtime_orchestration_policy_via_spec_lang_spec_md_required_tokens_runtime_orchestration_policy_via_spec_lang_evaluate_gate_policy_forbidden_tokens_check_profile_governance_scan_config_check_runtime_orchestration_policy_via_spec_lang_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-ORCH-001
   title: gate orchestration verdict is policy-driven via spec-lang

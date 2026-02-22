@@ -15,7 +15,6 @@ services:
     type: legacy.root_runner_status_report_schema_path_specs_schema_runner_status_report_v1_yaml_required_tokens_type_runtime_runner_status_report_runner_id_implementation_repo_generated_at_fresh_until_command_results_artifact_refs_check_profile_governance_scan_config_check_runtime_runner_status_report_schema_valid
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-STATUS-001
   title: runner status report schema is defined

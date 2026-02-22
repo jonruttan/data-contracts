@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_schema_index_md
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-BUNDLE-002
   title: project bundle lock schema is indexed

@@ -15,7 +15,6 @@ services:
     type: legacy.root_rust_transitive_no_python_files_dc_runner_rust_dc_runner_rust_forbidden_tokens_scripts_runner_bin_sh_spec_runner_spec_lang_commands_pythonpath_python_scripts_run_governance_specs_py_check_profile_governance_scan_config_check_runtime_required_lane_adapter_transitive_no_python_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-PYDEP-004
   title: rust adapter boundary avoids transitive python delegation tokens

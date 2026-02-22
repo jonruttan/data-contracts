@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_library_colocated_symbol_tests_required_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-LIB-SINGLE-002
   title: library exports are referenced by executable tests

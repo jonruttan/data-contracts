@@ -15,7 +15,6 @@ services:
     type: legacy.root_schema_catalog_path_specs_schema_schema_catalog_v1_yaml_required_tokens_schema_id_contract_spec_major_2_path_specs_schema_schema_v2_md_status_active_check_profile_governance_scan_config_check_schema_catalog_contains_active_schema_v2
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-SCHEMA-PIN-005
   title: schema catalog includes active contract-spec v2

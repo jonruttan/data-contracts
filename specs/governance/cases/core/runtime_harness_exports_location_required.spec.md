@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_exports_location_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-001
   title: producer exports are declared at harness.exports

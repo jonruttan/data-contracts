@@ -15,7 +15,6 @@ services:
     type: legacy.root_ci_runtime_exec_files_github_workflows_ci_yml_scripts_ci_gate_sh_scripts_ci_gate_sh_scripts_ci_gate_sh_forbidden_tokens_scripts_runner_bin_sh_check_profile_governance_scan_config_check_runtime_control_plane_ci_runner_execution_forbidden
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CI-001
   title: control-plane ci forbids runtime runner execution

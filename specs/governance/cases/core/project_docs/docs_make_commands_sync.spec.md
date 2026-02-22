@@ -15,7 +15,6 @@ services:
     type: legacy.root_make_commands_files_readme_md_docs_development_md_github_pull_request_template_md_required_tokens_make_verify_docs_make_core_check_make_check_make_prepush_make_prepush_fast_make_ci_cleanroom_forbidden_tokens_make_prepush_parity_check_profile_governance_scan_config_check_docs_make_commands_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-007
   title: docs use canonical make command entrypoints

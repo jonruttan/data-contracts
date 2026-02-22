@@ -15,7 +15,6 @@ services:
     type: legacy.root_rust_subcommand_parity_adapter_path_dc_runner_rust_cli_main_path_dc_runner_rust_check_profile_governance_scan_config_check_runtime_required_lane_adapter_subcommand_parity_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUST-PRIMARY-007
   title: rust adapter and rust cli expose the same runner subcommand set

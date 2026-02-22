@@ -15,7 +15,6 @@ services:
     type: legacy.root_ci_matrix_artifacts_path_github_workflows_ci_yml_required_tokens_artifacts_runner_status_matrix_json_artifacts_runner_status_matrix_md_artifacts_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_matrix_artifacts_emitted
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CI-003
   title: matrix artifacts are emitted in ci

@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_governance_scan_config_check_runtime_contract_spec_fence_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CONTRACT-SPEC-001
   title: executable case fences must use contract-spec

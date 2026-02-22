@@ -12,7 +12,6 @@ services:
     type: assert.check
     io: input
     profile: text.file
-    config: {}
 contracts:
 - id: DCCONF-PHP-TEXT-001
   title: text.file contain assertion passes in php bootstrap

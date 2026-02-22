@@ -15,7 +15,6 @@ services:
     type: legacy.root_purpose_quality_cases_specs_conformance_cases_max_total_warnings_0_fail_on_policy_errors_true_fail_on_severity_warn_check_profile_governance_scan_config_check_conformance_purpose_quality_gate_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-CONF-PURPOSE-002
   title: conformance purpose quality remains warning free

@@ -15,7 +15,6 @@ services:
     type: legacy.root_examples_prefer_domain_fs_helpers_files_docs_book_60_runner_and_gates_md_docs_book_90_reference_guide_md_specs_contract_04_harness_md_check_profile_governance_scan_config_check_docs_examples_prefer_domain_fs_helpers_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-FS-EXAMPLES-001
   title: docs yaml examples prefer domain fs/path helpers over raw ops fs

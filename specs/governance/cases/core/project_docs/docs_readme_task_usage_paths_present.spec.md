@@ -15,7 +15,6 @@ services:
     type: legacy.root_readme_usage_paths_path_readme_md_required_tokens_how_users_use_this_project_author_a_spec_change_validate_docs_and_contract_coherence_read_compatibility_and_status_telemetry_debug_governance_or_documentation_drift_check_profile_governance_scan_config_check_docs_readme_task_usage_paths_present
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-025
   title: readme includes task-based usage paths

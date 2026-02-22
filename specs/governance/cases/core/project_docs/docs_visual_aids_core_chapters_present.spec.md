@@ -15,7 +15,6 @@ services:
     type: legacy.root_docs_quality_contract_path_specs_contract_10_docs_quality_md_required_tokens_05_what_is_data_contracts_md_15_spec_lifecycle_md_25_system_topology_md_mermaid_diagram_block_check_profile_governance_scan_config_check_docs_visual_aids_core_chapters_present
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-022
   title: visual aids required in core chapters

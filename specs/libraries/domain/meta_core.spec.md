@@ -13,7 +13,6 @@ harness:
 services:
   defaults:
     profile: default
-    config: {}
   entries:
   - id: svc.exports_as_domain_meta_case_id_eq_from_assert_function_path_export_domain_meta_case_id_eq_params_meta_case_id_required_true_docs_id_domain_meta_case_id_eq_doc_1_summary_contract_export_for_domain_meta_case_id_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_case_id_case_id_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_case_id_n_type_any_n_required_true_n_description_input_parameter_case_id_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
     type: legacy.exports_as_domain_meta_case_id_eq_from_assert_function_path_export_domain_meta_case_id_eq_params_meta_case_id_required_true_docs_id_domain_meta_case_id_eq_doc_1_summary_contract_export_for_domain_meta_case_id_eq_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_meta_meta_n_case_id_case_id_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_meta_n_type_any_n_required_true_n_description_input_parameter_meta_n_name_case_id_n_type_any_n_required_true_n_description_input_parameter_case_id_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
@@ -22,8 +21,7 @@ services:
 contracts:
 - id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ
   docs:
-  - id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ.doc.1
-    summary: Case `LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -50,8 +48,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET
   docs:
-  - id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET.doc.1
-    summary: Case `LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.

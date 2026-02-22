@@ -15,7 +15,6 @@ services:
     type: legacy.root_ci_artifact_upload_path_github_workflows_ci_yml_required_tokens_actions_upload_artifact_v4_artifacts_if_always_check_profile_governance_scan_config_check_runtime_ci_artifact_upload_paths_valid_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-013
   title: ci workflow uploads artifacts from canonical .artifacts path

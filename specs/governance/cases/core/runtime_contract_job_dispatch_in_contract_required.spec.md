@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_dispatch_in_contract_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-001
   title: contract.job dispatch must be declared in contract

@@ -15,7 +15,6 @@ services:
     type: legacy.root_reference_index_path_docs_book_reference_index_md_include_glob_docs_book_md_exclude_files_docs_book_index_md_docs_book_reference_index_md_docs_book_reference_coverage_md_check_profile_governance_scan_config_check_docs_reference_index_sync_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-002
   title: reference index stays synced with chapter files

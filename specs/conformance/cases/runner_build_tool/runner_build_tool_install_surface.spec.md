@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_scripts_bundle
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-007
   title: bundle tooling exposes install command surface

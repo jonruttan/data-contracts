@@ -17,7 +17,6 @@ services:
     type: assert.check
     io: input
     profile: text.file
-    config: {}
 contracts:
 - id: DCCONF-ERR-001
   title: failing assertion includes context tokens in message

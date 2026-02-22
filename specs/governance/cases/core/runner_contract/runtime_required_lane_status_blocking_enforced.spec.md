@@ -15,7 +15,6 @@ services:
     type: legacy.root_required_lane_policy_path_scripts_runner_status_ingest_sh_required_tokens_lane_class_required_blocking_fail_check_profile_governance_scan_config_check_runtime_required_lane_status_blocking_enforced
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-STATUS-006
   title: required lane status remains blocking

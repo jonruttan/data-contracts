@@ -15,7 +15,6 @@ services:
     type: legacy.root_triage_targeted_first_path_scripts_governance_triage_sh_required_tokens_triage_mode_default_targeted_first_broad_first_resolve_targeted_prefixes_selection_source_check_profile_governance_scan_config_check_runtime_governance_triage_targeted_first_required_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-008
   title: governance triage auto mode is targeted-first by default

@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_tests_unit_opt_out_non_regression_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-TEST-UNIT-OPT-OUT-001
   title: unit test opt-out usage is measured and non-regressing

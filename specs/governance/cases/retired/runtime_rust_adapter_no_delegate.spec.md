@@ -15,7 +15,6 @@ services:
     type: legacy.root_rust_adapter_path_dc_runner_rust_required_tokens_spec_runner_cli_cargo_run_quiet_forbidden_tokens_scripts_runner_bin_sh_check_profile_governance_scan_config_check_runtime_required_lane_adapter_no_delegate_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CONFIG-006R
   title: rust adapter does not delegate to python shell adapter

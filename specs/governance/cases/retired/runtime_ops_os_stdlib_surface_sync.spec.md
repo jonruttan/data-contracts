@@ -15,7 +15,6 @@ services:
     type: legacy.root_ops_os_stdlib_surface_files_dc_runner_python_specs_schema_spec_lang_stdlib_profile_v1_yaml_required_symbols_ops_os_exec_ops_os_exec_capture_ops_os_env_get_ops_os_env_has_ops_os_cwd_ops_os_pid_ops_os_sleep_ms_ops_os_exit_code_check_profile_governance_scan_config_check_runtime_ops_os_stdlib_surface_sync
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-OPS-OS-SURFACE-001
   title: ops.os stdlib symbols are declared in profile and symbol maps

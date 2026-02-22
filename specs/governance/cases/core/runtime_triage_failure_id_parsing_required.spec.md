@@ -15,7 +15,6 @@ services:
     type: legacy.root_triage_failure_parser_path_scripts_governance_triage_sh_required_tokens_error_a_z0_9_parse_error_ids_from_output_build_prefixes_from_ids_specs_governance_check_prefix_map_v1_yaml_check_profile_governance_scan_config_check_runtime_triage_failure_id_parsing_required_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-005
   title: triage parser derives failing check ids and prefixes

@@ -15,7 +15,6 @@ services:
     type: legacy.root_ops_job_nested_dispatch_path_dc_runner_rust_required_tokens_runtime_dispatch_nested_forbidden_check_profile_governance_scan_config_check_runtime_ops_job_nested_dispatch_forbidden
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-005
   title: ops.job.dispatch nested dispatch is forbidden

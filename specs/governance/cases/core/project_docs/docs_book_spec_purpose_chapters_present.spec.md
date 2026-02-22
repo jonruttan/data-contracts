@@ -15,7 +15,6 @@ services:
     type: legacy.root_docs_manifest_path_docs_book_reference_manifest_yaml_required_paths_docs_book_05_what_is_data_contracts_md_docs_book_15_spec_lifecycle_md_docs_book_25_system_topology_md_docs_book_35_usage_guides_index_md_check_profile_governance_scan_config_check_docs_book_spec_purpose_chapters_present
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-019
   title: spec purpose narrative chapters are present

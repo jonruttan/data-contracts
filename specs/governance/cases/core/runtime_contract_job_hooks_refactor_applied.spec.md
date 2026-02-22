@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_contract_job_hooks_refactor_applied
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-JOB-HOOKS-001
   title: rust contract.job specs adopt fail and complete lifecycle hooks

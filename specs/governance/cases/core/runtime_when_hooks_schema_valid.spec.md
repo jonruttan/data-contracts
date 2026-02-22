@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_when_hooks_schema_valid
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-HOOKS-001
   title: when hooks schema must be valid

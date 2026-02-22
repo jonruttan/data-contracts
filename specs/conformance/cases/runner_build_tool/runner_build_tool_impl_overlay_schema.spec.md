@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_schema_implementation_bundle_overlay_v1_yaml
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-009
   title: implementation overlay schema defines patch overlay fields

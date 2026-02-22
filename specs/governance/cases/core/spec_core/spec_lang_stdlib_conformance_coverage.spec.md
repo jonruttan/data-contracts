@@ -15,7 +15,6 @@ services:
     type: legacy.root_stdlib_conformance_required_paths_specs_conformance_cases_core_spec_lang_stdlib_spec_md_specs_conformance_cases_core_spec_lang_schema_spec_md_check_profile_governance_scan_config_check_spec_lang_stdlib_conformance_coverage_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-STDLIB-004
   title: stdlib conformance coverage files are present

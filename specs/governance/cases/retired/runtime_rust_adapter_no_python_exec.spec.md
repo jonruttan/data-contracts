@@ -15,7 +15,6 @@ services:
     type: legacy.root_rust_no_python_exec_path_dc_runner_rust_forbidden_tokens_spec_runner_spec_lang_commands_pythonpath_python_python3_python_bin_resolve_python_bin_scripts_run_governance_specs_py_check_profile_governance_scan_config_check_runtime_required_lane_adapter_no_python_exec_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUST-PRIMARY-008
   title: rust runner interface avoids direct python execution tokens

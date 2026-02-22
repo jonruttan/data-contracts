@@ -15,7 +15,6 @@ services:
     type: legacy.root_liveness_trace_tokens_trace_path_specs_governance_cases_fixtures_run_trace_liveness_sample_json_required_tokens_stall_runner_no_progress_stall_subprocess_no_output_no_event_check_profile_governance_scan_config_check_runtime_liveness_stall_token_emitted_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-LIVENESS-STALL-001
   title: run trace contains liveness stall reason tokens

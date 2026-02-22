@@ -15,7 +15,6 @@ services:
     type: legacy.root_structured_assertions_cases_path_specs_governance_cases_case_file_pattern_spec_md_ignore_checks_governance_structured_assertions_required_check_profile_governance_scan_config_check_governance_structured_assertions_required_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-POLICY-REQ-003
   title: governance checks require structured assertion targets

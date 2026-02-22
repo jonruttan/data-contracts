@@ -15,7 +15,6 @@ services:
     type: legacy.root_status_visibility_path_scripts_runner_status_ingest_sh_required_tokens_freshness_state_missing_policy_effect_non_blocking_fail_check_profile_governance_scan_config_check_runtime_compatibility_missing_status_visibility_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-STATUS-005
   title: missing compatibility status remains visible

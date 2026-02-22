@@ -15,7 +15,6 @@ services:
     type: legacy.root_readme_makefile_tokens_path_readme_md_forbidden_tokens_make_setup_make_prepush_hooks_install_check_profile_governance_scan_config_check_docs_readme_makefile_cookbook_forbidden
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-026
   title: readme avoids makefile onboarding cookbook

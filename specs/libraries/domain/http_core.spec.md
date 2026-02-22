@@ -36,7 +36,6 @@ harness:
 services:
   defaults:
     profile: default
-    config: {}
   entries:
   - id: svc.exports_as_domain_http_status_from_assert_function_path_export_domain_http_status_params_subject_docs_id_domain_http_status_doc_1_summary_contract_export_for_domain_http_status_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1.default.1
     type: legacy.exports_as_domain_http_status_from_assert_function_path_export_domain_http_status_params_subject_docs_id_domain_http_status_doc_1_summary_contract_export_for_domain_http_status_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nlegacy_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
@@ -91,8 +90,7 @@ services:
 contracts:
 - id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -117,8 +115,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
   docs:
-  - id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -145,8 +142,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -173,8 +169,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
   docs:
-  - id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -199,8 +194,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
   docs:
-  - id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -225,8 +219,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
   docs:
-  - id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -261,8 +254,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
   docs:
-  - id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -289,8 +281,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -319,8 +310,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
   docs:
-  - id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -345,8 +335,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
   docs:
-  - id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -371,8 +360,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -399,8 +387,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
   docs:
-  - id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -427,8 +414,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
   docs:
-  - id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -455,8 +441,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -483,8 +468,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER
   docs:
-  - id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -513,8 +497,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
   docs:
-  - id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -543,8 +526,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
   docs:
-  - id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -571,8 +553,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
   docs:
-  - id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -601,8 +582,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
   docs:
-  - id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -631,8 +611,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
   docs:
-  - id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -661,8 +640,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
   docs:
-  - id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -691,8 +669,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
   docs:
-  - id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -717,8 +694,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
   docs:
-  - id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -747,8 +723,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
   docs:
-  - id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.
@@ -776,8 +751,7 @@ contracts:
     - domain
 - id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
   docs:
-  - id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET.doc.1
-    summary: Case `LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET` for `contract.export`.
+  - summary: Case `LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET` for `contract.export`.
     audience: spec-authors
     status: active
     description: Auto-generated root doc metadata stub. Replace with authored reference text.

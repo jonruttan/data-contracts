@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_schema_project_bundle_lock_v1_yaml
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-011
   title: project bundle lock schema supports additional role entries

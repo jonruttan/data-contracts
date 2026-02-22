@@ -24,7 +24,6 @@ services:
         symbols:
         - conf.pass_when_text_contains
   - id: svc.assert_check.text_file.2
-    config: {}
   - id: svc.assert_check.text_file.3
     config:
       spec_lang:

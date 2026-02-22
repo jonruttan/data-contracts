@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_contract_34_runner_implementation_spec_bundles_md
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-010
   title: implementation bundle contract defines build and package command surface

@@ -15,7 +15,6 @@ services:
     type: legacy.root_status_ingestion_files_scripts_runner_status_ingest_sh_specs_schema_runner_certification_registry_v2_yaml_required_tokens_release_api_url_report_asset_name_runner_status_matrix_json_runner_status_ingest_log_json_check_profile_governance_scan_config_check_runtime_compatibility_status_ingestion_configured
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-STATUS-003
   title: compatibility status ingestion is configured

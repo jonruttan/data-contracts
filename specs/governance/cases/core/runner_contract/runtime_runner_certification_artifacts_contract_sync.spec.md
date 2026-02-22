@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_artifacts_contract_sync
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CERT-003
   title: runner certification artifacts follow contract shape

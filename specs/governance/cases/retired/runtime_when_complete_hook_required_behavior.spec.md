@@ -15,7 +15,6 @@ services:
     type: legacy.root_when_complete_path_dc_runner_python_required_tokens_def_on_complete_complete_on_complete_on_complete_check_profile_governance_scan_config_check_runtime_when_complete_hook_required_behavior
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-HOOKS-004
   title: when complete hook must run after successful contract

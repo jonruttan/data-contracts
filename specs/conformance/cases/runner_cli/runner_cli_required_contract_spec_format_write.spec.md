@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-RCLI-007
   title: runner cli exposes contract spec format write command

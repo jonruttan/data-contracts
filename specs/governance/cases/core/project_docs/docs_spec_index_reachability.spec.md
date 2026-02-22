@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_docs_spec_index_reachability
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-CANON-001
   title: specs index links all canonical spec entrypoints

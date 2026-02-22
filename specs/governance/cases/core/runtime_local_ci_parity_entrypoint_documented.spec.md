@@ -15,7 +15,6 @@ services:
     type: legacy.root_local_ci_parity_docs_files_readme_md_docs_development_md_docs_book_60_runner_and_gates_md_docs_book_80_troubleshooting_md_required_tokens_make_prepush_make_prepush_fast_make_hooks_install_spec_prepush_bypass_1_check_profile_governance_scan_config_check_runtime_local_ci_parity_entrypoint_documented_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-PREPUSH-005
   title: local ci parity entrypoint is documented for contributors

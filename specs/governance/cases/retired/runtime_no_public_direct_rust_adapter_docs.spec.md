@@ -15,7 +15,6 @@ services:
     type: legacy.root_public_docs_files_readme_md_docs_development_md_specs_current_md_specs_contract_12_runner_interface_md_forbidden_tokens_dc_runner_rust_allowlist_specs_contract_12_runner_interface_md_check_profile_governance_scan_config_check_runtime_no_public_direct_rust_adapter_docs_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-ENTRY-004
   title: public docs do not instruct direct rust adapter invocation

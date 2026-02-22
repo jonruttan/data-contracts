@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_ops_job_capability_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-004
   title: ops.job.dispatch requires ops.job capability

@@ -15,7 +15,6 @@ services:
     type: legacy.root_cli_docs_python_scripts_dc_runner_python_php_scripts_dc_runner_php_dc_runner_php_python_docs_docs_development_md_dc_runner_python_php_docs_docs_development_md_dc_runner_php_check_profile_governance_scan_config_check_docs_cli_flags_documented_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-005
   title: runner cli flags are documented in development and impl docs

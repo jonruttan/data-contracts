@@ -15,7 +15,6 @@ services:
     type: legacy.root_runner_certification_surfaces_files_dc_runner_rust_dc_runner_rust_specs_governance_cases_core_runtime_runner_interface_subcommands_spec_md_required_tokens_runner_certify_check_profile_governance_scan_config_check_runtime_runner_certification_surfaces_sync
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CERT-002
   title: runner certification command surfaces stay in sync

@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_governance_scan_config_check_runtime_case_contract_block_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CONTRACT-BLOCK-001
   title: cases must use contract block

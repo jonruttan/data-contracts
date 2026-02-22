@@ -15,7 +15,6 @@ services:
     type: legacy.root_reference_guide_path_docs_book_90_reference_guide_md_required_tokens_guide_to_contract_map_guide_01_onboarding_md_guide_10_reference_navigation_patterns_md_specs_contract_10_docs_quality_md_specs_contract_27_runner_status_exchange_md_check_profile_governance_scan_config_check_docs_guide_contract_links_valid
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-REF-024
   title: guide to contract links are valid

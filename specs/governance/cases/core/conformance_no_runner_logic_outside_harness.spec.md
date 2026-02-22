@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_conformance_no_runner_logic_outside_harness_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-CONF-PORT-001
   title: conformance cases keep runner logic under harness

@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_exports_schema_valid
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-003
   title: harness exports schema is valid

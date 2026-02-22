@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_spec_generated_data_artifacts_not_embedded_in_spec_blocks_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-SPEC-MD-004
   title: generated data artifacts do not embed executable spec blocks

@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_chain_imports_consumer_surface_unchanged
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-HARNESS-EXPORTS-004
   title: chain imports consumer surface remains unchanged

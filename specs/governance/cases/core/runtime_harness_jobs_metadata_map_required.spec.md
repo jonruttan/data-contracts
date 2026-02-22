@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_harness_jobs_metadata_list_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-JOB-DISPATCH-002
   title: contract.job harness uses jobs metadata list

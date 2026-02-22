@@ -15,7 +15,6 @@ services:
     type: legacy.root_prepush_governance_triage_path_scripts_ci_gate_sh_required_tokens_governance_triage_scripts_governance_triage_sh_forbidden_tokens_run_step_governance_spec_runner_bin_governance_check_profile_governance_scan_config_check_runtime_prepush_uses_governance_triage_required_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-TRIAGE-002
   title: prepush lane uses governance triage entrypoint

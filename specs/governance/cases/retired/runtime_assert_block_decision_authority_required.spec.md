@@ -15,7 +15,6 @@ services:
     type: legacy.root_assert_decision_authority_path_dc_runner_python_required_tokens_governance_scan_forbids_harness_evaluate_eval_assert_tree_assert_spec_eval_leaf_eval_leaf_forbidden_tokens_run_governance_policy_check_profile_governance_scan_config_check_runtime_assert_block_decision_authority_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-ASSERT-AUTH-001
   title: governance verdict authority lives in assert blocks

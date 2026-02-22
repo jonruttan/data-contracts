@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-003
   title: runner build tool contract defines required compat task

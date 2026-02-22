@@ -15,7 +15,6 @@ services:
     type: legacy.root_when_fail_path_dc_runner_python_required_tokens_fail_hook_ran_if_fail_hook_ran_runtime_on_hook_fail_handler_failed_fail_check_profile_governance_scan_config_check_runtime_when_fail_hook_required_behavior
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-HOOKS-003
   title: when fail hook must run once on first failure

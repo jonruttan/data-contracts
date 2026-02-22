@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_docs_canonical_freshness_strict
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-CANON-003
   title: docs freshness strict checker passes

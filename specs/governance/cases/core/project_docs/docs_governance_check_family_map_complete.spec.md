@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_docs_governance_check_family_map_complete
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-DOCS-CANON-002
   title: governance check family map covers all registered checks

@@ -15,7 +15,6 @@ services:
     type: legacy.check_profile_text_file_config_path_specs_contract_33_bundle_package_management_md
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCCONF-BTOOL-006
   title: bundle package contract defines canonical data-contract-bundle asset naming

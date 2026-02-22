@@ -15,7 +15,6 @@ services:
     type: legacy.root_meta_json_targets_files_dc_runner_python_dc_runner_python_dc_runner_python_dc_runner_python_dc_runner_python_required_tokens_meta_json_check_profile_governance_scan_config_check_runtime_meta_json_target_required
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-META-TARGET-001
   title: executable harnesses expose meta_json assertion target

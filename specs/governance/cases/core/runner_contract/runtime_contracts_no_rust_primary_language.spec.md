@@ -15,7 +15,6 @@ services:
     type: legacy.root_contract_language_files_specs_contract_10_docs_quality_md_specs_contract_12_runner_interface_md_specs_contract_25_compatibility_matrix_md_forbidden_tokens_implementation_agnostic_required_lane_check_profile_governance_scan_config_check_runtime_contracts_no_rust_primary_language
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CONTRACT-001
   title: contracts avoid rust-primary language

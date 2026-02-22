@@ -15,7 +15,6 @@ services:
     type: legacy.root_gate_skipped_contract_files_dc_runner_python_dc_runner_rust_required_tokens_skipped_step_count_first_failure_step_aborted_after_step_blocked_by_skip_reason_check_profile_governance_scan_config_check_runtime_gate_skipped_steps_contract_required_use_ref_specs_libraries_policy_policy_core_spec_md_as_lib_policy_core_spec_symbols_policy_pass_when_no_violations
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-FAILFAST-002
   title: gate summary payload includes skipped step contract

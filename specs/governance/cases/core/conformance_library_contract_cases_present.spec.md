@@ -15,7 +15,6 @@ services:
     type: legacy.root_conformance_library_contract_cases_present_path_specs_conformance_cases_core_spec_lang_library_contract_spec_md_required_case_ids_dcconf_lib_contract_001_dcconf_lib_contract_002_dcconf_lib_contract_003_check_profile_governance_scan_config_check_conformance_library_contract_cases_present_use_ref_specs_libraries_policy_policy_assertions_spec_md_as_lib_policy_core_spec_symbols_policy_assert_no_violations_policy_assert_summary_passed_policy_assert_summary_check_id_policy_assert_scan_pass
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-CONF-LIB-CONTRACT-001
   title: conformance library contract coverage cases are present

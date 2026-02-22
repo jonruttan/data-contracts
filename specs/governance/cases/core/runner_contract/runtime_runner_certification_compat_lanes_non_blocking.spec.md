@@ -15,7 +15,6 @@ services:
     type: legacy.root_check_profile_governance_scan_config_check_runtime_runner_certification_compat_lanes_non_blocking
     io: io
     profile: default
-    config: {}
 contracts:
 - id: DCGOV-RUNTIME-CERT-005
   title: compatibility lanes remain non-blocking in certification

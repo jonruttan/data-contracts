@@ -11,8 +11,7 @@ harness:
     - export
     - unknown_harness
 services:
-  defaults:
-    config: {}
+  defaults: {}
   entries:
   - id: svc.check.text_file.1
     type: assert.check
@@ -27,37 +26,29 @@ services:
     io: input
     profile: text.file
     imports:
-    - names:
-      - pipe_identity
+    - pipe_identity
 artifact:
   imports:
   - id: schema_ref_doc
     ref: "{{schema_ref}}"
     type: application/yaml
-    inputs: {}
-    options: {}
     docs:
-    - id: schema_ref_doc.doc.1
-      summary: schema reference import
+    - summary: schema reference import
       audience: spec-authors
       status: active
   exports:
   - id: schema_ref_export
     ref: "{{schema_ref}}"
     type: application/json
-    options: {}
     docs:
-    - id: schema_ref_export.doc.1
-      summary: schema reference export
+    - summary: schema reference export
       audience: spec-authors
       status: active
   - id: text
     ref: "{{schema_ref}}"
     type: text/plain
-    options: {}
     docs:
-    - id: text.doc.1
-      summary: schema text export
+    - summary: schema text export
       audience: spec-authors
       status: active
 bindings:
@@ -132,8 +123,7 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-003
   title: contract export without top-level imports remains valid under suite harness/services
   docs:
-  - id: DCCONF-SCHEMA-CASE-003.doc.1
-    summary: schema export validation case
+  - summary: schema export validation case
     audience: spec-authors
     status: active
     description: Valid contract.export shape without deprecated top-level imports.
@@ -157,8 +147,7 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-004
   title: contract export top-level imports are rejected as schema
   docs:
-  - id: DCCONF-SCHEMA-CASE-004.doc.1
-    summary: schema export invalid imports case
+  - summary: schema export invalid imports case
     audience: spec-authors
     status: active
     description: Deprecated contract.export top-level imports must hard-fail in v2.
@@ -370,8 +359,7 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-018
   title: docs entry missing required status is rejected as schema
   docs:
-  - id: missing-status
-    summary: missing status
+  - summary: missing status
     audience: spec-authors
   expect:
     portable:
@@ -385,8 +373,7 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-019
   title: docs entry invalid type enum is rejected as schema
   docs:
-  - id: invalid-type
-    summary: invalid docs type
+  - summary: invalid docs type
     audience: spec-authors
     status: active
     type: narrative
@@ -402,12 +389,10 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-020
   title: docs entry duplicate ids are rejected as schema
   docs:
-  - id: duplicate-id
-    summary: docs entry one
+  - summary: docs entry one
     audience: spec-authors
     status: active
-  - id: duplicate-id
-    summary: docs entry two
+  - summary: docs entry two
     audience: spec-authors
     status: active
   expect:
@@ -422,8 +407,7 @@ contracts:
 - id: DCCONF-SCHEMA-CASE-021
   title: docs entry unknown key is rejected as schema
   docs:
-  - id: unknown-key
-    summary: docs entry with unknown key
+  - summary: docs entry with unknown key
     audience: spec-authors
     status: active
     unknown_field: true
