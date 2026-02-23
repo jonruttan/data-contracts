@@ -45,6 +45,16 @@ Projects MUST pin bundle installs in root `bundles.lock.yaml` using:
 
 - `/specs/01_schema/project_bundle_lock_v1.yaml`
 
+Project scaffold commands MUST support canonical bundle host resolution:
+
+- input: `bundle_id + bundle_version`
+- host: `jonruttan/data-contracts-bundles` release assets
+- tarball asset: `data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz`
+- checksum sidecar: same asset name with `.sha256` suffix
+
+External URL scaffold mode is optional and MUST be explicitly gated by a
+caller opt-in flag.
+
 Installers and runner wrappers MUST implement:
 
 - `bundle-sync` / `install`: fetch package URLs, verify checksums, unpack each
@@ -52,6 +62,12 @@ Installers and runner wrappers MUST implement:
   `resolved_bundle_lock_v1.yaml`.
 - `bundle-sync-check` / `install-check`: re-verify package checksums and
   materialized file manifest drift.
+- `project scaffold`:
+  - fetch tarball and `.sha256` sidecar in canonical mode
+  - verify sidecar checksum against fetched tarball bytes
+  - materialize root `bundles.lock.yaml`
+  - install and check bundle payload integrity (`resolved_bundle_lock_v1.yaml`,
+    `resolved_files.sha256`, and declaration digest verification)
 
 Multiple bundle entries are supported and MUST be install-isolated.
 Install directory overlap is forbidden.
@@ -116,6 +132,8 @@ Failure messages MUST be direct and actionable:
 - local materialization drift vs `resolved_files.sha256`
 - declaration/provenance digest mismatch between package metadata and resolved
   source spec declarations
+- canonical release asset or checksum sidecar not found
+- external URL requested without explicit opt-in
 
 ## Compatibility
 
