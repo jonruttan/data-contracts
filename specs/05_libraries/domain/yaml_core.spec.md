@@ -15,7 +15,7 @@ harness:
       docs:
       - id: domain.yaml.stringify.doc.1
         summary: Contract export for `domain.yaml.stringify`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -32,7 +32,7 @@ contracts:
   - id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR
     docs:
     - summary: Case `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -58,7 +58,7 @@ contracts:
   - id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
     docs:
     - summary: Case `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

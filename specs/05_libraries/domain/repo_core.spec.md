@@ -16,7 +16,7 @@ harness:
       docs:
       - id: domain.repo.walk_matching.doc.1
         summary: Contract export for `domain.repo.walk_matching`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -35,7 +35,7 @@ contracts:
   - id: LIB-DOMAIN-REPO-001-001-DOMAIN-REPO-WALK-MATCHING
     docs:
     - summary: Case `LIB-DOMAIN-REPO-001-001-DOMAIN-REPO-WALK-MATCHING` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

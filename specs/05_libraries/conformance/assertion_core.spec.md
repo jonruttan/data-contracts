@@ -16,7 +16,7 @@ harness:
       docs:
       - id: conf.pass_when_text_contains.doc.1
         summary: Contract export for `conf.pass_when_text_contains`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -40,7 +40,7 @@ harness:
       docs:
       - id: conf.pass_when_text_regex.doc.1
         summary: Contract export for `conf.pass_when_text_regex`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -64,7 +64,7 @@ harness:
       docs:
       - id: conf.eq.doc.1
         summary: Contract export for `conf.eq`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -88,7 +88,7 @@ harness:
       docs:
       - id: conf.has_error_category.doc.1
         summary: Contract export for `conf.has_error_category`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -112,7 +112,7 @@ harness:
       docs:
       - id: conf.json_type_is.doc.1
         summary: Contract export for `conf.json_type_is`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -132,7 +132,7 @@ contracts:
     title: reusable conformance assertion helper functions
     docs:
     - summary: Case `LIB-CONF-ASSERT-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

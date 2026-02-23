@@ -29,14 +29,14 @@ profiles:
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - --check-id runtime.compatibility_status_freshness_within_slo
+          - --profile full
           - --out .artifacts/runner-status-matrix.json
           - --summary-out .artifacts/runner-status-matrix.md
       - id: runtime.compatibility_missing_status_visibility_required
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
-          - --check-id runtime.compatibility_missing_status_visibility_required
+          - --profile full
           - --trace-out .artifacts/runner-status-ingest-log.json
       - id: docs.readme_task_usage_paths_present
         kind: file_tokens
@@ -58,17 +58,18 @@ profiles:
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - --check-id schema.spec_case_version_present
+          - --profile full
+          - spec-schema-pin-validate.json
       - id: schema.spec_case_schema_ref_present
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - --check-id schema.spec_case_schema_ref_present
+          - --trace-out .artifacts/spec-schema-pin-validate-trace.json
       - id: schema.spec_case_schema_ref_known
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - --check-id schema.spec_case_schema_ref_known
+          - --summary-out .artifacts/spec-schema-pin-validate.md
       - id: schema.pin_pipeline_chain_valid
         kind: file_tokens
         path: /specs/04_governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md
@@ -129,8 +130,7 @@ profiles:
         kind: file_tokens
         path: /scripts/governance_boundary_validate.sh
         must_contain:
-          - --check-id runtime.repo_boundary_tokens_forbidden
-          - --check-id runtime.repo_boundary_validator_tokens_configured
+          - --profile full
           - governance-boundary-validate.json
   full:
     checks:
@@ -218,7 +218,7 @@ profiles:
         kind: file_tokens
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
-          - --check-id schema.spec_case_version_matches_schema_ref
+          - --summary-out .artifacts/spec-schema-pin-validate.md
       - id: schema.catalog_contains_active_schema_v1
         kind: file_tokens
         path: /specs/01_schema/schema_catalog_v1.yaml
@@ -245,17 +245,34 @@ profiles:
         path: /scripts/governance_catalog_validate.sh
         must_contain:
           - .artifacts/governance-catalog-validate.json
-          - --check-id governance.catalog_pipeline_chain_valid
-          - --check-id runtime.chain_entry_cases_present
+          - --profile full
+          - governance-catalog-validate-trace.json
       - id: runtime.infra_script_boundary_enforced
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh
         must_contain:
           - ./scripts/runner_bin.sh governance
-          - --check-id runtime.status_ingest_pipeline_chain_valid
+          - --profile full
         must_not_contain:
           - specs/02_contracts/policy_v1.yaml
           - check_sets_v1.yaml
+      - id: docs.audience_surfaces_generated
+        kind: file_tokens
+        path: /docs/audience/implementer/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: implementer
+      - id: docs.audience_surfaces_synced
+        kind: file_tokens
+        path: /scripts/docs_audience_generate.sh
+        must_contain:
+          - docs_audience_generate.py
+      - id: docs.audience_canonical_tokens_only
+        kind: file_tokens
+        path: /specs/00_core/docs_audience_migration_map.md
+        must_contain:
+          - spec-authors
+          - implementer
       - id: governance.catalog_pipeline_chain_valid
         kind: file_tokens
         path: /specs/04_governance/cases/core/spec_core/runtime_governance_catalog_pipeline_chain.spec.md

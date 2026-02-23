@@ -16,7 +16,7 @@ harness:
       docs:
       - id: domain.markdown.tokens_all_present.doc.1
         summary: Contract export for `domain.markdown.tokens_all_present`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -36,7 +36,7 @@ contracts:
     title: 'markdown projection helper functions: domain.markdown.has_heading'
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -208,7 +208,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
         `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -299,7 +299,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
         `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -363,7 +363,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -395,7 +395,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -429,7 +429,7 @@ contracts:
     title: 'markdown projection helper functions: domain.markdown.has_broken_links'
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -456,7 +456,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -490,7 +490,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -533,7 +533,7 @@ contracts:
     title: 'markdown projection helper functions: domain.markdown.token_present'
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -567,7 +567,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
         `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -599,7 +599,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -634,7 +634,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
         for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

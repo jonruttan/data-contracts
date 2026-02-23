@@ -53,7 +53,8 @@ Read in order:
 38. `/specs/02_contracts/32_contract_bundle_taxonomy.md`
 39. `/specs/02_contracts/33_bundle_package_management.md`
 40. `/specs/02_contracts/34_runner_implementation_spec_bundles.md`
-41. `/specs/02_contracts/35_service_plugin_runtime.md`
+41. `/specs/02_contracts/35_docs_audience_generation_contract.md`
+42. `/specs/02_contracts/35_service_plugin_runtime.md`
 
 Type contracts:
 

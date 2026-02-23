@@ -16,7 +16,7 @@ harness:
       docs:
       - id: make.has_target.doc.1
         summary: Contract export for `make.has_target`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -36,7 +36,7 @@ contracts:
     title: makefile projection helper functions
     docs:
     - summary: Case `LIB-DOMAIN-MAKE-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

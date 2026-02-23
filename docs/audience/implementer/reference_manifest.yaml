@@ -1,0 +1,49 @@
+version: 1
+audience: implementer
+chapters:
+  - path: /specs/03_conformance/cases/core/implicit_ids_v1.spec.md
+    title: implicit_ids_v1.spec.md
+  - path: /specs/03_conformance/cases/core/schema_case_validation.spec.md
+    title: schema_case_validation.spec.md
+  - path: /specs/05_libraries/conformance/assertion_core.spec.md
+    title: assertion_core.spec.md
+  - path: /specs/05_libraries/conformance/chain_export_validation.spec.md
+    title: chain_export_validation.spec.md
+  - path: /specs/05_libraries/domain/artifact_core.spec.md
+    title: artifact_core.spec.md
+  - path: /specs/05_libraries/domain/conformance_core.spec.md
+    title: conformance_core.spec.md
+  - path: /specs/05_libraries/domain/contract_set_core.spec.md
+    title: contract_set_core.spec.md
+  - path: /specs/05_libraries/domain/fs_core.spec.md
+    title: fs_core.spec.md
+  - path: /specs/05_libraries/domain/http_core.spec.md
+    title: http_core.spec.md
+  - path: /specs/05_libraries/domain/job_core.spec.md
+    title: job_core.spec.md
+  - path: /specs/05_libraries/domain/make_core.spec.md
+    title: make_core.spec.md
+  - path: /specs/05_libraries/domain/markdown_core.spec.md
+    title: markdown_core.spec.md
+  - path: /specs/05_libraries/domain/meta_core.spec.md
+    title: meta_core.spec.md
+  - path: /specs/05_libraries/domain/os_core.spec.md
+    title: os_core.spec.md
+  - path: /specs/05_libraries/domain/path_core.spec.md
+    title: path_core.spec.md
+  - path: /specs/05_libraries/domain/php_core.spec.md
+    title: php_core.spec.md
+  - path: /specs/05_libraries/domain/process_core.spec.md
+    title: process_core.spec.md
+  - path: /specs/05_libraries/domain/python_core.spec.md
+    title: python_core.spec.md
+  - path: /specs/05_libraries/domain/repo_core.spec.md
+    title: repo_core.spec.md
+  - path: /specs/05_libraries/domain/yaml_core.spec.md
+    title: yaml_core.spec.md
+  - path: /specs/05_libraries/path/path_core.spec.md
+    title: path_core.spec.md
+  - path: /specs/05_libraries/policy/policy_core.spec.md
+    title: policy_core.spec.md
+  - path: /specs/05_libraries/policy/policy_metrics.spec.md
+    title: policy_metrics.spec.md

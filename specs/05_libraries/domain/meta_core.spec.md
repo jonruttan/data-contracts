@@ -16,7 +16,7 @@ harness:
       docs:
       - id: domain.meta.has_artifact_target.doc.1
         summary: Contract export for `domain.meta.has_artifact_target`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -35,7 +35,7 @@ contracts:
   - id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ
     docs:
     - summary: Case `LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -64,7 +64,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET` for
         `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

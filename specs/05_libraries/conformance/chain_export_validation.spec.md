@@ -19,7 +19,7 @@ harness:
       docs:
       - id: bad.path.symbol.doc.1
         summary: Contract export for `bad.path.symbol`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -36,7 +36,7 @@ contracts:
   - id: BAD-EXPORT-PATH
     docs:
     - summary: Case `BAD-EXPORT-PATH` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -60,7 +60,7 @@ contracts:
   - id: BAD-EXPORT-CLASS
     docs:
     - summary: Case `BAD-EXPORT-CLASS` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

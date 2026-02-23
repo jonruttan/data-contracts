@@ -15,7 +15,7 @@ harness:
       docs:
       - id: py.is_tuple_projection.doc.1
         summary: Contract export for `py.is_tuple_projection`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -33,7 +33,7 @@ contracts:
     title: python projection helper functions
     docs:
     - summary: Case `LIB-DOMAIN-PY-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

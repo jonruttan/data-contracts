@@ -15,7 +15,7 @@ harness:
       docs:
       - id: php.is_assoc_projection.doc.1
         summary: Contract export for `php.is_assoc_projection`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -33,7 +33,7 @@ contracts:
     title: php projection helper functions
     docs:
     - summary: Case `LIB-DOMAIN-PHP-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

@@ -22,7 +22,7 @@ harness:
       docs:
       - id: path.segments.doc.1
         summary: Contract export for `path.segments`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -42,7 +42,7 @@ harness:
       docs:
       - id: path.trim_dot.doc.1
         summary: Contract export for `path.trim_dot`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -62,7 +62,7 @@ harness:
       docs:
       - id: path.dirname.doc.1
         summary: Contract export for `path.dirname`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -83,7 +83,7 @@ harness:
       docs:
       - id: path.has_extension.doc.1
         summary: Contract export for `path.has_extension`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -105,7 +105,7 @@ harness:
       docs:
       - id: path.is_under.doc.1
         summary: Contract export for `path.is_under`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -128,7 +128,7 @@ harness:
       docs:
       - id: path.matches.doc.1
         summary: Contract export for `path.matches`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -147,7 +147,7 @@ contracts:
   - id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
     docs:
     - summary: Case `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -226,7 +226,7 @@ contracts:
   - id: LIB-PATH-001-002-PATH-SEGMENTS
     docs:
     - summary: Case `LIB-PATH-001-002-PATH-SEGMENTS` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -306,7 +306,7 @@ contracts:
   - id: LIB-PATH-001-003-PATH-BASENAME
     docs:
     - summary: Case `LIB-PATH-001-003-PATH-BASENAME` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -398,7 +398,7 @@ contracts:
   - id: LIB-PATH-001-004-PATH-EXTENSION
     docs:
     - summary: Case `LIB-PATH-001-004-PATH-EXTENSION` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

@@ -30,7 +30,7 @@ harness:
       docs:
       - id: policy.metric_non_increase.doc.1
         summary: Contract export for `policy.metric_non_increase`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -53,7 +53,7 @@ contracts:
     title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
     docs:
     - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -85,7 +85,7 @@ contracts:
     title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
     docs:
     - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

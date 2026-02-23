@@ -16,7 +16,7 @@ harness:
       docs:
       - id: domain.os.exec_ok.doc.1
         summary: Contract export for `domain.os.exec_ok`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -35,7 +35,7 @@ contracts:
   - id: LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK
     docs:
     - summary: Case `LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -61,7 +61,7 @@ contracts:
   - id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE
     docs:
     - summary: Case `LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -89,7 +89,7 @@ contracts:
   - id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS
     docs:
     - summary: Case `LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

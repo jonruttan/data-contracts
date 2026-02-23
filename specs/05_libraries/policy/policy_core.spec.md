@@ -15,7 +15,7 @@ harness:
       docs:
       - id: policy.pass_when_no_violations.doc.1
         summary: Contract export for `policy.pass_when_no_violations`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -36,7 +36,7 @@ harness:
       docs:
       - id: policy.fail_when_has_violations.doc.1
         summary: Contract export for `policy.fail_when_has_violations`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -58,7 +58,7 @@ harness:
       docs:
       - id: policy.check_id_is.doc.1
         summary: Contract export for `policy.check_id_is`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -82,7 +82,7 @@ harness:
       docs:
       - id: policy.violation_count_is.doc.1
         summary: Contract export for `policy.violation_count_is`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -102,7 +102,7 @@ contracts:
     title: policy-core reusable governance predicates
     docs:
     - summary: Case `LIB-POLICY-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

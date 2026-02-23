@@ -15,7 +15,7 @@ harness:
       docs:
       - id: domain.path.sorted.doc.1
         summary: Contract export for `domain.path.sorted`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -32,7 +32,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -55,7 +55,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -81,7 +81,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -106,7 +106,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -131,7 +131,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -154,7 +154,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -180,7 +180,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -206,7 +206,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
@@ -231,7 +231,7 @@ contracts:
   - id: LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME
     docs:
     - summary: Case `LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.

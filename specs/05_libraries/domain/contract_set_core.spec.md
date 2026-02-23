@@ -15,7 +15,7 @@ harness:
       docs:
       - id: domain.contract_set.id.doc.1
         summary: Contract export for `domain.contract_set.id`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Returns manifest `contract_set_id`.\n\nDocumentation metadata:\
           \ to description:\n- examples[]: title: Read id\ninput:\n  manifest:\n \
@@ -35,7 +35,7 @@ harness:
       docs:
       - id: domain.contract_set.depends_on.doc.1
         summary: Contract export for `domain.contract_set.depends_on`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Returns declared dependency list from manifest.\\ n\nDocumentation\
           \ doc fields normalized to description:\n- examples[]: title: Read dependencies\n\
@@ -56,7 +56,7 @@ harness:
       docs:
       - id: domain.contract_set.include_paths.doc.1
         summary: Contract export for `domain.contract_set.include_paths`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Returns include path/glob list from manifest.\n\nDocumentation\
           \ fields normalized to description:\n- examples[]: title: Read include paths\n\
@@ -77,7 +77,7 @@ harness:
       docs:
       - id: domain.contract_set.applies_to_runners.doc.1
         summary: Contract export for `domain.contract_set.applies_to_runners`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Returns optional runner applicability list.\n\nDocumentation metadata:\
           \ normalized to description:\\ n- examples[]: title: Read runner filter\n\
@@ -95,7 +95,7 @@ contracts:
     title: contract-set manifest projection helper functions
     docs:
     - summary: Case `LIB-DOMAIN-CONTRACT-SET-001` for `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Contract-set manifest projection exports for resolver policy and
         validation checks.

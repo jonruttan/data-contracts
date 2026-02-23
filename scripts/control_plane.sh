@@ -11,8 +11,8 @@ ensure_artifacts_dir() {
 run_governance() {
   ensure_artifacts_dir
   ./scripts/governance_interface_validate.sh
-  ./scripts/governance_boundary_validate.sh
   DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full "$@"
+  ./scripts/governance_boundary_validate.sh
   ./scripts/governance_catalog_validate.sh
   ./scripts/spec_schema_pin_validate.sh
   ./scripts/governance_optional_report.sh
@@ -32,7 +32,6 @@ case "${cmd}" in
   governance-broad-native)
     ensure_artifacts_dir
     ./scripts/governance_interface_validate.sh
-    ./scripts/governance_boundary_validate.sh
     DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance-broad-native "$@"
     ;;
   style-check)
@@ -42,11 +41,11 @@ case "${cmd}" in
   docs-generate-check)
     ensure_artifacts_dir
     DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh docs-generate-check "$@"
+    ./scripts/docs_audience_generate.sh --check
     ;;
   critical-gate)
     ensure_artifacts_dir
     ./scripts/governance_interface_validate.sh
-    ./scripts/governance_boundary_validate.sh
     DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh critical-gate "$@"
     ;;
   ci-gate-summary)

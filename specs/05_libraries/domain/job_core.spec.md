@@ -18,7 +18,7 @@ harness:
       docs:
       - id: domain.job.scan_bundle_has_result.doc.1
         summary: Contract export for `domain.job.scan_bundle_has_result`.
-        audience: spec-authors
+        audience: implementer
         status: active
         description: "Auto-generated metadata stub. Replace with authored reference\
           \ text.\n\nDocumentation metadata:\n- examples[]: title:\
@@ -41,7 +41,7 @@ contracts:
     docs:
     - summary: Case `LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT` for
         `contract.export`.
-      audience: spec-authors
+      audience: implementer
       status: active
       description: Auto-generated root doc metadata stub. Replace with authored reference
         text.
