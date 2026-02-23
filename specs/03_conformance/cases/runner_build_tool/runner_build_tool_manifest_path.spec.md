@@ -24,7 +24,7 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - /data-contracts-library/specs/07_runner_behavior/impl/<runner>/runner_build_tool_contract_v1.yaml
+          - /dc-runner-<runner>/specs/impl/<runner>/runner_build_tool_contract_v1.yaml
 adapters:
 - type: beta.check_profile_text_file_config
   actions:

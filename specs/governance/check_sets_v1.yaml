@@ -132,26 +132,6 @@ profiles:
           - --check-id runtime.repo_boundary_tokens_forbidden
           - --check-id runtime.repo_boundary_validator_tokens_configured
           - governance-boundary-validate.json
-      - id: runtime.legacy_overlay_repo_tokens_forbidden_readme
-        kind: file_tokens
-        path: /README.md
-        must_not_contain:
-          - dc-runner-spec
-          - data-contracts-bundle-spec
-          - data-contracts-bundler-spec
-          - dc-runner-rust-specs
-          - dc-runner-python-specs
-          - dc-runner-php-specs
-      - id: runtime.legacy_overlay_repo_tokens_forbidden_bundle_contract
-        kind: file_tokens
-        path: /specs/02_contracts/33_bundle_package_management.md
-        must_not_contain:
-          - dc-runner-spec
-          - data-contracts-bundle-spec
-          - data-contracts-bundler-spec
-          - dc-runner-rust-specs
-          - dc-runner-python-specs
-          - dc-runner-php-specs
   full:
     checks:
       - id: runtime.full_check_set_manifest_required

@@ -11,7 +11,8 @@ Runtime execution ownership lives in runner repositories:
 - `dc-runner-rust`
 - `dc-runner-python`
 - `dc-runner-php`
-- `data-contracts-library` (reusable runner behavior + overlay + shared runner libraries)
+- `data-contracts-runner` (shared runner behavior + shared runner contracts)
+- `data-contracts-library` (shared reusable libraries + overlays)
 
 `data-contracts` owns:
 
@@ -52,8 +53,9 @@ Boundary contract:
 - canonical `data-contracts` docs/specs must not reference internal runner trees
   using internal runner tree path tokens.
 - external reusable-runner surfaces must be referenced via explicit repository paths, for
-  example `/data-contracts-library/specs/07_runner_behavior/impl/**` and
-  `/data-contracts-library/specs/07_runner_behavior/contract_sets/**`.
+  example `/dc-runner-<impl>/specs/impl/<impl>/**`,
+  `/data-contracts-runner/specs/07_runner_behavior/runner/**`, and
+  `/data-contracts-runner/specs/07_runner_behavior/contract_sets/shared/**`.
 
 ## Status Exchange Boundary
 
@@ -93,7 +95,11 @@ Canonical bundle manifest and package librarian repository:
 
 - `https://github.com/jonruttan/data-contracts-bundles`
 
-Reusable implementation-specific overlay repository:
+Reusable shared runner behavior repository:
+
+- `https://github.com/jonruttan/data-contracts-runner`
+
+Reusable overlay/library repository:
 
 - `https://github.com/jonruttan/data-contracts-library`
 
