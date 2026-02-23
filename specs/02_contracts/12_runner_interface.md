@@ -28,18 +28,17 @@ Runtime execution ownership lives in runner repositories:
 
 ## Stable Boundary
 
-The public command boundary remains:
+The public command boundary is the installed binary:
 
-- `scripts/runner_bin.sh`
+- `dc-runner`
 
-This boundary is retained for compatibility, but control-plane CI in this repo
-must not depend on runtime-lane execution through that boundary.
+Command semantics are source-controlled in:
+
+- `/specs/04_governance/runner_entrypoints_v1.yaml`
 
 Shared governance semantics MUST be sourced from spec surfaces (`specs/04_governance/**`
-`specs/05_libraries/policy/**`) and executed by runners; shell scripts are transport
-entrypoints and artifact emitters only.
-Active shell scripts in canonical repos are wrapper-only command boundaries and
-must not embed policy or schema decision logic.
+`specs/05_libraries/policy/**`) and executed by runners. Shell scripts are not
+canonical command entrypoints.
 
 Reusable runner executable spec suites MUST use canonical v1 case shape:
 

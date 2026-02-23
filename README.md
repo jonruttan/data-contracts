@@ -62,6 +62,8 @@ This repository does not execute runtime lanes.
 
 - `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/29_runner_cli_interface.md`
 - `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_cli_contract_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/36_runner_command_entrypoints.md`
+- `/Users/jon/Workspace/Development/data-contracts/specs/04_governance/runner_entrypoints_v1.yaml`
 
 ## Bundle Resolver and Package Tooling
 
@@ -85,11 +87,7 @@ This repository does not execute runtime lanes.
 ## Core Script Allowlist
 
 - `/Users/jon/Workspace/Development/data-contracts/scripts/bundle`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/control_plane.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/ci_gate.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/runner_status_ingest.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_catalog_validate.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/spec_schema_pin_validate.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_optional_report.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_triage.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_interface_sync.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_interface_validate.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.py`

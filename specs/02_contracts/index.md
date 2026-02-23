@@ -55,6 +55,7 @@ Read in order:
 40. `/specs/02_contracts/34_runner_implementation_spec_bundles.md`
 41. `/specs/02_contracts/35_docs_audience_generation_contract.md`
 42. `/specs/02_contracts/35_service_plugin_runtime.md`
+43. `/specs/02_contracts/36_runner_command_entrypoints.md`
 
 Type contracts:
 
