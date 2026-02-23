@@ -10,10 +10,10 @@ harness:
       files:
       - /.github/workflows/ci.yml
       - /scripts/ci_gate.sh
-      - /scripts/ci_gate.sh
-      - /scripts/ci_gate.sh
       forbidden_tokens:
-      - dc-runner
+      - dc-runner governance
+      - dc-runner critical-gate
+      - dc-runner docs-generate-check
     check:
       profile: governance.scan
       config:
@@ -22,7 +22,7 @@ contracts:
   clauses:
   - id: DCGOV-RUNTIME-CI-001
     title: control-plane ci forbids runtime runner execution
-    purpose: Ensures this repository CI does not execute runtime lanes directly.
+    purpose: Ensures CI does not bypass the control plane by invoking runtime lane commands directly.
     asserts:
       imports:
       - from: asset

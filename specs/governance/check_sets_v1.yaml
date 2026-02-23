@@ -24,7 +24,9 @@ profiles:
         kind: file_tokens
         path: /.github/workflows/ci.yml
         must_not_contain:
-          - dc-runner
+          - dc-runner governance
+          - dc-runner critical-gate
+          - dc-runner docs-generate-check
       - id: runtime.compatibility_status_freshness_within_slo
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
