@@ -68,11 +68,8 @@ This repository does not execute runtime lanes.
 ## Bundle Resolver and Package Tooling
 
 - Canonical librarian repo: [`jonruttan/data-contracts-bundles`](https://github.com/jonruttan/data-contracts-bundles)
-- Resolve: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir> --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main`
-- Package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir> --source-repo https://github.com/jonruttan/data-contracts-bundles.git --source-ref main`
-- Verify package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package-check --package <path> --sha256 <path>`
-- Install bundles: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install --project-lock bundles.lock.yaml --out <workspace>`
-- Verify install: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle install-check --project-lock bundles.lock.yaml --out <workspace>`
+- Resolve/package/check tooling: `/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle ...`
+- Runner scaffold install: `dc-runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver>`
 - Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/bundle_manifest_v1.yaml`
 - Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/resolved_bundle_lock_v1.yaml`
 - Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/project_bundle_lock_v1.yaml`
@@ -86,5 +83,4 @@ This repository does not execute runtime lanes.
 
 ## Core Script Allowlist
 
-- `/Users/jon/Workspace/Development/data-contracts/scripts/bundle`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.py`

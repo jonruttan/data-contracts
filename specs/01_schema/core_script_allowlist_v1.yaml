@@ -1,4 +1,3 @@
 version: 1
 core_scripts:
-  - /scripts/bundle
   - /scripts/docs_audience_generate.py

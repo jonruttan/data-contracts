@@ -115,7 +115,6 @@ profiles:
         kind: file_tokens
         path: /specs/01_schema/core_script_allowlist_v1.yaml
         must_contain:
-          - /scripts/bundle
           - /scripts/docs_audience_generate.py
       - id: runtime.retired_scripts_root_absent
         kind: file_tokens
