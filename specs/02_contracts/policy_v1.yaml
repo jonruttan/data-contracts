@@ -4729,3 +4729,19 @@ rules:
   references:
   - specs/01_schema/core_script_allowlist_v1.yaml
   - specs/04_governance/check_sets_v1.yaml
+- id: REPO_BOUNDARY_NEW_SPEC_REPOS_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: repository.boundary.spec_repos
+  norm: MUST
+  requirement: new_spec_repository_authority_must_not_be_introduced_outside_allowlist
+  description: Canonical documentation and manifests must not introduce new `*-spec`
+    repository authorities. Allowed spec authorities are data-contracts, dc-runner-spec,
+    and data-contracts-library.
+  rationale: Prevents repository sprawl and keeps shared reusable spec authority centralized.
+  risk_if_violated: Spec authority fragments across many repositories and creates
+    long-term maintenance drift.
+  references:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/33_bundle_package_management.md

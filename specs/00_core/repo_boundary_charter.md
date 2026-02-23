@@ -11,6 +11,8 @@ runner implementation behavior specs.
   policy semantics.
 - `dc-runner-spec` owns runner-oriented implementation behavior specs,
   implementation contract sets, and runner runtime protocol contracts.
+- `data-contracts-library` owns shared reusable spec libraries and runner overlay
+  spec manifests.
 
 ## Canonical Authority
 
@@ -35,3 +37,5 @@ for example:
   trees.
 - Runner-specific behavior validation remains runner-owned and is not redefined
   inside canonical schema docs.
+- Canonical shared libraries and overlay manifests must reference
+  `data-contracts-library`; new `*-spec` repositories are noncanonical.

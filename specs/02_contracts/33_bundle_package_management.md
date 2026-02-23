@@ -19,11 +19,9 @@ Canonical bundle manifests and release assets are owned by:
 `data-contracts` defines contracts and schemas for bundle behavior but is not
 the canonical manifest source.
 
-Implementation-specific overlay bundle sources are owned in:
+Shared reusable library and overlay sources are owned in:
 
-- `https://github.com/jonruttan/dc-runner-rust-specs`
-- `https://github.com/jonruttan/dc-runner-python-specs`
-- `https://github.com/jonruttan/dc-runner-php-specs`
+- `https://github.com/jonruttan/data-contracts-library`
 
 ## Producer Responsibilities (`data-contracts-bundles`)
 

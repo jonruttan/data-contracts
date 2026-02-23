@@ -7,10 +7,8 @@ deterministic overlays on top of canonical base bundles.
 
 - Base runner bundle manifests and packages remain canonical in:
   `https://github.com/jonruttan/data-contracts-bundles`
-- Implementation-specific overlays are owned in dedicated repositories:
-  - `https://github.com/jonruttan/dc-runner-rust-specs`
-  - `https://github.com/jonruttan/dc-runner-python-specs`
-  - `https://github.com/jonruttan/dc-runner-php-specs`
+- Implementation-specific overlays and shared reusable libraries are owned in:
+  - `https://github.com/jonruttan/data-contracts-library`
 
 ## Overlay Semantics
 

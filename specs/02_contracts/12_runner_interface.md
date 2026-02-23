@@ -95,9 +95,7 @@ Canonical bundle manifest and package librarian repository:
 
 Implementation-specific overlay repositories:
 
-- `https://github.com/jonruttan/dc-runner-rust-specs`
-- `https://github.com/jonruttan/dc-runner-python-specs`
-- `https://github.com/jonruttan/dc-runner-php-specs`
+- `https://github.com/jonruttan/data-contracts-library`
 
 ## Policy Semantics
 

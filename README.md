@@ -79,9 +79,7 @@ This repository does not execute runtime lanes.
 - Implementation build lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/implementation_bundle_build_lock_v1.yaml`
 - Implementation overlay contract: `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/34_runner_implementation_spec_bundles.md`
 - Implementation spec bundle repos:
-  - [`jonruttan/dc-runner-rust-specs`](https://github.com/jonruttan/dc-runner-rust-specs)
-  - [`jonruttan/dc-runner-python-specs`](https://github.com/jonruttan/dc-runner-python-specs)
-  - [`jonruttan/dc-runner-php-specs`](https://github.com/jonruttan/dc-runner-php-specs)
+  - [`jonruttan/data-contracts-library`](https://github.com/jonruttan/data-contracts-library)
 - `bundles.lock.yaml` supports multi-bundle entries using `role: primary|additional` with isolated non-overlapping `install_dir` per bundle.
 
 ## Core Script Allowlist

@@ -4407,3 +4407,15 @@ links:
   implementation_refs:
   - specs/04_governance/check_sets_v1.yaml
   notes: Retired script tree removed and no longer represented in canonical allowlist.
+- rule_id: REPO_BOUNDARY_NEW_SPEC_REPOS_FORBIDDEN
+  policy_ref: specs/02_contracts/policy_v1.yaml#REPO_BOUNDARY_NEW_SPEC_REPOS_FORBIDDEN
+  contract_refs:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/33_bundle_package_management.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/04_governance/cases/core/runner_contract/runtime_runner_bundle_package_contract_defined.spec.md
+  notes: Governance and contract docs enforce the canonical allowlist of spec authority repositories.
