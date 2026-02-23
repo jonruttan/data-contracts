@@ -1,91 +1,29 @@
-# Chapter 40: Spec-Lang Authoring
+# Spec-Lang Authoring
 
-```yaml doc-meta
-doc_id: DOC-REF-140
-title: Chapter 40 Spec-Lang Authoring
-status: active
-audience: author
-owns_tokens:
-- mapping_ast_authoring_patterns
-requires_tokens:
-- explicit_assert_imports_v1
-commands:
-- run: ./scripts/control_plane.sh spec-lang-format --check --cases specs
-  purpose: Verify canonical expression formatting.
-- run: ./scripts/control_plane.sh spec-lang-lint --cases specs
-  purpose: Verify pedantic expression and schema hygiene.
-examples:
-- id: EX-SPECLANG-AUTH-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when writing or reviewing assertion expressions.
 
-Provide practical patterns for writing readable, deterministic mapping-AST assertions.
+## What you will do
 
-## Inputs
+- Author readable mapping-AST expressions.
+- Use library symbols instead of repeated inline logic.
 
-- imported symbols from `contract.imports` / `steps[].imports`
-- operator set defined by stdlib profile and runtime capabilities
+## Step-by-step
 
-## Outputs
+1. Start with clear imports and symbol names.
+2. Keep each check focused on one outcome.
+3. Prefer library calls for reusable policy logic.
+4. Add examples that show pass/fail intent.
 
-- composable expressions with stable behavior
-- reduced duplication via library exports
+## Common failure signals
 
-## Failure Modes
+- Overly nested expressions without clear intent.
+- Copy-pasted assertion blocks across many cases.
+- Missing symbol documentation for reused calls.
 
-- malformed AST shape (multi-key expression mapping)
-- over-nested expressions that obscure intent
-- duplicated logic better expressed in shared libraries
-
-## Mapping-AST Rules
-
-- each expression mapping has exactly one operator key
-- operator args are list-valued
-- literals use `lit` when needed for disambiguation
-- variables are explicit (`{var: symbol}`)
-
-## Readability Patterns
-
-- keep small predicates inline
-- split complex expressions into staged `std.logic.and` clauses
-- prefer library calls for repeated policy logic
-
-Example:
-
-```yaml
-assert:
-  std.logic.and:
-  - std.type.is_dict:
-    - {var: summary_json}
-  - std.object.has_key:
-    - {var: summary_json}
-    - passed
-  - std.logic.eq:
-    - std.object.get:
-      - {var: summary_json}
-      - passed
-    - true
-```
-
-## Anti-Patterns
-
-- encoding final decision logic in harness adapters
-- mixing canonical syntax with canonical forms
-- using ambiguous aliases when direct import names are clearer
-
-## Library-Backed Reuse
-
-Use `harness.use` to import shared symbols and call them in assertions.
-
-Normative references:
+## Normative refs
 
 - `specs/02_contracts/03b_spec_lang_v1.md`
 - `specs/02_contracts/14_spec_lang_libraries.md`
-- `specs/01_schema/spec_lang_stdlib_profile_v1.yaml`
+- `specs/05_libraries/`

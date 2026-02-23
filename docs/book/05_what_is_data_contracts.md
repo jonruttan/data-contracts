@@ -1,72 +1,30 @@
-# Chapter 05: What Is Data Contracts
+# What Is Data Contracts
 
-```yaml doc-meta
-doc_id: DOC-REF-105
-title: Chapter 05 What Is Data Contracts
-status: active
-audience: author
-owns_tokens:
-- spec_purpose_foundation
-requires_tokens:
-- normative_reference_map
-commands:
-- run: ./scripts/control_plane.sh governance
-  purpose: Confirm contracts and governance surfaces are valid.
-examples:
-- id: EX-WHAT-IS-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this first if you need the operating model before writing or validating specs.
 
-Explain what this repository is, what the spec controls, and why a contract-first system exists.
+## What you will do
 
-## Inputs
+- Understand what this repository owns.
+- Understand what runner repositories own.
+- Understand how schema, contracts, and governance fit together.
 
-- `/specs/01_schema/schema_v1.md`
-- `/specs/02_contracts/index.md`
-- `/specs/04_governance/index.md`
+## Step-by-step
 
-## Outputs
+1. Treat `data-contracts` as schema/contract/governance authority.
+2. Treat runner repositories as execution implementations.
+3. Author executable cases as markdown with `yaml contract-spec` blocks.
+4. Use governance and critical-gate to enforce canonical behavior.
 
-- clear mental model of spec vs implementation boundaries
-- clear reason to trust contract-backed policy over ad-hoc docs
+## Common failure signals
 
-## Failure Modes
+- Treating runner implementation behavior as schema authority.
+- Mixing authoring guidance with runtime implementation internals.
+- Documenting non-canonical forms in active guidance.
 
-- treating narrative docs as normative source of truth
-- conflating runner implementations with spec ownership
-- changing behavior without contract/schema/policy updates
+## Normative refs
 
-## System Intent
-
-`data-contracts` is the canonical specification and governance control plane for executable contract specs.
-Implementations consume this spec; they do not redefine it.
-
-## High-Level Architecture
-
-```mermaid
-flowchart LR
-  A[Spec Authors] --> B[Specs and Contracts]
-  B --> C[Governance and Policy]
-  C --> D[Runner Interface Boundary]
-  D --> E[External Runner Repos]
-  C --> F[Reference Docs and Catalogs]
-```
-
-Interpretation:
-- Specs and contracts are canonical behavior definitions.
-- Governance enforces consistency and quality.
-- Runners execute through a stable interface boundary.
-- Implementation repos consume, not own, canonical contracts.
-
-## Why This Exists
-
-- Preserve semantics across multiple implementations.
-- Keep behavioral changes explicit and reviewable.
-- Ensure docs, schema, policy, and checks stay synchronized.
+- `specs/01_schema/schema_v1.md`
+- `specs/02_contracts/12_runner_interface.md`
+- `specs/02_contracts/21_schema_registry_contract.md`

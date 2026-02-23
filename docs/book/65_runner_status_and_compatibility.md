@@ -1,62 +1,28 @@
-# Chapter 65: Runner Status And Compatibility
+# Runner Status and Compatibility
 
-```yaml doc-meta
-doc_id: DOC-REF-165
-title: Chapter 65 Runner Status And Compatibility
-status: active
-audience: maintainer
-owns_tokens:
-- status_exchange_lifecycle
-requires_tokens:
-- rust_required_lane
-commands:
-- run: ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
-  purpose: Ingest external runner status artifacts and enforce compatibility freshness.
-examples:
-- id: EX-RUNNER-STATUS-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when working with compatibility telemetry and status ingestion.
 
-Define how `data-contracts` ingests runner status from external repos and applies
-policy effects without importing runner implementation logic.
+## What you will do
 
-## Inputs
+- Understand required lane vs compatibility lane status handling.
+- Validate status matrix/report artifacts.
 
-- `/specs/01_schema/runner_status_report_v1.yaml`
-- `/specs/01_schema/runner_status_matrix_v1.yaml`
-- `/specs/01_schema/runner_certification_registry_v1.yaml`
-- release assets from `dc-runner-rust`, `dc-runner-python`, `dc-runner-php`
+## Step-by-step
 
-## Outputs
+1. Generate runner status artifacts via canonical runner command paths.
+2. Validate freshness and compatibility signals.
+3. Review matrix and ingest logs for drift.
 
-- `/.artifacts/runner-status-matrix.json`
-- `/.artifacts/runner-status-matrix.md`
-- `/.artifacts/runner-status-ingest-log.json`
+## Common failure signals
 
-## Failure Modes
+- Missing status artifacts.
+- Freshness windows exceeded.
+- Inconsistent runner ID/reference metadata.
 
-- missing release metadata for active runner lanes
-- missing or invalid status report asset
-- stale compatibility telemetry older than 72 hours
-- checksum mismatch on status report artifact
+## Normative refs
 
-## Freshness Semantics
-
-- Rust lane remains merge-blocking by required-lane policy.
-- Compatibility lanes are non-blocking for execution parity.
-- Compatibility telemetry older than 72 hours is a governance policy failure.
-
-## Incident Actions
-
-1. Identify stale or missing lane in `runner-status-matrix.md`.
-2. Inspect `runner-status-ingest-log.json` for fetch/shape/checksum errors.
-3. Refresh runner release status asset in the owning `dc-runner-*` repository.
-4. Re-run `./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness`.
-
+- `specs/02_contracts/25_compatibility_matrix.md`
+- `specs/02_contracts/27_runner_status_exchange.md`
+- `specs/01_schema/runner_status_matrix_v1.yaml`

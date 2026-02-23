@@ -1,24 +1,37 @@
 # Spec Book
 
-Spec-first, contract-backed documentation for authors, maintainers, and reviewers.
-This book describes an implementation-agnostic control plane.
-runtime execution ownership lives in runner repositories.
+Tutorial-first documentation for authoring, validating, and operating canonical v1 specs.
 
-## Primary Audience
+## When to read this
 
-- spec authors onboarding to executable contract workflows
-- maintainers operating required-lane checks and governance
-- reviewers mapping narrative guidance to normative sources
+Read this first when you need a guided path through the spec system instead of jumping straight into raw contracts.
 
-## Read Paths
+## What you will do
 
-Quick orientation:
+- Follow the canonical chapter order.
+- Use guides for task execution.
+- Use the reference gateway for deep contract lookups.
 
-1. `docs/book/05_what_is_data_contracts.md`
-2. `docs/book/10_getting_started.md`
-3. `docs/book/35_usage_guides_index.md`
+## Step-by-step
 
-Core narrative path:
+1. Start with orientation chapters (`05` -> `30`).
+2. Switch to execution guides (`35` and `/guides/*`).
+3. Use advanced chapters (`40` -> `80`) for runtime/governance operations.
+4. Use `90` and `99` for normative source navigation.
+
+## Common failure signals
+
+- Chapter order in this file differs from `docs/book/reference_manifest.yaml`.
+- A chapter exists on disk but is not in the manifest/index.
+- Guide order differs between `index.md`, `reference_manifest.yaml`, and `guides/index.md`.
+
+## Normative refs
+
+- `specs/02_contracts/10_docs_quality.md`
+- `specs/02_contracts/22_docs_information_architecture.md`
+- `docs/book/reference_manifest.yaml`
+
+## Canonical read order
 
 1. `docs/book/05_what_is_data_contracts.md`
 2. `docs/book/10_getting_started.md`
@@ -35,29 +48,3 @@ Core narrative path:
 13. `docs/book/80_troubleshooting.md`
 14. `docs/book/90_reference_guide.md`
 15. `docs/book/99_generated_reference_index.md`
-
-Guide-first path:
-
-1. `docs/book/guides/index.md`
-2. `docs/book/guides/guide_01_onboarding.md`
-3. `docs/book/guides/guide_02_first_spec_authoring.md`
-4. `docs/book/guides/guide_03_running_checks_and_gates.md`
-5. `docs/book/guides/guide_04_debugging_failures.md`
-6. `docs/book/guides/guide_05_release_and_change_control.md`
-7. `docs/book/guides/guide_06_governance_tuning.md`
-8. `docs/book/guides/guide_07_schema_extension_workflow.md`
-9. `docs/book/guides/guide_08_ci_integration.md`
-10. `docs/book/guides/guide_09_status_exchange_operations.md`
-11. `docs/book/guides/guide_10_reference_navigation_patterns.md`
-
-## Canonical Sources
-
-- `specs/01_schema/schema_v1.md`
-- `specs/02_contracts/`
-- `specs/04_governance/`
-- `docs/book/reference_manifest.yaml`
-
-## Compatibility (Non-Blocking)
-
-Python/PHP runtime lanes are compatibility telemetry lanes and non-blocking by default.
-required-lane policy is evaluated from status telemetry and contracts.

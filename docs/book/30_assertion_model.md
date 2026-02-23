@@ -1,90 +1,30 @@
-# Chapter 30: Assertion Model
+# Assertion Model
 
-```yaml doc-meta
-doc_id: DOC-REF-130
-title: Chapter 30 Assertion Model
-status: active
-audience: author
-owns_tokens:
-- explicit_assert_imports_v1
-requires_tokens:
-- case_topology_v1
-commands:
-- run: ./scripts/control_plane.sh spec-lang-lint --cases specs
-  purpose: Enforce canonical assertion/import authoring.
-- run: ./scripts/control_plane.sh spec-lang-format --check --cases specs
-  purpose: Enforce canonical formatting and safe rewrites.
-examples:
-- id: EX-ASSERTION-MODEL-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when authoring checks, imports, and bindings.
 
-Define canonical assertion semantics and explicit import binding rules.
+## What you will do
 
-## Inputs
+- Use canonical `contracts.clauses[].asserts.checks[]` structure.
+- Keep imports explicit and deterministic.
+- Apply asset/artifact split correctly.
+
+## Step-by-step
+
+1. Define clause-level purpose and check list.
+2. Declare imports from `asset`, `artifact`, or `service` as needed.
+3. Bind inputs from `assets[].id` and outputs to `artifacts[].id`.
+4. Keep advanced expression logic in spec-lang calls under `assert`.
+
+## Common failure signals
+
+- Input bound to produced artifact IDs.
+- Output bound to consumed asset IDs.
+- Check logic with unresolved import names.
+
+## Normative refs
 
 - `specs/02_contracts/03_assertions.md`
-- assertion expressions in mapping-AST form
-
-## Outputs
-
-- deterministic MUST/MAY/MUST_NOT evaluation
-- explicit symbol scope per step
-
-## Failure Modes
-
-- missing imports for referenced variables
-- canonical assertion shapes
-- incompatible class semantics assumptions
-
-## Canonical Contract Shape
-
-```yaml
-contract:
-  defaults: {}
-  imports:
-  - from: artifact
-    names: [summary_json]
-  steps:
-  - id: assert_passed
-    assert:
-      std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - passed
-      - true
-```
-
-## Imports and Precedence
-
-- `contract.imports`: default bindings.
-- `contract.steps[].imports`: per-step overrides.
-- Effective step bindings are merge(contract imports, step imports), with step override precedence.
-
-Assertion imports use list form:
-
-- `from` (canonical: `artifact`)
-- `names` (non-empty list)
-- `as` (optional alias map)
-
-## Forbidden canonical Forms
-
-- `contract: [ ... ]`
-- `steps[].asserts`
-- `steps[].target`
-- `steps[].on`
-- `evaluate` wrapper leaves
-- group aliases `can`/`cannot`
-
-## Class Semantics
-
-- `MUST`: all assertions in step pass.
-- `MAY`: at least one assertion in step passes.
-- `MUST_NOT`: no assertions in step pass.
+- `specs/02_contracts/21_schema_registry_contract.md`
+- `specs/01_schema/schema_v1.md`

@@ -1,58 +1,29 @@
-# Chapter 70: Governance And Quality
+# Governance and Quality
 
-```yaml doc-meta
-doc_id: DOC-REF-170
-title: Chapter 70 Governance And Quality
-status: active
-audience: maintainer
-owns_tokens:
-- governance_control_plane_quality
-requires_tokens:
-- spec_lifecycle_flow
-commands:
-- run: ./scripts/ci_gate.sh
-  purpose: Execute control-plane governance and docs integrity checks.
-examples:
-- id: EX-GOV-QUALITY-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when tuning checks, policy mappings, and documentation quality controls.
 
-Describe policy enforcement for control-plane coherence across specs, contracts, schema, docs, and status-ingest artifacts.
+## What you will do
 
-## Inputs
+- Keep policy, traceability, and checks synchronized.
+- Use governance cases as enforcement surfaces.
 
-- governance cases in `specs/04_governance/cases/core`
-- contract/policy/traceability surfaces
+## Step-by-step
 
-## Outputs
+1. Add or modify policy rules in `policy_v1.yaml`.
+2. Update traceability mappings.
+3. Add/adjust governance executable cases.
+4. Run required gate sequence and resolve drift.
 
-- deterministic integrity verdicts for control-plane changes
-- traceable failure IDs and remediation paths
-- policy verdicts sourced from executable spec-lang assertions, with shell as extractor/orchestrator only
+## Common failure signals
 
-## Failure Modes
+- Policy rule exists without traceability link.
+- Check IDs in sets lack executable case coverage.
+- Docs chapter references drift from manifest/index.
 
-- docs and contracts drifting apart
-- stale/missing compatibility telemetry not surfaced
-- runtime implementation assumptions leaking into control-plane policies
+## Normative refs
 
-## Governance Decision Path
-
-```mermaid
-flowchart TD
-  A[Change proposed] --> B[Run control-plane checks]
-  B --> B1[Run extractor scripts to emit artifacts]
-  B1 --> B2[Run governance spec-lang checks]
-  B2 --> C{Violations?}
-  C -->|No| D[Policy pass]
-  C -->|Yes| E[Map check id to source]
-  E --> F[Apply minimal source fix]
-  F --> B
-```
+- `specs/02_contracts/policy_v1.yaml`
+- `specs/02_contracts/traceability_v1.yaml`
+- `specs/04_governance/`

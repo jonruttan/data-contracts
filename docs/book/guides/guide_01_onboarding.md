@@ -1,67 +1,28 @@
 # Guide 01: Onboarding
 
-```yaml doc-meta
-doc_id: DOC-GUIDE-201
-title: Guide 01 Onboarding
-status: active
-audience: author
-owns_tokens:
-- guide_onboarding_flow
-requires_tokens:
-- usage_guides_entrypoint
-commands:
-- run: ./scripts/control_plane.sh governance
-  purpose: Validate local environment against required governance checks.
-examples:
-- id: EX-GUIDE-01-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this to prepare your environment and run the first full validation cycle.
 
-Bring a new contributor to first successful local validation in the required lane.
+## What you will do
 
-## Inputs
+- run canonical required checks
+- inspect emitted artifacts
 
-- clean checkout
-- shell with `bash`, `git`, and Rust toolchain available
-- access to `./scripts/runner_bin.sh`
+## Step-by-step
 
-## Outputs
+1. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh governance`.
+2. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh critical-gate`.
+3. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh docs-generate-check`.
+4. Inspect `.artifacts` summaries for status.
 
-- validated local environment
-- first successful governance run
-- baseline understanding of where specs, contracts, and docs live
+## Common failure signals
 
-## Failure Modes
+- command not found for runner adapter
+- governance check ID failures
+- docs/book manifest/index drift
 
-- missing runner adapter prerequisites
-- running compatibility-lane workflows as primary gate
-- editing generated docs sections manually
+## Normative refs
 
-## Do This Now
-
-```bash
-git status --short
-./scripts/control_plane.sh governance
-./scripts/control_plane.sh docs-generate-check
-```
-
-## How To Verify Success
-
-- [ ] `governance` exits 0
-- [ ] `docs-generate-check` exits 0
-- [ ] no unexpected tracked file changes after checks
-
-## Common Failure Signatures
-
-| Signature | Likely Cause | Action |
-| --- | --- | --- |
-| `unknown command` from runner binary | stale command path or invocation typo | run exactly from repo root with `./scripts/runner_bin.sh` |
-| docs freshness drift | generated references stale | run `./scripts/docs_generate_all.py --build` then re-check |
-| governance check id violation | contract/docs mismatch | open referenced contract and align doc content |
+- `specs/02_contracts/12_runner_interface.md`
+- `specs/04_governance/check_sets_v1.yaml`

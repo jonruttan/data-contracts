@@ -1,57 +1,28 @@
 # Reference Coverage
 
-- docs_count: 48
-- examples_total: 96
-- examples_runnable: 26
-- runnable_example_ratio: 0.541667
+## When to read this
 
-## Docs
+Read this to confirm tutorial chapters, guides, and reference entrypoints are fully represented in the canonical manifest.
 
-- `/docs/book/05_what_is_data_contracts.md` (DOC-REF-105)
-- `/docs/book/10_getting_started.md` (DOC-REF-110)
-- `/docs/book/15_spec_lifecycle.md` (DOC-REF-115)
-- `/docs/book/20_case_model.md` (DOC-REF-120)
-- `/docs/book/25_system_topology.md` (DOC-REF-125)
-- `/docs/book/30_assertion_model.md` (DOC-REF-130)
-- `/docs/book/35_usage_guides_index.md` (DOC-REF-135)
-- `/docs/book/guides/index.md` (DOC-GUIDE-200)
-- `/docs/book/guides/guide_01_onboarding.md` (DOC-GUIDE-201)
-- `/docs/book/guides/guide_02_first_spec_authoring.md` (DOC-GUIDE-202)
-- `/docs/book/guides/guide_03_running_checks_and_gates.md` (DOC-GUIDE-203)
-- `/docs/book/guides/guide_04_debugging_failures.md` (DOC-GUIDE-204)
-- `/docs/book/guides/guide_05_release_and_change_control.md` (DOC-GUIDE-205)
-- `/docs/book/guides/guide_06_governance_tuning.md` (DOC-GUIDE-206)
-- `/docs/book/guides/guide_07_schema_extension_workflow.md` (DOC-GUIDE-207)
-- `/docs/book/guides/guide_08_ci_integration.md` (DOC-GUIDE-208)
-- `/docs/book/guides/guide_09_status_exchange_operations.md` (DOC-GUIDE-209)
-- `/docs/book/guides/guide_10_reference_navigation_patterns.md` (DOC-GUIDE-210)
-- `/docs/book/40_spec_lang_authoring.md` (DOC-REF-140)
-- `/docs/book/50_library_authoring.md` (DOC-REF-150)
-- `/docs/book/60_runner_and_gates.md` (DOC-REF-160)
-- `/docs/book/65_runner_status_and_compatibility.md` (DOC-REF-165)
-- `/docs/book/70_governance_and_quality.md` (DOC-REF-170)
-- `/docs/book/80_troubleshooting.md` (DOC-REF-180)
-- `/docs/book/90_reference_guide.md` (DOC-REF-190)
-- `/docs/book/91_appendix_runner_api_reference.md` (DOC-REF-091)
-- `/docs/book/92_appendix_harness_type_reference.md` (DOC-REF-092)
-- `/docs/book/93_appendix_spec_lang_builtin_catalog.md` (DOC-REF-093)
-- `/docs/book/93a_std_core.md` (DOC-REF-931)
-- `/docs/book/93b_std_logic.md` (DOC-REF-932)
-- `/docs/book/93c_std_math.md` (DOC-REF-933)
-- `/docs/book/93d_std_string.md` (DOC-REF-934)
-- `/docs/book/93e_std_collection.md` (DOC-REF-935)
-- `/docs/book/93f_std_object.md` (DOC-REF-936)
-- `/docs/book/93g_std_type.md` (DOC-REF-937)
-- `/docs/book/93h_std_set.md` (DOC-REF-938)
-- `/docs/book/93i_std_json_schema_fn_null.md` (DOC-REF-939)
-- `/docs/book/93j_library_symbol_reference.md` (DOC-REF-941)
-- `/docs/book/93k_library_symbol_index.md` (DOC-REF-942)
-- `/docs/book/93l_spec_case_reference.md` (DOC-REF-943)
-- `/docs/book/93m_spec_case_index.md` (DOC-REF-944)
-- `/docs/book/93n_spec_case_templates_reference.md` (DOC-REF-945)
-- `/docs/book/94_appendix_contract_policy_reference.md` (DOC-REF-094)
-- `/docs/book/95_appendix_traceability_reference.md` (DOC-REF-095)
-- `/docs/book/96_appendix_governance_checks_reference.md` (DOC-REF-096)
-- `/docs/book/97_appendix_metrics_reference.md` (DOC-REF-097)
-- `/docs/book/98_appendix_spec_case_shape_reference.md` (DOC-REF-098)
-- `/docs/book/99_generated_reference_index.md` (DOC-REF-199)
+## What you will do
+
+- Confirm every active book chapter is represented.
+- Confirm generated reference surface is intentionally minimal.
+
+## Step-by-step
+
+1. Compare chapter files under `docs/book/` with `docs/book/reference_manifest.yaml`.
+2. Verify guide order matches `docs/book/guides/index.md`.
+3. Verify only `docs/book/99_generated_reference_index.md` is retained as generated entrypoint in the core manifest.
+
+## Common failure signals
+
+- chapter exists but missing in manifest
+- manifest includes chapter that does not exist
+- guide order differs between index and manifest
+
+## Normative refs
+
+- `docs/book/reference_manifest.yaml`
+- `docs/book/reference_index.md`
+- `specs/02_contracts/10_docs_quality.md`

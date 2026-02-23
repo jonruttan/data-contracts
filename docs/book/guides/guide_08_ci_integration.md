@@ -1,82 +1,29 @@
 # Guide 08: CI Integration
 
-```yaml doc-meta
-doc_id: DOC-GUIDE-208
-title: Guide 08 CI Integration
-status: active
-audience: maintainer
-owns_tokens:
-- guide_ci_integration
-requires_tokens:
-- guide_running_checks_and_gates
-commands:
-- run: ./scripts/control_plane.sh critical-gate
-  purpose: Reproduce CI required lane behavior locally.
-examples:
-- id: EX-GUIDE-08-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when mapping local commands to CI lanes.
 
-Align local checks with CI job order and artifact expectations.
+## What you will do
 
-## Inputs
+- align local and CI gate behavior
+- preserve deterministic outputs
 
-- `.github/workflows/ci.yml`
-- runner adapter commands
-- docs/status artifacts under `.artifacts/`
+## Step-by-step
 
-## Outputs
+1. Mirror local gate sequence in CI.
+2. Ensure required artifacts are retained for debugging.
+3. Keep CI using canonical command entrypoints.
+4. Monitor lane-specific compatibility telemetry separately.
 
-- local reproduction of CI pass/fail
-- reliable mapping from failing CI job to local command
+## Common failure signals
 
-## Failure Modes
+- CI command drift from local required flow
+- artifacts missing from CI upload set
+- compatibility lane failures treated as required-lane blockers
 
-- relying on CI-only diagnosis
-- missing artifact inspection after job failure
-- treating compatibility lanes as merge blockers
+## Normative refs
 
-## CI Flow
-
-```mermaid
-flowchart LR
-  A[PR change] --> B[runner-status-ingest]
-  B --> C[critical-gate]
-  C --> D[governance]
-  D --> E[docs/reference checks]
-  E --> F[artifacts uploaded]
-```
-
-Interpretation:
-- ingest artifacts should exist before docs/reference steps.
-- required-lane checks are authoritative for merge blocking.
-- compatibility telemetry informs governance freshness and visibility.
-
-## Do This Now
-
-```bash
-./scripts/control_plane.sh critical-gate
-./scripts/control_plane.sh governance
-./scripts/control_plane.sh docs-generate-check
-```
-
-## How To Verify Success
-
-- [ ] local commands reproduce CI outcomes
-- [ ] expected artifacts are present in `.artifacts/`
-- [ ] no required-lane failures
-
-## Common Failure Signatures
-
-| Signature | Likely Cause | Action |
-| --- | --- | --- |
-| CI governance fails, local skipped | local sequence incomplete | run full required sequence locally |
-| missing ingest artifacts | ingest stage failed or skipped | inspect `runner-status-ingest-log.json` and rerun |
-| docs step red only in CI | manifest/index drift | regenerate docs surfaces and commit |
+- `specs/02_contracts/25_compatibility_matrix.md`
+- `specs/02_contracts/12_runner_interface.md`
+- `specs/02_contracts/27_runner_status_exchange.md`

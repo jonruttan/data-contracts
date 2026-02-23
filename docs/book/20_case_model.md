@@ -1,79 +1,30 @@
-# Chapter 20: Case Model
+# Case Model
 
-```yaml doc-meta
-doc_id: DOC-REF-120
-title: Chapter 20 Case Model
-status: active
-audience: author
-owns_tokens:
-- case_topology_v1
-requires_tokens:
-- schema_v1_registry
-commands:
-- run: ./scripts/control_plane.sh governance --check-prefix schema
-  purpose: Validate schema and case-shape governance contracts.
-examples:
-- id: EX-CASE-MODEL-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this before authoring or reviewing executable `.spec.md` cases.
 
-Define canonical executable case structure and responsibility boundaries.
+## What you will do
 
-## Inputs
+- Apply canonical contract-spec shape.
+- Keep harness config under `harness`.
+- Keep assertion behavior in `contracts.clauses[].asserts.checks[]`.
+
+## Step-by-step
+
+1. Start each executable block with `spec_version: 1` and `schema_ref`.
+2. Define harness inputs under `harness.config` only.
+3. Define assertions under `contracts.clauses[].asserts`.
+4. Use bindings for explicit symbol wiring.
+
+## Common failure signals
+
+- Top-level runner config keys outside `harness`.
+- Missing clause/check IDs.
+- Non-deterministic imports or unresolved symbols.
+
+## Normative refs
 
 - `specs/01_schema/schema_v1.md`
 - `specs/02_contracts/02_case_shape.md`
 - `specs/02_contracts/04_harness.md`
-
-## Outputs
-
-- consistent case topology
-- explicit separation between extraction (`harness`) and decision logic (`contract`)
-
-## Failure Modes
-
-- runner-only config leaked outside `harness`
-- implicit assertion state usage
-- unknown top-level keys in executable case surfaces
-
-## Canonical Top-Level Topology
-
-Typical keys:
-
-- `id`
-- `type`
-- `title`
-- `domain` (optional)
-- `doc` (required for `contract.export`, optional otherwise)
-- `library` (for `contract.export`)
-- `harness`
-- `contract`
-- `when` (optional)
-
-## Responsibility Split
-
-- `harness`: extraction/runtime setup and typed profile config.
-- `contract`: assertion semantics and pass/fail authority.
-- `when`: lifecycle hooks (`must`, `may`, `must_not`, `fail`, `complete`).
-
-## Contract Form
-
-`contract` is a mapping with:
-
-- `defaults`
-- `imports`
-- `steps`
-
-## Normative References
-
-- `specs/01_schema/schema_v1.md`
-- `specs/02_contracts/02_case_shape.md`
-- `specs/02_contracts/types/contract_check.md`
-- `specs/02_contracts/03_assertions.md`

@@ -2,129 +2,109 @@ version: 1
 title: Data Contracts Reference Manual
 chapters:
 - path: /docs/book/05_what_is_data_contracts.md
-  summary: problem framing, control-plane purpose, and spec-first system intent.
+  summary: system purpose and contract-first operating model.
   contract_refs:
   - specs/02_contracts/10_docs_quality.md
-  - specs/02_contracts/22_docs_information_architecture.md
 - path: /docs/book/10_getting_started.md
-  summary: launch page linking orientation chapters and guide-first entrypoints.
+  summary: fast path to first successful local validation run.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/12_runner_interface.md
 - path: /docs/book/15_spec_lifecycle.md
-  summary: lifecycle from authoring through governance, docs generation, and merge.
+  summary: authoring to governance lifecycle for spec changes.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/15_governance_subject_model.md
 - path: /docs/book/20_case_model.md
-  summary: canonical case topology and harness-contract responsibility boundaries.
+  summary: canonical executable case model and ownership boundaries.
   contract_refs:
   - specs/02_contracts/02_case_shape.md
   - specs/02_contracts/04_harness.md
 - path: /docs/book/25_system_topology.md
-  summary: canonical topology and ownership boundaries across spec surfaces and lanes.
+  summary: topology and separation of concerns across repositories.
   contract_refs:
   - specs/02_contracts/12_runner_interface.md
-  - specs/02_contracts/22_docs_information_architecture.md
 - path: /docs/book/30_assertion_model.md
-  summary: canonical contract assertion model with explicit imports.
+  summary: clauses, checks, imports, and binding semantics.
   contract_refs:
   - specs/02_contracts/03_assertions.md
 - path: /docs/book/35_usage_guides_index.md
-  summary: guide entrypoint and task-oriented navigation surface.
+  summary: task-oriented entrypoint to guide workflows.
   contract_refs:
   - specs/02_contracts/10_docs_quality.md
-  - specs/02_contracts/22_docs_information_architecture.md
 - path: /docs/book/guides/index.md
-  summary: canonical index for the complete usage guide set.
+  summary: canonical ordered guide index.
   contract_refs:
   - specs/02_contracts/10_docs_quality.md
 - path: /docs/book/guides/guide_01_onboarding.md
-  summary: baseline environment setup and first successful required-lane run.
+  summary: environment setup and first governance run.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/12_runner_interface.md
 - path: /docs/book/guides/guide_02_first_spec_authoring.md
-  summary: first executable spec authoring workflow with canonical contract shape.
+  summary: create and validate your first contract-spec case.
   contract_refs:
   - specs/02_contracts/02_case_shape.md
-  - specs/02_contracts/03_assertions.md
 - path: /docs/book/guides/guide_03_running_checks_and_gates.md
-  summary: required command sequence and gate interpretation guide.
+  summary: execute canonical check/gate flow and interpret outcomes.
   contract_refs:
   - specs/02_contracts/12_runner_interface.md
-  - specs/02_contracts/15_governance_subject_model.md
 - path: /docs/book/guides/guide_04_debugging_failures.md
-  summary: troubleshooting flow from signal to minimal corrective diff.
+  summary: triage and fix governance/conformance failures deterministically.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/15_governance_subject_model.md
 - path: /docs/book/guides/guide_05_release_and_change_control.md
-  summary: release-readiness and change-control policy workflow.
+  summary: release discipline and policy-bound change control.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/policy_v1.yaml
 - path: /docs/book/guides/guide_06_governance_tuning.md
-  summary: rule/check lifecycle and governance tuning workflow.
+  summary: tune checks, traceability, and governance scope safely.
   contract_refs:
-  - specs/02_contracts/15_governance_subject_model.md
   - specs/02_contracts/traceability_v1.yaml
 - path: /docs/book/guides/guide_07_schema_extension_workflow.md
-  summary: schema evolution workflow with contract and governance alignment.
+  summary: extend schema and keep contracts/governance synchronized.
   contract_refs:
   - specs/01_schema/schema_v1.md
   - specs/02_contracts/21_schema_registry_contract.md
 - path: /docs/book/guides/guide_08_ci_integration.md
-  summary: local-to-ci parity and artifact-centric CI debugging workflow.
+  summary: map local validation flows to CI execution.
   contract_refs:
-  - specs/02_contracts/12_runner_interface.md
   - specs/02_contracts/25_compatibility_matrix.md
 - path: /docs/book/guides/guide_09_status_exchange_operations.md
-  summary: status exchange ingestion and freshness operations workflow.
+  summary: status ingest and compatibility telemetry operations.
   contract_refs:
   - specs/02_contracts/27_runner_status_exchange.md
-  - specs/01_schema/runner_status_matrix_v1.yaml
 - path: /docs/book/guides/guide_10_reference_navigation_patterns.md
-  summary: patterns for bridging narrative guidance to normative sources quickly.
+  summary: quickly move from narrative docs to normative sources.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/22_docs_information_architecture.md
 - path: /docs/book/40_spec_lang_authoring.md
-  summary: practical mapping-ast authoring patterns and anti-patterns.
+  summary: spec-lang authoring patterns for readable assertions.
   contract_refs:
   - specs/02_contracts/03b_spec_lang_v1.md
-  - specs/02_contracts/14_spec_lang_libraries.md
 - path: /docs/book/50_library_authoring.md
-  summary: contract.export authoring and metadata requirements.
+  summary: reusable symbol/library authoring and export discipline.
   contract_refs:
   - specs/02_contracts/14_spec_lang_libraries.md
-  - specs/02_contracts/10_docs_quality.md
 - path: /docs/book/60_runner_and_gates.md
-  summary: control-plane governance and status-ingest operations.
+  summary: runner invocation contract and gate responsibilities.
   contract_refs:
   - specs/02_contracts/12_runner_interface.md
-  - specs/02_contracts/25_compatibility_matrix.md
 - path: /docs/book/65_runner_status_and_compatibility.md
-  summary: status exchange lifecycle, compatibility freshness policy, and ingest artifacts.
+  summary: status matrices, compatibility lanes, and freshness handling.
   contract_refs:
   - specs/02_contracts/25_compatibility_matrix.md
-  - specs/02_contracts/27_runner_status_exchange.md
 - path: /docs/book/70_governance_and_quality.md
-  summary: governance check model, docs sync, and quality gates.
+  summary: governance check surfaces and quality controls.
   contract_refs:
-  - specs/02_contracts/10_docs_quality.md
   - specs/02_contracts/15_governance_subject_model.md
 - path: /docs/book/80_troubleshooting.md
-  summary: deterministic failure taxonomy and remediation flow.
+  summary: failure taxonomy and corrective playbooks.
   contract_refs:
   - specs/02_contracts/10_docs_quality.md
-  - specs/02_contracts/12_runner_interface.md
 - path: /docs/book/90_reference_guide.md
-  summary: map from narrative guidance to normative schema and contract sources.
+  summary: source-of-truth map from guides to schema/contracts/governance.
   contract_refs:
   - specs/01_schema/schema_v1.md
   - specs/02_contracts/03_assertions.md
 - path: /docs/book/99_generated_reference_index.md
-  summary: canonical navigation gateway for all generated reference surfaces.
+  summary: generated reference entrypoint for machine-built surfaces.
   contract_refs:
   - specs/02_contracts/10_docs_quality.md

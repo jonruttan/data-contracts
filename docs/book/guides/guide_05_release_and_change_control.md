@@ -1,67 +1,29 @@
 # Guide 05: Release and Change Control
 
-```yaml doc-meta
-doc_id: DOC-GUIDE-205
-title: Guide 05 Release and Change Control
-status: active
-audience: maintainer
-owns_tokens:
-- guide_release_change_control
-requires_tokens:
-- guide_running_checks_and_gates
-commands:
-- run: ./scripts/control_plane.sh critical-gate
-  purpose: Ensure release candidate is gate clean.
-examples:
-- id: EX-GUIDE-05-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when preparing changes for merge and release readiness.
 
-Define merge/release expectations for spec changes in a contract-first repo.
+## What you will do
 
-## Inputs
+- ensure policy and traceability completeness
+- keep changes bounded and auditable
 
-- finalized change diff
-- passing required lane checks
-- synchronized docs and manifest outputs
+## Step-by-step
 
-## Outputs
+1. Verify policy rule impacts are represented.
+2. Verify traceability entries map to active checks/cases.
+3. Re-run required checks.
+4. Document migration impacts in release notes if needed.
 
-- release-ready change set
-- clear traceability from narrative to contract updates
+## Common failure signals
 
-## Failure Modes
+- policy change without traceability row
+- case ID updates without check set updates
+- docs references stale after refactor
 
-- releasing with stale generated surfaces
-- changing policy/contract without updating docs mapping
-- merging without required-lane green status
+## Normative refs
 
-## Do This Now
-
-```bash
-./scripts/control_plane.sh critical-gate
-./scripts/control_plane.sh governance
-./scripts/control_plane.sh docs-generate-check
-git status --short
-```
-
-## How To Verify Success
-
-- [ ] all required lane checks pass
-- [ ] no unexpected dirty files
-- [ ] manifest and reference index are synchronized
-
-## Common Failure Signatures
-
-| Signature | Likely Cause | Action |
-| --- | --- | --- |
-| release PR blocked by governance | missing contract/doc alignment | update affected contracts/docs and rerun governance |
-| generated refs changed unexpectedly | canonical drift discovered late | include regenerated refs in same change |
-| unresolved traceability | policy rule references outdated | update traceability/policy ids consistently |
+- `specs/02_contracts/policy_v1.yaml`
+- `specs/02_contracts/traceability_v1.yaml`
+- `specs/04_governance/check_sets_v1.yaml`

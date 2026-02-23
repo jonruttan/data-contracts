@@ -1,66 +1,29 @@
-# Chapter 60: Runner Boundaries And Gates
+# Runner and Gates
 
-```yaml doc-meta
-doc_id: DOC-REF-160
-title: Chapter 60 Runner Boundaries And Gates
-status: active
-audience: maintainer
-owns_tokens:
-- runner_boundary_and_control_plane_gates
-requires_tokens:
-- system_topology_view
-commands:
-- run: ./scripts/ci_gate.sh
-  purpose: Execute control-plane gate checks.
-examples:
-- id: EX-RUNNER-GATES-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when operating required checks and understanding runner responsibilities.
 
-Explain boundary separation between control-plane governance in this repo and runtime execution in runner repos.
-This chapter documents an implementation-agnostic control plane where runtime execution ownership lives in runner repositories.
+## What you will do
 
-## Inputs
+- Use canonical gate commands.
+- Interpret governance/critical/docs outcomes.
 
-- runner interface contracts
-- CI/gate scripts in this repository
+## Step-by-step
 
-## Outputs
+1. Execute governance.
+2. Execute critical-gate.
+3. Execute docs-generate-check.
+4. Inspect `.artifacts` summaries for failures.
 
-- clear ownership split for execution vs governance
-- deterministic understanding of what this repo validates
+## Common failure signals
 
-## Failure Modes
+- Wrapper scripts containing semantic policy logic.
+- Missing governance interface synchronization.
+- Check IDs referenced but not resolved by active cases.
 
-- treating control-plane CI as runtime execution testing
-- moving runner implementation concerns back into this repo
+## Normative refs
 
-## Boundary Model
-
-- This repo validates control-plane integrity (spec/contract/schema/docs/governance).
-- Runner repos execute runtime implementation behavior.
-- Status exchange artifacts communicate cross-repo execution status back to this control plane.
-
-## Runtime Ownership
-
-- Rust implementation owner: `dc-runner-rust`
-- Python implementation owner: `dc-runner-python`
-- PHP implementation owner: `dc-runner-php`
-
-## Portable CLI Contract
-
-- `/Users/jon/Workspace/Development/data-contracts/specs/02_contracts/29_runner_cli_interface.md`
-- `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/runner_cli_contract_v1.yaml`
-
-## Control-Plane Gate
-
-```sh
-./scripts/ci_gate.sh
-```
+- `specs/02_contracts/12_runner_interface.md`
+- `specs/02_contracts/29_runner_cli_interface.md`
+- `specs/04_governance/check_sets_v1.yaml`

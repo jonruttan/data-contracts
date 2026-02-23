@@ -1,66 +1,29 @@
-# Chapter 50: Library Authoring
+# Library Authoring
 
-```yaml doc-meta
-doc_id: DOC-REF-150
-title: Chapter 50 Library Authoring
-status: active
-audience: author
-owns_tokens:
-- export_doc_metadata_contract
-requires_tokens:
-- mapping_ast_authoring_patterns
-commands:
-- run: ./scripts/control_plane.sh docs-generate-check
-  purpose: Ensure library symbol and case reference docs remain synchronized.
-examples:
-- id: EX-LIB-AUTH-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when creating reusable policy/domain symbols.
 
-Define how to author `contract.export` libraries with executable behavior and complete documentation metadata.
+## What you will do
 
-## Inputs
+- Design stable symbol contracts.
+- Export symbols with clear docs and examples.
 
-- `specs/05_libraries/**/*.spec.md`
-- `contract.export` schema requirements
+## Step-by-step
 
-## Outputs
+1. Define symbol behavior and expected inputs.
+2. Export from library specs with deterministic IDs.
+3. Add call-site examples in consuming cases.
+4. Keep versioning and naming canonical.
 
-- reusable symbol exports
-- generated library reference docs and indexes
+## Common failure signals
 
-## Failure Modes
+- Symbols exported without examples.
+- Incompatible symbol parameter changes without updates.
+- Libraries coupled to runner-specific behavior.
 
-- missing required root `doc` metadata on export cases
-- missing `library` metadata block
-- incomplete `harness.exports[].doc` metadata
+## Normative refs
 
-## Export Case Model
-
-`contract.export` cases include:
-
-- root `library` metadata (`id`, `module`, `stability`, `owner`)
-- root `doc` metadata (`summary`, `description`, `audience`, `since`)
-- `harness.exports[]` with per-symbol docs metadata
-- optional root `domain` for grouping and export prefixing
-
-## Symbol and Domain Conventions
-
-- use stable, verb-first symbol semantics
-- apply `domain` when grouping related exports
-- keep names portable and runtime-neutral
-
-## Reference Generation
-
-Generated surfaces driven from specs:
-
-- `docs/book/93j_library_symbol_reference.md`
-- `docs/book/93k_library_symbol_index.md`
-- `.artifacts/library-symbol-catalog.json`
+- `specs/02_contracts/14_spec_lang_libraries.md`
+- `specs/02_contracts/10_docs_quality.md`
+- `specs/05_libraries/`

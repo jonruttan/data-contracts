@@ -1,45 +1,31 @@
-# Usage Guides
+# Guides Index
 
-```yaml doc-meta
-doc_id: DOC-GUIDE-200
-title: Usage Guides Index
-status: active
-audience: author
-owns_tokens:
-- usage_guides_navigation_index
-requires_tokens:
-- usage_guides_entrypoint
-commands:
-- run: ./scripts/control_plane.sh docs-generate-check
-  purpose: Ensure guide navigation remains synchronized.
-examples:
-- id: EX-GUIDE-INDEX-001
-  runnable: true
-sections_required:
-- '## Purpose'
-- '## Inputs'
-- '## Outputs'
-- '## Failure Modes'
-```
+## When to read this
 
-## Purpose
+Read this when executing a concrete task.
 
-Provide a single navigation entry for all task-driven usage guides.
+## What you will do
 
-## Inputs
+- Select the right guide in canonical order.
+- Follow guide steps and verify outcomes.
 
-- guide files under `/docs/book/guides/`
+## Step-by-step
 
-## Outputs
+1. Start with `guide_01_onboarding.md` if this is your first run.
+2. Continue through guides in order for full operating context.
+3. Use `guide_10_reference_navigation_patterns.md` for source lookup workflows.
 
-- canonical guide discovery path for authors, maintainers, and reviewers
+## Common failure signals
 
-## Failure Modes
+- Jumping into advanced guides before baseline onboarding.
+- Running commands not routed through canonical entrypoints.
 
-- missing required guide files
-- guide filenames drifting from canonical numbered set
+## Normative refs
 
-## Guide Set
+- `docs/book/reference_manifest.yaml`
+- `specs/02_contracts/10_docs_quality.md`
+
+## Guide set
 
 1. `/docs/book/guides/guide_01_onboarding.md`
 2. `/docs/book/guides/guide_02_first_spec_authoring.md`
