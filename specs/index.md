@@ -30,5 +30,7 @@ Canonical specification root for `data-contracts`.
 - `specs/governance/**` is generated from `specs/04_governance/**` and must not be hand-edited.
 - canonical bundle manifests/packages are sourced from
   `https://github.com/jonruttan/data-contracts-bundles`.
+- spec-lang language authority is externalized to
+  `https://github.com/jonruttan/data-contracts-lang`.
 - `docs/book/**` is reader-facing and includes generated references.
 - `docs/history/**` is archival and canonical.

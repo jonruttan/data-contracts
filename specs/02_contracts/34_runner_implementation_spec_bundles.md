@@ -84,6 +84,15 @@ Implementation bundles SHOULD be pinned as `role: additional` entries and MUST
 use dedicated `install_dir` paths that do not overlap with other bundle
 install directories.
 
+Language scaffold bundles published in `data-contracts-bundles` are canonical
+project bootstrap sources:
+
+- `data-contracts-lang-project-scaffold`
+- `data-contracts-lang-rust-project-scaffold`
+
+When a scaffold bundle is consumed through `project scaffold`, runner
+materialization MUST be driven by `scaffold/scaffold_manifest_v1.yaml`.
+
 ## Failure Behavior
 
 Failure messages MUST be direct and actionable for:

@@ -35,9 +35,15 @@ Implementation-specific overlay bundle sources are owned in:
   - resolved filesystem tree
   - `resolved_bundle_lock_v1.yaml`
   - `resolved_files.sha256`
+- Scaffold bundles MUST also contain:
+  - `scaffold/scaffold_manifest_v1.yaml`
+  - `scaffold/files/**`
+  - `scaffold/templates/**`
 - Ensure package checksums are reproducible from published bytes.
 - Store declaration provenance as digest metadata derived from canonical
   `assets[]` / `artifacts[]` declarations in source specs.
+- For scaffold bundles, declaration provenance MUST include scaffold manifest and
+  all required materialization sources.
 
 ## Consumer Responsibilities (Projects and Runner Repositories)
 
@@ -68,6 +74,8 @@ Installers and runner wrappers MUST implement:
   - materialize root `bundles.lock.yaml`
   - install and check bundle payload integrity (`resolved_bundle_lock_v1.yaml`,
     `resolved_files.sha256`, and declaration digest verification)
+  - load and apply `scaffold/scaffold_manifest_v1.yaml` entries deterministically
+    to materialize project files
 
 Multiple bundle entries are supported and MUST be install-isolated.
 Install directory overlap is forbidden.
@@ -86,6 +94,8 @@ Install directory overlap is forbidden.
   `/specs/01_schema/implementation_bundle_build_lock_v1.yaml`
 - Project lock schema:
   `/specs/01_schema/project_bundle_lock_v1.yaml`
+- Scaffold manifest schema:
+  `/specs/01_schema/scaffold_manifest_v1.yaml`
 - Runner lock schema:
   `/specs/01_schema/runner_bundle_lock_v1.yaml`
 

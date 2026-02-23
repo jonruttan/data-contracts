@@ -22,6 +22,7 @@ Runner CLIs MUST provide deterministic behavior for:
 - `runner contract-spec-format --check <paths...>`
 - `runner contract-spec-format --write <paths...>`
 - `runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>]`
+- `runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>] [--var <key=value>]... [--overwrite]`
 - unknown command handling with non-zero exit code
 - structured status output mode (`--json` or equivalent capability)
 
@@ -64,3 +65,9 @@ the required portable command semantics.
   `--allow-external`.
 - Scaffold MUST verify bundle integrity before install and emit deterministic
   scaffold artifacts under `/.artifacts/`.
+- Scaffold materialization MUST be driven by
+  `/specs/01_schema/scaffold_manifest_v1.yaml` bundled as
+  `scaffold/scaffold_manifest_v1.yaml`.
+- Canonical scaffold bundle IDs for language scaffolding are:
+  - `data-contracts-lang-project-scaffold`
+  - `data-contracts-lang-rust-project-scaffold`
