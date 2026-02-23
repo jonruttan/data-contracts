@@ -16,14 +16,12 @@ fields:
     since: v1
     description: 'Assertion-level default import bindings inherited by checks.
       Supports canonical rows (`{from, names, service?, as?}`) and compact
-      aliases (bare-string/service/artifact grouping). For `from: artifact`,
-      imported names must resolve to suite-declared `artifacts[].id` and be
-      explicitly wired when runtime-produced.'
+      aliases (bare-string/service/artifact grouping). For `from: asset`, imported names must resolve to suite-declared `assets[].id`. For `from: asset`, imported names must resolve to suite-declared `artifacts[].id`.'
   contracts.clauses[].asserts.imports[].from:
     type: string
     required: true
     since: v1
-    description: 'Import source: artifact or service.'
+    description: 'Import source: asset, artifact, or service.'
   contracts.clauses[].asserts.imports[].service:
     type: string
     required: false
@@ -33,8 +31,7 @@ fields:
     type: list
     required: true
     since: v1
-    description: Imported symbol names; from=artifact names must resolve to
-      suite-declared artifact ids.
+    description: Imported symbol names; from=asset names must resolve to suite-declared asset ids; from=artifact names must resolve to suite-declared artifact ids.
   contracts.clauses[].asserts.imports[].as:
     type: mapping
     required: false
@@ -56,13 +53,12 @@ fields:
     since: v1
     description: 'Check-level imports merged over asserts.imports. Supports
       canonical rows (`{from, names, service?, as?}`) and compact aliases
-      (bare-string/service/artifact grouping). For `from: artifact`, names
-      must resolve to suite-declared `artifacts[].id`.'
+      (bare-string/service/artifact grouping). For `from: asset`, names must resolve to suite-declared `assets[].id`. For `from: asset`, names must resolve to suite-declared `artifacts[].id`.'
   contracts.clauses[].asserts.checks[].imports[].from:
     type: string
     required: true
     since: v1
-    description: 'Import source: artifact or service.'
+    description: 'Import source: asset, artifact, or service.'
   contracts.clauses[].asserts.checks[].imports[].service:
     type: string
     required: false
@@ -72,8 +68,7 @@ fields:
     type: list
     required: true
     since: v1
-    description: Imported symbol names; from=artifact names must resolve to
-      suite-declared artifact ids.
+    description: Imported symbol names; from=asset names must resolve to suite-declared asset ids; from=artifact names must resolve to suite-declared artifact ids.
   contracts.clauses[].asserts.checks[].imports[].as:
     type: mapping
     required: false

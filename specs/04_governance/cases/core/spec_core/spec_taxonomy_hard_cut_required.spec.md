@@ -40,7 +40,7 @@ contracts:
       and canonical root shim paths are removed.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

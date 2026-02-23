@@ -22,7 +22,7 @@ contracts:
       executable contract-spec blocks.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

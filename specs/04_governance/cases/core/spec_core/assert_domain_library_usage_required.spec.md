@@ -26,7 +26,7 @@ contracts:
       rather than ad hoc inline-only policy.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

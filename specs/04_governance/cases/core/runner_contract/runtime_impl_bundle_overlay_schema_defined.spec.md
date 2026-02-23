@@ -17,7 +17,7 @@ contracts:
       integrity fields for overlay bundle builds.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -37,7 +37,7 @@ contracts:
       and resolved_files hash.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

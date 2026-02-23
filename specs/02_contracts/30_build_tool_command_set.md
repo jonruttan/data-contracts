@@ -30,6 +30,7 @@ Runner repositories MAY provide:
 - `docs-check`
 - `lint`
 - `typecheck`
+- `project-scaffold`
 
 ## Task Semantics
 
@@ -42,6 +43,9 @@ Runner repositories MAY provide:
   pinned bundle package checksum and lock metadata.
 - `bundle-sync` and `bundle-sync-check` SHOULD consume root
   `bundles.lock.yaml` (project multi-bundle lock) when available.
+- `project-scaffold`: resolve canonical bundle release asset from
+  `bundle_id + bundle_version`, verify release sidecar checksum, materialize a
+  root `bundles.lock.yaml`, run install/check, and emit scaffold artifacts.
 - `build-impl`: compose implementation spec bundle by applying patch overlays to
   a pinned base bundle package.
 - `package-impl`: package composed implementation bundle with canonical

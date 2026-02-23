@@ -26,7 +26,7 @@ contracts:
       as compile-only sugar with spec-lang execution.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - assert.sugar_compile_only_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

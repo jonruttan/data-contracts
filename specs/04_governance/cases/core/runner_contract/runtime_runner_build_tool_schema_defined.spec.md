@@ -15,7 +15,7 @@ contracts:
     purpose: Ensures tool-agnostic build tool schema is present in schema index.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

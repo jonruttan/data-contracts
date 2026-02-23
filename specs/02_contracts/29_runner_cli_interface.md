@@ -21,6 +21,8 @@ Runner CLIs MUST provide deterministic behavior for:
 - `runner governance`
 - `runner contract-spec-format --check <paths...>`
 - `runner contract-spec-format --write <paths...>`
+- `runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>]`
+- `runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>] [--var <key=value>]... [--overwrite]`
 - unknown command handling with non-zero exit code
 - structured status output mode (`--json` or equivalent capability)
 
@@ -31,6 +33,8 @@ Runner CLIs MAY provide:
 - implementation-specific helper subcommands
 - additional diagnostics modes
 - additional output formats beyond the structured mode
+- external scaffold source override:
+  - `runner project scaffold --project-root <path> --bundle-url <url> --sha256 <hex> --allow-external`
 
 ## Capability Model
 
@@ -51,3 +55,19 @@ Canonical executable case payload shape for formatting and execution is
 
 Implementation-specific additions MUST be capability-gated and MUST NOT weaken
 the required portable command semantics.
+
+## Scaffold Source Contract
+
+- Canonical scaffold source is `jonruttan/data-contracts-bundles` release assets.
+- Canonical mode is bundle-identity based (`bundle_id` + `bundle_version`), not
+  raw URL based.
+- External URL mode is opt-in only and MUST require explicit
+  `--allow-external`.
+- Scaffold MUST verify bundle integrity before install and emit deterministic
+  scaffold artifacts under `/.artifacts/`.
+- Scaffold materialization MUST be driven by
+  `/specs/01_schema/scaffold_manifest_v1.yaml` bundled as
+  `scaffold/scaffold_manifest_v1.yaml`.
+- Canonical scaffold bundle IDs for language scaffolding are:
+  - `data-contracts-lang-project-scaffold`
+  - `data-contracts-lang-rust-project-scaffold`

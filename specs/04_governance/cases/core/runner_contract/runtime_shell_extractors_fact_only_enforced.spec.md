@@ -19,7 +19,7 @@ contracts:
           check: runtime.shell_extractors_fact_only_enforced
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

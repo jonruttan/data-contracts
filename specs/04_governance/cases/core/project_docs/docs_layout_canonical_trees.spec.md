@@ -25,7 +25,7 @@ contracts:
     purpose: Enforces canonical docs root namespaces.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

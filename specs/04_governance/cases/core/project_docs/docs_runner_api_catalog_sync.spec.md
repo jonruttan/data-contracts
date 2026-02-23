@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures generated runner API JSON and markdown artifacts are up-to-date.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

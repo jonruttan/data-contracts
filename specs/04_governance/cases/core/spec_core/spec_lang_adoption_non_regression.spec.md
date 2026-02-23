@@ -55,7 +55,7 @@ contracts:
       checked-in baseline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -83,7 +83,7 @@ contracts:
             - lit: {}
           - spec.spec_lang_adoption_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

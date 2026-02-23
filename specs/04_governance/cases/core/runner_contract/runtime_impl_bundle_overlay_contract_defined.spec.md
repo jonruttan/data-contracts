@@ -17,7 +17,7 @@ contracts:
       source, checksum requirements, and patch-based semantics.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

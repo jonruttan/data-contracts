@@ -15,7 +15,7 @@ contracts:
     purpose: Portable CLI contract requires help surface.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

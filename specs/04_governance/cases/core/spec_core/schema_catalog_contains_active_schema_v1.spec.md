@@ -24,7 +24,7 @@ contracts:
     purpose: Ensures active schema catalog includes canonical contract-spec v1 entry.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

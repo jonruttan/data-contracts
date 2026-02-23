@@ -32,7 +32,7 @@ contracts:
       spec_lang.export defines contract behavior.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

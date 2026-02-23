@@ -16,7 +16,7 @@ contracts:
       a task map manifest path.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

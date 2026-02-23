@@ -36,7 +36,7 @@ contracts:
       paths.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -64,7 +64,7 @@ contracts:
             - lit: {}
           - runtime.compatibility_python_lane_bin_resolver_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

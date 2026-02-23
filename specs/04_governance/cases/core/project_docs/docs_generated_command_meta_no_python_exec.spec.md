@@ -39,7 +39,7 @@ contracts:
       commands and do not reintroduce python execution tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -1,6 +1,6 @@
 ```yaml contract-spec
 spec_version: 1
-schema_ref: /specs/01_schema/schema_v1.md
+schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
@@ -13,10 +13,10 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -29,13 +29,6 @@ contracts:
             - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
             - 'END GENERATED: SCHEMA_REGISTRY_V1'
             - Generated Registry Snapshot
-artifacts:
-- id: art.svc.check.text_file.1.source.1
-  ref: /specs/01_schema/schema_v1.md
-  direction: input
-- id: art.svc.check.text_file.1.use_1.1
-  ref: /specs/05_libraries/policy/policy_text.spec.md
-  direction: input
 adapters:
 - type: io.fs
   actions:
@@ -46,11 +39,16 @@ adapters:
         symbols:
         - policy.text.contains_all
         artifact_id: art.svc.check.text_file.1.use_1.1
-      source_artifact_id: art.svc.check.text_file.1.source.1
+      source_asset_id: art.svc.check.text_file.1.source.1
     direction: input
     profile: read.text
 services:
 - id: svc.check.text_file.1
   consumes:
   - svc.check.text_file.1
+assets:
+- id: art.svc.check.text_file.1.source.1
+  ref: "/specs/01_schema/schema_v1.md"
+- id: art.svc.check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
 ```

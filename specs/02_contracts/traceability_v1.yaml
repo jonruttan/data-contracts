@@ -1,8 +1,8 @@
 version: 1
 title: Data Contracts Contract Traceability
 links:
-- rule_id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
-  policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
+- rule_id: SERVICE_BINDINGS_RESOURCE_ID_IO_ONLY
+  policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_BINDINGS_RESOURCE_ID_IO_ONLY
   contract_refs:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
@@ -12,9 +12,9 @@ links:
   - DCCONF-SCHEMA-CASE-022
   unit_test_refs: []
   implementation_refs: []
-  notes: Contract bindings must adapter_action runtime service payloads only through declared artifacts import/export ids.
-- rule_id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
-  policy_ref: specs/02_contracts/policy_v1.yaml#ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+  notes: Contract bindings must route runtime service payloads only through declared assets/artifacts ids.
+- rule_id: RESOURCE_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+  policy_ref: specs/02_contracts/policy_v1.yaml#RESOURCE_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   contract_refs:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
@@ -24,7 +24,7 @@ links:
   - DCCONF-SCHEMA-CASE-026
   unit_test_refs: []
   implementation_refs: []
-  notes: Artifact symbols are usable only when suite-declared and explicitly wired.
+  notes: Asset/artifact symbols are usable only when suite-declared and explicitly wired.
 - rule_id: BINDINGS_SERVICE_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#BINDINGS_SERVICE_REQUIRED
   contract_refs:
@@ -76,8 +76,8 @@ links:
   unit_test_refs: []
   implementation_refs: []
   notes: Harness scan config uses explicit structured keys.
-- rule_id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
-  policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
+- rule_id: SERVICE_CONFIG_LOCATORS_VIA_ASSET_IDS_ONLY
+  policy_ref: specs/02_contracts/policy_v1.yaml#SERVICE_CONFIG_LOCATORS_VIA_ASSET_IDS_ONLY
   contract_refs:
   - specs/02_contracts/04_harness.md
   - specs/02_contracts/21_schema_registry_contract.md
@@ -86,7 +86,7 @@ links:
   conformance_case_ids: []
   unit_test_refs: []
   implementation_refs: []
-  notes: Service config locators must route through artifacts IDs only.
+  notes: Service config locators must route consumed inputs through asset IDs.
 - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
   contract_refs:
@@ -4407,3 +4407,15 @@ links:
   implementation_refs:
   - specs/04_governance/check_sets_v1.yaml
   notes: Retired script tree removed and no longer represented in canonical allowlist.
+- rule_id: REPO_BOUNDARY_NEW_SPEC_REPOS_FORBIDDEN
+  policy_ref: specs/02_contracts/policy_v1.yaml#REPO_BOUNDARY_NEW_SPEC_REPOS_FORBIDDEN
+  contract_refs:
+  - specs/00_core/repo_boundary_charter.md
+  - specs/02_contracts/12_runner_interface.md
+  - specs/02_contracts/33_bundle_package_management.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/04_governance/cases/core/runner_contract/runtime_runner_bundle_package_contract_defined.spec.md
+  notes: Governance and contract docs enforce the canonical allowlist of spec authority repositories.

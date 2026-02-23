@@ -26,7 +26,7 @@ contracts:
       under canonical executable case roots.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

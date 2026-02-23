@@ -26,7 +26,7 @@ contracts:
       keeping historical review archives out of active workflow references.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

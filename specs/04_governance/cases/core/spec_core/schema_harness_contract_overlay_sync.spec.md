@@ -26,7 +26,7 @@ contracts:
       same orchestration.run and docs.generate architecture.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

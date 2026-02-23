@@ -26,7 +26,7 @@ contracts:
       under specs/libraries.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

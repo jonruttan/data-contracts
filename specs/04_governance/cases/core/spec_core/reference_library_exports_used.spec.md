@@ -26,7 +26,7 @@ contracts:
       or harness exports.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -26,7 +26,7 @@ contracts:
       profile tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.api_http_oauth_docs_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -47,7 +47,7 @@ contracts:
       use shared spec-lang libraries.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -75,7 +75,7 @@ contracts:
             - lit: {}
           - governance.policy_library_usage_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

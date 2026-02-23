@@ -26,7 +26,7 @@ contracts:
       v1 tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -48,7 +48,7 @@ contracts:
             - lit: {}
           - runtime.api_http_parity_contract_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

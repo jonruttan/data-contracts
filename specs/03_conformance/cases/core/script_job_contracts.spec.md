@@ -8,7 +8,8 @@ contracts:
   clauses:
   - id: DCCONF-JOB-004
     title: schema registry build via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -18,7 +19,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -31,7 +32,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-005
     title: schema registry check via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -41,7 +43,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -54,7 +56,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-006
     title: docs lint via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -64,7 +67,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -77,7 +80,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-007
     title: docs generate build via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -87,7 +91,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -100,7 +104,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-008
     title: docs generate check via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -110,7 +115,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -123,7 +128,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-009
     title: docs build reference book via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -133,7 +139,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -146,7 +152,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-010
     title: docs build check reference book via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -156,7 +163,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -169,7 +176,8 @@ contracts:
           - var: summary_json
   - id: DCCONF-JOB-011
     title: docs graph export via contract.job
-    purpose: Ensures script command contracts dispatch and return deterministic success state.
+    purpose: Ensures script command contracts dispatch and return deterministic success
+      state.
     when:
       fail:
       - ops.job.dispatch:
@@ -179,7 +187,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -190,31 +198,6 @@ contracts:
         - call:
           - var: policy.job.dispatch_ok
           - var: summary_json
-artifacts:
-- id: art.svc.assert_check.default.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.2.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.3.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.4.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.5.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.6.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.7.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.8.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
 adapters:
 - type: io.system
   defaults:
@@ -507,6 +490,23 @@ services:
 - id: svc.assert_check.default.8
   consumes:
   - svc.assert_check.default.8
+assets:
+- id: art.svc.assert_check.default.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.2.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.3.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.4.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.5.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.6.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.7.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.8.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
 ```
 
 

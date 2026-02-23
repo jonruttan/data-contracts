@@ -26,7 +26,7 @@ contracts:
       ids.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - conformance.case_index_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

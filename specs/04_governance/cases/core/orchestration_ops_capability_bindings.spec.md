@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures orchestration tools and case capability bindings remain synchronized.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

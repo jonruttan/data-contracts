@@ -23,7 +23,7 @@ contracts:
           check: packs.pack_paths_resolve
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

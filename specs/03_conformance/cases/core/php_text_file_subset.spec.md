@@ -15,7 +15,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -33,7 +33,7 @@ contracts:
         category: assertion
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -51,7 +51,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -69,7 +69,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -91,7 +91,7 @@ contracts:
         category: assertion
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -113,7 +113,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -136,7 +136,7 @@ contracts:
         category: assertion
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -159,7 +159,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -187,7 +187,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -205,7 +205,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -223,7 +223,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -241,7 +241,7 @@ contracts:
         category: assertion
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -259,7 +259,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -281,7 +281,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

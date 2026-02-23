@@ -70,7 +70,7 @@ contracts:
       cannot silently lose required files.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -98,7 +98,7 @@ contracts:
             - lit: {}
           - docs.reference_surface_complete
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

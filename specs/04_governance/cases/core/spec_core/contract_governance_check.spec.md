@@ -26,7 +26,7 @@ contracts:
       through the governance spec pipeline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - contract.governance_check
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

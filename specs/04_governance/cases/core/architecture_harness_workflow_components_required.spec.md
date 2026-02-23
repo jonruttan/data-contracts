@@ -26,7 +26,7 @@ contracts:
       assertion engine, and subject router wiring in all harnesses.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -18,7 +18,7 @@ contracts:
       with matching hook job metadata.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

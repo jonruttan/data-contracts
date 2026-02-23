@@ -37,7 +37,7 @@ contracts:
       that manual do-X-then-inspect-Y sequences are an anti-pattern.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -65,7 +65,7 @@ contracts:
             - lit: {}
           - docs.release_contract_automation_policy
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures effect symbols use canonical deep-dot ops names.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

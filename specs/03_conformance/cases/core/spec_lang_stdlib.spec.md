@@ -14,7 +14,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -48,7 +48,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -82,7 +82,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -127,7 +127,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -186,7 +186,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -249,7 +249,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -269,7 +269,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -311,7 +311,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -332,7 +332,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -369,7 +369,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -389,7 +389,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -433,7 +433,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -451,7 +451,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -486,7 +486,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -499,22 +499,21 @@ contracts:
               - 7
           - lit:
             - "/a/b"
-artifacts:
-- id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/03_conformance/cases/core/spec_lang_stdlib.spec.md"
-  direction: input
 adapters:
 - type: io.fs
   actions:
   - id: svc.assert_check.text_file.1
     config:
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+      source_asset_id: art.svc.assert_check.text_file.1.source.1
     direction: input
     profile: read.text
 services:
 - id: svc.assert_check.text_file.1
   consumes:
   - svc.assert_check.text_file.1
+assets:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/03_conformance/cases/core/spec_lang_stdlib.spec.md"
 ```
 
 

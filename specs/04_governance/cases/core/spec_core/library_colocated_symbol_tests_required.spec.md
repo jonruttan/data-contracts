@@ -26,7 +26,7 @@ contracts:
       executable assertion/policy usage.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

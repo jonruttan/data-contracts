@@ -31,7 +31,7 @@ contracts:
       wiring and evaluate library calls.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -59,7 +59,7 @@ contracts:
             - lit: {}
           - conformance.library_policy_usage_required
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

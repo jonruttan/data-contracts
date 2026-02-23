@@ -11,7 +11,7 @@ contracts:
     purpose: Ensures the producer-facing status report schema exists.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -27,7 +27,7 @@ contracts:
     purpose: Ensures the aggregate status matrix schema exists.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -43,7 +43,7 @@ contracts:
     purpose: Ensures ingest includes max-age controls and enforcement flag.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -59,7 +59,7 @@ contracts:
     purpose: Ensures missing compatibility status is represented and policy-scored.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -75,7 +75,7 @@ contracts:
     purpose: Ensures required lane status maps to blocking policy effect.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -86,10 +86,6 @@ contracts:
           - var: text
           - lane_class
           - blocking_fail
-artifacts:
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
 adapters:
 - type: io.fs
   actions:
@@ -106,6 +102,9 @@ services:
 - id: svc.assert_check.text_file.1
   consumes:
   - svc.assert_check.text_file.1
+assets:
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
 ```
 
 

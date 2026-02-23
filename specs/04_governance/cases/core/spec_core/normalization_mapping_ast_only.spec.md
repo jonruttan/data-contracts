@@ -26,7 +26,7 @@ contracts:
       through the unified normalize check.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - normalization.mapping_ast_only
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

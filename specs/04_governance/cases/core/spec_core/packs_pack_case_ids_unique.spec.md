@@ -22,7 +22,7 @@ contracts:
           check: packs.pack_case_ids_unique
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

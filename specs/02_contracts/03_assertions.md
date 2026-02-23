@@ -30,14 +30,14 @@ Scope separation:
 
 - assertion import bindings are declared only under `asserts.imports` and
   `asserts.checks[].imports`.
-- suite-root `artifacts[]` are external
+- suite-root `assets[]` are consumed external resources and `artifacts[]` are produced resources
   reference declarations and do not implicitly bind assertion symbols.
 - `contracts.clauses[].bindings.rows[]` materializes service-produced symbols into predicate
   contexts using artifact-id I/O mappings.
 - binding I/O rows accept canonical mappings and compact string aliases; compact
   rows are endpoint-only (`to` for outputs, `from` for inputs).
 - service locator values consumed by bindings/imports must be declared in
-  `artifacts[]`; assertion/runtime surfaces must not rely on direct
+  `assets[]` and `artifacts[]`; assertion/runtime surfaces must not rely on direct
   service config locators.
 - suite/contract/artifact/function documentation metadata is declared through
   `docs[]` entries and is not part of assertion symbol binding.
@@ -49,8 +49,8 @@ Import binding shape:
 - compact/short alias rows are supported in v1 where defined by
   `/specs/01_schema/registry/v1/assertions.yaml`
 - canonical sources are `artifact` and `service`
-- for `from: artifact`, imported names MUST be explicitly declared at suite
-  root (`artifacts[].id`)
+- for `from: asset`, imported names MUST be explicitly declared at suite
+  root (`assets[].id` for `from: asset`; `artifacts[].id` for `from: artifact`)
 - runtime-produced artifact symbols MUST be explicitly wired through
   `contracts.clauses[].bindings.rows[].outputs` before predicate import use
 - when any item uses `from: service`, suite-root `services` MUST be present and
@@ -106,7 +106,7 @@ Example:
 ```yaml
 asserts:
   imports:
-  - from: artifact
+  - from: asset
     names: [violation_count]
     as:
       violation_count: subject

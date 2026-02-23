@@ -15,7 +15,7 @@ contracts:
     purpose: Portable CLI contract requires governance command.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

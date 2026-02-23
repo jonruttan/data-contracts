@@ -33,7 +33,7 @@ contracts:
       the actual chapter set and order.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -61,7 +61,7 @@ contracts:
             - lit: {}
           - docs.reference_index_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

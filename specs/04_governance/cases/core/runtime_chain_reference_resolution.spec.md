@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures harness.chain step references resolve by contract for
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -47,7 +47,7 @@ contracts:
             - lit: {}
           - runtime.chain_reference_resolution
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

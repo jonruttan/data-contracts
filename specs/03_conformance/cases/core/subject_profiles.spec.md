@@ -8,13 +8,14 @@ contracts:
   clauses:
   - id: DCCONF-PROFILE-001
     title: subject profile schema defines canonical envelope fields
-    purpose: Ensures subject profile schema defines JSON-core envelope and deterministic projection constraints.
+    purpose: Ensures subject profile schema defines JSON-core envelope and deterministic
+      projection constraints.
     expect:
       portable:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -30,13 +31,14 @@ contracts:
             - deterministic_projection
   - id: DCCONF-PROFILE-002
     title: text.file exposes context_json subject profile envelope
-    purpose: Ensures text.file harness provides context_json target with profile metadata and JSON value payload.
+    purpose: Ensures text.file harness provides context_json target with profile metadata
+      and JSON value payload.
     expect:
       portable:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - context_json
       checks:
@@ -58,16 +60,6 @@ contracts:
         - std.object.has_key:
           - var: context_json
           - meta
-artifacts:
-- id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/01_schema/subject_profiles_v1.yaml"
-  direction: input
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.source.1
-  ref: "/specs/02_contracts/20_subject_profiles_v1.md"
-  direction: input
 adapters:
 - type: io.fs
   defaults:
@@ -81,10 +73,10 @@ adapters:
         symbols:
         - policy.text.contains_all
         artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+      source_asset_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+      source_asset_id: art.svc.assert_check.text_file.2.source.1
 services:
 - id: svc.assert_check.text_file.1
   consumes:
@@ -92,6 +84,13 @@ services:
 - id: svc.assert_check.text_file.2
   consumes:
   - svc.assert_check.text_file.2
+assets:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/01_schema/subject_profiles_v1.yaml"
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/02_contracts/20_subject_profiles_v1.md"
 ```
 
 

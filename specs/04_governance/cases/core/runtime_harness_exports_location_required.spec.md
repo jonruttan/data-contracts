@@ -18,7 +18,7 @@ contracts:
       and canonical harness.chain.exports is rejected.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

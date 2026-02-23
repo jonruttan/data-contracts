@@ -57,7 +57,7 @@ contracts:
       - domain
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - subject
       checks:

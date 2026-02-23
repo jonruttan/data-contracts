@@ -26,7 +26,7 @@ contracts:
       and do not contain yaml contract-spec fences.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -26,7 +26,7 @@ contracts:
       compile without registry errors.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

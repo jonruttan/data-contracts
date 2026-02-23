@@ -31,7 +31,7 @@ contracts:
       with no accumulated warning debt.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -59,7 +59,7 @@ contracts:
             - lit: {}
           - conformance.purpose_quality_gate
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

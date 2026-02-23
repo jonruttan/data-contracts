@@ -26,7 +26,7 @@ contracts:
       linked in current snapshot notes.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

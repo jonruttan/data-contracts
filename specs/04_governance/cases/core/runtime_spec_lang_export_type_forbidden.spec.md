@@ -26,7 +26,7 @@ contracts:
       spec.export producer cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.spec_lang_export_type_forbidden
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

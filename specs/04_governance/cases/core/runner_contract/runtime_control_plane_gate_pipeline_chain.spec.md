@@ -36,7 +36,7 @@ contracts:
         - policy.ci.artifacts_present
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
         - context_json

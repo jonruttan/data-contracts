@@ -37,7 +37,7 @@ contracts:
         - policy.schema_pin.version_match_zero
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
         - context_json

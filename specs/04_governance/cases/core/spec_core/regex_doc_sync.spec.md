@@ -26,7 +26,7 @@ contracts:
       remain aligned in contract/schema/policy docs.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.regex_doc_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

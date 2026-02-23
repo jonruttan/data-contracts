@@ -16,7 +16,7 @@ contracts:
       formatting.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

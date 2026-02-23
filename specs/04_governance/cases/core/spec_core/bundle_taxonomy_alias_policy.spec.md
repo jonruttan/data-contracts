@@ -13,7 +13,7 @@ contracts:
           path: "/specs/02_contracts/32_contract_bundle_taxonomy.md"
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -41,7 +41,7 @@ contracts:
           path: "/specs/01_schema/schema_v1.md"
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

@@ -26,7 +26,7 @@ contracts:
       namespace ordering in the reference manifest.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.book_chapter_order_canonical
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

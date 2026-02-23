@@ -26,7 +26,7 @@ contracts:
       pending-conversion flow for the discovery prompt.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

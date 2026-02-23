@@ -22,7 +22,7 @@ contracts:
     purpose: Ensures CI includes a status-ingest control-plane job.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

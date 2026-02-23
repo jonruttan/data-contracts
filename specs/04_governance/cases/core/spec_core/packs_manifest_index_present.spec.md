@@ -20,7 +20,7 @@ contracts:
           check: packs.manifest_index_present
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

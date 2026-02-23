@@ -27,21 +27,21 @@
 
 Suite-root external references:
 
-- executable suites MAY declare `artifacts[]`
+- executable suites MAY declare `assets[]` and `artifacts[]`
   to model artifact references external to per-contract harness/assertion
   blocks.
 - root `exports[]` is reserved for function symbol exports only.
-- `artifacts[].ref` template expressions use
+- `assets[].ref` and `artifacts[].ref` template expressions use
   moustache (`{{...}}`) syntax and resolve from suite context only.
 - service runtime payload transport MUST use artifact ids declared in
-  `artifacts[]` through `contracts.clauses[].bindings.rows[]` mappings.
+  `assets[]` and `artifacts[]` through `contracts.clauses[].bindings.rows[]` mappings.
 - services MUST NOT reference external locations directly in
   `adapters[].actions[].config`; direct locator keys (`path`, `url`, `token_url`,
   `template_path`, `output_path`, `ref`) are invalid.
 - service config locators MUST be routed via artifact IDs using
-  profile-specific `*_artifact_id` fields (for example
-  `source_artifact_id`, `artifact_id`, `token_artifact_id`,
-  `template_artifact_id`, `output_artifact_id`, `use[].artifact_id`).
+  profile-specific `*_asset_id` fields (for example
+  `source_asset_id`, `artifact_id`, `token_asset_id`,
+  `template_asset_id`, `output_artifact_id`, `use[].asset_id`).
 - services/harnesses define execution capabilities only; they do not implicitly
   inject predicate symbols.
 - core runner orchestration must not embed integration-specific client
@@ -128,7 +128,7 @@ For `request.http`:
   - `fail_fast` (default `true`)
 - `adapters[].actions[].config.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
-  - `token_artifact_id` (required): artifacts import id containing token endpoint
+  - `token_asset_id` (required): artifacts import id containing token endpoint
     locator payload
   - `client_id_env` / `client_secret_env` (required): env var names only
   - `scope` / `audience` (optional)
@@ -285,8 +285,8 @@ Subject profile envelope contract:
 - spec-authored contract paths use virtual-root semantics:
   `/` means contract root (not OS root).
 - root-relative values normalize to canonical `/...`.
-- `read.text` locator payloads MUST be declared under `artifacts[]` and
-  referenced through `adapters[].actions[].config.source_artifact_id`.
+- `read.text` locator payloads MUST be declared under `assets[]` and
+  referenced through `adapters[].actions[].config.source_asset_id`.
 - external references are `external://provider/id` and are deny-by-default
   unless explicitly enabled by capability + harness external ref policy.
 

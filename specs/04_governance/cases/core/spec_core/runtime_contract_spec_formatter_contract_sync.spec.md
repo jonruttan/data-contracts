@@ -17,7 +17,7 @@ contracts:
       command surface and mode metadata.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

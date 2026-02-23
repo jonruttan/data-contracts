@@ -26,7 +26,7 @@ contracts:
       keys and path scopes.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - normalization.profile_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

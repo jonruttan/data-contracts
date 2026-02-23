@@ -26,7 +26,7 @@ contracts:
       and require list-form entries.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

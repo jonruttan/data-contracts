@@ -7,10 +7,8 @@ deterministic overlays on top of canonical base bundles.
 
 - Base runner bundle manifests and packages remain canonical in:
   `https://github.com/jonruttan/data-contracts-bundles`
-- Implementation-specific overlays are owned in dedicated repositories:
-  - `https://github.com/jonruttan/dc-runner-rust-specs`
-  - `https://github.com/jonruttan/dc-runner-python-specs`
-  - `https://github.com/jonruttan/dc-runner-php-specs`
+- Implementation-specific overlays and shared reusable libraries are owned in:
+  - `https://github.com/jonruttan/data-contracts-library`
 
 ## Overlay Semantics
 
@@ -55,6 +53,8 @@ Implementation bundle build flow MUST:
 6. Emit:
    - `resolved_bundle_lock_v1.yaml`
    - `implementation_bundle_build_lock_v1.yaml`
+7. Emit declaration provenance digest derived from resolved canonical
+   `assets[]` / `artifacts[]` declarations referenced by bundled specs.
 
 Build lock schema:
 
@@ -82,6 +82,15 @@ Implementation bundles SHOULD be pinned as `role: additional` entries and MUST
 use dedicated `install_dir` paths that do not overlap with other bundle
 install directories.
 
+Language scaffold bundles published in `data-contracts-bundles` are canonical
+project bootstrap sources:
+
+- `data-contracts-lang-project-scaffold`
+- `data-contracts-lang-rust-project-scaffold`
+
+When a scaffold bundle is consumed through `project scaffold`, runner
+materialization MUST be driven by `scaffold/scaffold_manifest_v1.yaml`.
+
 ## Failure Behavior
 
 Failure messages MUST be direct and actionable for:
@@ -92,3 +101,4 @@ Failure messages MUST be direct and actionable for:
 - base package checksum mismatch
 - missing `resolved_bundle_lock_v1.yaml` in packaged output
 - missing or mismatched `resolved_files.sha256`
+- declaration/provenance digest mismatch during package verify/unbundle

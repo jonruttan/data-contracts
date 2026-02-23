@@ -72,8 +72,10 @@ contracts:
         assert:
           lit: true
   - id: DCCONF-SCHEMA-ALIAS-004
-    title: terminology contract for accepted preferred canonical normalized forms is aligned
-    purpose: Captures harmonized terminology contract between alias registry and v1 schema docs.
+    title: terminology contract for accepted preferred canonical normalized forms
+      is aligned
+    purpose: Captures harmonized terminology contract between alias registry and v1
+      schema docs.
     expect:
       portable:
         status: pass
@@ -211,13 +213,6 @@ contracts:
       - id: assert_1
         assert:
           lit: true
-artifacts:
-- id: alias_output
-  ref: "/specs/01_schema/schema_v1.md"
-  direction: output
-- id: alias_input
-  ref: "/specs/01_schema/schema_v1.md"
-  direction: input
 adapters:
 - type: io.fs
   actions:
@@ -243,4 +238,10 @@ services:
     assert_truth:
       adapter_action: svc.alias.harmonize.1
       adapter_import: assert_truth
+assets:
+- id: alias_input
+  ref: "/specs/01_schema/schema_v1.md"
+artifacts:
+- id: alias_output
+  ref: "/specs/01_schema/schema_v1.md"
 ```

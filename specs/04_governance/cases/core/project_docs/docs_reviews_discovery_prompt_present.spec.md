@@ -26,7 +26,7 @@ contracts:
       active review prompt set.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

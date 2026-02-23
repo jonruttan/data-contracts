@@ -17,7 +17,7 @@ contracts:
       checksum requirements.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -55,14 +55,32 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - dc-runner-rust-specs
+          - data-contracts-library
+      - id: assert_8
+        assert:
+          std.logic.not:
+            std.string.contains:
+            - var: text
+            - dc-runner-rust-specs
+      - id: assert_9
+        assert:
+          std.logic.not:
+            std.string.contains:
+            - var: text
+            - dc-runner-python-specs
+      - id: assert_10
+        assert:
+          std.logic.not:
+            std.string.contains:
+            - var: text
+            - dc-runner-php-specs
   - id: DCGOV-RUNTIME-BUNDLE-003
     title: runner build tool schema declares bundle sync tasks
     purpose: Ensures runner build tool schema uses bundle-sync task ids and does not
       include canonical spec-sync task ids.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

@@ -175,7 +175,7 @@ Suite runtime surfaces:
   - `adapters[].actions[].profile` (string, optional): effective mode token
   - `adapters[].actions[].direction` (string, optional): `input|output|bidirectional`
   - `adapters[].actions[].config` (mapping, optional): service config values that
-    reference external locations MUST use artifact-id fields (`*_artifact_id`)
+    reference external locations MUST use artifact-id fields (`*_asset_id`)
     and must not embed direct locators
   - `adapters[].actions[].imports` (list, optional): canonical mapping rows
     (`names`, optional `as`)
@@ -209,10 +209,10 @@ Parser behavior:
 - when `services` is present, `services[]` must be non-empty
 - `schema_ref` MUST resolve in `/specs/01_schema/schema_catalog_v1.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
-- `artifacts[].ref` MUST be strings
-- `artifacts[].ref` template expressions
+- `assets[].ref` and `artifacts[].ref` MUST be strings
+- `assets[].ref` and `artifacts[].ref` template expressions
   use moustache syntax and resolve from suite context only
-- unresolved `artifacts[].ref` template
+- unresolved asset/artifact `ref` template
   expressions are schema/runtime failures
 - root `exports[]` is function-only:
   - `exports[].from` MUST be `assert.function`
@@ -254,10 +254,8 @@ Parser behavior:
 - each effective binding row MUST include `id`, `service`, and `import` after defaults merge
 - effective row = shallow merge(`contracts.clauses[].bindings.defaults`, row), row values override defaults
 - effective `service` MUST reference an existing `adapters[].actions[].id`
-- `contracts.clauses[].bindings.rows[].inputs[].from` MUST reference `artifacts[].id` where artifact
-  entry `direction` is `input` or `bidirectional`
-- `contracts.clauses[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id` where artifact
-  entry `direction` is `output` or `bidirectional`
+- `contracts.clauses[].bindings.rows[].inputs[].from` MUST reference `assets[].id`
+- `contracts.clauses[].bindings.rows[].outputs[].to` MUST reference `artifacts[].id`
 - binding I/O accepted input forms:
   - `inputs` accepts canonical list[mapping] and compact list[string]
   - `outputs` accepts canonical list[mapping] and compact list[string]
@@ -267,13 +265,13 @@ Parser behavior:
 - mixed item kinds (string + mapping) in one binding inputs/outputs list are invalid
 - empty/whitespace compact binding I/O strings are invalid
 - compact binding I/O rows encode `from`/`to` only; `as`/`path` require canonical mapping rows
-- binding runtime payload adapter_action MUST use artifact ids only (`artifacts[]`)
+- binding runtime payload adapter_action MUST use declared asset/artifact ids only (`assets[]` and `artifacts[]`)
 - direct external locator keys in `adapters[].actions[].config` are invalid:
   `path`, `url`, `token_url`, `template_path`, `output_path`, `ref`
-- every `*_artifact_id` in service config MUST resolve to
-  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
-- every `*_artifact_ids[]` entry in service config MUST resolve to
-  `artifacts[].id` where artifact entry `direction` is `input` or `bidirectional`
+- every `*_asset_id` in service config MUST resolve to
+  `assets[].id`
+- every `*_asset_ids[]` entry in service config MUST resolve to
+  `assets[].id`
 - mixed direct-locator and artifact-id forms for the same semantic field are
   invalid
 - `asserts.imports[].from=artifact` and `asserts.checks[].imports[].from=artifact`
@@ -369,7 +367,7 @@ Normative contract details:
 
 Fields:
 
-- `source_artifact_id` (string, required): id referencing
+- `source_asset_id` (string, required): id referencing
   `artifacts[].id` for the text/file source payload.
 
 Assertion targets for `read.text`:
@@ -447,7 +445,7 @@ For `harness.type: unit.test` with `adapters[].actions[].profile: request.http`,
   - `fail_fast` (bool, default `true`)
 - `api_http.auth.oauth` (mapping):
   - `grant_type`: `client_credentials`
-  - `token_artifact_id`: artifacts import id for token endpoint locator
+  - `token_asset_id`: artifacts import id for token endpoint locator
   - `client_id_env`: env var name for OAuth client id
   - `client_secret_env`: env var name for OAuth client secret
   - `scope` (optional)
@@ -489,7 +487,7 @@ For `harness.type: unit.test` with `adapters[].actions[].profile: generate.docs`
 - `docs_generate.surface_id` (required)
 - `docs_generate.mode` (required): `write|check`
 - `docs_generate.output_mode` (required): `markers|full_file`
-- `docs_generate.template_artifact_id` (required): artifacts import id
+- `docs_generate.template_asset_id` (required): artifacts import id
 - `docs_generate.output_artifact_id` (required): artifacts import id
 - `docs_generate.marker_surface_id` (required when `output_mode=markers`)
 - `docs_generate.data_sources` (required list):
@@ -691,9 +689,9 @@ Import binding shape:
   - service short alias: `"pipe_identity"` (normalized using
     `contracts.clauses[].bindings.defaults.service`)
 - compact aliases normalize to canonical rows before validation/execution
-- canonical assertion imports may use `from: artifact` or `from: service`
+- canonical assertion imports may use `from: asset`, `from: artifact`, or `from: service`
 - short string aliases are always interpreted as `from: service` imports
-- when `from: artifact`, `names` must be a non-empty list of suite-declared
+- when `from: asset`, `names` must be a non-empty list of suite-declared
   artifact ids (and be explicitly wired when runtime-produced)
 - for short string aliases, `contracts.clauses[].bindings.defaults.service` must exist
   and resolve to `adapters[].actions[].id`
@@ -781,7 +779,7 @@ Canonical negation form:
 ```yaml
 asserts:
   imports:
-  - from: artifact
+  - from: asset
     names: [text]
     as:
       text: subject
@@ -808,7 +806,7 @@ Example with check-level import override:
 ```yaml
 asserts:
   imports:
-  - from: artifact
+  - from: asset
     names: [summary_json]
     as:
       summary_json: subject
@@ -822,7 +820,7 @@ asserts:
       - true
   - id: assert_violation_count
     imports:
-    - from: artifact
+    - from: asset
       names: [violation_count]
       as:
         violation_count: subject

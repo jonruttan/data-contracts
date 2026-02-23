@@ -26,7 +26,7 @@ contracts:
       do not rely on canonical key forms.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

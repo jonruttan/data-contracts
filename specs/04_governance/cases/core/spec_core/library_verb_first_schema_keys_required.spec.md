@@ -26,7 +26,7 @@ contracts:
       and rejects canonical definitions keys.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

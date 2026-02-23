@@ -26,7 +26,7 @@ contracts:
       and do not use canonical export shape.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

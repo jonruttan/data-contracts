@@ -26,5 +26,4 @@ contracts:
 artifacts:
 - id: status
   ref: artifact://root_bindings_forbidden/status
-  direction: output
 ```

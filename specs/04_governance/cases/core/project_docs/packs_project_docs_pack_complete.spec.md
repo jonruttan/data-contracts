@@ -20,7 +20,7 @@ contracts:
           check: packs.project_docs_pack_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

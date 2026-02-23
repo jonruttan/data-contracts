@@ -37,7 +37,7 @@ contracts:
         - policy.ingest.log_entries_correlate_matrix_rows
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
         - context_json

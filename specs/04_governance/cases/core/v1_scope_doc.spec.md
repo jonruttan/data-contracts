@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures v1 scope and compatibility commitments remain explicit and discoverable.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -53,7 +53,7 @@ contracts:
             - lit: {}
           - docs.v1_scope_contract
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

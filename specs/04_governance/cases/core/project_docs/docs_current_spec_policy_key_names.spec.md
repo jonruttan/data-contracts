@@ -26,7 +26,7 @@ contracts:
       in `.spec.md` cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.current_spec_policy_key_names
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

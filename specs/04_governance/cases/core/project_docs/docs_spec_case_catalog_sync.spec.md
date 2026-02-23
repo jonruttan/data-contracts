@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures generated spec case catalog and markdown references stay in sync.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

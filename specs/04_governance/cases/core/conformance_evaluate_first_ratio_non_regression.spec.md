@@ -39,7 +39,7 @@ contracts:
       against the checked-in spec-lang adoption baseline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -67,7 +67,7 @@ contracts:
             - lit: {}
           - conformance.evaluate_first_ratio_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

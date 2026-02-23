@@ -31,7 +31,7 @@ contracts:
       are observable in run trace artifacts.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

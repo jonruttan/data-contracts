@@ -37,7 +37,7 @@ contracts:
       subprocess spans used by timeout diagnostics.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

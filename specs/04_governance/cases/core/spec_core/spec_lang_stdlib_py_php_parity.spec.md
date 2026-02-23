@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures no profile symbol is missing in either runtime implementation.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

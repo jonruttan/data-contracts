@@ -26,7 +26,7 @@ contracts:
       docs cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.markdown_structured_assertions_required
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -17,7 +17,7 @@ contracts:
       ordering for formatter enforcement.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

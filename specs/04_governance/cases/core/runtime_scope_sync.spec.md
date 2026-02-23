@@ -40,7 +40,7 @@ contracts:
       runtime scope tokens in contract docs.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -68,7 +68,7 @@ contracts:
             - lit: {}
           - runtime.scope_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -35,7 +35,7 @@ contracts:
       library functions for repeated expression patterns.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -63,7 +63,7 @@ contracts:
             - lit: {}
           - conformance.spec_lang_fixture_library_usage
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

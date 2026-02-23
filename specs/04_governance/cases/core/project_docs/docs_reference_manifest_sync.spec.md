@@ -29,7 +29,7 @@ contracts:
       source of truth.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -57,7 +57,7 @@ contracts:
             - lit: {}
           - docs.reference_manifest_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

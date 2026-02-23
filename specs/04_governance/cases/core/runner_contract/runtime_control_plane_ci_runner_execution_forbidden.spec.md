@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures this repository CI does not execute runtime lanes directly.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

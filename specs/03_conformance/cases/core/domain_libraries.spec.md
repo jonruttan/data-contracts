@@ -14,7 +14,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -171,13 +171,14 @@ contracts:
           - 'type: spec.export'
   - id: DCCONF-DOMAIN-LIB-002
     title: domain library index references all domain library files
-    purpose: Ensures domain index remains synchronized with all domain library spec files.
+    purpose: Ensures domain index remains synchronized with all domain library spec
+      files.
     expect:
       portable:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -343,34 +344,6 @@ contracts:
         - std.string.contains:
           - var: text
           - "/specs/05_libraries/domain/python_core.spec.md"
-artifacts:
-- id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/05_libraries/domain/http_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/domain/http_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.source.1
-  ref: "/specs/05_libraries/domain/index.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_1.1
-  ref: "/specs/05_libraries/domain/make_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_2.1
-  ref: "/specs/05_libraries/domain/markdown_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_3.1
-  ref: "/specs/05_libraries/domain/fs_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_4.1
-  ref: "/specs/05_libraries/domain/path_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_5.1
-  ref: "/specs/05_libraries/domain/python_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_6.1
-  ref: "/specs/05_libraries/domain/php_core.spec.md"
-  direction: input
 adapters:
 - type: io.fs
   defaults:
@@ -399,7 +372,7 @@ adapters:
         - domain.http.status_is_forbidden
         - domain.http.status_is_unauthorized
         artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+      source_asset_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
       use:
@@ -455,7 +428,7 @@ adapters:
         symbols:
         - php.is_assoc_projection
         artifact_id: art.svc.assert_check.text_file.2.use_6.1
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+      source_asset_id: art.svc.assert_check.text_file.2.source.1
 services:
 - id: svc.assert_check.text_file.1
   consumes:
@@ -463,6 +436,25 @@ services:
 - id: svc.assert_check.text_file.2
   consumes:
   - svc.assert_check.text_file.2
+assets:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/05_libraries/domain/http_core.spec.md"
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/domain/http_core.spec.md"
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/05_libraries/domain/index.md"
+- id: art.svc.assert_check.text_file.2.use_1.1
+  ref: "/specs/05_libraries/domain/make_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_2.1
+  ref: "/specs/05_libraries/domain/markdown_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_3.1
+  ref: "/specs/05_libraries/domain/fs_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_4.1
+  ref: "/specs/05_libraries/domain/path_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_5.1
+  ref: "/specs/05_libraries/domain/python_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_6.1
+  ref: "/specs/05_libraries/domain/php_core.spec.md"
 ```
 
 

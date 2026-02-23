@@ -36,7 +36,7 @@ contracts:
       checked-in baseline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -64,7 +64,7 @@ contracts:
             - lit: {}
           - runtime.compatibility_python_lane_dependency_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

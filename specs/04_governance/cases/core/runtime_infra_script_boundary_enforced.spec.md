@@ -23,7 +23,7 @@ contracts:
           check: runtime.infra_script_boundary_enforced
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

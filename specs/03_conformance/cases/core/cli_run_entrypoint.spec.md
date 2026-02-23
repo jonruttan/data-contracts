@@ -40,7 +40,7 @@ contracts:
         category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - stdout
       checks:

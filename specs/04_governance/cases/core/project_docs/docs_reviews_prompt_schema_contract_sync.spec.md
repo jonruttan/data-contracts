@@ -26,7 +26,7 @@ contracts:
       and include canonical output section tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

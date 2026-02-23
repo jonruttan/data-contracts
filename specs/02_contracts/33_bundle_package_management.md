@@ -19,11 +19,9 @@ Canonical bundle manifests and release assets are owned by:
 `data-contracts` defines contracts and schemas for bundle behavior but is not
 the canonical manifest source.
 
-Implementation-specific overlay bundle sources are owned in:
+Shared reusable library and overlay sources are owned in:
 
-- `https://github.com/jonruttan/dc-runner-rust-specs`
-- `https://github.com/jonruttan/dc-runner-python-specs`
-- `https://github.com/jonruttan/dc-runner-php-specs`
+- `https://github.com/jonruttan/data-contracts-library`
 
 ## Producer Responsibilities (`data-contracts-bundles`)
 
@@ -35,13 +33,31 @@ Implementation-specific overlay bundle sources are owned in:
   - resolved filesystem tree
   - `resolved_bundle_lock_v1.yaml`
   - `resolved_files.sha256`
+- Scaffold bundles MUST also contain:
+  - `scaffold/scaffold_manifest_v1.yaml`
+  - `scaffold/files/**`
+  - `scaffold/templates/**`
 - Ensure package checksums are reproducible from published bytes.
+- Store declaration provenance as digest metadata derived from canonical
+  `assets[]` / `artifacts[]` declarations in source specs.
+- For scaffold bundles, declaration provenance MUST include scaffold manifest and
+  all required materialization sources.
 
 ## Consumer Responsibilities (Projects and Runner Repositories)
 
 Projects MUST pin bundle installs in root `bundles.lock.yaml` using:
 
 - `/specs/01_schema/project_bundle_lock_v1.yaml`
+
+Project scaffold commands MUST support canonical bundle host resolution:
+
+- input: `bundle_id + bundle_version`
+- host: `jonruttan/data-contracts-bundles` release assets
+- tarball asset: `data-contract-bundle-{bundle_id}-v{bundle_version}.tar.gz`
+- checksum sidecar: same asset name with `.sha256` suffix
+
+External URL scaffold mode is optional and MUST be explicitly gated by a
+caller opt-in flag.
 
 Installers and runner wrappers MUST implement:
 
@@ -50,6 +66,14 @@ Installers and runner wrappers MUST implement:
   `resolved_bundle_lock_v1.yaml`.
 - `bundle-sync-check` / `install-check`: re-verify package checksums and
   materialized file manifest drift.
+- `project scaffold`:
+  - fetch tarball and `.sha256` sidecar in canonical mode
+  - verify sidecar checksum against fetched tarball bytes
+  - materialize root `bundles.lock.yaml`
+  - install and check bundle payload integrity (`resolved_bundle_lock_v1.yaml`,
+    `resolved_files.sha256`, and declaration digest verification)
+  - load and apply `scaffold/scaffold_manifest_v1.yaml` entries deterministically
+    to materialize project files
 
 Multiple bundle entries are supported and MUST be install-isolated.
 Install directory overlap is forbidden.
@@ -68,11 +92,17 @@ Install directory overlap is forbidden.
   `/specs/01_schema/implementation_bundle_build_lock_v1.yaml`
 - Project lock schema:
   `/specs/01_schema/project_bundle_lock_v1.yaml`
+- Scaffold manifest schema:
+  `/specs/01_schema/scaffold_manifest_v1.yaml`
 - Runner lock schema:
   `/specs/01_schema/runner_bundle_lock_v1.yaml`
 
 `runner_bundle_lock_v1` is unsupported and retained only for normalization
 compatibility.
+
+Bundle manifest/lock files are package metadata, not semantic authority for
+resource declarations. Canonical resource semantics are owned by
+`data-contracts` schema and executable specs.
 
 ## Bundle Governance Boundary
 
@@ -108,6 +138,10 @@ Failure messages MUST be direct and actionable:
 - checksum mismatch between package bytes and lock/checksum metadata
 - missing `resolved_bundle_lock_v1.yaml` in unpacked package
 - local materialization drift vs `resolved_files.sha256`
+- declaration/provenance digest mismatch between package metadata and resolved
+  source spec declarations
+- canonical release asset or checksum sidecar not found
+- external URL requested without explicit opt-in
 
 ## Compatibility
 

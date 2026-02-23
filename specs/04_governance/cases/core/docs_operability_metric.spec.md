@@ -14,7 +14,7 @@ contracts:
           check: governance.structured_assertions_required
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

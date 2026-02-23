@@ -8,7 +8,8 @@ contracts:
   clauses:
   - id: DCCONF-JOB-REP-001
     title: conformance purpose json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -18,7 +19,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -35,7 +36,8 @@ contracts:
           - ".artifacts/conformance-purpose.json"
   - id: DCCONF-JOB-REP-002
     title: conformance purpose markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -45,7 +47,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -62,7 +64,8 @@ contracts:
           - ".artifacts/conformance-purpose-summary.md"
   - id: DCCONF-JOB-REP-003
     title: spec portability json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -72,7 +75,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -89,7 +92,8 @@ contracts:
           - ".artifacts/spec-portability.json"
   - id: DCCONF-JOB-REP-004
     title: spec portability markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -99,7 +103,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -116,7 +120,8 @@ contracts:
           - ".artifacts/spec-portability-summary.md"
   - id: DCCONF-JOB-REP-005
     title: contract assertions json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -126,7 +131,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -143,7 +148,8 @@ contracts:
           - ".artifacts/contract-assertions.json"
   - id: DCCONF-JOB-REP-006
     title: contract assertions markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -153,7 +159,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -170,7 +176,8 @@ contracts:
           - ".artifacts/contract-assertions-summary.md"
   - id: DCCONF-JOB-REP-007
     title: spec lang adoption json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -180,7 +187,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -197,7 +204,8 @@ contracts:
           - ".artifacts/spec-lang-adoption.json"
   - id: DCCONF-JOB-REP-008
     title: spec lang adoption markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -207,7 +215,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -224,7 +232,8 @@ contracts:
           - ".artifacts/spec-lang-adoption-summary.md"
   - id: DCCONF-JOB-REP-009
     title: runner independence json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -234,7 +243,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -251,7 +260,8 @@ contracts:
           - ".artifacts/runner-independence.json"
   - id: DCCONF-JOB-REP-010
     title: runner independence markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -261,7 +271,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -278,7 +288,8 @@ contracts:
           - ".artifacts/runner-independence-summary.md"
   - id: DCCONF-JOB-REP-011
     title: python dependency json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -288,7 +299,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -305,7 +316,8 @@ contracts:
           - ".artifacts/python-dependency.json"
   - id: DCCONF-JOB-REP-012
     title: python dependency markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -315,7 +327,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -332,7 +344,8 @@ contracts:
           - ".artifacts/python-dependency-summary.md"
   - id: DCCONF-JOB-REP-013
     title: docs operability json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -342,7 +355,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -359,7 +372,8 @@ contracts:
           - ".artifacts/docs-operability.json"
   - id: DCCONF-JOB-REP-014
     title: docs operability markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -369,7 +383,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -386,7 +400,8 @@ contracts:
           - ".artifacts/docs-operability-summary.md"
   - id: DCCONF-JOB-REP-015
     title: objective scorecard json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -396,7 +411,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -413,7 +428,8 @@ contracts:
           - ".artifacts/objective-scorecard.json"
   - id: DCCONF-JOB-REP-016
     title: objective scorecard markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -423,7 +439,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -440,7 +456,8 @@ contracts:
           - ".artifacts/objective-scorecard-summary.md"
   - id: DCCONF-JOB-REP-017
     title: spec lang stdlib json report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -450,7 +467,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -467,7 +484,8 @@ contracts:
           - ".artifacts/spec-lang-stdlib.json"
   - id: DCCONF-JOB-REP-018
     title: spec lang stdlib markdown report
-    purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
+    purpose: Ensures report contract jobs dispatch and write the expected artifact
+      output path.
     when:
       fail:
       - ops.job.dispatch:
@@ -477,7 +495,7 @@ contracts:
         - on_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
@@ -492,61 +510,6 @@ contracts:
           - var: policy.job.written_path_contains
           - var: summary_json
           - ".artifacts/spec-lang-stdlib-summary.md"
-artifacts:
-- id: art.svc.assert_check.default.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.2.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.3.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.4.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.5.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.6.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.7.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.8.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.9.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.10.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.11.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.12.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.13.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.14.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.15.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.16.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.17.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
-- id: art.svc.assert_check.default.18.use_1.1
-  ref: "/specs/05_libraries/policy/policy_job.spec.md"
-  direction: input
 adapters:
 - type: io.system
   defaults:
@@ -1220,6 +1183,43 @@ services:
 - id: svc.assert_check.default.18
   consumes:
   - svc.assert_check.default.18
+assets:
+- id: art.svc.assert_check.default.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.2.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.3.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.4.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.5.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.6.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.7.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.8.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.9.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.10.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.11.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.12.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.13.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.14.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.15.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.16.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.17.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
+- id: art.svc.assert_check.default.18.use_1.1
+  ref: "/specs/05_libraries/policy/policy_job.spec.md"
 ```
 
 

@@ -27,7 +27,7 @@ contracts:
     purpose: Ensures example identifiers are unique across canonical docs metadata.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -55,7 +55,7 @@ contracts:
             - lit: {}
           - docs.example_id_uniqueness
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

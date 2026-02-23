@@ -23,7 +23,7 @@ contracts:
     purpose: Ensures CI publishes canonical status matrix artifacts.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

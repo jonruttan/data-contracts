@@ -8,13 +8,14 @@ contracts:
   clauses:
   - id: DCCONF-LIB-CONTRACT-001
     title: policy library uses producer harness exports
-    purpose: Ensures policy library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+    purpose: Ensures policy library authoring uses producer-owned root exports mode=function
+      with assert.function source mappings.
     expect:
       portable:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -35,13 +36,14 @@ contracts:
             - 'defines:'
   - id: DCCONF-LIB-CONTRACT-002
     title: path library uses producer harness exports
-    purpose: Ensures path library authoring uses producer-owned root exports mode=function with assert.function source mappings.
+    purpose: Ensures path library authoring uses producer-owned root exports mode=function
+      with assert.function source mappings.
     expect:
       portable:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -68,7 +70,7 @@ contracts:
         status: pass
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -80,25 +82,6 @@ contracts:
           - lit:
             - "/specs/05_libraries/policy/policy_core.spec.md"
             - "/specs/05_libraries/policy/policy_metrics.spec.md"
-artifacts:
-- id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/05_libraries/policy/policy_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.source.1
-  ref: "/specs/05_libraries/path/path_core.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.3.source.1
-  ref: "/specs/05_libraries/policy/index.md"
-  direction: input
-- id: art.svc.assert_check.text_file.3.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
 adapters:
 - type: io.fs
   defaults:
@@ -113,7 +96,7 @@ adapters:
         - policy.text.contains_all
         - policy.text.contains_none
         artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+      source_asset_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
       use:
@@ -122,7 +105,7 @@ adapters:
         - policy.text.contains_all
         - policy.text.contains_none
         artifact_id: art.svc.assert_check.text_file.2.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+      source_asset_id: art.svc.assert_check.text_file.2.source.1
   - id: svc.assert_check.text_file.3
     config:
       use:
@@ -130,7 +113,7 @@ adapters:
         symbols:
         - policy.text.contains_all
         artifact_id: art.svc.assert_check.text_file.3.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.3.source.1
+      source_asset_id: art.svc.assert_check.text_file.3.source.1
 services:
 - id: svc.assert_check.text_file.1
   consumes:
@@ -141,6 +124,19 @@ services:
 - id: svc.assert_check.text_file.3
   consumes:
   - svc.assert_check.text_file.3
+assets:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/05_libraries/policy/policy_core.spec.md"
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/05_libraries/path/path_core.spec.md"
+- id: art.svc.assert_check.text_file.2.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
+- id: art.svc.assert_check.text_file.3.source.1
+  ref: "/specs/05_libraries/policy/index.md"
+- id: art.svc.assert_check.text_file.3.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
 ```
 
 

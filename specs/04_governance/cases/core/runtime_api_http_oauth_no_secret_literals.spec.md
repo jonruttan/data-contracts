@@ -26,7 +26,7 @@ contracts:
       OAuth fields.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.api_http_oauth_no_secret_literals
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

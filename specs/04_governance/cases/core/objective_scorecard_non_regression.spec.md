@@ -44,7 +44,7 @@ contracts:
       and baseline-note integrity.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -72,7 +72,7 @@ contracts:
             - lit: {}
           - objective.scorecard_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

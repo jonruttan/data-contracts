@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures runner certification registry entries are complete and deterministic.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

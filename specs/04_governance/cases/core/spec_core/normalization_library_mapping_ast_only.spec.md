@@ -26,7 +26,7 @@ contracts:
       expression syntax only.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - normalization.library_mapping_ast_only
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:
