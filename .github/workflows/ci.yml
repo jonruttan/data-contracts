@@ -18,8 +18,13 @@ jobs:
       - name: Install runtime deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml jq curl ripgrep
+          sudo apt-get install -y php-cli php-yaml jq curl ripgrep rustc cargo
           php -m | grep -i '^yaml$'
+
+      - name: Install dc-runner
+        run: |
+          cargo install dc-runner-cli --locked
+          dc-runner --version
 
       - name: Emit governance catalog facts
         run: ./scripts/governance_catalog_validate.sh
