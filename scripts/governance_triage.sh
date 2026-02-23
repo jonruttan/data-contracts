@@ -6,9 +6,9 @@ cd "${ROOT_DIR}"
 
 mkdir -p .artifacts
 ./scripts/control_plane.sh governance "$@"
-DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full \
-  --out .artifacts/governance-triage.json \
-  --trace-out .artifacts/governance-triage-trace.json \
-  --summary-out .artifacts/governance-triage-summary.md
+dc-runner governance run
+cp -f .artifacts/governance-summary.json .artifacts/governance-triage.json
+cp -f .artifacts/governance-trace.json .artifacts/governance-triage-trace.json
+cp -f .artifacts/governance-summary.md .artifacts/governance-triage-summary.md
 
 echo "governance triage: pass"

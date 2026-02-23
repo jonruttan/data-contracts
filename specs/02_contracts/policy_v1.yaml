@@ -810,7 +810,7 @@ rules:
   applies_to: runtime.default_gate.adapter
   norm: MUST
   requirement: default_gate_scripts_set_public_runner_adapter_as_default_runner_bin
-  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/runner_bin.sh
+  description: 'Default gate scripts must set SPEC_RUNNER_BIN to dc-runner
     when not explicitly overridden.
 
     '
@@ -1192,7 +1192,7 @@ rules:
   risk_if_violated: Removing Python requires rewriting gate orchestration logic.
   references:
   - specs/02_contracts/12_runner_interface.md
-  - scripts/runner_bin.sh
+  - dc-runner
   - scripts/ci_gate.sh
   - scripts/ci_gate.sh
   - scripts/control_plane.sh
@@ -1231,7 +1231,7 @@ rules:
   applies_to: runtime.required_lane_primary.ci_lane
   norm: MUST
   requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
-  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./scripts/runner_bin.sh.
+  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=dc-runner.
 
     '
   rationale: Makes Rust-primary operation continuously verifiable in automation.
@@ -1421,7 +1421,7 @@ rules:
   applies_to: runtime.runner_interface.public_entrypoint
   norm: MUST
   requirement: gate_scripts_use_single_public_runner_entrypoint
-  description: 'Gate shell scripts must reference scripts/runner_bin.sh as the
+  description: 'Gate shell scripts must reference dc-runner as the
     single public runner entrypoint.
 
     '
@@ -1435,7 +1435,7 @@ rules:
   applies_to: runtime.runner_interface.default_mode
   norm: MUST
   requirement: public_runner_entrypoint_targets_rust_runner_binary
-  description: 'scripts/runner_bin.sh must resolve and execute the Rust runner
+  description: 'dc-runner must resolve and execute the Rust runner
     binary as the required lane.
 
     '
@@ -2279,7 +2279,7 @@ rules:
     checks.
   references:
   - scripts/normalize_repo.py
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
@@ -2328,7 +2328,7 @@ rules:
   risk_if_violated: Teams rely on manual ad-hoc rewrites and drift accumulates.
   references:
   - Makefile
-  - scripts/runner_bin.sh
+  - dc-runner
   - scripts/normalize_repo.py
   - specs/04_governance/cases/core/spec_core/normalization_spec_style_sync.spec.md
 - id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
@@ -2919,7 +2919,7 @@ rules:
   risk_if_violated: Divergent command paths produce inconsistent artifacts.
   references:
   - scripts/docs_generate_all.py
-  - scripts/runner_bin.sh
+  - dc-runner
   - specs/04_governance/cases/core/project_docs/docs_generator_outputs_sync.spec.md
 - id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
   introduced_in: v1

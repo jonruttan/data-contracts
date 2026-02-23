@@ -5,10 +5,9 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
 mkdir -p .artifacts
-DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance \
-  --profile full \
-  --out .artifacts/governance-boundary-validate.json \
-  --trace-out .artifacts/governance-boundary-trace.json \
-  --summary-out .artifacts/governance-boundary-summary.md
+dc-runner governance run
+cp -f .artifacts/governance-summary.json .artifacts/governance-boundary-validate.json
+cp -f .artifacts/governance-trace.json .artifacts/governance-boundary-trace.json
+cp -f .artifacts/governance-summary.md .artifacts/governance-boundary-summary.md
 
 echo "OK: repository boundary tokens validated"

@@ -24,16 +24,16 @@ Project-specific instructions for AI agents working in `data-contracts`.
 ## Local Commands
 
 - Required lane checks:
-  - `./scripts/runner_bin.sh critical-gate`
-  - `./scripts/runner_bin.sh governance`
-  - `./scripts/runner_bin.sh docs-generate-check`
+  - `dc-runner critical-gate`
+  - `dc-runner governance`
+  - `dc-runner docs-generate-check`
 
 ## Engineering Rules
 
 - Keep Data Contracts runner-agnostic and rust-first for required lane checks.
 - Do not add local `runners/rust`, `runners/python`, or `runners/php`
   implementation code back into this repo.
-- Keep command boundary stable at `scripts/runner_bin.sh`.
+- Keep command boundary stable at `dc-runner`.
 - Error messages should be direct and actionable (schema violations should
   explain what to change).
 - Test authoring policy:

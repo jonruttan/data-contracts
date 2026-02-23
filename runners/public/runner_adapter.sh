@@ -28,4 +28,4 @@ if [[ "${impl}" != "rust" ]]; then
   exit 2
 fi
 
-exec "${ROOT_DIR}/scripts/runner_bin.sh" "${forward[@]}"
+exec dc-runner "${forward[@]}"

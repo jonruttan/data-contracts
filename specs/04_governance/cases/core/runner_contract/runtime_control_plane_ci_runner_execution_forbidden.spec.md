@@ -13,7 +13,7 @@ harness:
       - /scripts/ci_gate.sh
       - /scripts/ci_gate.sh
       forbidden_tokens:
-      - scripts/runner_bin.sh
+      - dc-runner
     check:
       profile: governance.scan
       config:

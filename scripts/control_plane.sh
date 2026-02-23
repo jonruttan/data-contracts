@@ -11,7 +11,7 @@ ensure_artifacts_dir() {
 run_governance() {
   ensure_artifacts_dir
   ./scripts/governance_interface_validate.sh
-  DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance --profile full "$@"
+  dc-runner governance run "$@"
   ./scripts/governance_boundary_validate.sh
   ./scripts/governance_catalog_validate.sh
   ./scripts/spec_schema_pin_validate.sh
@@ -32,25 +32,25 @@ case "${cmd}" in
   governance-broad-native)
     ensure_artifacts_dir
     ./scripts/governance_interface_validate.sh
-    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh governance-broad-native "$@"
+    dc-runner governance broad "$@"
     ;;
   style-check)
     ensure_artifacts_dir
-    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh style-check "$@"
+    dc-runner quality style-check "$@"
     ;;
   docs-generate-check)
     ensure_artifacts_dir
-    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh docs-generate-check "$@"
+    dc-runner docs generate-check "$@"
     ./scripts/docs_audience_generate.sh --check
     ;;
   critical-gate)
     ensure_artifacts_dir
     ./scripts/governance_interface_validate.sh
-    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh critical-gate "$@"
+    dc-runner governance critical "$@"
     ;;
   ci-gate-summary)
     ensure_artifacts_dir
-    DC_RUNNER_RUST_NATIVE_ONLY=1 ./scripts/runner_bin.sh ci-gate-summary "$@"
+    dc-runner ci gate-summary "$@"
     ;;
   *)
     echo "unknown control-plane command: ${cmd}" >&2

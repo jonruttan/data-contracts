@@ -11,9 +11,9 @@ Read this to prepare your environment and run the first full validation cycle.
 
 ## Step-by-step
 
-1. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh governance`.
-2. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh critical-gate`.
-3. Run `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh docs-generate-check`.
+1. Run `/Users/jon/Workspace/Development/data-contracts/dc-runner governance`.
+2. Run `/Users/jon/Workspace/Development/data-contracts/dc-runner critical-gate`.
+3. Run `/Users/jon/Workspace/Development/data-contracts/dc-runner docs-generate-check`.
 4. Inspect `.artifacts` summaries for status.
 
 ## Common failure signals

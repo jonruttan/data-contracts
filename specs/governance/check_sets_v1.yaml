@@ -24,7 +24,7 @@ profiles:
         kind: file_tokens
         path: /.github/workflows/ci.yml
         must_not_contain:
-          - scripts/runner_bin.sh
+          - dc-runner
       - id: runtime.compatibility_status_freshness_within_slo
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
@@ -239,7 +239,7 @@ profiles:
         path: /specs/02_contracts/12_runner_interface.md
         must_not_contain:
           - scripts/runner_bin.sh
-          - scripts/control_plane.sh
+          - DC_RUNNER_RUST_NATIVE_ONLY
       - id: runtime.artifact_contract_compatibility_preserved
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
@@ -253,7 +253,7 @@ profiles:
           - dc-runner governance
           - dc-runner critical-gate
         must_not_contain:
-          - ./scripts/runner_bin.sh
+          - scripts/runner_bin.sh
       - id: docs.audience_surfaces_generated
         kind: file_tokens
         path: /docs/audience/implementer/reference_manifest.yaml
@@ -301,8 +301,8 @@ profiles:
         kind: file_tokens
         path: /specs/02_contracts/12_runner_interface.md
         must_not_contain:
+          - scripts/runner_status_ingest.sh --enforce-freshness
           - scripts/runner_bin.sh
-          - wrapper-only command boundaries
       - id: entrypoint.registry.schema_valid
         kind: file_tokens
         path: /specs/01_schema/runner_command_entrypoints_v1.yaml

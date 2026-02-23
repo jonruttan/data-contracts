@@ -1142,7 +1142,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - scripts/ci_gate.sh
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
@@ -1800,7 +1800,7 @@ links:
   implementation_refs:
   - scripts/objective_scorecard_report.py
   - dc-runner-python
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   - specs/04_governance/cases/core/objective_scorecard_metric.spec.md
   notes: Objective scorecard is generated as JSON/Markdown artifacts.
@@ -1948,7 +1948,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/normalize_repo.py
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   - Makefile
   notes: Normalize check is included in smoke/full gate command paths.
@@ -1997,7 +1997,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/normalize_repo.py
-  - scripts/runner_bin.sh
+  - dc-runner
   - Makefile
   - specs/04_governance/cases/core/spec_core/normalization_spec_style_sync.spec.md
   notes: Explicit normalize-fix path is available for local authoring.
@@ -2306,7 +2306,7 @@ links:
   - scripts/ci_gate.sh
   - scripts/control_plane.sh
   - dc-runner-python
-  notes: Gate scripts must reference scripts/runner_bin.sh as the single public
+  notes: Gate scripts must reference dc-runner as the single public
     runner entrypoint.
 - rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
@@ -2319,7 +2319,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   - specs/04_governance/cases/core/runner_contract/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
@@ -2333,7 +2333,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   - specs/04_governance/cases/core/runner_contract/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Runtime runner adapter rejects python impl selection with normalization guidance.
@@ -2607,7 +2607,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/docs_generate_all.py
-  - scripts/runner_bin.sh
+  - dc-runner
   - dc-runner-python
   - dc-runner-rust
   notes: Ensures a single docs generation orchestrator command path.
