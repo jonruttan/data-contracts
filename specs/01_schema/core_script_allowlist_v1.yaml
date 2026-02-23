@@ -1,3 +1,2 @@
 version: 1
-core_scripts:
-  - /scripts/docs_audience_generate.py
+core_scripts: []

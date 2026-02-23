@@ -115,7 +115,8 @@ profiles:
         kind: file_tokens
         path: /specs/01_schema/core_script_allowlist_v1.yaml
         must_contain:
-          - /scripts/docs_audience_generate.py
+          - version: 1
+          - core_scripts: []
       - id: runtime.retired_scripts_root_absent
         kind: file_tokens
         path: /specs/01_schema/core_script_allowlist_v1.yaml
@@ -261,9 +262,10 @@ profiles:
           - audience: implementer
       - id: docs.audience_surfaces_synced
         kind: file_tokens
-        path: /scripts/docs_audience_generate.py
+        path: /docs/audience/governance/reference_manifest.yaml
         must_contain:
-          - Generate audience docs surfaces
+          - version: 1
+          - audience: governance
       - id: docs.audience_canonical_tokens_only
         kind: file_tokens
         path: /specs/00_core/docs_audience_migration_map.md

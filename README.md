@@ -83,4 +83,4 @@ This repository does not execute runtime lanes.
 
 ## Core Script Allowlist
 
-- `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.py`
+- No canonical script entrypoints.

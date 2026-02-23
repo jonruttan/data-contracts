@@ -8,7 +8,6 @@ governance:
 
 docs-check:
 	@dc-runner docs generate-check
-	@python3 ./scripts/docs_audience_generate.py --check
 
 ingest:
 	@dc-runner governance run
@@ -24,7 +23,6 @@ ci-gate:
 check:
 	@dc-runner governance run
 	@dc-runner docs generate-check
-	@python3 ./scripts/docs_audience_generate.py --check
 	@mkdir -p .artifacts
 	@cp -f .artifacts/governance-summary.json .artifacts/runner-status-matrix.json
 	@cp -f .artifacts/governance-summary.md .artifacts/runner-status-matrix.md

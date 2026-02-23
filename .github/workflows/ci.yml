@@ -113,7 +113,6 @@ jobs:
       - name: Run docs checks
         run: |
           dc-runner docs generate-check
-          python3 ./scripts/docs_audience_generate.py --check
 
       - name: Emit project-docs pack artifact
         run: |
