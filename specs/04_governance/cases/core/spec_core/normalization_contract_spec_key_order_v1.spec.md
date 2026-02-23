@@ -42,7 +42,7 @@ contracts:
           - var: text
           - list item order is preserved as-authored
 adapters:
-- type: beta.check_profile_text_file_config_path_specs_schema_schema_v2_md
+- type: beta.check_profile_text_file_config_path_specs_schema_schema_v1_md
   actions:
   - id: act.gov.normalization.contract.s.1
     direction: bidirectional

@@ -16,7 +16,7 @@ harness:
     check:
       profile: governance.scan
       config:
-        check: schema.catalog_contains_active_schema_v2
+        check: schema.catalog_contains_active_schema_v1
 contracts:
   clauses:
   - id: DCGOV-SCHEMA-PIN-005

@@ -24,7 +24,7 @@ rules:
   DCGOV-SCHEMA-PIN-002: schema.spec_case_schema_ref_present
   DCGOV-SCHEMA-PIN-003: schema.spec_case_schema_ref_known
   DCGOV-SCHEMA-PIN-004: schema.spec_case_version_matches_schema_ref
-  DCGOV-SCHEMA-PIN-005: schema.catalog_contains_active_schema_v2
+  DCGOV-SCHEMA-PIN-005: schema.catalog_contains_active_schema_v1
   DCGOV-POLICY-SRC-001: governance.policy_source_spec_lang_required
   DCGOV-RUNTIME-SHELL-001: runtime.shell_policy_branches_forbidden
   DCGOV-RUNTIME-SHELL-002: runtime.artifact_contract_compatibility_preserved

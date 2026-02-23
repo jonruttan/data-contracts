@@ -219,7 +219,7 @@ profiles:
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
           - --check-id schema.spec_case_version_matches_schema_ref
-      - id: schema.catalog_contains_active_schema_v2
+      - id: schema.catalog_contains_active_schema_v1
         kind: file_tokens
         path: /specs/01_schema/schema_catalog_v1.yaml
         must_contain:
@@ -566,7 +566,7 @@ profiles:
         kind: report_only
       - id: normalization.docs_token_sync
         kind: report_only
-      - id: normalization.contract_spec_key_order_v2
+      - id: normalization.contract_spec_key_order_v1
         kind: report_only
       - id: normalization.library_mapping_ast_only
         kind: report_only

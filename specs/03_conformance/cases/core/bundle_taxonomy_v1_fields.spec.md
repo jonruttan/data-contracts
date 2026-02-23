@@ -8,7 +8,7 @@ contracts:
   clauses:
   - id: DCCONF-BUNDLE-001
     title: v1 schema docs forbid bundle suite metadata in contract-spec shape
-    purpose: Ensures schema_v2 does not define top-level bundle metadata on executable suites.
+    purpose: Ensures schema_v1 does not define top-level bundle metadata on executable suites.
     expect:
       portable:
         status: pass
