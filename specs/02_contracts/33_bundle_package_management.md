@@ -36,6 +36,8 @@ Implementation-specific overlay bundle sources are owned in:
   - `resolved_bundle_lock_v1.yaml`
   - `resolved_files.sha256`
 - Ensure package checksums are reproducible from published bytes.
+- Store declaration provenance as digest metadata derived from canonical
+  `assets[]` / `artifacts[]` declarations in source specs.
 
 ## Consumer Responsibilities (Projects and Runner Repositories)
 
@@ -74,6 +76,10 @@ Install directory overlap is forbidden.
 `runner_bundle_lock_v1` is unsupported and retained only for normalization
 compatibility.
 
+Bundle manifest/lock files are package metadata, not semantic authority for
+resource declarations. Canonical resource semantics are owned by
+`data-contracts` schema and executable specs.
+
 ## Bundle Governance Boundary
 
 - Bundle/package governance is a package-contract concern and not part of the
@@ -108,6 +114,8 @@ Failure messages MUST be direct and actionable:
 - checksum mismatch between package bytes and lock/checksum metadata
 - missing `resolved_bundle_lock_v1.yaml` in unpacked package
 - local materialization drift vs `resolved_files.sha256`
+- declaration/provenance digest mismatch between package metadata and resolved
+  source spec declarations
 
 ## Compatibility
 

@@ -26,7 +26,7 @@ contracts:
       under the type-contract index.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - conformance.type_contract_docs
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

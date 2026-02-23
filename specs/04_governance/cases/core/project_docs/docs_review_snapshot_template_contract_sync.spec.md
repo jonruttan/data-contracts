@@ -26,7 +26,7 @@ contracts:
       table headers, and candidate schema scaffolding.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -37,7 +37,7 @@ contracts:
       and hyphens for section separators.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -65,7 +65,7 @@ contracts:
             - lit: {}
           - naming.filename_policy
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

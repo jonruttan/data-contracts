@@ -23,7 +23,7 @@ contracts:
     purpose: Keeps README focused on project purpose and usage, not local make workflows.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -26,7 +26,7 @@ contracts:
       cases instead of raw std.object.get projection chains.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

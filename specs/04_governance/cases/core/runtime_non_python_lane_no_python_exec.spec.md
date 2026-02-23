@@ -27,7 +27,7 @@ contracts:
       contain python execution tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -55,7 +55,7 @@ contracts:
             - lit: {}
           - runtime.non_python_lane_no_python_exec
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

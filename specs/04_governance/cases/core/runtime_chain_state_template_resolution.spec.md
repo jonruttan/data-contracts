@@ -26,7 +26,7 @@ contracts:
       on unresolved references.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

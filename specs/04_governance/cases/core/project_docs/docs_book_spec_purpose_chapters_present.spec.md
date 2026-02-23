@@ -24,7 +24,7 @@ contracts:
     purpose: Ensures the core spec-purpose chapters are present in the reference manifest.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

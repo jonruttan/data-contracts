@@ -16,7 +16,7 @@ contracts:
     purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

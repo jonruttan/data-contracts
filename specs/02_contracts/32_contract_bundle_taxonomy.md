@@ -17,7 +17,8 @@ Hierarchy rules:
 
 ## Bundle Terms
 
-- `Artifact`: output boundary declared or validated by bundle modules (file, directory, report, manifest, lock).
+- `Asset`: consumed static resource declared by `contract-spec` (`assets[]`).
+- `Artifact`: produced output resource declared by `contract-spec` (`artifacts[]`).
 - `Bundle Package`: downloadable immutable materialization of a bundle version.
 - `Bundle Manifest`: machine-readable descriptor of bundle structure and metadata.
 - `Bundle Lock`: resolved immutable record that captures selected content and integrity hashes.
@@ -42,3 +43,5 @@ Use canonical bundle terminology in all active surfaces:
 - `bundle_version` for bundle version metadata.
 - `maintainers` for ownership metadata.
 - avoid ambiguous bare `version` in bundle metadata contexts.
+- treat `assets[]` / `artifacts[]` semantics as canonical contract authority in
+  `data-contracts`; bundle manifests are derived package metadata.

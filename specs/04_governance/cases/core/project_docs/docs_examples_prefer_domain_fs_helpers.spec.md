@@ -31,7 +31,7 @@ contracts:
       authoring model for filesystem/json/glob/path flows.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

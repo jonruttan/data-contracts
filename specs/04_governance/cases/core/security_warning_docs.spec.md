@@ -26,7 +26,7 @@ contracts:
       untrusted specs are unsafe.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.security_warning_contract
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

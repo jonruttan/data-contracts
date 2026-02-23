@@ -26,7 +26,7 @@ contracts:
       load symbols through harness.chain.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

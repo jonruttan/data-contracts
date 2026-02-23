@@ -17,7 +17,7 @@ contracts:
     purpose: Enforces when shape and hook expression list requirements.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

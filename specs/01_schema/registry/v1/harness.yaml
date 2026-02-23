@@ -81,7 +81,7 @@ fields:
     required: false
     since: v1
     description: Default adapter runtime configuration. External locators must be
-      routed through artifact ids (`*_artifact_id`/`*_artifact_ids`);
+      routed through asset ids (`*_asset_id`/`*_asset_ids`);
       direct locator keys are invalid.
   adapters[].actions:
     type: list

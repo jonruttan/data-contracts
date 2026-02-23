@@ -21,7 +21,7 @@ contracts:
           check: runtime.chain_entry_cases_present
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

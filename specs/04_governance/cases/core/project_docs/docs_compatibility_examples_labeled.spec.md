@@ -37,7 +37,7 @@ contracts:
       examples as non-blocking compatibility lanes.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

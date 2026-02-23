@@ -17,7 +17,7 @@ contracts:
       not local specs/bundles manifests.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

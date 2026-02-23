@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures active contracts remain implementation-agnostic.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

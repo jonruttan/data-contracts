@@ -16,7 +16,7 @@ contracts:
     purpose: Enforces hard-cut fence rename to contract-spec across specs cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -17,7 +17,7 @@ contracts:
     purpose: Ensures consumer bindings continue to use harness.chain.imports semantics.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -26,7 +26,7 @@ contracts:
       targets remain deterministic and reviewable.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

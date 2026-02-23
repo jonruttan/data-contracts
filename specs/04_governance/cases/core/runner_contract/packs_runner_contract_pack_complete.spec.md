@@ -33,7 +33,7 @@ contracts:
           check: packs.runner_contract_pack_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

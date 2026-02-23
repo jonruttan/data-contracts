@@ -31,7 +31,7 @@ contracts:
       call exported library symbols.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -59,7 +59,7 @@ contracts:
             - lit: {}
           - governance.policy_library_usage_required
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

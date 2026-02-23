@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures each spec_lang.export case defines exactly one symbol under defines.public.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -97,11 +97,6 @@ contracts:
       - id: assert_1
         assert:
           lit: true
-artifacts:
-- id: out_json
-  ref: artifact://implicit_ids/out_json
-  type: application/json
-  direction: output
 adapters:
 - type: io.system
   defaults:
@@ -123,4 +118,8 @@ services:
     pipe_identity:
       adapter_action: svc.default.4
       adapter_import: pipe_identity
+artifacts:
+- id: out_json
+  ref: artifact://implicit_ids/out_json
+  type: application/json
 ```

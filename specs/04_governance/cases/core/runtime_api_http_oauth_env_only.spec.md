@@ -26,7 +26,7 @@ contracts:
       forbid inline credential literals.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.api_http_oauth_env_only
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -20,13 +20,13 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - When `adapters` is present, it MUST define non-empty `adapters[]`.
 - `adapters[].type` MUST resolve to an entry in `/specs/01_schema/service_contract_catalog_v1.yaml`; unknown service types are hard-fail schema errors.
 - `adapters[].actions[].profile` (effective via defaults+entry merge) MUST be valid for the resolved `adapters[].type`.
-- `adapters[].actions[].direction` (effective via defaults+entry merge) and `artifacts[].direction` MUST use `input|output|bidirectional`.
+- `adapters[].actions[].direction` (effective via defaults+entry merge) MUST use `input|output|bidirectional`.
 - `adapters[].actions[].imports` (effective via defaults+entry merge) MUST support
   canonical list[mapping] rows (`names`, optional `as`) and compact list[string]
   aliases with deterministic normalization.
 - Effective declared adapter import names MUST be unique per adapter action and MUST exist in catalog `available_imports_by_profile` for resolved `type/profile`.
 - `adapters[].defaults.config` and `adapters[].actions[].config` MUST NOT include direct locator keys (`path`, `url`, `token_url`, `template_path`, `output_path`, `ref`).
-- Any external locator consumed by service config MUST be declared in `artifacts[]` and referenced by `*_artifact_id` (or `*_artifact_ids[]`) fields that resolve to `artifacts[].id`.
+- Any external locator consumed by service config MUST be declared in `assets[]` and referenced by `*_asset_id` (or `*_asset_ids[]`) fields that resolve to `assets[].id`.
 - `contracts.clauses[].bindings` uses mapping form only: `contracts.clauses[].bindings.defaults` + `contracts.clauses[].bindings.rows[]`.
 - Effective binding row = shallow merge(defaults, row), with row values overriding defaults.
 - Effective binding rows MUST include `id`, `service`, and `import`.
@@ -34,14 +34,14 @@ The schema registry under `specs/01_schema/registry/v1/` is the machine source o
 - Binding I/O surfaces (`contracts.clauses[].bindings.rows[].inputs/outputs`) MUST
   support canonical mapping rows and compact list[string] aliases with deterministic
   normalization.
-- `contracts.clauses[].bindings.rows[].inputs[].from` MUST resolve to `artifacts[].id` where `direction` is `input` or `bidirectional`.
-- `contracts.clauses[].bindings.rows[].outputs[].to` MUST resolve to `artifacts[].id` where `direction` is `output` or `bidirectional`.
+- `contracts.clauses[].bindings.rows[].inputs[].from` MUST resolve to `assets[].id`.
+- `contracts.clauses[].bindings.rows[].outputs[].to` MUST resolve to `artifacts[].id`.
 - `contracts.clauses[].asserts.imports` and `contracts.clauses[].asserts.checks[].imports`
   MUST support canonical rows (`{from, names, service?, as?}`) and supported compact
   aliases with deterministic normalization.
-- `from: artifact` imported names MUST resolve to suite-declared artifact ids and MUST NOT rely on implicit runtime target injection.
+- `from: asset` imported names MUST resolve to suite-declared asset ids and MUST NOT rely on implicit runtime target injection. `from: artifact` imported names MUST resolve to suite-declared artifact ids.
 - If any `contracts.clauses[].bindings.rows[]` or any `from: service` assertion import is present, both `services` and `adapters` MUST be declared and valid.
-- Suite artifact references MUST be declared only under `artifacts[]`.
+- Suite consumed references MUST be declared under `assets[]`; produced references MUST be declared under `artifacts[]`.
 - Root `exports[]` MUST be function-only declarations using `as` + `from: assert.function` + `path`.
 - Documentation metadata surfaces MUST use `docs[]` entry arrays with required `summary|audience|status`.
 - `docs[].id` and `docs[].owners[].id` are optional metadata keys.

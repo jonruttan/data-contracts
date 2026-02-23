@@ -29,7 +29,7 @@ contracts:
       and keeps overall contract coverage above a minimum baseline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -57,7 +57,7 @@ contracts:
             - lit: {}
           - contract.coverage_threshold
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

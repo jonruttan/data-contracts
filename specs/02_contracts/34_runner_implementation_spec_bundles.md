@@ -55,6 +55,8 @@ Implementation bundle build flow MUST:
 6. Emit:
    - `resolved_bundle_lock_v1.yaml`
    - `implementation_bundle_build_lock_v1.yaml`
+7. Emit declaration provenance digest derived from resolved canonical
+   `assets[]` / `artifacts[]` declarations referenced by bundled specs.
 
 Build lock schema:
 
@@ -92,3 +94,4 @@ Failure messages MUST be direct and actionable for:
 - base package checksum mismatch
 - missing `resolved_bundle_lock_v1.yaml` in packaged output
 - missing or mismatched `resolved_files.sha256`
+- declaration/provenance digest mismatch during package verify/unbundle

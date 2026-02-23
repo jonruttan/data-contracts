@@ -28,7 +28,7 @@ contracts:
       do not include common secret-like tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

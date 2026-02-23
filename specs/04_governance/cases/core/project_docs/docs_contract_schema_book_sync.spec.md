@@ -36,7 +36,7 @@ contracts:
       and normative specification documents.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -64,7 +64,7 @@ contracts:
             - lit: {}
           - docs.contract_schema_book_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

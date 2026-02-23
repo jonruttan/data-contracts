@@ -21,7 +21,7 @@ contracts:
           check: packs.spec_core_pack_complete
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

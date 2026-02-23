@@ -26,7 +26,7 @@ contracts:
       modes/examples per command.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

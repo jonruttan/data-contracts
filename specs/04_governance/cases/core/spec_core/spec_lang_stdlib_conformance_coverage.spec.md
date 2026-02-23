@@ -29,7 +29,7 @@ contracts:
     purpose: Ensures canonical stdlib conformance fixtures are present and discoverable.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -26,7 +26,7 @@ contracts:
       without canonical-spec wording or compatibility rewrites.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - docs.current_spec_only_contract
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

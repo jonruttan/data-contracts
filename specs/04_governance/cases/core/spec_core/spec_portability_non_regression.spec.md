@@ -68,7 +68,7 @@ contracts:
       metrics cannot decrease from baseline.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -96,7 +96,7 @@ contracts:
             - lit: {}
           - spec.portability_non_regression
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

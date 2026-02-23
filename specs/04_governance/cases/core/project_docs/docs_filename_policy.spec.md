@@ -25,7 +25,7 @@ contracts:
     purpose: Enforces lowercase, underscore, and hyphen filename policy across docs.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

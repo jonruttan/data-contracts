@@ -23,7 +23,7 @@ contracts:
           check: runtime.non_core_scripts_not_in_active_policy_traceability
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

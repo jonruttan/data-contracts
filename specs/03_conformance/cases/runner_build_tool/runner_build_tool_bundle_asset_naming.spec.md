@@ -17,7 +17,7 @@ contracts:
       prefix and version token format.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

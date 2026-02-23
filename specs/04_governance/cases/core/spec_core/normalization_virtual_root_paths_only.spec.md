@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

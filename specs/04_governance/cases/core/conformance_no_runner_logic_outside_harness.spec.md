@@ -26,7 +26,7 @@ contracts:
       at top level.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - conformance.no_runner_logic_outside_harness
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

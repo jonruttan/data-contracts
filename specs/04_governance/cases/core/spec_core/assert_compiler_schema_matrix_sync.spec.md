@@ -26,7 +26,7 @@ contracts:
       wording stay synchronized for universal evaluate core semantics.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - assert.compiler_schema_matrix_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

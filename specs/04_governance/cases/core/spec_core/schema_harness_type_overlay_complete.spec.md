@@ -26,7 +26,7 @@ contracts:
       for machine validation and drift prevention.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

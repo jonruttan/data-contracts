@@ -36,7 +36,7 @@ contracts:
     purpose: Ensures local prepush parity flow contains no python parity lane hooks.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

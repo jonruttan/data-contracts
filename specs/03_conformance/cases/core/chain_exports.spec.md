@@ -8,7 +8,8 @@ contracts:
   clauses:
   - id: DCCONF-CHAIN-EXPORT-002
     title: producer export path must resolve to producer assert step id
-    purpose: Ensures from=assert.function exports fail with schema category when export path does not resolve to a producer assert step.
+    purpose: Ensures from=assert.function exports fail with schema category when export
+      path does not resolve to a producer assert step.
     expect:
       portable:
         status: fail
@@ -17,26 +18,14 @@ contracts:
       steps: []
   - id: DCCONF-CHAIN-EXPORT-003
     title: producer export source assert step must use class must
-    purpose: Ensures from=assert.function exports fail with schema category when source step class is not must.
+    purpose: Ensures from=assert.function exports fail with schema category when source
+      step class is not must.
     expect:
       portable:
         status: fail
         category: schema
     asserts:
       steps: []
-artifacts:
-- id: art.svc.assert_check.text_file.1.source.1
-  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH"
-  direction: input
-- id: art.svc.assert_check.text_file.2.source.1
-  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md"
-  direction: input
-- id: art.svc.assert_check.text_file.2.use_1.1
-  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS"
-  direction: input
 adapters:
 - type: io.fs
   defaults:
@@ -50,7 +39,7 @@ adapters:
         symbols:
         - bad.path.symbol
         artifact_id: art.svc.assert_check.text_file.1.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.1.source.1
+      source_asset_id: art.svc.assert_check.text_file.1.source.1
   - id: svc.assert_check.text_file.2
     config:
       use:
@@ -58,7 +47,7 @@ adapters:
         symbols:
         - bad.class.symbol
         artifact_id: art.svc.assert_check.text_file.2.use_1.1
-      source_artifact_id: art.svc.assert_check.text_file.2.source.1
+      source_asset_id: art.svc.assert_check.text_file.2.source.1
 services:
 - id: svc.assert_check.text_file.1
   consumes:
@@ -66,6 +55,15 @@ services:
 - id: svc.assert_check.text_file.2
   consumes:
   - svc.assert_check.text_file.2
+assets:
+- id: art.svc.assert_check.text_file.1.source.1
+  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md"
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH"
+- id: art.svc.assert_check.text_file.2.source.1
+  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md"
+- id: art.svc.assert_check.text_file.2.use_1.1
+  ref: "/specs/05_libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS"
 ```
 
 

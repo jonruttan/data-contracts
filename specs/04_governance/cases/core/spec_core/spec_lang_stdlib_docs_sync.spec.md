@@ -26,7 +26,7 @@ contracts:
     purpose: Ensures core docs reference the canonical stdlib profile artifacts.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

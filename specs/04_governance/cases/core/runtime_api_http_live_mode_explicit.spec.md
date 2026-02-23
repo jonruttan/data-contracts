@@ -26,7 +26,7 @@ contracts:
       is explicitly live.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.api_http_live_mode_explicit
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

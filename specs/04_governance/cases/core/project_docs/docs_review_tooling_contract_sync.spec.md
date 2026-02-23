@@ -26,7 +26,7 @@ contracts:
       review snapshot schema fields.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

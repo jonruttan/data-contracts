@@ -19,7 +19,7 @@ contracts:
           check: governance.policy_source_spec_lang_required
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

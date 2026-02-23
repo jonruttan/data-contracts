@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures direct and indirect harness.chain dependency cycles are rejected.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

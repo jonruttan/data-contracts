@@ -31,7 +31,7 @@ contracts:
       instead of relying on PASS text markers as primary contract truth.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -59,7 +59,7 @@ contracts:
             - lit: {}
           - governance.structured_assertions_required
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

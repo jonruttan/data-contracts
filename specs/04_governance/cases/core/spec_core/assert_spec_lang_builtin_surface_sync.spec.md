@@ -72,7 +72,7 @@ contracts:
       in both Python and PHP runner evaluators.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -100,7 +100,7 @@ contracts:
             - lit: {}
           - assert.spec_lang_builtin_surface_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

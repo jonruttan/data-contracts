@@ -125,30 +125,31 @@ service_locator_contract_v2:
   - output_path
   - ref
   locator_reference_rule: service config external locators must route through
-    artifacts ids using `*_artifact_id` fields.
+    asset ids using `*_asset_id` fields for consumed resources and artifact ids for produced outputs.
   profile_locator_fields:
     read.text:
-    - adapters[].defaults.config.source_artifact_id
-    - adapters[].actions[].config.source_artifact_id
+    - adapters[].defaults.config.source_asset_id
+    - adapters[].actions[].config.source_asset_id
     request.http:
-    - adapters[].defaults.config.request.artifact_id
-    - adapters[].actions[].config.request.artifact_id
-    - adapters[].defaults.config.requests[].artifact_id
-    - adapters[].actions[].config.requests[].artifact_id
-    - adapters[].defaults.config.api_http.auth.oauth.token_artifact_id
-    - adapters[].actions[].config.api_http.auth.oauth.token_artifact_id
-    - adapters[].defaults.config.use[].artifact_id
-    - adapters[].actions[].config.use[].artifact_id
+    - adapters[].defaults.config.request.asset_id
+    - adapters[].actions[].config.request.asset_id
+    - adapters[].defaults.config.requests[].asset_id
+    - adapters[].actions[].config.requests[].asset_id
+    - adapters[].defaults.config.api_http.auth.oauth.token_asset_id
+    - adapters[].actions[].config.api_http.auth.oauth.token_asset_id
+    - adapters[].defaults.config.use[].asset_id
+    - adapters[].actions[].config.use[].asset_id
     generate.docs:
-    - adapters[].defaults.config.docs_generate.template_artifact_id
-    - adapters[].actions[].config.docs_generate.template_artifact_id
+    - adapters[].defaults.config.docs_generate.template_asset_id
+    - adapters[].actions[].config.docs_generate.template_asset_id
     - adapters[].defaults.config.docs_generate.output_artifact_id
     - adapters[].actions[].config.docs_generate.output_artifact_id
-    - adapters[].defaults.config.docs_generate.data_sources[].artifact_id
-    - adapters[].actions[].config.docs_generate.data_sources[].artifact_id
+    - adapters[].defaults.config.docs_generate.data_sources[].asset_id
+    - adapters[].actions[].config.docs_generate.data_sources[].asset_id
   artifact_resolution:
-  - every *_artifact_id resolves to artifacts[].id (direction=input|bidirectional)
-  - every *_artifact_ids[] entry resolves to artifacts[].id (direction=input|bidirectional)
+  - every consumed *_asset_id resolves to assets[].id
+  - every consumed *_asset_ids[] entry resolves to assets[].id
+  - every produced *_artifact_id resolves to artifacts[].id
 import_declaration_shape_v2:
   adapters[].defaults.imports: list[mapping]
   adapters[].defaults.imports[].names: list[string]

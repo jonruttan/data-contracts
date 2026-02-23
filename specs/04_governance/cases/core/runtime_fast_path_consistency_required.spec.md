@@ -56,7 +56,7 @@ contracts:
       ci gate, and managed pre-push hook.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

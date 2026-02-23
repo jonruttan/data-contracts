@@ -26,7 +26,7 @@ contracts:
       snapshots with valid section order and candidate schema.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

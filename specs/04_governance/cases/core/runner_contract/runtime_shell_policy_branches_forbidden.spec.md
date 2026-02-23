@@ -20,7 +20,7 @@ contracts:
           check: runtime.shell_policy_branches_forbidden
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

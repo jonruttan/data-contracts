@@ -26,7 +26,7 @@ contracts:
       imports outside settings module.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - runtime.settings_import_policy
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -17,7 +17,7 @@ contracts:
       and source checksums.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

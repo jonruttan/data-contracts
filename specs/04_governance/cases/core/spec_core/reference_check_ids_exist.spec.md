@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures governance cases only reference registered check ids.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

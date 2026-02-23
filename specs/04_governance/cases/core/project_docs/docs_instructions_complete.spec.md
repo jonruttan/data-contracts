@@ -28,7 +28,7 @@ contracts:
       content.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -56,7 +56,7 @@ contracts:
             - lit: {}
           - docs.instructions_complete
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

@@ -8,10 +8,11 @@ contracts:
   clauses:
   - id: DCCONF-RCERT-001
     title: runner execution certificate v1 schema is declared
-    purpose: Ensures the v1 runner execution certificate schema is present with core sections.
+    purpose: Ensures the v1 runner execution certificate schema is present with core
+      sections.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -32,7 +33,7 @@ contracts:
     purpose: Ensures v1 schema defines deterministic intent and payload proof fields.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -53,10 +54,6 @@ contracts:
           - var: text
           - proof
           - payload_sha256
-artifacts:
-- id: art.svc.assert_check.text_file.1.use_1.1
-  ref: "/specs/05_libraries/policy/policy_text.spec.md"
-  direction: input
 adapters:
 - type: io.fs
   actions:
@@ -73,5 +70,8 @@ services:
 - id: svc.assert_check.text_file.1
   consumes:
   - svc.assert_check.text_file.1
+assets:
+- id: art.svc.assert_check.text_file.1.use_1.1
+  ref: "/specs/05_libraries/policy/policy_text.spec.md"
 ```
 

@@ -26,7 +26,7 @@ contracts:
       domain subdirectories with index files.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

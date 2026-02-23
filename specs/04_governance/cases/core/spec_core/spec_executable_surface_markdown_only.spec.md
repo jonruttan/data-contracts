@@ -26,7 +26,7 @@ contracts:
       and do not use runnable yaml/json case files.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

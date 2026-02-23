@@ -1,15 +1,14 @@
 version: 1
 title: Data Contracts Portable Contract Policy
 rules:
-- id: SERVICE_BINDINGS_ARTIFACT_ID_IO_ONLY
+- id: SERVICE_BINDINGS_RESOURCE_ID_IO_ONLY
   introduced_in: v1
   scope: case
   applies_to: contracts.clauses[].bindings.imports
   norm: MUST
-  requirement: service_binding_runtime_payloads_use_declared_artifact_ids
+  requirement: service_binding_runtime_payloads_use_declared_resource_ids
   description: 'Service-to-contract bindings must source runtime inputs from
-    `artifacts[].id` with direction `input|bidirectional` and sink outputs to
-    `artifacts[].id` with direction `output|bidirectional`.
+    `assets[].id` and sink outputs to `artifacts[].id`.
 
     '
   rationale: Keeps service I/O and import binding explicit, portable, and traceable.
@@ -18,14 +17,16 @@ rules:
   - specs/02_contracts/03_assertions.md
   - specs/02_contracts/04_harness.md
   - specs/01_schema/schema_v1.md
-- id: ARTIFACT_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
+- id: RESOURCE_SYMBOLS_EXPLICIT_DECLARATION_AND_WIRING
   introduced_in: v1
   scope: case
-  applies_to: assertions.imports.artifact
+  applies_to: assertions.imports.asset_artifact
   norm: MUST
-  requirement: imported_artifact_symbols_must_be_declared_and_wired
-  description: 'Any `from: artifact` import name must be explicitly declared in
-    suite `artifacts[]`; runtime-produced symbols
+  requirement: imported_resource_symbols_must_be_declared_and_wired
+  description: 'Any `from: asset` import name must be explicitly declared in
+    suite `assets[]`; runtime-produced symbols (`from: artifact`) must be explicitly
+    declared in suite `artifacts[]`.
+    Runtime-produced symbols
     must be explicitly wired through `contracts.clauses[].bindings.rows[].outputs`.
 
     '
@@ -95,18 +96,18 @@ rules:
   - specs/01_schema/registry/v1/harness.yaml
   - specs/01_schema/schema_v1.md
   - specs/02_contracts/04_harness.md
-- id: SERVICE_CONFIG_LOCATORS_VIA_ARTIFACT_IDS_ONLY
+- id: SERVICE_CONFIG_LOCATORS_VIA_ASSET_IDS_ONLY
   introduced_in: v1
   scope: case
   applies_to: adapters[].defaults.config|adapters[].actions[].config
   norm: MUST
-  requirement: service_config_locators_use_artifact_import_ids_only
+  requirement: service_config_locators_use_asset_import_ids_only
   description: Service config must not embed direct locator values (`path`,
     `url`, `token_url`, `template_path`, `output_path`, `ref`); external
-    locators must be declared at `artifacts[]` and referenced using
-    profile-specific `*_artifact_id` / `*_artifact_ids` fields.
+    locators must be declared at `assets[]` and referenced using
+    profile-specific `*_asset_id` / `*_asset_ids` fields.
   rationale: Keeps all service-consumed external references explicit, validated,
-    and auditable through a single artifact declaration system.
+    and auditable through explicit asset declarations.
   risk_if_violated: Hidden I/O channels and non-portable runner behavior.
   references:
   - specs/02_contracts/04_harness.md

@@ -16,7 +16,7 @@ contracts:
     purpose: Enforces top-level contract block requirement for executable cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

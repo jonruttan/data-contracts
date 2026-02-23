@@ -17,7 +17,7 @@ contracts:
       checksum requirements.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:
@@ -62,7 +62,7 @@ contracts:
       include canonical spec-sync task ids.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures harness.exports params match doc.params names and order.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

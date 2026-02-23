@@ -26,7 +26,7 @@ contracts:
       ops.fs usage only in stdlib primitive conformance coverage.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

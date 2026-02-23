@@ -31,7 +31,7 @@ contracts:
           check: runtime.policy_library_exports_resolve
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

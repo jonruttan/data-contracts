@@ -26,7 +26,7 @@ contracts:
       avoid per-type operator allowlists.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - assert.type_contract_subject_semantics_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

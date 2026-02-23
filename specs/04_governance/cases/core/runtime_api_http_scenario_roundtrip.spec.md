@@ -26,7 +26,7 @@ contracts:
       targeting remain implemented.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -48,7 +48,7 @@ contracts:
             - lit: {}
           - runtime.api_http_scenario_roundtrip
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

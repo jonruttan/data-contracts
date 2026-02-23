@@ -26,7 +26,7 @@ contracts:
       universal assertion core and classify other operators as authoring sugar.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - assert.universal_core_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

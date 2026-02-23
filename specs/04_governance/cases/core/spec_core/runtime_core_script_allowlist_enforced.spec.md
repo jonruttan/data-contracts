@@ -26,7 +26,7 @@ contracts:
           check: runtime.core_script_allowlist_enforced
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

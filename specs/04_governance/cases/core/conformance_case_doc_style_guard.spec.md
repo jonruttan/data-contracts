@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures conformance fixtures remain readable, deterministic, and policy-compliant.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -53,7 +53,7 @@ contracts:
             - lit: {}
           - conformance.case_doc_style_guard
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

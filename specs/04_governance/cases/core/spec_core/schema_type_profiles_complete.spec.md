@@ -26,7 +26,7 @@ contracts:
       case types.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -16,7 +16,7 @@ contracts:
       optional capabilities.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

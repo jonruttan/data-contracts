@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures referenced contract-root paths fail fast when missing.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

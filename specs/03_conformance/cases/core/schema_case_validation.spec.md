@@ -1,6 +1,6 @@
 ```yaml contract-spec
 spec_version: 1
-schema_ref: /specs/01_schema/schema_v1.md
+schema_ref: "/specs/01_schema/schema_v1.md"
 title: schema case validation suite
 harness:
   type: unit.test
@@ -8,12 +8,12 @@ harness:
 exports:
 - as: schema.validation.ok
   from: assert.function
-  path: /__export__schema.validation.ok
+  path: "/__export__schema.validation.ok"
   params: []
   required: true
 - as: schema.validation.forbidden
   from: assert.function
-  path: /__export__schema.validation.forbidden
+  path: "/__export__schema.validation.forbidden"
   params: []
   required: true
 contracts:
@@ -25,7 +25,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     asserts:
       imports:
       - from: artifact
@@ -68,7 +68,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     library:
       id: schema.validation.core
       module: schema
@@ -100,7 +100,7 @@ contracts:
       stability: alpha
       owner: data-contracts
     imports:
-    - /specs/05_libraries/domain/path_core.spec.md
+    - "/specs/05_libraries/domain/path_core.spec.md"
     asserts:
       checks:
       - id: __export__schema.validation.forbidden
@@ -150,7 +150,7 @@ contracts:
         category: schema
     imports:
     - id: prior_import
-      ref: /specs/01_schema/schema_v1.md
+      ref: "/specs/01_schema/schema_v1.md"
     asserts:
       checks:
       - id: assert_1
@@ -166,7 +166,7 @@ contracts:
     - as: schema.validation.invalid_mode
       mode: function
       from: assert.function
-      path: /__export__schema.validation.ok
+      path: "/__export__schema.validation.ok"
     asserts:
       checks:
       - id: assert_1
@@ -182,7 +182,7 @@ contracts:
     - id: schema.validation.invalid_id
       as: schema.validation.invalid_id
       from: assert.function
-      path: /__export__schema.validation.ok
+      path: "/__export__schema.validation.ok"
     asserts:
       checks:
       - id: assert_1
@@ -197,8 +197,8 @@ contracts:
     exports:
     - as: schema.validation.invalid_ref
       from: assert.function
-      path: /__export__schema.validation.ok
-      ref: /specs/01_schema/schema_v1.md
+      path: "/__export__schema.validation.ok"
+      ref: "/specs/01_schema/schema_v1.md"
     asserts:
       checks:
       - id: assert_1
@@ -213,7 +213,7 @@ contracts:
     exports:
     - as: schema.validation.invalid_from
       from: custom.function
-      path: /__export__schema.validation.ok
+      path: "/__export__schema.validation.ok"
     asserts:
       checks:
       - id: assert_1
@@ -241,7 +241,7 @@ contracts:
         category: schema
     artifacts:
     - id: invalid_artifact
-      ref: /specs/01_schema/schema_v1.md
+      ref: "/specs/01_schema/schema_v1.md"
     asserts:
       checks:
       - id: assert_1
@@ -255,7 +255,7 @@ contracts:
         category: schema
     artifacts:
     - id: bad_io
-      ref: /specs/01_schema/schema_v1.md
+      ref: "/specs/01_schema/schema_v1.md"
       io: inbound
     asserts:
       checks:
@@ -270,7 +270,7 @@ contracts:
         category: schema
     artifacts:
     - id: unresolved_template
-      ref: '{{unknown_suite_var}}'
+      ref: "{{unknown_suite_var}}"
       io: input
     asserts:
       checks:
@@ -359,7 +359,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     bindings:
       defaults:
         import: pipe_identity
@@ -385,7 +385,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     asserts:
       imports:
       - from: service
@@ -444,7 +444,7 @@ contracts:
         category: schema
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - undeclared_symbol
       checks:
@@ -473,7 +473,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     bindings:
       defaults:
         import: pipe_identity
@@ -493,7 +493,7 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     bindings:
       defaults:
         import: pipe_identity
@@ -545,7 +545,7 @@ contracts:
       - id: bind_schema_case_040
         service: svc.check.default.1
         outputs:
-        - to: ' '
+        - to: " "
     asserts:
       checks:
       - id: assert_1
@@ -593,10 +593,10 @@ contracts:
     expect:
       portable:
         status: pass
-        category: null
+        category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - schema_registry_core_yaml
       checks:
@@ -605,19 +605,19 @@ contracts:
           std.logic.and:
           - std.string.contains:
             - var: schema_registry_core_yaml
-            - "version: 2"
+            - 'version: 2'
           - std.string.contains:
             - var: schema_registry_core_yaml
-            - "id: schema.registry.v1.core"
+            - 'id: schema.registry.v1.core'
   - id: DCCONF-SCHEMA-CASE-044
     title: schema registry assertions yaml is ingestible as artifact input
     expect:
       portable:
         status: pass
-        category: null
+        category:
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - schema_registry_assertions_yaml
       checks:
@@ -626,51 +626,10 @@ contracts:
           std.logic.and:
           - std.string.contains:
             - var: schema_registry_assertions_yaml
-            - "version: 2"
+            - 'version: 2'
           - std.string.contains:
             - var: schema_registry_assertions_yaml
-            - "id: schema.registry.v1.assertions"
-artifacts:
-- id: schema_ref_doc
-  ref: '{{schema_ref}}'
-  type: application/yaml
-  docs:
-  - summary: schema reference import
-    audience: spec-authors
-    status: active
-  direction: input
-- id: schema_ref_export
-  ref: '{{schema_ref}}'
-  type: application/json
-  docs:
-  - summary: schema reference export
-    audience: spec-authors
-    status: active
-  direction: output
-- id: text
-  ref: '{{schema_ref}}'
-  type: text/plain
-  docs:
-  - summary: schema text export
-    audience: spec-authors
-    status: active
-  direction: output
-- id: schema_registry_core_yaml
-  ref: /specs/01_schema/registry/v1/core.yaml
-  type: application/yaml
-  docs:
-  - summary: schema registry core yaml input
-    audience: spec-authors
-    status: active
-  direction: input
-- id: schema_registry_assertions_yaml
-  ref: /specs/01_schema/registry/v1/assertions.yaml
-  type: application/yaml
-  docs:
-  - summary: schema registry assertions yaml input
-    audience: spec-authors
-    status: active
-  direction: input
+            - 'id: schema.registry.v1.assertions'
 adapters:
 - type: io.fs
   defaults:
@@ -696,4 +655,41 @@ services:
     pipe_identity:
       adapter_action: svc.check.default.1
       adapter_import: pipe_identity
+assets:
+- id: schema_ref_doc
+  ref: "{{schema_ref}}"
+  type: application/yaml
+  docs:
+  - summary: schema reference import
+    audience: spec-authors
+    status: active
+- id: schema_registry_core_yaml
+  ref: "/specs/01_schema/registry/v1/core.yaml"
+  type: application/yaml
+  docs:
+  - summary: schema registry core yaml input
+    audience: spec-authors
+    status: active
+- id: schema_registry_assertions_yaml
+  ref: "/specs/01_schema/registry/v1/assertions.yaml"
+  type: application/yaml
+  docs:
+  - summary: schema registry assertions yaml input
+    audience: spec-authors
+    status: active
+artifacts:
+- id: schema_ref_export
+  ref: "{{schema_ref}}"
+  type: application/json
+  docs:
+  - summary: schema reference export
+    audience: spec-authors
+    status: active
+- id: text
+  ref: "{{schema_ref}}"
+  type: text/plain
+  docs:
+  - summary: schema text export
+    audience: spec-authors
+    status: active
 ```

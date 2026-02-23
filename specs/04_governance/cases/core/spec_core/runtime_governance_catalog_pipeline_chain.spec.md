@@ -37,7 +37,7 @@ contracts:
         - policy.catalog.check_field_presence_zero
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
         - context_json

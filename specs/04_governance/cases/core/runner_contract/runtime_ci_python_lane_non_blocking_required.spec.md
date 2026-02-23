@@ -33,7 +33,7 @@ contracts:
     purpose: Ensures Python compatibility lane exists in CI and is configured as non-blocking.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

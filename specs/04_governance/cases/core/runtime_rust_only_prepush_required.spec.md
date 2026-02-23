@@ -46,7 +46,7 @@ contracts:
     purpose: Ensures prepush entrypoints and hook routing remain rust-only.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

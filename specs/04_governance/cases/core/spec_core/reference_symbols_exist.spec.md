@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures harness.spec_lang exports and library symbols resolve deterministically.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -15,7 +15,7 @@ contracts:
     purpose: Portable build tool contract must define compat-check required task.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

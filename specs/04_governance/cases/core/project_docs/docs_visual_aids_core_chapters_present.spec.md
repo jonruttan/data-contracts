@@ -25,7 +25,7 @@ contracts:
       for core narrative chapters.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

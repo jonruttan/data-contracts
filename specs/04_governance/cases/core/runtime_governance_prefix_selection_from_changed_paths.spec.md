@@ -33,7 +33,7 @@ contracts:
       paths before fallback prefixes.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -34,7 +34,7 @@ contracts:
       non-blocking.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

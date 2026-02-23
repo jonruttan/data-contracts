@@ -25,7 +25,7 @@ contracts:
     purpose: Enforces index.md-only docs directory index policy.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

@@ -36,7 +36,7 @@ contracts:
       statically valid fenced examples unless explicitly opted out.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -64,7 +64,7 @@ contracts:
             - lit: {}
           - docs.examples_runnable
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

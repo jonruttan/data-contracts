@@ -23,7 +23,7 @@ contracts:
     purpose: Ensures required-lane status outcomes map to blocking policy effects.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

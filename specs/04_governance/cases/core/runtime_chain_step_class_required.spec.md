@@ -26,7 +26,7 @@ contracts:
       metadata) are valid for chained cases.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

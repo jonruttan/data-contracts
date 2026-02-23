@@ -26,7 +26,7 @@ contracts:
       and forbid stale expression-shape tokens.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:
@@ -54,7 +54,7 @@ contracts:
             - lit: {}
           - normalization.docs_token_sync
         imports:
-        - from: artifact
+        - from: asset
           names:
           - summary_json
 adapters:

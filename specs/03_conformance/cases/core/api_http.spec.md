@@ -4,98 +4,12 @@ schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
-artifacts:
-- id: art.svc.assert_check.api_http.1.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.3.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_created.json"
-  direction: input
-- id: art.svc.assert_check.api_http.4.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_item_abc-123.json"
-  direction: input
-- id: art.svc.assert_check.api_http.5.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_item_abc-123.json"
-  direction: input
-- id: art.svc.assert_check.api_http.6.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_deleted.json"
-  direction: input
-- id: art.svc.assert_check.api_http.7.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.8.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.9.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.10.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.11.requests_url_1.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_created.json"
-  direction: input
-- id: art.svc.assert_check.api_http.11.requests_url_2.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json"
-  direction: input
-- id: art.svc.assert_check.api_http.11.requests_url_3.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_deleted.json"
-  direction: input
-- id: art.svc.assert_check.api_http.12.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.12.oauth_token.1
-  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.13.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.13.oauth_token.1
-  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.14.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.14.oauth_token.1
-  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.15.request_url.1
-  ref: https://api.example.invalid/items
-  direction: input
-- id: art.svc.assert_check.api_http.15.oauth_token.1
-  ref: https://issuer.example.invalid/oauth/token
-  direction: input
-- id: art.svc.assert_check.api_http.16.request_url.1
-  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
-  direction: input
-- id: art.svc.assert_check.api_http.16.use_1.1
-  ref: "/specs/05_libraries/domain/http_core.spec.md"
-  direction: input
-- id: body_json
-  ref: artifact://api_http/body_json
-  type: application/json
-  direction: output
-- id: body_text
-  ref: artifact://api_http/body_text
-  type: application/json
-  direction: output
-- id: context_json
-  ref: artifact://api_http/context_json
-  type: application/json
-  direction: output
-- id: status
-  ref: artifact://api_http/status
-  type: application/json
-  direction: output
-- id: steps_json
-  ref: artifact://api_http/steps_json
-  type: application/json
-  direction: output
 contracts:
   clauses:
   - id: DCCONF-API-001
     title: api.http GET reads relative fixture and exposes body assertions
-    purpose: Verifies api.http can resolve a local relative request url and assert deterministic status and json body shape.
+    purpose: Verifies api.http can resolve a local relative request url and assert
+      deterministic status and json body shape.
     expect:
       portable:
         status: pass
@@ -132,7 +46,8 @@ contracts:
           - body_json
   - id: DCCONF-API-002
     title: api.http requires request.url
-    purpose: Verifies api.http reports a schema violation when request url is missing from portable fixture input.
+    purpose: Verifies api.http reports a schema violation when request url is missing
+      from portable fixture input.
     expect:
       portable:
         status: fail
@@ -161,7 +76,8 @@ contracts:
           - '200'
   - id: DCCONF-API-003
     title: api.http skip path honors requires.when_missing
-    purpose: Verifies extension capability gating can skip fixtures when a required capability is absent.
+    purpose: Verifies extension capability gating can skip fixtures when a required
+      capability is absent.
     expect:
       portable:
         status: skip
@@ -193,7 +109,8 @@ contracts:
           - '200'
   - id: DCCONF-API-004
     title: api.http supports POST with body_json
-    purpose: Verifies practical REST mutating verb support for POST requests in deterministic mode.
+    purpose: Verifies practical REST mutating verb support for POST requests in deterministic
+      mode.
     expect:
       portable:
         status: pass
@@ -415,7 +332,8 @@ contracts:
           - '200'
   - id: DCCONF-API-012
     title: api.http scenario executes round-trip requests in order
-    purpose: Verifies requests scenario supports step templating and exposes steps_json target.
+    purpose: Verifies requests scenario supports step templating and exposes steps_json
+      target.
     expect:
       portable:
         status: pass
@@ -453,7 +371,8 @@ contracts:
           - steps_json
   - id: DCCONF-API-013
     title: api.http oauth deterministic local token exchange
-    purpose: Verifies oauth auth profile resolves env refs and produces oauth context metadata without network access.
+    purpose: Verifies oauth auth profile resolves env refs and produces oauth context
+      metadata without network access.
     expect:
       portable:
         status: pass
@@ -491,7 +410,8 @@ contracts:
           - env_ref
   - id: DCCONF-API-014
     title: api.http oauth missing env refs is schema failure
-    purpose: Verifies oauth env-ref credentials are required and missing env vars fail as schema.
+    purpose: Verifies oauth env-ref credentials are required and missing env vars
+      fail as schema.
     expect:
       portable:
         status: fail
@@ -549,7 +469,8 @@ contracts:
           - '200'
   - id: DCCONF-API-016
     title: api.http oauth live mode is optional capability
-    purpose: Verifies optional live oauth/network execution can be capability-gated and skipped in portable lanes.
+    purpose: Verifies optional live oauth/network execution can be capability-gated
+      and skipped in portable lanes.
     expect:
       portable:
         status: skip
@@ -581,7 +502,8 @@ contracts:
           - '200'
   - id: DCCONF-API-017
     title: api.http exposes new domain.http helper exports for CORS and steps
-    purpose: Maintains reference usage for domain.http CORS and scenario helper symbol exports.
+    purpose: Maintains reference usage for domain.http CORS and scenario helper symbol
+      exports.
     expect:
       portable:
         status: skip
@@ -703,7 +625,7 @@ adapters:
             client_id_env: PATH
             client_secret_env: HOME
             scope: read:spec
-            token_artifact_id: art.svc.assert_check.api_http.12.oauth_token.1
+            token_asset_id: art.svc.assert_check.api_http.12.oauth_token.1
   - id: svc.assert_check.api_http.13
     config:
       request:
@@ -715,7 +637,7 @@ adapters:
             grant_type: client_credentials
             client_id_env: SPEC_RUNNER_OAUTH_MISSING_CLIENT_ID
             client_secret_env: SPEC_RUNNER_OAUTH_MISSING_CLIENT_SECRET
-            token_artifact_id: art.svc.assert_check.api_http.13.oauth_token.1
+            token_asset_id: art.svc.assert_check.api_http.13.oauth_token.1
   - id: svc.assert_check.api_http.14
     config:
       request:
@@ -728,7 +650,7 @@ adapters:
             client_id_env: PATH
             client_secret_env: HOME
             auth_style: token
-            token_artifact_id: art.svc.assert_check.api_http.14.oauth_token.1
+            token_asset_id: art.svc.assert_check.api_http.14.oauth_token.1
   - id: svc.assert_check.api_http.15
     config:
       request:
@@ -741,7 +663,7 @@ adapters:
             grant_type: client_credentials
             client_id_env: OAUTH_CLIENT_ID
             client_secret_env: OAUTH_CLIENT_SECRET
-            token_artifact_id: art.svc.assert_check.api_http.15.oauth_token.1
+            token_asset_id: art.svc.assert_check.api_http.15.oauth_token.1
   - id: svc.assert_check.api_http.16
     config:
       request:
@@ -921,4 +843,65 @@ services:
     pipe_identity:
       adapter_action: svc.assert_check.api_http.16
       adapter_import: pipe_identity
+assets:
+- id: art.svc.assert_check.api_http.1.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.3.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_created.json"
+- id: art.svc.assert_check.api_http.4.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_item_abc-123.json"
+- id: art.svc.assert_check.api_http.5.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_item_abc-123.json"
+- id: art.svc.assert_check.api_http.6.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_deleted.json"
+- id: art.svc.assert_check.api_http.7.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.8.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.9.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.10.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.11.requests_url_1.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_created.json"
+- id: art.svc.assert_check.api_http.11.requests_url_2.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json"
+- id: art.svc.assert_check.api_http.11.requests_url_3.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_deleted.json"
+- id: art.svc.assert_check.api_http.12.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.12.oauth_token.1
+  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
+- id: art.svc.assert_check.api_http.13.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.13.oauth_token.1
+  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
+- id: art.svc.assert_check.api_http.14.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.14.oauth_token.1
+  ref: "/specs/03_conformance/cases/fixtures/oauth_token_ok.json"
+- id: art.svc.assert_check.api_http.15.request_url.1
+  ref: https://api.example.invalid/items
+- id: art.svc.assert_check.api_http.15.oauth_token.1
+  ref: https://issuer.example.invalid/oauth/token
+- id: art.svc.assert_check.api_http.16.request_url.1
+  ref: "/specs/03_conformance/cases/fixtures/api_http_ok.json"
+- id: art.svc.assert_check.api_http.16.use_1.1
+  ref: "/specs/05_libraries/domain/http_core.spec.md"
+artifacts:
+- id: body_json
+  ref: artifact://api_http/body_json
+  type: application/json
+- id: body_text
+  ref: artifact://api_http/body_text
+  type: application/json
+- id: context_json
+  ref: artifact://api_http/context_json
+  type: application/json
+- id: status
+  ref: artifact://api_http/status
+  type: application/json
+- id: steps_json
+  ref: artifact://api_http/steps_json
+  type: application/json
 ```

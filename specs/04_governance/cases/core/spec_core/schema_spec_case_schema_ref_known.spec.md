@@ -21,7 +21,7 @@ contracts:
     purpose: Ensures schema pin validator rejects unknown schema_ref values.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

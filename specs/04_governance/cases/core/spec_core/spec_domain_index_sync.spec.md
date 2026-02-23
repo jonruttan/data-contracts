@@ -26,7 +26,7 @@ contracts:
       no stale paths.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

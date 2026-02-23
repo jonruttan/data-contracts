@@ -33,7 +33,7 @@ contracts:
       to check-prefix retries.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

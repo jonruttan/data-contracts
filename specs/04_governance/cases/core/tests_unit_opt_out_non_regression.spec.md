@@ -26,7 +26,7 @@ contracts:
       so opt-out coverage is reduced over time.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

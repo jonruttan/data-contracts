@@ -17,7 +17,7 @@ contracts:
       and package-check command vocabulary.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - text
       checks:

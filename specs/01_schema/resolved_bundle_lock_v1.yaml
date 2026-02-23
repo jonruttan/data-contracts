@@ -48,6 +48,7 @@ properties:
       - file_count
       - sha256_manifest
       - sha256_manifests
+      - declaration_sha256
     properties:
       file_count:
         type: integer
@@ -58,3 +59,12 @@ properties:
       sha256_manifests:
         type: string
         minLength: 1
+      declaration_sha256:
+        type: string
+        minLength: 1
+      declaration_paths:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 1

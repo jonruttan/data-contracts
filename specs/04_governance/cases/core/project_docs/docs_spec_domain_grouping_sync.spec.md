@@ -25,7 +25,7 @@ contracts:
     purpose: Ensures generated spec case catalog includes stable domain-grouped sections.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:

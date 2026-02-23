@@ -26,7 +26,7 @@ contracts:
       imports.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

@@ -26,7 +26,7 @@ contracts:
       top-level or type-specific locations.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - violation_count
       checks:

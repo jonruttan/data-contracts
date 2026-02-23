@@ -26,7 +26,7 @@ contracts:
       ids.
     asserts:
       imports:
-      - from: artifact
+      - from: asset
         names:
         - summary_json
       checks:
