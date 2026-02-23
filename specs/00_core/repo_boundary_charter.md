@@ -2,40 +2,29 @@
 
 Source of truth: spec.repo_boundary_charter
 
-This charter defines ownership boundaries between canonical schema contracts and
-runner implementation behavior specs.
+This charter defines ownership boundaries between canonical schema contracts and reusable runner-oriented spec contracts.
 
 ## Ownership
 
-- `data-contracts` owns canonical schema, contract, conformance, governance, and
-  policy semantics.
-- `dc-runner-spec` owns runner-oriented implementation behavior specs,
-  implementation contract sets, and runner runtime protocol contracts.
-- `data-contracts-library` owns shared reusable spec libraries and runner overlay
-  spec manifests.
+- `data-contracts` owns canonical schema, contract, conformance, governance, and policy semantics.
+- `data-contracts-library` owns reusable runner-oriented behavior specs, runner overlays, and shared reusable libraries.
 
 ## Canonical Authority
 
 - Canonical schema authority is `data-contracts` `/specs/01_schema/schema_v1.md`.
-- Runner-owned executable cases in `dc-runner-spec` consume schema authority via
-  `schema_ref: /specs/01_schema/schema_v1.md`.
+- Reusable runner-owned executable cases in `data-contracts-library` consume schema authority via `schema_ref: /specs/01_schema/schema_v1.md`.
 
 ## Forbidden Crossings in Canonical Trees
 
-Canonical `data-contracts` trees must not contain internal runner tree surface
-tokens.
+Canonical `data-contracts` trees must not contain internal reusable-runner tree surface tokens.
 
-Runner implementation references must use explicit external repository paths,
-for example:
+Reusable runner implementation references must use explicit external repository paths, for example:
 
-- `/dc-runner-spec/specs/impl/...`
-- `/dc-runner-spec/specs/contract_sets/...`
+- `/data-contracts-library/specs/07_runner_behavior/impl/...`
+- `/data-contracts-library/specs/07_runner_behavior/contract_sets/...`
 
 ## Enforcement
 
-- Governance hard-fails when forbidden boundary tokens appear in canonical
-  trees.
-- Runner-specific behavior validation remains runner-owned and is not redefined
-  inside canonical schema docs.
-- Canonical shared libraries and overlay manifests must reference
-  `data-contracts-library`; new `*-spec` repositories are noncanonical.
+- Governance hard-fails when forbidden boundary tokens appear in canonical trees.
+- Runner-specific behavior validation remains reusable-runner-owned and is not redefined inside canonical schema docs.
+- Canonical shared libraries and overlay manifests must reference `data-contracts-library`; new `*-spec` repositories are noncanonical.
