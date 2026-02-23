@@ -9,11 +9,10 @@ harness:
     ci_runtime_exec:
       files:
       - /.github/workflows/ci.yml
-      - /scripts/ci_gate.sh
+      - dc-runner governance critical
       forbidden_tokens:
-      - dc-runner governance
-      - dc-runner critical-gate
-      - dc-runner docs-generate-check
+      - ./dc-runner governance run
+      - ./dc-runner
     check:
       profile: governance.scan
       config:

@@ -39,9 +39,9 @@
         ".github/workflows/*.yaml"
       ],
       "default_gate": [
-        "scripts/ci_gate.sh",
-        "scripts/ci_gate.sh",
-        "scripts/control_plane.sh"
+        "dc-runner governance critical",
+        "dc-runner governance critical",
+        "dc-runner governance run"
       ],
       "python_surfaces": [
         "dc-runner",
@@ -75,21 +75,21 @@
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "scripts/ci_gate.sh",
+      "file": "dc-runner governance critical",
       "python_token_count": 0.0,
       "segment": "default_gate",
       "transitive_token_count": 0.0
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "scripts/ci_gate.sh",
+      "file": "dc-runner governance critical",
       "python_token_count": 0.0,
       "segment": "default_gate",
       "transitive_token_count": 0.0
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "scripts/control_plane.sh",
+      "file": "dc-runner governance run",
       "python_token_count": 0.0,
       "segment": "default_gate",
       "transitive_token_count": 0.0

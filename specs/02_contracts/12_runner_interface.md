@@ -64,7 +64,7 @@ Runner repositories publish release assets that conform to:
 
 The control plane ingests and normalizes status through:
 
-- `/scripts/runner_status_ingest.sh`
+- `dc-runner governance run`
 - `/specs/01_schema/runner_status_matrix_v1.yaml`
 - `/specs/02_contracts/25_compatibility_matrix.md`
 - `/specs/02_contracts/27_runner_status_exchange.md`

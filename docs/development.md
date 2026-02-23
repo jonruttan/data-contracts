@@ -28,13 +28,13 @@ runtime execution ownership lives in runner repositories.
 Canonical status-ingest operation:
 
 ```sh
-./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+dc-runner governance run
 ```
 
 Canonical local gate for this repository:
 
 ```sh
-./scripts/ci_gate.sh
+dc-runner governance critical
 ```
 
 Canonical bundle package operations:

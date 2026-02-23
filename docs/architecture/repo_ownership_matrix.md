@@ -43,9 +43,9 @@
 
 | Producer Repo | Produced Artifact | Consumer | Policy Role |
 |---|---|---|---|
-| `dc-runner-rust` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | blocking-class status input |
-| `dc-runner-python` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
-| `dc-runner-php` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
+| `dc-runner-rust` | `runner-status-report-v1.json` release asset | `data-contracts` (`dc-runner governance run`) | blocking-class status input |
+| `dc-runner-python` | `runner-status-report-v1.json` release asset | `data-contracts` (`dc-runner governance run`) | compatibility freshness input |
+| `dc-runner-php` | `runner-status-report-v1.json` release asset | `data-contracts` (`dc-runner governance run`) | compatibility freshness input |
 
 Ingest outputs are emitted as:
 

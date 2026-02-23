@@ -87,7 +87,4 @@ This repository does not execute runtime lanes.
 ## Core Script Allowlist
 
 - `/Users/jon/Workspace/Development/data-contracts/scripts/bundle`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_interface_sync.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_interface_validate.sh`
-- `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.sh`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/docs_audience_generate.py`

@@ -15,10 +15,10 @@ make ci-smoke
 Normative merge/publish gate:
 
 ```sh
-./scripts/ci_gate.sh
+dc-runner governance critical
 ```
 
-Passing `./scripts/ci_gate.sh` satisfies the release contract for this repo.
+Passing `dc-runner governance critical` satisfies the release contract for this repo.
 `make ci-smoke` is a subset preflight to catch issues earlier; it is not a
 separate release requirement.
 

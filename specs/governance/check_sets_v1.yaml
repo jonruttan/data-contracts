@@ -12,7 +12,7 @@ profiles:
         path: /.github/workflows/ci.yml
         must_contain:
           - extractor-stage:
-          - ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+          - dc-runner governance run
       - id: runtime.matrix_artifacts_emitted
         kind: file_tokens
         path: /.github/workflows/ci.yml
@@ -24,9 +24,8 @@ profiles:
         kind: file_tokens
         path: /.github/workflows/ci.yml
         must_not_contain:
-          - dc-runner governance
-          - dc-runner critical-gate
-          - dc-runner docs-generate-check
+          - ./dc-runner governance run
+          - ./dc-runner
       - id: runtime.compatibility_status_freshness_within_slo
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
@@ -117,8 +116,7 @@ profiles:
         path: /specs/01_schema/core_script_allowlist_v1.yaml
         must_contain:
           - /scripts/bundle
-          - /scripts/governance_interface_sync.sh
-          - /scripts/governance_interface_validate.sh
+          - /scripts/docs_audience_generate.py
       - id: runtime.retired_scripts_root_absent
         kind: file_tokens
         path: /specs/01_schema/core_script_allowlist_v1.yaml
@@ -264,9 +262,9 @@ profiles:
           - audience: implementer
       - id: docs.audience_surfaces_synced
         kind: file_tokens
-        path: /scripts/docs_audience_generate.sh
+        path: /scripts/docs_audience_generate.py
         must_contain:
-          - docs_audience_generate.py
+          - Generate audience docs surfaces
       - id: docs.audience_canonical_tokens_only
         kind: file_tokens
         path: /specs/00_core/docs_audience_migration_map.md

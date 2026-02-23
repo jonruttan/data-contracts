@@ -27,13 +27,28 @@ jobs:
           dc-runner --version
 
       - name: Emit governance catalog facts
-        run: ./scripts/governance_catalog_validate.sh
+        run: |
+          mkdir -p .artifacts
+          dc-runner governance run
+          cp -f .artifacts/governance-summary.json .artifacts/governance-catalog-validate.json
+          cp -f .artifacts/governance-trace.json .artifacts/governance-catalog-validate-trace.json
+          cp -f .artifacts/governance-summary.md .artifacts/governance-catalog-validate.md
 
       - name: Emit schema pin facts
-        run: ./scripts/spec_schema_pin_validate.sh
+        run: |
+          mkdir -p .artifacts
+          dc-runner governance run
+          cp -f .artifacts/governance-summary.json .artifacts/spec-schema-pin-validate.json
+          cp -f .artifacts/governance-trace.json .artifacts/spec-schema-pin-validate-trace.json
+          cp -f .artifacts/governance-summary.md .artifacts/spec-schema-pin-validate.md
 
       - name: Ingest runner status matrix facts
-        run: ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+        run: |
+          mkdir -p .artifacts
+          dc-runner governance run
+          cp -f .artifacts/governance-summary.json .artifacts/runner-status-matrix.json
+          cp -f .artifacts/governance-summary.md .artifacts/runner-status-matrix.md
+          cp -f .artifacts/governance-trace.json .artifacts/runner-status-ingest-log.json
 
       - name: Emit runner-contract pack artifact
         run: |
@@ -67,7 +82,7 @@ jobs:
           sudo apt-get install -y jq ripgrep
 
       - name: Run governance
-        run: ./scripts/control_plane.sh governance
+        run: dc-runner governance run
 
       - name: Emit spec-core pack artifact
         run: |
@@ -96,7 +111,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run docs checks
-        run: ./scripts/control_plane.sh docs-generate-check
+        run: |
+          dc-runner docs generate-check
+          python3 ./scripts/docs_audience_generate.py --check
 
       - name: Emit project-docs pack artifact
         run: |
@@ -129,7 +146,13 @@ jobs:
           sudo apt-get install -y jq
 
       - name: Run optional governance report
-        run: ./scripts/governance_optional_report.sh
+        run: |
+          mkdir -p .artifacts
+          dc-runner governance broad || true
+          cp -f .artifacts/governance-summary.json .artifacts/governance-optional-report.json 2>/dev/null || true
+          cp -f .artifacts/governance-trace.json .artifacts/governance-optional-report-trace.json 2>/dev/null || true
+          cp -f .artifacts/governance-summary.md .artifacts/governance-optional-report.md 2>/dev/null || true
+          cp -f .artifacts/governance-optional-report.md .artifacts/governance-optional-summary.md 2>/dev/null || true
 
       - name: Upload optional artifacts
         if: always()
