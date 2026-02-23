@@ -4725,7 +4725,7 @@ rules:
   description: Retired shell script tree is removed from active surface and must
     not be referenced by canonical manifests or governance contracts.
   rationale: Eliminates stale operational entrypoints and ambiguity in control-plane usage.
-  risk_if_violated: Users can invoke unsupported legacy flows and bypass canonical wrappers.
+  risk_if_violated: Users can invoke unsupported noncanonical flows and bypass canonical wrappers.
   references:
   - specs/01_schema/core_script_allowlist_v1.yaml
   - specs/04_governance/check_sets_v1.yaml
