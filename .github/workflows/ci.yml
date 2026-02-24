@@ -76,10 +76,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq ripgrep rustc cargo
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install dc-runner
         run: |
@@ -115,10 +113,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install runtime deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rustc cargo
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install dc-runner
         run: |
@@ -154,10 +150,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq rustc cargo
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install dc-runner
         run: |
