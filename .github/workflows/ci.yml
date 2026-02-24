@@ -7,9 +7,69 @@ on:
   pull_request:
 
 jobs:
+  runner-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      required_version: ${{ steps.contract.outputs.required_version }}
+      crate_name: ${{ steps.contract.outputs.crate_name }}
+      binary_name: ${{ steps.contract.outputs.binary_name }}
+      entrypoint_manifest: ${{ steps.contract.outputs.entrypoint_manifest }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Read runner version contract
+        id: contract
+        run: |
+          set -euo pipefail
+          contract="specs/00_core/runner_version_contract_v1.yaml"
+          crate_name="$(awk -F': *' '/^[[:space:]]+crate:/{print $2; exit}' "$contract" | tr -d '"')"
+          binary_name="$(awk -F': *' '/^[[:space:]]+binary:/{print $2; exit}' "$contract" | tr -d '"')"
+          required_version="$(awk -F': *' '/^required_version:/{print $2; exit}' "$contract" | tr -d '"')"
+          entrypoint_manifest="$(awk -F': *' '/^entrypoint_manifest:/{print $2; exit}' "$contract" | tr -d '"')"
+          unpublished_policy="$(awk -F': *' '/^[[:space:]]+on_unpublished_version:/{print $2; exit}' "$contract" | tr -d '"')"
+
+          if [ -z "$crate_name" ] || [ -z "$binary_name" ] || [ -z "$required_version" ] || [ -z "$entrypoint_manifest" ]; then
+            echo "ERROR: invalid runner version contract: $contract"
+            exit 1
+          fi
+
+          if [ "$unpublished_policy" != "hard_fail" ]; then
+            echo "ERROR: unsupported on_unpublished_version policy '$unpublished_policy'"
+            exit 1
+          fi
+
+          if [ ! -f ".${entrypoint_manifest}" ]; then
+            echo "ERROR: entrypoint manifest from contract not found: ${entrypoint_manifest}"
+            exit 1
+          fi
+
+          echo "crate_name=$crate_name" >> "$GITHUB_OUTPUT"
+          echo "binary_name=$binary_name" >> "$GITHUB_OUTPUT"
+          echo "required_version=$required_version" >> "$GITHUB_OUTPUT"
+          echo "entrypoint_manifest=$entrypoint_manifest" >> "$GITHUB_OUTPUT"
+
+      - name: Install required dc-runner version
+        run: |
+          set -euo pipefail
+          cargo install "${{ steps.contract.outputs.crate_name }}" --locked --version "${{ steps.contract.outputs.required_version }}" --force
+          "${{ steps.contract.outputs.binary_name }}" --version
+
+      - name: Verify runner entrypoint compatibility
+        run: |
+          set -euo pipefail
+          ./scripts/ci_verify_runner_entrypoints.sh ".${{ steps.contract.outputs.entrypoint_manifest }}" "${{ steps.contract.outputs.binary_name }}"
+
   runner-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs:
+      - runner-preflight
 
     steps:
       - name: Checkout
@@ -18,13 +78,16 @@ jobs:
       - name: Install runtime deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml jq curl ripgrep rustc cargo
+          sudo apt-get install -y php-cli php-yaml jq curl ripgrep
           php -m | grep -i '^yaml$'
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install dc-runner
         run: |
-          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
-          dc-runner --version
+          cargo install "${{ needs.runner-preflight.outputs.crate_name }}" --locked --version "${{ needs.runner-preflight.outputs.required_version }}" --force
+          "${{ needs.runner-preflight.outputs.binary_name }}" --version
 
       - name: Emit governance catalog facts
         run: |
@@ -70,6 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:
+      - runner-preflight
       - runner-contract
 
     steps:
@@ -81,8 +145,8 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
-          dc-runner --version
+          cargo install "${{ needs.runner-preflight.outputs.crate_name }}" --locked --version "${{ needs.runner-preflight.outputs.required_version }}" --force
+          "${{ needs.runner-preflight.outputs.binary_name }}" --version
 
       - name: Run governance
         run: dc-runner governance run
@@ -107,6 +171,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:
+      - runner-preflight
       - spec-core
 
     steps:
@@ -118,8 +183,8 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
-          dc-runner --version
+          cargo install "${{ needs.runner-preflight.outputs.crate_name }}" --locked --version "${{ needs.runner-preflight.outputs.required_version }}" --force
+          "${{ needs.runner-preflight.outputs.binary_name }}" --version
 
       - name: Run docs checks
         run: |
@@ -143,6 +208,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:
+      - runner-preflight
       - project-docs
     continue-on-error: true
 
@@ -155,8 +221,8 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
-          dc-runner --version
+          cargo install "${{ needs.runner-preflight.outputs.crate_name }}" --locked --version "${{ needs.runner-preflight.outputs.required_version }}" --force
+          "${{ needs.runner-preflight.outputs.binary_name }}" --version
 
       - name: Run optional governance report
         run: |
