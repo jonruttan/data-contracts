@@ -2,7 +2,7 @@ version: 1
 runner:
   crate: dc-runner-cli
   binary: dc-runner
-required_version: 0.2.9
+required_version: 0.2.10
 entrypoint_manifest: /specs/04_governance/runner_entrypoints_v1.yaml
 policy:
   on_unpublished_version: hard_fail
