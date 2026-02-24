@@ -46,6 +46,17 @@ Runner CLIs MAY provide:
 - additional output formats beyond the structured mode
 - external scaffold source override:
   - `dc-runner project scaffold --project-root <path> --bundle-url <url> --sha256 <hex> --allow-external`
+- optional spec-management suite under `dc-runner specs` for updating and managing local
+  spec cache state without a binary upgrade:
+  - `dc-runner specs refresh`
+  - `dc-runner specs status`
+  - `dc-runner specs versions`
+  - `dc-runner specs use`
+  - `dc-runner specs rollback`
+  - `dc-runner specs verify`
+  - `dc-runner specs clean`
+  - `dc-runner specs info`
+  - `dc-runner specs prune`
 
 ## Capability Model
 
@@ -110,6 +121,35 @@ Mode semantics:
 - `bundled`: resolve from embedded pinned snapshot only
 - `workspace`: resolve from local workspace only
 - `auto`: workspace first, bundled fallback
+
+## Spec State Command Surface
+
+Runners MAY provide a stateful spec lifecycle for operator workflows:
+
+- `dc-runner specs refresh [--source remote|bundled|workspace] [--version <semver|latest>] [--force] [--check-only] [--skip-signature]`
+  - default: `--source remote`, `--version latest`
+  - metadata-only activation policy: refresh updates cache metadata by default
+  - explicit activation via `dc-runner specs use`
+- `dc-runner specs status`
+  - reports active source/version and last check/refresh metadata
+- `dc-runner specs versions`
+  - shows installed cache versions with status columns
+- `dc-runner specs use <version-or-source> --source version|bundled|workspace`
+  - validates target before switch
+- `dc-runner specs rollback [--to <version|bundled>]`
+  - fallback to last known-good when omitted
+- `dc-runner specs verify [--source auto|active|bundled|workspace|cache:<version>]`
+  - emits recovery hint when integrity checks fail
+- `dc-runner specs clean [--keep <N>] [--dry-run] [--yes]`
+  - safe by default and never deletes active/known-good targets
+- `dc-runner specs info [<version>]`
+  - surfaces metadata and module capabilities for the selected cache entry
+- `dc-runner specs prune --expired`
+  - applies retention-policy-driven cleanup
+
+Default runtime behavior remains unchanged when operators do not explicitly invoke
+state commands; this model preserves current `bundled` and `workspace` source
+handling.
 
 ## Scaffold Source Contract
 

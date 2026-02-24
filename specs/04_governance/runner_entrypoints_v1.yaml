@@ -160,6 +160,105 @@ commands:
     exit_codes:
       allowed: [0, 1]
 
+  - id: specs-refresh
+    cli: dc-runner specs refresh
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-refresh.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-status
+    cli: dc-runner specs status
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-status.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-versions
+    cli: dc-runner specs versions
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-versions.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-use
+    cli: dc-runner specs use
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-use.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-rollback
+    cli: dc-runner specs rollback
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-rollback.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-verify
+    cli: dc-runner specs verify
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-verify.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-clean
+    cli: dc-runner specs clean
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-clean.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-info
+    cli: dc-runner specs info
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-info.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: specs-prune
+    cli: dc-runner specs prune
+    profile: full
+    visibility: hidden
+    group: specs
+    source: core
+    artifacts:
+      - /.artifacts/specs-prune.json
+    exit_codes:
+      allowed: [0, 1]
+
   - id: governance-broad-native
     cli: dc-runner governance-broad-native
     profile: full

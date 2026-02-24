@@ -20,6 +20,19 @@ Canonical user-facing commands are:
 - `dc-runner bundle install`
 - `dc-runner governance-broad-native`
 
+Optional state-management commands for spec cache lifecycle MAY also be exposed and are represented as
+`visibility: hidden` entries:
+
+- `dc-runner specs refresh`
+- `dc-runner specs status`
+- `dc-runner specs versions`
+- `dc-runner specs use`
+- `dc-runner specs rollback`
+- `dc-runner specs verify`
+- `dc-runner specs clean`
+- `dc-runner specs info`
+- `dc-runner specs prune`
+
 The mapping source of truth is:
 
 - `/specs/04_governance/runner_entrypoints_v1.yaml`

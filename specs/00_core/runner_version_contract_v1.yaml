@@ -6,3 +6,9 @@ required_version: 0.2.3
 entrypoint_manifest: /specs/04_governance/runner_entrypoints_v1.yaml
 policy:
   on_unpublished_version: hard_fail
+  compatibility_notes:
+    - feature: specs-state-management
+      status: optional
+      notes:
+        - "Optional runner command state surface (refresh/status/versions/use/rollback/verify/clean/info/prune) can update/cache specs without requiring `dc-runner` binary upgrades."
+        - "Optional commands are discoverable in `runner_entrypoints_v1.yaml` with `visibility: hidden` and are not required for baseline interoperability."
