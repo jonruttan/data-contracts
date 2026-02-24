@@ -13,7 +13,7 @@ Runner lane: governance
 ## Scope Notes
 
 - Reviewed `data-contracts` review assets and the newly decoupled canonical review workflow pathing.
-- Focus areas: control-plane review prompts, snapshot template alignment, and compatibility pointers.
+- Focus areas: control-plane review prompts, snapshot template alignment, and bridge-file alignment.
 
 ## Command Execution Log
 
@@ -30,7 +30,7 @@ Runner lane: governance
 | Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix |
 | --- | --- | --- | --- | --- | --- | --- |
 | P1 | Verified | docs/reviews/index.md | Active namespace was documented as project-anchored without explicit library source pointers | Prompt and template ownership had drifted to local copies while project wanted canonical library source | discovery | Point index and pointer files to `data-contracts-library` canonical workflow assets and document no-install flow. |
-| P2 | Verified | docs/reviews/prompts/adoption_7_personas.md | Local prompt text duplicated canonical logic | Duplicate maintenance burden risks divergence from canonical prompt contracts | ongoing review operation | Keep as a compatibility pointer and route runtime rendering through library prompt template. |
+| P2 | Verified | docs/reviews/prompts/adoption_7_personas.md | Local prompt text duplicated canonical logic | Duplicate maintenance burden risks divergence from canonical prompt contracts | ongoing review operation | Keep as a local bridge and route runtime rendering through library prompt template. |
 | P2 | Verified | docs/reviews/templates/review_snapshot.md | Snapshot template content drifted from canonical shape | Canonical schema compliance checks depend on exact section set and command table header | artifact generation | Keep this file as a pointer to `/specs/07_runner_behavior/review_workflow/templates/review_snapshot.spec.md`. |
 | P2 | Verified | docs/reviews/snapshots/2026-02-13_persona-review.md | Review-validate command usage documented a removed subcommand | Tooling output must reflect current command behavior | historical report capture | Update to current command contract and keep evidence of unavailable command optional. |
 

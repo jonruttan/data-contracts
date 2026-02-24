@@ -4,9 +4,9 @@
 
 - discoverability of review prompts and templates
 - historical review artifacts
-- compatibility pointers to canonical review workflow assets in `data-contracts-library`
+- bridge files to canonical review workflow assets in `data-contracts-library`
 
-Canonical review artifacts in-repo remain compatibility pointers:
+Local bridge files in-repo reference canonical review assets:
 
 - `/docs/reviews/prompts/` → points to canonical review prompt templates
 - `/docs/reviews/templates/review_snapshot.md` → points to canonical snapshot template
@@ -25,8 +25,8 @@ Active usage paths:
 - Prompts (pointer files): `/docs/reviews/prompts/adoption_7_personas.md`, `/docs/reviews/prompts/self_healing.md`
 - Snapshot template pointer: `/docs/reviews/templates/review_snapshot.md`
 - Snapshot storage: `/docs/reviews/snapshots/`
-- Compatibility helper pointer: `/docs/reviews/template.md`
-- Compatibility workflow reference: `/docs/reviews/frameworks/hardening_pipeline.md`
+- Helper bridge file: `/docs/reviews/template.md`
+- Workflow bridge reference: `/docs/reviews/frameworks/hardening_pipeline.md`
 
 Discovery and pending-conversion workflow:
 
