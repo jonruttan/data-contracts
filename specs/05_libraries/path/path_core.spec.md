@@ -26,7 +26,7 @@ harness:
         audience: implementer
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -43,6 +43,13 @@ harness:
           Usage context:
           - Use this for implementation work, local debugging, and runner-side behavior analysis.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -61,7 +68,7 @@ harness:
         audience: operator
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -78,6 +85,13 @@ harness:
           Usage context:
           - Use this for observability, runbook readiness, and incident response.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -95,7 +109,7 @@ harness:
         audience: integrator
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -112,6 +126,13 @@ harness:
           Usage context:
           - Use this for composing this contract in pipelines, services, and toolchains.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -129,7 +150,7 @@ harness:
         audience: maintainer
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -146,6 +167,13 @@ harness:
           Usage context:
           - Use this for versioning, changelogs, and stability planning.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -163,7 +191,7 @@ harness:
         audience: governance
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -180,6 +208,13 @@ harness:
           Usage context:
           - Use this for policy gating, approval review, and compliance checks.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -197,7 +232,7 @@ harness:
         audience: reviewer
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -214,6 +249,13 @@ harness:
           Usage context:
           - Use this to verify correctness, completeness, and release readiness.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -231,7 +273,7 @@ harness:
         audience: auditor
         status: active
         description: |-
-          Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+          Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
           Inputs:
           - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -248,6 +290,13 @@ harness:
           Usage context:
           - Use this as documented evidence for audit and policy review.
         since: v1
+        outputs:
+        - The normalized output produced by this symbol in the owning execution context.
+        caveats:
+        - Invocation defaults and ordering must match contract expectations for deterministic behavior.
+        - Environment-sensitive references can change runtime outcome if not explicitly provided.
+        examples:
+        - Test the symbol with known-valid data and a representative invalid input to verify both pass/fail behavior.
         inputs:
         - Contract parameters and required case inputs associated with this docs-bearing
           symbol.
@@ -267,7 +316,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -308,7 +357,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -348,7 +397,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -388,7 +437,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -428,7 +477,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -468,7 +517,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -508,7 +557,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -610,7 +659,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -650,7 +699,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -689,7 +738,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -728,7 +777,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -767,7 +816,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -806,7 +855,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -845,7 +894,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -948,7 +997,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -988,7 +1037,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1027,7 +1076,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1066,7 +1115,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1105,7 +1154,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1144,7 +1193,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1183,7 +1232,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1298,7 +1347,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1338,7 +1387,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1377,7 +1426,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1416,7 +1465,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1455,7 +1504,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1494,7 +1543,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1533,7 +1582,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents the runtime behavior and intent of `path.matches` for this audience.
+        Purpose: Documents behavior of `path.matches` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
 
         Inputs:
         - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
@@ -1549,6 +1598,14 @@ harness:
 
         Usage context:
         - Use this as documented evidence for audit and policy review.
+      since: v1
+      outputs:
+      - The normalized output produced by this docs-bearing symbol for the owning suite context.
+      caveats:
+      - Invocation order and default arguments may influence determinism if not explicitly controlled.
+      - Environment-sensitive paths/services can produce different output on non-equivalent runner setups.
+      examples:
+      - Use this export in its owning fixture case to verify expected pass/fail behavior on representative success and validation-failure inputs.
       since: v1
       tags:
       - path
