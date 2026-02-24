@@ -19,19 +19,19 @@ harness:
         audience: implementer
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this for implementation work, local debugging, and runner-side behavior analysis.
@@ -54,19 +54,19 @@ harness:
         audience: operator
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this for observability, runbook readiness, and incident response.
@@ -88,19 +88,19 @@ harness:
         audience: integrator
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this for composing this contract in pipelines, services, and toolchains.
@@ -122,19 +122,19 @@ harness:
         audience: maintainer
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this for versioning, changelogs, and stability planning.
@@ -156,19 +156,19 @@ harness:
         audience: governance
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this for policy gating, approval review, and compliance checks.
@@ -190,19 +190,19 @@ harness:
         audience: reviewer
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this to verify correctness, completeness, and release readiness.
@@ -224,19 +224,19 @@ harness:
         audience: auditor
         status: active
         description: |-
-          Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+          Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
           Inputs:
-          - Inputs come from the declared contract and export bindings for this symbol.
-          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - The assertion or helper return value produced by this symbol.
+          - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
           Errors/Caveats:
-          - Malformed inputs and shape mismatches are surfaced as validation failures.
-          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+          - Input/shape mismatches are surfaced as validation failures. 
+          - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
           Usage context:
           - Use this as documented evidence for audit and policy review.
@@ -261,19 +261,19 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this for implementation work, local debugging, and runner-side behavior analysis.
@@ -301,19 +301,19 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this for observability, runbook readiness, and incident response.
@@ -340,19 +340,19 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this for composing this contract in pipelines, services, and toolchains.
@@ -379,19 +379,19 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this for versioning, changelogs, and stability planning.
@@ -418,19 +418,19 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this for policy gating, approval review, and compliance checks.
@@ -457,19 +457,19 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this to verify correctness, completeness, and release readiness.
@@ -496,19 +496,19 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: This entry documents behavior for `conf.json_type_is` for the declared audience, including input expectations, output contracts, and failure modes.
+        Purpose: Documents the runtime behavior and intent of `conf.json_type_is` for this audience.
 
         Inputs:
-        - Inputs come from the declared contract and export bindings for this symbol.
-        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - The assertion or helper return value produced by this symbol.
+        - Returns the assertion or helper value produced by this symbol after all constraints apply.
 
         Errors/Caveats:
-        - Malformed inputs and shape mismatches are surfaced as validation failures.
-        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
-        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+        - Input/shape mismatches are surfaced as validation failures. 
+        - Schema, runtime binding, or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions and policy checks.
 
         Usage context:
         - Use this as documented evidence for audit and policy review.
