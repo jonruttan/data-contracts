@@ -13,6 +13,8 @@ if [[ "${CI:-}" == "true" ]]; then
   exit 0
 fi
 
+export DC_RUNNER_SPEC_SOURCE="${DC_RUNNER_SPEC_SOURCE:-workspace}"
+
 collect_changed_paths() {
   local upstream=""
   local lines=()
