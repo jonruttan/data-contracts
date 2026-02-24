@@ -337,10 +337,10 @@ profiles:
         path: /specs/04_governance/runner_entrypoints_v1.yaml
         must_contain:
           - /.artifacts/governance-summary.json
+          - /.artifacts/governance-trace.json
           - /.artifacts/critical-gate-summary.json
           - /.artifacts/job-hooks/DCCONF-JOB-006.complete.json
           - /.artifacts/job-hooks/DCCONF-JOB-007.complete.json
-          - /.artifacts/job-hooks/DCCONF-JOB-008.complete.json
           - /.artifacts/job-hooks/DCCONF-JOB-009.complete.json
           - /.artifacts/job-hooks/DCCONF-JOB-010.complete.json
           - /.artifacts/job-hooks/DCCONF-JOB-011.complete.json
