@@ -45,6 +45,11 @@ Canonical bundle package operations:
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle package-check --package .artifacts/bundles/data-contract-bundle-runner_contract_bundle-v1.0.0.tar.gz --sha256 .artifacts/bundles/data-contract-bundle-runner_contract_bundle-v1.0.0.tar.gz.sha256
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle install --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle install-check --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
+/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle list
+/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle info --bundle-id runner_contract_bundle
+/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle bootstrap --lock .artifacts/bundles/bundles.lock.yaml --out .bundles
+/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle outdated --project-lock bundles.lock.yaml --format json
+/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle upgrade --project-lock bundles.lock.yaml --dry-run
 ```
 
 Project lock guidance:
