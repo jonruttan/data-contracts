@@ -206,6 +206,8 @@ categories:
   - ops.os.pid
   - ops.os.sleep_ms
   - ops.os.exit_code
+  terminal_io:
+  - ops.terminal.prompt
   helper_ops:
   - ops.helper.call
   job_ops:
@@ -1851,6 +1853,13 @@ symbols:
   ops.os.exit_code:
     category: os_process
     arity: 0
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.terminal.prompt:
+    category: terminal_io
+    arity: 2
     pure: false
     deterministic: false
     error_class: runtime
