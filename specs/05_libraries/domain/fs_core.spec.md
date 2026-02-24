@@ -18,7 +18,7 @@ harness:
         audience: implementer
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -53,7 +53,7 @@ harness:
         audience: operator
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -87,7 +87,7 @@ harness:
         audience: integrator
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -121,7 +121,7 @@ harness:
         audience: maintainer
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -155,7 +155,7 @@ harness:
         audience: governance
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -189,7 +189,7 @@ harness:
         audience: reviewer
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -223,7 +223,7 @@ harness:
         audience: auditor
         status: active
         description: |-
-          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+          Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
           Inputs:
           - Inputs come from the declared contract and export bindings for this symbol.
@@ -259,7 +259,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -300,7 +300,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -340,7 +340,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -380,7 +380,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -420,7 +420,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -460,7 +460,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -500,7 +500,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -553,7 +553,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -594,7 +594,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -634,7 +634,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -674,7 +674,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -714,7 +714,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -754,7 +754,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -794,7 +794,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -842,7 +842,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -883,7 +883,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -923,7 +923,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -963,7 +963,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1003,7 +1003,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1043,7 +1043,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1083,7 +1083,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1132,7 +1132,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1173,7 +1173,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1213,7 +1213,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1253,7 +1253,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1293,7 +1293,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1333,7 +1333,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1373,7 +1373,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1421,7 +1421,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1462,7 +1462,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1502,7 +1502,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1542,7 +1542,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1582,7 +1582,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1622,7 +1622,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1662,7 +1662,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1709,7 +1709,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1750,7 +1750,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1790,7 +1790,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1830,7 +1830,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1870,7 +1870,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1910,7 +1910,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1950,7 +1950,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -1998,7 +1998,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2039,7 +2039,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2079,7 +2079,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2119,7 +2119,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2159,7 +2159,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2199,7 +2199,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2239,7 +2239,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2287,7 +2287,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2328,7 +2328,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2368,7 +2368,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2408,7 +2408,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2448,7 +2448,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2488,7 +2488,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2528,7 +2528,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2578,7 +2578,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2619,7 +2619,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2659,7 +2659,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2699,7 +2699,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2739,7 +2739,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2779,7 +2779,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2819,7 +2819,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2866,7 +2866,7 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2907,7 +2907,7 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2947,7 +2947,7 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -2987,7 +2987,7 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -3027,7 +3027,7 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -3067,7 +3067,7 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.
@@ -3107,7 +3107,7 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+        Purpose: This entry documents behavior for `domain.fs.sort_spec_files` for the declared audience, including input expectations, output contracts, and failure modes.
 
         Inputs:
         - Inputs come from the declared contract and export bindings for this symbol.

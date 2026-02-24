@@ -65,7 +65,9 @@ Related docs/reference schemas:
   - `docs[].audience` default: `implementer`
   - `id` is optional metadata; when omitted, runners may emit deterministic
     report labels only (not schema/reference identity)
-  - optional entry keys: `description`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`, `examples`
+  - optional entry keys: `description`, `purpose`, `inputs`, `outputs`, `returns`,
+    `errors`, `usage_context`, `caveats`, `preconditions`, `side_effects`,
+    `examples`, `type`, `since`, `updated_at`, `tags`, `owners`, `links`
   - `docs[].type` enum: `overview|reference|howto|policy|contract|changelog`
   - explicit `docs[].id` values MUST be unique within each containing `docs[]` array scope
 

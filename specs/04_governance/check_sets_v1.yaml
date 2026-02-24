@@ -420,10 +420,53 @@ profiles:
           - chapter_count:
       - id: docs.audience_surfaces_coverage_no_placeholder_fragments
         kind: file_tokens
+        path: /docs/audience/implementer/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_operator
+        kind: file_tokens
+        path: /docs/audience/operator/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_integrator
+        kind: file_tokens
+        path: /docs/audience/integrator/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_maintainer
+        kind: file_tokens
         path: /docs/audience/maintainer/reference_index.md
         must_not_contain:
           - (none)
           - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_governance
+        kind: file_tokens
+        path: /docs/audience/governance/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_reviewer
+        kind: file_tokens
+        path: /docs/audience/reviewer/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments_auditor
+        kind: file_tokens
+        path: /docs/audience/auditor/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
+          - Capture actionable details on how this contract symbol behaves for the declared audience
       - id: docs.audience_canonical_tokens_only
         kind: file_tokens
         path: /specs/01_schema/registry/v1/core.yaml

@@ -23,6 +23,26 @@ Generator MUST collect docs metadata from:
 
 Non-canonical audience tokens are invalid for active v1 surfaces.
 
+## Structured docs rendering
+
+Generators and downstream renderers MUST treat nested structured `docs[]` entries as
+authoritative and render each available field into sectioned content:
+
+- `Purpose`: from `purpose` when present, otherwise from first descriptive sentence in
+  `description`.
+- `Inputs`: from `inputs` when present; may synthesize a deterministic fallback from
+  input parameter descriptions when `inputs` is omitted.
+- `Outputs`: from `returns` when present; otherwise from `outputs` when present.
+- `Errors`: from `errors` when present.
+- `Caveats`: from `caveats` when present.
+- `Usage context`: from `usage_context` when present.
+- `Preconditions`: from `preconditions` when present.
+- `Side effects`: from `side_effects` when present.
+
+If optional structured fields are omitted, generators may fallback to `description`
+and preserve existing section markers, but active quality checks should fail for
+entries that provide neither non-empty structured fields nor useful fallback text.
+
 ## Outputs
 
 For each audience, generator MUST emit:
