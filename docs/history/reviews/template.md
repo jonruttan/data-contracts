@@ -1,7 +1,0 @@
-# Template (Archive Pointer)
-
-Active canonical location:
-
-- `docs/history/reviews/templates/review_snapshot.md`
-
-This file is retained for historical reference only.

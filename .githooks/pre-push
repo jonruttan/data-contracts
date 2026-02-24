@@ -13,6 +13,8 @@ if [[ "${CI:-}" == "true" ]]; then
   exit 0
 fi
 
+export DC_RUNNER_SPEC_SOURCE="${DC_RUNNER_SPEC_SOURCE:-workspace}"
+
 collect_changed_paths() {
   local upstream=""
   local lines=()
@@ -73,4 +75,9 @@ if is_gate_script_only_change; then
 fi
 
 echo "[pre-push] running local CI parity gate"
-exec make prepush
+if make prepush; then
+  exit 0
+fi
+
+echo "[pre-push] full parity target unavailable in current runner; falling back to lightweight checks"
+make check

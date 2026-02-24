@@ -19,6 +19,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/05_libraries/domain/process_core.spec.md`
 - `/specs/05_libraries/domain/repo_core.spec.md`
 - `/specs/05_libraries/domain/artifact_core.spec.md`
+- `/specs/05_libraries/domain/terminal_prompt.spec.md`
 - `/specs/05_libraries/domain/contract_set_core.spec.md`
 
 ## Exported Symbols
@@ -105,6 +106,7 @@ Canonical domain index for executable specs in this subtree.
 - `domain.repo.walk_matching` (/specs/05_libraries/domain/repo_core.spec.md)
 - `domain.artifact.write_yaml` (/specs/05_libraries/domain/artifact_core.spec.md)
 - `domain.artifact.append_text` (/specs/05_libraries/domain/artifact_core.spec.md)
+- `domain.terminal.prompt` (/specs/05_libraries/domain/terminal_prompt.spec.md)
 - `domain.contract_set.id` (/specs/05_libraries/domain/contract_set_core.spec.md)
 - `domain.contract_set.depends_on` (/specs/05_libraries/domain/contract_set_core.spec.md)
 - `domain.contract_set.include_paths` (/specs/05_libraries/domain/contract_set_core.spec.md)
