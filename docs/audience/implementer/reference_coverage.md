@@ -2,4 +2,4 @@
 
 - audience: `implementer`
 - chapter_count: `23`
-- source_digest_sha256: `db061eb0ac59c8556415ad9d483562dcde5e6b375566d37c2e6289dd56081dc9`
+- source_digest_sha256: `0672b06d385775a2c6f77367d0987cc38c802e4121845aa944063663709df2ab`

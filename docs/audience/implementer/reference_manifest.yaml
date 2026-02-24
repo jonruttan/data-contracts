@@ -30,7 +30,7 @@ chapters:
   - path: /specs/05_libraries/domain/os_core.spec.md
     title: os_core.spec.md
   - path: /specs/05_libraries/domain/path_core.spec.md
-    title: path_core.spec.md
+    title: domain/path_core.spec.md
   - path: /specs/05_libraries/domain/php_core.spec.md
     title: php_core.spec.md
   - path: /specs/05_libraries/domain/process_core.spec.md
@@ -42,7 +42,7 @@ chapters:
   - path: /specs/05_libraries/domain/yaml_core.spec.md
     title: yaml_core.spec.md
   - path: /specs/05_libraries/path/path_core.spec.md
-    title: path_core.spec.md
+    title: path/path_core.spec.md
   - path: /specs/05_libraries/policy/policy_core.spec.md
     title: policy_core.spec.md
   - path: /specs/05_libraries/policy/policy_metrics.spec.md

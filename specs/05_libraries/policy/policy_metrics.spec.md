@@ -1,6 +1,6 @@
 ```yaml contract-spec
 spec_version: 1
-schema_ref: /specs/01_schema/schema_v1.md
+schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
@@ -9,18 +9,18 @@ harness:
       profile: text.file
       config: {}
     use:
-    - ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
+    - ref: "#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE"
       as: lib_non_decrease
       symbols:
       - policy.metric_non_decrease
-    - ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
+    - ref: "#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE"
       as: lib_non_increase
       symbols:
       - policy.metric_non_increase
     exports:
     - as: policy.metric_non_increase
       from: assert.function
-      path: /__export__policy.metric_non_increase
+      path: "/__export__policy.metric_non_increase"
       params:
       - subject
       - field
@@ -32,22 +32,241 @@ harness:
         summary: Contract export for `policy.metric_non_increase`.
         audience: implementer
         status: active
-        description: "Auto-generated metadata stub. Replace with authored reference\
-          \ text.\n\nDocumentation metadata:\n- examples[]: title:\
-          \ Basic usage\ninput:\n  subject: \"<subject>\"\n  field: \"<field>\"\n\
-          \  baseline_field: \"<baseline_field>\"\n  epsilon: \"<epsilon>\"\nexpected:\
-          \ \"<result>\"\nnotes: Replace with a concrete scenario.\n- params: - name:\
-          \ subject\n  type: any\n  required: true\n  description: Input parameter\
-          \ `subject`.\n- name: field\n  type: any\n  required: true\n  description:\
-          \ Input parameter `field`.\n- name: baseline_field\n  type: any\n  required:\
-          \ true\n  description: Input parameter `baseline_field`.\n- name: epsilon\n\
-          \  type: any\n  required: true\n  description: Input parameter `epsilon`.\n\
-          - returns: type: any\ndescription: Result payload for this symbol.\\ n-\
-          \ errors: - code: SCHEMA_ERROR\n  when: Input payload does not satisfy contract\
-          \ shape requirements.\n  category: schema\n- portability: python: true\n\
-          php: true\nrust: true\nnotes: Confirm per-runtime behavior and caveats."
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for implementation work, local debugging, and runner-side behavior analysis.
         since: v1
-contracts:
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for implementation work, local debugging, and runner-side behavior
+          analysis.
+      - id: policy.metric_non_increase.doc.1.operator
+        summary: Contract export for `policy.metric_non_increase`. (operator)
+        audience: operator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for observability, runbook readiness, and incident response.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for observability, runbook readiness, and incident response.
+      - id: policy.metric_non_increase.doc.1.integrator
+        summary: Contract export for `policy.metric_non_increase`. (integrator)
+        audience: integrator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for composing this contract in pipelines, services, and toolchains.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      - id: policy.metric_non_increase.doc.1.maintainer
+        summary: Contract export for `policy.metric_non_increase`. (maintainer)
+        audience: maintainer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for versioning, changelogs, and stability planning.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for versioning, changelogs, and stability planning.
+      - id: policy.metric_non_increase.doc.1.governance
+        summary: Contract export for `policy.metric_non_increase`. (governance)
+        audience: governance
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for policy gating, approval review, and compliance checks.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for policy gating, approval review, and compliance checks.
+      - id: policy.metric_non_increase.doc.1.reviewer
+        summary: Contract export for `policy.metric_non_increase`. (reviewer)
+        audience: reviewer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this to verify correctness, completeness, and release readiness.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this to verify correctness, completeness, and release readiness.
+      - id: policy.metric_non_increase.doc.1.auditor
+        summary: Contract export for `policy.metric_non_increase`. (auditor)
+        audience: auditor
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this as documented evidence for audit and policy review.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this as documented evidence for audit and policy review.
   clauses:
   - id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
     title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
@@ -55,19 +274,283 @@ contracts:
     - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - policy
       id: policy.policy.metrics
       module: policy
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - policy
-    type: contract.export
+      id: policy.policy.metrics.operator
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.integrator
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.maintainer
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.governance
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.reviewer
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.auditor
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
     asserts:
       checks:
       - id: __export__policy.metric_non_decrease
@@ -87,19 +570,283 @@ contracts:
     - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - policy
       id: policy.policy.metrics
       module: policy
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - policy
-    type: contract.export
+      id: policy.policy.metrics.operator
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.integrator
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.maintainer
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.governance
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.reviewer
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - policy
+      id: policy.policy.metrics.auditor
+      module: policy
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
     asserts:
       checks:
       - id: __export__policy.metric_non_increase

@@ -1,6 +1,6 @@
 ```yaml contract-spec
 spec_version: 1
-schema_ref: /specs/01_schema/schema_v1.md
+schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
@@ -8,7 +8,7 @@ harness:
     exports:
     - as: domain.markdown.tokens_all_present
       from: assert.function
-      path: /__export__domain.markdown.tokens_all_present
+      path: "/__export__domain.markdown.tokens_all_present"
       params:
       - subject
       - tokens
@@ -18,19 +18,241 @@ harness:
         summary: Contract export for `domain.markdown.tokens_all_present`.
         audience: implementer
         status: active
-        description: "Auto-generated metadata stub. Replace with authored reference\
-          \ text.\n\nDocumentation metadata:\n- examples[]: title:\
-          \ Basic usage\ninput:\n  subject: \"<subject>\"\n  tokens: \"<tokens>\"\n\
-          expected: \"<result>\"\nnotes: Replace with a concrete scenario.\n- params:\
-          \ - name: subject\n  type: any\n  required: true\n  description: Input parameter\
-          \ `subject`.\n- name: tokens\n  type: any\n  required: true\n  description:\
-          \ Input parameter `tokens`.\n- returns: type: any\ndescription: Result payload\
-          \ for this symbol.\n- errors: - code: SCHEMA_ERROR\n  when: Input payload\
-          \ does not satisfy contract shape requirements.\n  category: schema\n- portability:\
-          \ python: true\nphp: true\nrust: true\\ nnotes: Confirm per-runtime behavior\
-          \ and caveats."
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for implementation work, local debugging, and runner-side behavior analysis.
         since: v1
-contracts:
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for implementation work, local debugging, and runner-side behavior
+          analysis.
+      - id: domain.markdown.tokens_all_present.doc.1.operator
+        summary: Contract export for `domain.markdown.tokens_all_present`. (operator)
+        audience: operator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for observability, runbook readiness, and incident response.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for observability, runbook readiness, and incident response.
+      - id: domain.markdown.tokens_all_present.doc.1.integrator
+        summary: Contract export for `domain.markdown.tokens_all_present`. (integrator)
+        audience: integrator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for composing this contract in pipelines, services, and toolchains.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      - id: domain.markdown.tokens_all_present.doc.1.maintainer
+        summary: Contract export for `domain.markdown.tokens_all_present`. (maintainer)
+        audience: maintainer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for versioning, changelogs, and stability planning.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for versioning, changelogs, and stability planning.
+      - id: domain.markdown.tokens_all_present.doc.1.governance
+        summary: Contract export for `domain.markdown.tokens_all_present`. (governance)
+        audience: governance
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for policy gating, approval review, and compliance checks.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for policy gating, approval review, and compliance checks.
+      - id: domain.markdown.tokens_all_present.doc.1.reviewer
+        summary: Contract export for `domain.markdown.tokens_all_present`. (reviewer)
+        audience: reviewer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this to verify correctness, completeness, and release readiness.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this to verify correctness, completeness, and release readiness.
+      - id: domain.markdown.tokens_all_present.doc.1.auditor
+        summary: Contract export for `domain.markdown.tokens_all_present`. (auditor)
+        audience: auditor
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this as documented evidence for audit and policy review.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this as documented evidence for audit and policy review.
   clauses:
   - id: LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING
     title: 'markdown projection helper functions: domain.markdown.has_heading'
@@ -38,19 +260,271 @@ contracts:
     - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.has_heading
         assert:
@@ -78,7 +552,7 @@ contracts:
                 - std.collection.append:
                   - var: heading
                   - lit:
-                    - '# '
+                    - "# "
                 - ''
             - std.logic.or:
               - std.string.contains:
@@ -89,7 +563,7 @@ contracts:
                   - std.collection.append:
                     - var: heading
                     - lit:
-                      - '## '
+                      - "## "
                   - ''
               - std.logic.or:
                 - std.string.contains:
@@ -100,7 +574,7 @@ contracts:
                     - std.collection.append:
                       - var: heading
                       - lit:
-                        - '### '
+                        - "### "
                     - ''
                 - std.logic.or:
                   - std.string.contains:
@@ -111,7 +585,7 @@ contracts:
                       - std.collection.append:
                         - var: heading
                         - lit:
-                          - '#### '
+                          - "#### "
                       - ''
                   - std.logic.or:
                     - std.string.contains:
@@ -122,7 +596,7 @@ contracts:
                         - std.collection.append:
                           - var: heading
                           - lit:
-                            - '##### '
+                            - "##### "
                         - ''
                     - std.string.contains:
                       - call:
@@ -132,7 +606,7 @@ contracts:
                         - std.collection.append:
                           - var: heading
                           - lit:
-                            - '###### '
+                            - "###### "
                         - ''
       - id: __export__markdown._text
         assert:
@@ -203,6 +677,18 @@ contracts:
               - var: markdown._context
               - var: subject
             - token_dependencies
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS
     title: 'markdown projection helper functions: domain.markdown.heading_level_exists'
     docs:
@@ -210,19 +696,271 @@ contracts:
         `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for
+        `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.heading_level_exists
         assert:
@@ -247,7 +985,7 @@ contracts:
               - call:
                 - var: markdown._text
                 - var: subject
-              - (?m)^#\s+
+              - "(?m)^#\\s+"
             - if:
               - std.logic.eq:
                 - var: level
@@ -256,7 +994,7 @@ contracts:
                 - call:
                   - var: markdown._text
                   - var: subject
-                - (?m)^##\s+
+                - "(?m)^##\\s+"
               - if:
                 - std.logic.eq:
                   - var: level
@@ -265,7 +1003,7 @@ contracts:
                   - call:
                     - var: markdown._text
                     - var: subject
-                  - (?m)^###\s+
+                  - "(?m)^###\\s+"
                 - if:
                   - std.logic.eq:
                     - var: level
@@ -274,7 +1012,7 @@ contracts:
                     - call:
                       - var: markdown._text
                       - var: subject
-                    - (?m)^####\s+
+                    - "(?m)^####\\s+"
                   - if:
                     - std.logic.eq:
                       - var: level
@@ -283,7 +1021,7 @@ contracts:
                       - call:
                         - var: markdown._text
                         - var: subject
-                      - (?m)^#####\s+
+                      - "(?m)^#####\\s+"
                     - if:
                       - std.logic.eq:
                         - var: level
@@ -292,8 +1030,20 @@ contracts:
                         - call:
                           - var: markdown._text
                           - var: subject
-                        - (?m)^######\s+
+                        - "(?m)^######\\s+"
                       - false
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID
     title: 'markdown projection helper functions: domain.markdown.section_order_valid'
     docs:
@@ -301,19 +1051,271 @@ contracts:
         `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for
+        `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.section_order_valid
         assert:
@@ -358,6 +1360,18 @@ contracts:
                   - std.object.get:
                     - var: headings
                     - 0
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT
     title: 'markdown projection helper functions: domain.markdown.required_sections_present'
     docs:
@@ -365,19 +1379,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.required_sections_present
         assert:
@@ -390,6 +1656,18 @@ contracts:
                 - var: subject
                 - var: heading
             - var: headings
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE
     title: 'markdown projection helper functions: domain.markdown.link_targets_all_resolve'
     docs:
@@ -397,19 +1675,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.link_targets_all_resolve
         assert:
@@ -425,25 +1955,289 @@ contracts:
             - call:
               - var: markdown._links
               - var: subject
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS
     title: 'markdown projection helper functions: domain.markdown.has_broken_links'
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.has_broken_links
         assert:
@@ -451,6 +2245,18 @@ contracts:
           - call:
             - var: domain.markdown.link_targets_all_resolve
             - var: subject
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE
     title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence'
     docs:
@@ -458,19 +2264,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.has_yaml_spec_test_fence
         assert:
@@ -479,12 +2537,24 @@ contracts:
             - call:
               - var: markdown._text
               - var: subject
-            - '```yaml contract-spec'
+            - "```yaml contract-spec"
           - std.string.contains:
             - call:
               - var: markdown._text
               - var: subject
-            - ~~~yaml contract-spec
+            - "~~~yaml contract-spec"
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS
     title: 'markdown projection helper functions: domain.markdown.code_fence_language_exists'
     docs:
@@ -492,19 +2562,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.code_fence_language_exists
         assert:
@@ -517,7 +2839,7 @@ contracts:
               - std.collection.append:
                 - var: language
                 - lit:
-                  - '```'
+                  - "```"
               - ''
           - std.string.contains:
             - call:
@@ -527,27 +2849,291 @@ contracts:
               - std.collection.append:
                 - var: language
                 - lit:
-                  - ~~~
+                  - "~~~"
               - ''
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT
     title: 'markdown projection helper functions: domain.markdown.token_present'
     docs:
     - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.token_present
         assert:
@@ -562,6 +3148,18 @@ contracts:
               - var: markdown._text
               - var: subject
             - var: token
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT
     title: 'markdown projection helper functions: domain.markdown.tokens_all_present'
     docs:
@@ -569,19 +3167,271 @@ contracts:
         `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for
+        `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.tokens_all_present
         assert:
@@ -594,6 +3444,18 @@ contracts:
                 - var: subject
                 - var: token
             - var: tokens
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE
     title: 'markdown projection helper functions: domain.markdown.token_ownership_unique'
     docs:
@@ -601,19 +3463,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.token_ownership_unique
         assert:
@@ -629,6 +3743,18 @@ contracts:
               - call:
                 - var: markdown._token_owners
                 - var: subject
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED
     title: 'markdown projection helper functions: domain.markdown.token_dependencies_resolved'
     docs:
@@ -636,19 +3762,271 @@ contracts:
         for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.markdown.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.markdown.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED`
+        for `contract.export`. (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.markdown.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.markdown.token_dependencies_resolved
         assert:
@@ -664,6 +4042,18 @@ contracts:
             - call:
               - var: markdown._token_dependencies
               - var: subject
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
 adapters:
 - type: beta.exports_as_domain_markdown_has_heading_from_assert_function_path_export_domain_markdown_has_heading_params_subject_heading_required_true_docs_id_domain_markdown_has_heading_doc_1_summary_contract_export_for_domain_markdown_has_heading_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_n_heading_heading_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_name_heading_n_type_any_n_required_true_n_description_input_parameter_heading_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_text_from_assert_function_path_export_markdown_text_params_subject_required_true_docs_id_markdown_text_doc_1_summary_contract_export_for_markdown_text_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_context_from_assert_function_path_export_markdown_context_params_subject_required_true_docs_id_markdown_context_doc_1_summary_contract_export_for_markdown_context_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_headings_from_assert_function_path_export_markdown_headings_params_subject_required_true_docs_id_markdown_headings_doc_1_summary_contract_export_for_markdown_headings_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_links_from_assert_function_path_export_markdown_links_params_subject_required_true_docs_id_markdown_links_doc_1_summary_contract_export_for_markdown_links_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_tokens_map_from_assert_function_path_export_markdown_tokens_map_params_subject_required_true_docs_id_markdown_tokens_map_doc_1_summary_contract_export_for_markdown_tokens_map_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_token_owners_from_assert_function_path_export_markdown_token_owners_params_subject_required_true_docs_id_markdown_token_owners_doc_1_summary_contract_export_for_markdown_token_owners_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1_as_markdown_token_dependencies_from_assert_function_path_export_markdown_token_dependencies_params_subject_required_true_docs_id_markdown_token_dependencies_doc_1_summary_contract_export_for_markdown_token_dependencies_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_subject_subject_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_subject_n_type_any_n_required_true_n_description_input_parameter_subject_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
   actions:

@@ -1,6 +1,6 @@
 ```yaml contract-spec
 spec_version: 1
-schema_ref: /specs/01_schema/schema_v1.md
+schema_ref: "/specs/01_schema/schema_v1.md"
 harness:
   type: unit.test
   profile: check
@@ -8,7 +8,7 @@ harness:
     exports:
     - as: domain.fs.sort_spec_files
       from: assert.function
-      path: /__export__domain.fs.sort_spec_files
+      path: "/__export__domain.fs.sort_spec_files"
       params:
       - paths
       required: true
@@ -17,91 +17,1095 @@ harness:
         summary: Contract export for `domain.fs.sort_spec_files`.
         audience: implementer
         status: active
-        description: "Auto-generated metadata stub. Replace with authored reference\
-          \ text.\n\nDocumentation metadata:\n- examples[]: title:\
-          \ Basic usage\ninput:\n  paths: \"<paths>\"\nexpected: \"<result>\"\\ nnotes:\
-          \ Replace with a concrete scenario.\n- params: - name: paths\n  type: any\n\
-          \  required: true\n  description: Input parameter `paths`.\n- returns: type:\
-          \ any\ndescription: Result payload for this symbol.\n- errors: - code: SCHEMA_ERROR\n\
-          \  when: Input payload does not satisfy contract shape requirements.\n \
-          \ category: schema\n- portability: python: true\nphp: true\nrust: true\\\
-          \ nnotes: Confirm per-runtime behavior and caveats."
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for implementation work, local debugging, and runner-side behavior analysis.
         since: v1
-contracts:
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for implementation work, local debugging, and runner-side behavior
+          analysis.
+      - id: domain.fs.sort_spec_files.doc.1.operator
+        summary: Contract export for `domain.fs.sort_spec_files`. (operator)
+        audience: operator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for observability, runbook readiness, and incident response.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for observability, runbook readiness, and incident response.
+      - id: domain.fs.sort_spec_files.doc.1.integrator
+        summary: Contract export for `domain.fs.sort_spec_files`. (integrator)
+        audience: integrator
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for composing this contract in pipelines, services, and toolchains.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      - id: domain.fs.sort_spec_files.doc.1.maintainer
+        summary: Contract export for `domain.fs.sort_spec_files`. (maintainer)
+        audience: maintainer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for versioning, changelogs, and stability planning.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for versioning, changelogs, and stability planning.
+      - id: domain.fs.sort_spec_files.doc.1.governance
+        summary: Contract export for `domain.fs.sort_spec_files`. (governance)
+        audience: governance
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this for policy gating, approval review, and compliance checks.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this for policy gating, approval review, and compliance checks.
+      - id: domain.fs.sort_spec_files.doc.1.reviewer
+        summary: Contract export for `domain.fs.sort_spec_files`. (reviewer)
+        audience: reviewer
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this to verify correctness, completeness, and release readiness.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this to verify correctness, completeness, and release readiness.
+      - id: domain.fs.sort_spec_files.doc.1.auditor
+        summary: Contract export for `domain.fs.sort_spec_files`. (auditor)
+        audience: auditor
+        status: active
+        description: |-
+          Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+          Inputs:
+          - Inputs come from the declared contract and export bindings for this symbol.
+          - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+          Returns:
+          - The assertion or helper return value produced by this symbol.
+
+          Errors/Caveats:
+          - Malformed inputs and shape mismatches are surfaced as validation failures.
+          - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+          - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+          Usage context:
+          - Use this as documented evidence for audit and policy review.
+        since: v1
+        inputs:
+        - Contract parameters and required case inputs associated with this docs-bearing
+          symbol.
+        - Any runtime symbols declared through harness/config bindings for the owning
+          execution path.
+        returns:
+        - Structured evaluation result as defined by the owning assert/export symbol.
+        errors:
+        - Validation failures for malformed inputs and invalid bindings.
+        - Runtime environment and policy compatibility errors.
+        usage_context:
+        - Use this as documented evidence for audit and policy review.
   clauses:
   - id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.is_docs_spec_file
         assert:
           std.logic.and:
           - ops.fs.path.within:
-            - /docs
+            - "/docs"
             - ops.fs.path.normalize:
               - var: path
           - std.string.ends_with:
             - ops.fs.path.normalize:
               - var: path
-            - .spec.md
+            - ".spec.md"
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.sort_spec_files
         assert:
           ops.fs.path.sort:
           - ops.fs.glob.filter:
             - var: paths
-            - '*.spec.md'
+            - "*.spec.md"
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.json_get_or_text
         assert:
@@ -110,24 +1114,288 @@ contracts:
             - var: json_text
           - var: path_segments
           - var: fallback
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.json_has_path_text
         assert:
@@ -135,48 +1403,576 @@ contracts:
           - ops.fs.json.parse:
             - var: json_text
           - var: path_segments
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.glob_any_spec_files
         assert:
           ops.fs.glob.any:
           - var: paths
-          - '*.spec.md'
+          - "*.spec.md"
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.file_ext_eq
         assert:
@@ -184,24 +1980,288 @@ contracts:
           - ops.fs.file.path:
             - var: meta
           - var: ext
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.json_get_text
         assert:
@@ -209,24 +2269,288 @@ contracts:
           - ops.fs.json.parse:
             - var: json_text
           - var: path_segments
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.json_path_eq_text
         assert:
@@ -236,54 +2560,594 @@ contracts:
             - var: json_text
             - var: path_segments
           - var: expected
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.glob_filter
         assert:
           ops.fs.glob.filter:
           - var: paths
           - var: pattern
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
   - id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
     docs:
     - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
       audience: implementer
       status: active
-      description: Auto-generated root doc metadata stub. Replace with authored reference
-        text.
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for implementation work, local debugging, and runner-side behavior analysis.
       since: v1
       tags:
-      - contract.export
-    library:
+      - domain
       id: domain.fs.core
       module: domain
       stability: alpha
       owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for implementation work, local debugging, and runner-side behavior
+        analysis.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (operator)
+      audience: operator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for observability, runbook readiness, and incident response.
+      since: v1
       tags:
       - domain
-    asserts:
+      id: domain.fs.core.operator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for observability, runbook readiness, and incident response.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (integrator)
+      audience: integrator
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for composing this contract in pipelines, services, and toolchains.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.integrator
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for composing this contract in pipelines, services, and toolchains.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (maintainer)
+      audience: maintainer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for versioning, changelogs, and stability planning.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.maintainer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for versioning, changelogs, and stability planning.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (governance)
+      audience: governance
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this for policy gating, approval review, and compliance checks.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.governance
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this for policy gating, approval review, and compliance checks.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (reviewer)
+      audience: reviewer
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this to verify correctness, completeness, and release readiness.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.reviewer
+      module: domain
+      stability: alpha
+      owner: data-contracts
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this to verify correctness, completeness, and release readiness.
+    - summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+        (auditor)
+      audience: auditor
+      status: active
+      description: |-
+        Purpose: Capture actionable details on how this contract symbol behaves for the declared audience.
+
+        Inputs:
+        - Inputs come from the declared contract and export bindings for this symbol.
+        - Runtime bindings and policy constraints are applied by the harness before evaluation.
+
+        Returns:
+        - The assertion or helper return value produced by this symbol.
+
+        Errors/Caveats:
+        - Malformed inputs and shape mismatches are surfaced as validation failures.
+        - Schema/runtime binding or environment mismatches are surfaced as runtime or validation failures.
+        - Policy and validation failures are surfaced through contract evaluation, including policy assertions.
+
+        Usage context:
+        - Use this as documented evidence for audit and policy review.
+      since: v1
+      tags:
+      - domain
+      id: domain.fs.core.auditor
+      module: domain
+      stability: alpha
+      owner: data-contracts
       checks:
       - id: __export__domain.fs.glob_all
         assert:
           ops.fs.glob.all:
           - var: paths
           - var: pattern
+      inputs:
+      - Contract parameters and required case inputs associated with this docs-bearing
+        symbol.
+      - Any runtime symbols declared through harness/config bindings for the owning
+        execution path.
+      returns:
+      - Structured evaluation result as defined by the owning assert/export symbol.
+      errors:
+      - Validation failures for malformed inputs and invalid bindings.
+      - Runtime environment and policy compatibility errors.
+      usage_context:
+      - Use this as documented evidence for audit and policy review.
 adapters:
 - type: beta.exports_as_domain_fs_is_docs_spec_file_from_assert_function_path_export_domain_fs_is_docs_spec_file_params_path_required_true_docs_id_domain_fs_is_docs_spec_file_doc_1_summary_contract_export_for_domain_fs_is_docs_spec_file_audience_spec_authors_status_active_description_auto_generated_metadata_stub_replace_with_authored_reference_text_n_nprior_doc_fields_migrated_to_description_n_examples_title_basic_usage_ninput_n_path_path_nexpected_result_nnotes_replace_with_a_concrete_scenario_n_params_name_path_n_type_any_n_required_true_n_description_input_parameter_path_n_returns_type_any_ndescription_result_payload_for_this_symbol_n_errors_code_schema_error_n_when_input_payload_does_not_satisfy_contract_shape_requirements_n_category_schema_n_portability_python_true_nphp_true_nrust_true_nnotes_confirm_per_runtime_behavior_and_caveats_since_v1
   actions:

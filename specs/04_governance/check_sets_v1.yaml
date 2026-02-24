@@ -339,18 +339,103 @@ profiles:
         must_contain:
           - version: 1
           - audience: implementer
-      - id: docs.audience_surfaces_synced
+      - id: docs.audience_surfaces_generated_operator
+        kind: file_tokens
+        path: /docs/audience/operator/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: operator
+      - id: docs.audience_surfaces_generated_integrator
+        kind: file_tokens
+        path: /docs/audience/integrator/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: integrator
+      - id: docs.audience_surfaces_generated_maintainer
+        kind: file_tokens
+        path: /docs/audience/maintainer/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: maintainer
+      - id: docs.audience_surfaces_generated_governance
         kind: file_tokens
         path: /docs/audience/governance/reference_manifest.yaml
         must_contain:
           - version: 1
           - audience: governance
+      - id: docs.audience_surfaces_generated_reviewer
+        kind: file_tokens
+        path: /docs/audience/reviewer/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: reviewer
+      - id: docs.audience_surfaces_generated_auditor
+        kind: file_tokens
+        path: /docs/audience/auditor/reference_manifest.yaml
+        must_contain:
+          - version: 1
+          - audience: auditor
+      - id: docs.audience_surfaces_synced
+        kind: file_tokens
+        path: /docs/audience/implementer/reference_coverage.md
+        must_contain:
+          - audience: implementer
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_operator
+        kind: file_tokens
+        path: /docs/audience/operator/reference_coverage.md
+        must_contain:
+          - audience: operator
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_integrator
+        kind: file_tokens
+        path: /docs/audience/integrator/reference_coverage.md
+        must_contain:
+          - audience: integrator
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_maintainer
+        kind: file_tokens
+        path: /docs/audience/maintainer/reference_coverage.md
+        must_contain:
+          - audience: maintainer
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_governance
+        kind: file_tokens
+        path: /docs/audience/governance/reference_coverage.md
+        must_contain:
+          - version: 1
+          - audience: governance
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_reviewer
+        kind: file_tokens
+        path: /docs/audience/reviewer/reference_coverage.md
+        must_contain:
+          - audience: reviewer
+          - chapter_count:
+      - id: docs.audience_surfaces_synced_auditor
+        kind: file_tokens
+        path: /docs/audience/auditor/reference_coverage.md
+        must_contain:
+          - audience: auditor
+          - chapter_count:
+      - id: docs.audience_surfaces_coverage_no_placeholder_fragments
+        kind: file_tokens
+        path: /docs/audience/maintainer/reference_index.md
+        must_not_contain:
+          - (none)
+          - TODO
       - id: docs.audience_canonical_tokens_only
         kind: file_tokens
-        path: /specs/00_core/docs_audience_migration_map.md
+        path: /specs/01_schema/registry/v1/core.yaml
         must_contain:
-          - spec-authors
+          - operator
+          - integrator
           - implementer
+          - maintainer
+          - governance
+          - reviewer
+          - auditor
+          - docs[].audience
       - id: governance.catalog_pipeline_chain_valid
         kind: file_tokens
         path: /specs/04_governance/cases/core/spec_core/runtime_governance_catalog_pipeline_chain.spec.md

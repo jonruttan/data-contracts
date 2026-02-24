@@ -1,5 +1,5 @@
 # Reference Coverage
 
 - audience: `auditor`
-- chapter_count: `0`
-- source_digest_sha256: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- chapter_count: `23`
+- source_digest_sha256: `0672b06d385775a2c6f77367d0987cc38c802e4121845aa944063663709df2ab`

@@ -2593,7 +2593,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - specs/04_governance/cases/core/project_docs/docs_generator_registry_valid.spec.md
   notes: Validates docs generator registry structure and required surfaces.
 - rule_id: DOCS_GENERATOR_ORCHESTRATOR_REQUIRED
@@ -2606,7 +2606,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - dc-runner
   - dc-runner-python
   - dc-runner-rust
@@ -2621,7 +2621,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - specs/04_governance/cases/core/project_docs/docs_generator_outputs_sync.spec.md
   notes: Hard-fails when any declared generated docs surface is stale.
 - rule_id: DOCS_GENERATED_SECTIONS_READ_ONLY
@@ -2634,7 +2634,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - specs/04_governance/cases/core/project_docs/docs_generated_sections_read_only.spec.md
   notes: Enforces generated marker boundaries for mixed manual/generated docs.
 - rule_id: DOCS_API_CATALOGS_GENERATED_AND_SYNCED
@@ -2737,7 +2737,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - dc-runner-python
   - specs/04_governance/cases/core/project_docs/docs_generator_outputs_sync.spec.md
   notes: Ensures docs generator execution emits deterministic report artifacts.
@@ -2835,7 +2835,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - scripts/docs_generate_all.py
+  - 'dc-runner docs generate'
   - specs/04_governance/cases/core/project_docs/docs_book_chapter_order_canonical.spec.md
   notes: Keeps generated references behind the single `99_generated_reference_index.md` entrypoint.
 - rule_id: DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED
