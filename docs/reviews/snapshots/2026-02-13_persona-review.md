@@ -97,4 +97,4 @@ Runner lane: governance
 ## Raw Output
 
 Rendered snapshot content is documented as part of the discovery workflow and kept
-compatible with the canonical review snapshot contract.
+aligned to the canonical review snapshot contract.
