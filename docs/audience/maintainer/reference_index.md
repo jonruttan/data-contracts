@@ -210,3 +210,15 @@
 - `schema_case_validation.doc.9.1.maintainer` -> [/specs/03_conformance/cases/core/schema_case_validation.spec.md](/specs/03_conformance/cases/core/schema_case_validation.spec.md)
   - schema registry assertions yaml input (maintainer)
 
+
+## `std.string.contains`
+- `std.string.contains.doc.1.maintainer` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Track substring behavior through function lifecycle changes.
+
+## `std.string.starts_with`
+- `std.string.starts_with.doc.1.maintainer` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Maintain stable prefix behavior across version upgrades.
+
+## `std.string.ends_with`
+- `std.string.ends_with.doc.1.maintainer` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Monitor suffix behavior through lifecycle changes.

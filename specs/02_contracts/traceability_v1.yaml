@@ -3007,7 +3007,7 @@ links:
   unit_test_refs:
   - tests/test_generate_spec_lang_reference_docgen_unit.py
   implementation_refs:
-  - scripts/generate_spec_lang_builtin_catalog.py
+  - specs/05_libraries/domain/stdlib_string_reference.spec.md
   - docs/book/99_generated_reference_index.md
   - docs/book/99_generated_reference_index.md
   notes: Generated namespace chapter payloads include semantic symbol docs.
@@ -3021,7 +3021,7 @@ links:
   unit_test_refs:
   - tests/test_generate_spec_lang_reference_docgen_unit.py
   implementation_refs:
-  - scripts/generate_spec_lang_builtin_catalog.py
+  - specs/05_libraries/domain/stdlib_string_reference.spec.md
   notes: Each symbol includes deterministic examples.
 - rule_id: DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED
   policy_ref: specs/02_contracts/policy_v1.yaml#DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED

@@ -210,3 +210,15 @@
 - `schema_case_validation.doc.9.1.governance` -> [/specs/03_conformance/cases/core/schema_case_validation.spec.md](/specs/03_conformance/cases/core/schema_case_validation.spec.md)
   - schema registry assertions yaml input (governance)
 
+
+## `std.string.contains`
+- `std.string.contains.doc.1.governance` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Use deterministic predicate semantics for controls and policy gates.
+
+## `std.string.starts_with`
+- `std.string.starts_with.doc.1.governance` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Use prefix checks in policy controls requiring deterministic matching.
+
+## `std.string.ends_with`
+- `std.string.ends_with.doc.1.governance` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Use suffix checks in policy controls requiring deterministic matching.

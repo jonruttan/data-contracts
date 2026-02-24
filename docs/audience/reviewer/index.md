@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this to verify correctness, completeness, and release readiness.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.reviewer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Verify exact text-match behavior before release.
+- Description:
+  Purpose: Review substring predicate behavior and edge cases.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - reviewer
+
+### std.string.starts_with.doc.1.reviewer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Verify boundary and empty-prefix behavior.
+- Description:
+  Purpose: Review prefix predicate behavior with boundary and empty-prefix cases.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.reviewer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Verify boundary behavior for suffix matching.
+- Description:
+  Purpose: Review suffix predicate boundary conditions and failure modes.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.

@@ -210,3 +210,15 @@
 - `schema_case_validation.doc.9.1.integrator` -> [/specs/03_conformance/cases/core/schema_case_validation.spec.md](/specs/03_conformance/cases/core/schema_case_validation.spec.md)
   - schema registry assertions yaml input (integrator)
 
+
+## `std.string.contains`
+- `std.string.contains.doc.1.integrator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Compose text-matching predicates for external integrations.
+
+## `std.string.starts_with`
+- `std.string.starts_with.doc.1.integrator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Compose prefix matching in integration chains.
+
+## `std.string.ends_with`
+- `std.string.ends_with.doc.1.integrator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Include suffix checks in interoperable integration logic.

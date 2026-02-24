@@ -210,3 +210,15 @@
 - `schema_case_validation.doc.9.1.operator` -> [/specs/03_conformance/cases/core/schema_case_validation.spec.md](/specs/03_conformance/cases/core/schema_case_validation.spec.md)
   - schema registry assertions yaml input (operator)
 
+
+## `std.string.contains`
+- `std.string.contains.doc.1.operator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Route operational checks using substring membership.
+
+## `std.string.starts_with`
+- `std.string.starts_with.doc.1.operator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Use prefix checks to route structured operations.
+
+## `std.string.ends_with`
+- `std.string.ends_with.doc.1.operator` -> [/specs/05_libraries/domain/stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+  - Route operations by deterministic suffix checks.

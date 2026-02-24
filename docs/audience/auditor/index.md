@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this as documented evidence for audit and policy review.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.auditor
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Evidence-ready substring checks for audit records.
+- Description:
+  Purpose: Use this predicate output as audit evidence in evidence trails.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - auditor
+
+### std.string.starts_with.doc.1.auditor
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Auditable prefix predicate for control evidence.
+- Description:
+  Purpose: Use deterministic prefix decisions to support compliance evidence.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.auditor
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Audit-ready suffix checks for compliance tooling.
+- Description:
+  Purpose: Use deterministic suffix decisions as compliance evidence.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.

@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this for versioning, changelogs, and stability planning.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.maintainer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Track substring behavior through function lifecycle changes.
+- Description:
+  Purpose: Use this symbol for maintaining deterministic semantics during upgrades.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - maintainer
+
+### std.string.starts_with.doc.1.maintainer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Maintain stable prefix behavior across version upgrades.
+- Description:
+  Purpose: Use this predicate while maintaining compatibility expectations for prefix checks.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.maintainer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Monitor suffix behavior through lifecycle changes.
+- Description:
+  Purpose: Use this predicate while monitoring release impact of trailing-match behavior.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.

@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this for composing this contract in pipelines, services, and toolchains.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.integrator
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Compose text-matching predicates for external integrations.
+- Description:
+  Purpose: Use substring checks when composing cross-service function chains.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - integrator
+
+### std.string.starts_with.doc.1.integrator
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Compose prefix matching in integration chains.
+- Description:
+  Purpose: Use prefix checks as stable building blocks in integration predicates.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.integrator
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Include suffix checks in interoperable integration logic.
+- Description:
+  Purpose: Use suffix checks for interoperability and protocol conformance checks.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.

@@ -3594,7 +3594,7 @@ rules:
   risk_if_violated: Users must source-dive implementation code to understand operators.
   references:
   - specs/04_governance/cases/core/project_docs/docs_stdlib_symbol_docs_complete.spec.md
-  - scripts/generate_spec_lang_builtin_catalog.py
+  - docs/book/93_appendix_spec_lang_builtin_catalog.md
 - id: DOCS_STDLIB_EXAMPLES_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3609,7 +3609,7 @@ rules:
   risk_if_violated: Operator usage remains opaque and error-prone.
   references:
   - specs/04_governance/cases/core/project_docs/docs_stdlib_examples_complete.spec.md
-  - scripts/generate_spec_lang_builtin_catalog.py
+  - docs/book/93_appendix_spec_lang_builtin_catalog.md
 - id: DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED
   introduced_in: v1
   scope: governance

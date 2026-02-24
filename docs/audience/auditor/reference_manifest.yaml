@@ -39,6 +39,8 @@ chapters:
     title: python_core.spec.md
   - path: /specs/05_libraries/domain/repo_core.spec.md
     title: repo_core.spec.md
+  - path: /specs/05_libraries/domain/stdlib_string_reference.spec.md
+    title: domain/stdlib_string_reference.spec.md
   - path: /specs/05_libraries/domain/yaml_core.spec.md
     title: yaml_core.spec.md
   - path: /specs/05_libraries/path/path_core.spec.md

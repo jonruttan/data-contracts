@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this for implementation work, local debugging, and runner-side behavior analysis.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.implementer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Check whether a string contains a given substring for implementer.
+- Description:
+  Purpose: Route substring predicate results to implementation and runtime logic.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - implementer
+
+### std.string.starts_with.doc.1.implementer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Check whether a string starts with a prefix for implementer.
+- Description:
+  Purpose: Evaluate prefix predicate for deterministic implementation behavior.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.implementer
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Check whether a string ends with a suffix for implementer.
+- Description:
+  Purpose: Evaluate suffix predicate for deterministic implementation behavior.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.

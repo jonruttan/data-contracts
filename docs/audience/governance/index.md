@@ -1117,3 +1117,62 @@ Audience-targeted documentation entries are rendered from executable spec metada
   Usage context:
   - Use this for policy gating, approval review, and compliance checks.
 
+
+
+## [stdlib_string_reference.spec.md](/specs/05_libraries/domain/stdlib_string_reference.spec.md)
+### std.string.contains.doc.1.governance
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Use deterministic predicate semantics for controls and policy gates.
+- Description:
+  Purpose: Use this check to support policy controls and governance gates.
+
+  Inputs:
+  - haystack: Input text being searched.
+  - needle: Search token. Empty token is treated as present.
+
+  Returns:
+  - Boolean true when token exists, false otherwise.
+
+  Errors/Caveats:
+  - Type or schema validation failures before predicate execution.
+
+  Usage context:
+  - governance
+
+### std.string.starts_with.doc.1.governance
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Use prefix checks in policy controls requiring deterministic matching.
+- Description:
+  Purpose: Use prefix matching as auditable policy input in control surfaces.
+
+  Inputs:
+  - value: Candidate text.
+  - prefix: Prefix token.
+
+  Returns:
+  - Boolean true when the value starts with the prefix.
+
+  Errors/Caveats:
+  - Type mismatch or arity errors.
+
+  Usage context:
+  - Prefix membership checks in text-heavy workflows.
+
+### std.string.ends_with.doc.1.governance
+- Location: `/specs/05_libraries/domain/stdlib_string_reference.spec.md`
+- Summary: Use suffix checks in policy controls requiring deterministic matching.
+- Description:
+  Purpose: Use suffix matching as auditable control output for governance logic.
+
+  Inputs:
+  - value: Candidate text.
+  - suffix: Suffix token.
+
+  Returns:
+  - Boolean true when the value ends with the suffix.
+
+  Errors/Caveats:
+  - Type mismatch or shape validation failures.
+
+  Usage context:
+  - Trailing token checks for operational or policy routing.
