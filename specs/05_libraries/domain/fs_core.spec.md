@@ -18,14 +18,14 @@ harness:
         audience: implementer
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -60,14 +60,14 @@ harness:
         audience: operator
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -101,14 +101,14 @@ harness:
         audience: integrator
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -142,14 +142,14 @@ harness:
         audience: maintainer
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -183,14 +183,14 @@ harness:
         audience: governance
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -224,14 +224,14 @@ harness:
         audience: reviewer
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -265,14 +265,14 @@ harness:
         audience: auditor
         status: active
         description: |-
-          Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+          Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
           Inputs:
-          - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+          - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
           - Runtime bindings and policy constraints are applied by the harness before execution. 
 
           Returns:
-          - Returns the assertion or helper value produced by this symbol after all constraints apply.
+          - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
           Errors/Caveats:
           - Input/shape mismatches are surfaced as validation failures. 
@@ -308,14 +308,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -349,14 +349,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -389,14 +389,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -429,14 +429,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -469,14 +469,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -509,14 +509,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -549,14 +549,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -602,14 +602,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -643,14 +643,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -683,14 +683,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -723,14 +723,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -763,14 +763,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -803,14 +803,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -843,14 +843,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -891,14 +891,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -932,14 +932,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -972,14 +972,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1012,14 +1012,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1052,14 +1052,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1092,14 +1092,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1132,14 +1132,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1181,14 +1181,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1222,14 +1222,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1262,14 +1262,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1302,14 +1302,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1342,14 +1342,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1382,14 +1382,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1422,14 +1422,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1470,14 +1470,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1511,14 +1511,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1551,14 +1551,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1591,14 +1591,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1631,14 +1631,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1671,14 +1671,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1711,14 +1711,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1758,14 +1758,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1799,14 +1799,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1839,14 +1839,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1879,14 +1879,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1919,14 +1919,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1959,14 +1959,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -1999,14 +1999,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2047,14 +2047,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2088,14 +2088,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2128,14 +2128,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2168,14 +2168,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2208,14 +2208,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2248,14 +2248,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2288,14 +2288,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2336,14 +2336,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2377,14 +2377,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2417,14 +2417,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2457,14 +2457,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2497,14 +2497,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2537,14 +2537,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2577,14 +2577,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2627,14 +2627,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2668,14 +2668,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2708,14 +2708,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2748,14 +2748,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2788,14 +2788,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2828,14 +2828,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2868,14 +2868,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2915,14 +2915,14 @@ harness:
       audience: implementer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2956,14 +2956,14 @@ harness:
       audience: operator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -2996,14 +2996,14 @@ harness:
       audience: integrator
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -3036,14 +3036,14 @@ harness:
       audience: maintainer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -3076,14 +3076,14 @@ harness:
       audience: governance
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -3116,14 +3116,14 @@ harness:
       audience: reviewer
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
@@ -3156,14 +3156,14 @@ harness:
       audience: auditor
       status: active
       description: |-
-        Purpose: Documents behavior of `domain.fs.sort_spec_files` for this audience, including expected inputs, return shape, failure modes, and practical use cases.
+        Purpose: Documents behavior for `domain.fs.sort_spec_files` for this audience, including input contract, output contract, and failure modes.
 
         Inputs:
-        - Inputs come from the owning contract declaration and required fixture inputs for this symbol.
+        - Inputs are the fixture inputs bound to this docs-bearing symbol as declared in the owning export or case entry.
         - Runtime bindings and policy constraints are applied by the harness before execution. 
 
         Returns:
-        - Returns the assertion or helper value produced by this symbol after all constraints apply.
+        - Returns the assertion/helper value emitted by this symbol after bindings and policy checks execute.
 
         Errors/Caveats:
         - Input/shape mismatches are surfaced as validation failures. 
