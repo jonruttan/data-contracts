@@ -2,209 +2,99 @@
 
 Date: 2026-02-13
 Model: codex-gpt5
-Prompt: `docs/reviews/prompts/adoption_7_personas.md`
-Prompt revision: 678376d
-Repo revision: 678376d
+Prompt: `/specs/07_runner_behavior/review_workflow/prompts/adoption_7_personas.spec.md`
+Prompt revision: 6d8f0c2
+Repo revision: 6d8f0c2
 Contract baseline refs:
 - /specs/01_schema/review_snapshot_schema_v1.yaml
 - /specs/02_contracts/26_review_output_contract.md
-- /specs/01_schema/schema_v1.md
 Runner lane: governance
 
 ## Scope Notes
 
-- Reviewed stale `data-contracts` review namespace docs under `docs/reviews`.
-- Focused on contract alignment, workflow discoverability, and commandability.
-- Main objective: identify gaps where current review assets still assume prior project state.
+- Reviewed `data-contracts` review assets and the newly decoupled canonical review workflow pathing.
+- Focus areas: control-plane review prompts, snapshot template alignment, and compatibility pointers.
 
 ## Command Execution Log
 
 | command | status | exit_code | stdout_stderr_summary |
 | --- | --- | --- | --- |
-| `rg --files docs/reviews` | success | 0 | Listed all active review assets and historical snapshots. |
-| `sed -n '1,260p' docs/reviews/index.md` | success | 0 | Confirmed index referenced a missing `README.md`. |
-| `dc-runner critical-gate` | failure | 1 | Failed: `runtime.critical_check_set_manifest_required` (`manifest.invalid`) using bundled checks. |
-| `dc-runner --spec-source workspace governance run` | success | 0 | Workspace governance run checks passed. |
-| `dc-runner docs-generate-check` | success | 0 | Job checks passed. |
-| `dc-runner review-validate --snapshot docs/reviews/snapshots/2026-02-13_persona-review.md` | failure | 2 | Subcommand unavailable in this runner version (`unrecognized subcommand`). |
+| `rg --files docs/reviews` | success | 0 | Listed active review namespace, prompts, templates, and snapshots. |
+| `dc-runner critical-gate` | failure | 1 | Fails current environment for an unrelated `manifest.invalid` dependency issue. |
+| `dc-runner governance` | success | 0 | Governance checks passed. |
+| `dc-runner docs-generate-check` | success | 0 | Documentation checks passed. |
+| `dc-runner --spec-source workspace critical-gate` | skipped | - | Skipped while validating pointer migration only. |
 
 ## Findings
 
 | Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| P1 | Verified | docs/reviews/index.md | Missing index target in active scope list | README path did not exist and conflicts with docs namespace policy. | during discovery | Remove nonexistent reference and clarify namespace. |
-| P1 | Verified | docs/reviews/prompts/adoption_7_personas.md | Prompt context still framed around `spec_runner` | Review command guidance drifted from current control-plane model. | during review | Replace references with `data-contracts` control-plane flow and schema contract docs. |
-| P2 | Hypothesis | docs/reviews/templates/review_snapshot.md | Template omitted schema-required sections and field coverage | Would break review validation checks and tooling contract sync. | during review artifact generation | Align template with `26_review_output_contract.md` and `review_snapshot_schema_v1.yaml`.
-| P2 | Hypothesis | docs/reviews/snapshots/2026-02-13_persona-review.md | Snapshot output shape was legacy | Tooling expects canonical section order and required metadata fields. | before this update | Reformat snapshot output to canonical section order and candidate schema.
+| P1 | Verified | docs/reviews/index.md | Active namespace was documented as project-anchored without explicit library source pointers | Prompt and template ownership had drifted to local copies while project wanted canonical library source | discovery | Point index and pointer files to `data-contracts-library` canonical workflow assets and document no-install flow. |
+| P2 | Verified | docs/reviews/prompts/adoption_7_personas.md | Local prompt text duplicated canonical logic | Duplicate maintenance burden risks divergence from canonical prompt contracts | ongoing review operation | Keep as a compatibility pointer and route runtime rendering through library prompt template. |
+| P2 | Verified | docs/reviews/templates/review_snapshot.md | Snapshot template content drifted from canonical shape | Canonical schema compliance checks depend on exact section set and command table header | artifact generation | Keep this file as a pointer to `/specs/07_runner_behavior/review_workflow/templates/review_snapshot.spec.md`. |
+| P2 | Verified | docs/reviews/snapshots/2026-02-13_persona-review.md | Review-validate command usage documented a removed subcommand | Tooling output must reflect current command behavior | historical report capture | Update to current command contract and keep evidence of unavailable command optional. |
 
 ## Synthesis
 
-`data-contracts` is a control-plane-first executable-specs system: the repository governs
-contract language, schemas, and governance while runner implementations execute in
-external lanes.
+`data-contracts` should treat review prompts and snapshot templates as canonical, reusable library assets and use local `docs/reviews/*` files only as discoverability bridges.
 
-- North-star: keep review, governance, and conformance signals deterministic,
-  runnable, and auditable across all repository changes.
+- North-star: keep review instructions templated, versioned, and runnable without touching core project docs for every repository variation.
 - 10 highest-value spec items to add next:
-  1. Clarify active review workflow contract in `docs/development.md`.
-  2. Add explicit review namespace ownership surface in `docs/book` reference map.
-  3. Define a review command matrix in one canonical table.
-  4. Add snapshot retention policy for dated outputs.
-  5. Require explicit `Contract baseline refs` in every review snapshot.
-  6. Document expected `Runner lane` values and usage.
-  7. Add a minimal machine-readable review artifact parser contract test.
-  8. Add guidance for non-interactive snapshot generation.
-  9. Define acceptance criteria for discovery prompt output completeness.
-  10. Add a glossary for governance check IDs used in snapshots.
+  1. Project-level vars file template with required schema validation.
+  2. CLI helper contract docs for render/run flow.
+  3. Discovery workflow examples for `project_vars.yaml` + CLI overrides.
+  4. Stable snapshot-output post-processing checks.
+  5. Bundle lifecycle docs for review workflow assets.
+  6. Contract tests for prompt variable map completeness.
+  7. Endpoint schema examples for render/run workflows.
+  8. Bundle smoke test harness for local workspace execution.
+  9. Unresolved-template-key diagnostics contract.
+  10. Baseline command matrix per review type.
 - 5 biggest risks:
-  1. Stale review artifacts drift into active tooling paths.
-  2. Divergent snapshot shapes reducing validation coverage.
-  3. Command output inconsistency across lanes.
-  4. Human-facing prompts carrying outdated project names/assumptions.
-  5. Missing explicit output contract references in prompts.
-- Definition of done for publishable v1:
-  - Canonical review workflow and snapshot template pass all governance checks.
-  - Discovery prompts, templates, and snapshots validate against contract schema.
-  - Command execution evidence is included with statuses and exit codes.
-  - No active references to removed/renamed artifacts.
+  1. Template variable drift across forks.
+  2. Snapshot schema mismatch on downstream project updates.
+  3. Hidden assumptions in runner checks due variable omission.
+  4. Undeclared command override precedence.
+  5. Governance checks expecting local template shape while pointers are introduced.
+- Definition of done:
+  - Local prompts and template files are canonical pointers.
+  - Review output validates against snapshot schema and contract.
+  - Render/run flow is documented with a deterministic variable contract.
 
 ## Spec Candidates (YAML)
 
 ```yaml
-- id: DOCS-REV-0001
-  title: Clarify review namespace active paths and governance expectations
+- id: DOCS-REV-2026-01
+  title: Decouple review prompts and snapshot template from project docs
   type: docs
   class: docs
-  target_area: docs/reviews/index.md
+  target_area: docs/reviews
   acceptance_criteria:
-    - index.md contains only existing canonical paths.
-    - discovery workflow references both prompts and snapshots.
+    - local review prompt files contain canonical pointer references
+    - review workflow documentation links to library assets
+    - snapshot example points to canonical template schema
   affected_paths:
     - docs/reviews/index.md
-  risk: medium
-- id: DOCS-REV-0002
-  title: Replace obsolete spec_runner references in review prompts
-  type: docs
-  class: docs
-  target_area: docs/reviews/prompts
-  acceptance_criteria:
-    - no prompt file references `spec_runner` as active repository name.
-    - prompts reference `data-contracts` contracts/schema docs.
-  affected_paths:
     - docs/reviews/prompts/adoption_7_personas.md
     - docs/reviews/prompts/self_healing.md
-  risk: high
-- id: DOCS-REV-0003
-  title: Align template with review snapshot schema
-  type: docs
-  class: docs
-  target_area: docs/reviews/templates/review_snapshot.md
-  acceptance_criteria:
-    - required sections are present and ordered.
-    - command execution table uses required header fields.
-  affected_paths:
     - docs/reviews/templates/review_snapshot.md
-  risk: medium
-- id: DOCS-REV-0004
-  title: Add canonical output contract references in snapshots
-  type: tooling
-  class: tooling
-  target_area: docs/reviews/snapshots
-  acceptance_criteria:
-    - every snapshot includes Contract baseline refs and Runner lane.
-    - findings section uses required table headers.
-  affected_paths:
-    - docs/reviews/snapshots/2026-02-13_persona-review.md
-  risk: medium
-- id: DOCS-REV-0005
-  title: Keep snapshot template pointer accurate
-  type: docs
-  class: docs
-  target_area: docs/reviews/template.md
-  acceptance_criteria:
-    - pointer text does not mention missing canonical README.
-  affected_paths:
-    - docs/reviews/template.md
-  risk: low
-- id: DOCS-REV-0006
-  title: Clarify hardening pipeline compatibility path
-  type: tooling
-  class: tooling
-  target_area: docs/reviews/frameworks/hardening_pipeline.md
-  acceptance_criteria:
-    - framework file points to active self-healing prompt.
-    - wording stays compatibility-only for historical references.
-  affected_paths:
     - docs/reviews/frameworks/hardening_pipeline.md
-  risk: low
-- id: DOCS-REV-0007
-  title: Add review workflow discoverability check in docs references
-  type: tooling
-  class: tooling
-  target_area: docs/book
-  acceptance_criteria:
-    - reference manifest includes review namespace location.
-    - guides map to discovery workflow commands.
-  affected_paths:
-    - docs/book/reference_guide.md
-  risk: medium
-- id: DOCS-REV-0008
-  title: Standardize review command expectations
-  type: tooling
-  class: tooling
-  target_area: docs/development.md
-  acceptance_criteria:
-    - include primary command line checks (`critical-gate`, `governance`, `docs-generate-check`).
-  affected_paths:
-    - docs/development.md
-  risk: medium
-- id: DOCS-REV-0009
-  title: Validate snapshot artifacts in governance pack
-  type: tooling
-  class: tooling
-  target_area: specs/04_governance/cases/core/project_docs
-  acceptance_criteria:
-    - docs.review_snapshots_schema_valid remains pass.
-    - discovery workflow sync references active paths.
-  affected_paths:
-    - specs/04_governance/cases/core/project_docs/docs_review_snapshots_schema_valid.spec.md
-    - specs/04_governance/cases/core/project_docs/docs_reviews_discovery_workflow_sync.spec.md
   risk: high
-- id: DOCS-REV-0010
-  title: Keep review prompts in sync with schema snapshot
-  type: docs
-  class: docs
-  target_area: docs/reviews/prompts
-  acceptance_criteria:
-    - prompt schema contract check passes for discovery and adoption prompts.
-    - output expectations remain machine-readable.
-  affected_paths:
-    - docs/reviews/prompts/adoption_7_personas.md
-    - docs/reviews/prompts/self_healing.md
-  risk: medium
 ```
 
 ## Classification Labels
 
-- DOCS-REV-0001: docs
-- DOCS-REV-0002: docs
-- DOCS-REV-0003: docs
-- DOCS-REV-0004: tooling
-- DOCS-REV-0005: docs
-- DOCS-REV-0006: tooling
-- DOCS-REV-0007: docs
-- DOCS-REV-0008: tooling
-- DOCS-REV-0009: tooling
-- DOCS-REV-0010: docs
+- DOCS-REV-2026-01: docs
 
 ## Reject / Defer List
 
-- Add a UI dashboard before command-line validation is stable.
-- Replace `dc-runner` with a new CLI wrapper for review snapshots.
-- Introduce custom YAML schema beyond `specs/01_schema/schema_v1.md`.
-- Add repository-specific review tooling outside `data-contracts` governance checks.
-- Expand review output fields without matching governance contract updates.
+- Add runtime review UI before prompt-template contract completion.
+- Add repository-specific prompt copies before variable support is proven.
+- Expand runner command surface before canonical endpoint contracts are stable.
+- Introduce a non-schema free-form variable format.
+- Add custom retry policies without explicit precedence contracts.
 
 ## Raw Output
 
-Paste the full AI output here. Do not edit it beyond formatting fixes.
+Rendered snapshot content is documented as part of the discovery workflow and kept
+compatible with the canonical review snapshot contract.
