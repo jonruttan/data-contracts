@@ -111,10 +111,10 @@ Mode semantics:
 ## Scaffold Source Contract
 
 - Canonical scaffold source is `jonruttan/data-contracts-bundles` release assets.
-- Canonical mode is bundle-identity based (`bundle_id` + `bundle_version`), not
-  raw URL based.
-- External URL mode is opt-in only and MUST require explicit
-  `--allow-external`.
+- Canonical mode is bundle-identity based (`bundle_id` + `bundle_version`) and
+  MUST be pinned by `/specs/00_core/bundle_version_contract_v1.yaml`.
+- External URL mode is non-canonical emergency fallback only and MUST require
+  explicit `--allow-external`.
 - Scaffold MUST verify bundle integrity before install and emit deterministic
   scaffold artifacts under `/.artifacts/`.
 - Scaffold materialization MUST be driven by

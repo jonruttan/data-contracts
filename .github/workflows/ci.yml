@@ -63,13 +63,143 @@ jobs:
       - name: Verify runner entrypoint compatibility
         run: |
           set -euo pipefail
-          ./scripts/ci_verify_runner_entrypoints.sh ".${{ steps.contract.outputs.entrypoint_manifest }}" "${{ steps.contract.outputs.binary_name }}"
+          manifest=".${{ steps.contract.outputs.entrypoint_manifest }}"
+          runner_bin="${{ steps.contract.outputs.binary_name }}"
+          mkdir -p .artifacts
+          out=".artifacts/runner-entrypoints.json"
+
+          "${runner_bin}" entrypoints list --format json > "$out"
+          expected_ids="$(sed -n 's/^  - id: //p' "$manifest")"
+          if [ -z "$expected_ids" ]; then
+            echo "ERROR: no expected entrypoint IDs found in $manifest"
+            exit 1
+          fi
+
+          missing=0
+          while IFS= read -r id; do
+            [ -z "$id" ] && continue
+            if ! grep -q "\"id\": \"${id}\"" "$out"; then
+              echo "ERROR: installed ${runner_bin} missing required entrypoint id: ${id}"
+              missing=1
+            fi
+          done <<EOF_IDS
+          ${expected_ids}
+          EOF_IDS
+
+          if [ "$missing" -ne 0 ]; then
+            echo "ERROR: installed ${runner_bin} is not compatible with current specs. Publish/update dc-runner-cli before running this CI."
+            exit 1
+          fi
+
+  bundle-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - runner-preflight
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify pinned canonical bundles
+        run: |
+          set -euo pipefail
+          contract="specs/00_core/bundle_version_contract_v1.yaml"
+          if [ ! -f "$contract" ]; then
+            echo "ERROR: bundle version contract not found: $contract"
+            exit 1
+          fi
+
+          repo="$(awk -F': *' '/^[[:space:]]+repo:/{print $2; exit}' "$contract" | tr -d '"')"
+          policy="$(awk -F': *' '/^[[:space:]]+on_unpublished_version:/{print $2; exit}' "$contract" | tr -d '"')"
+          if [ "$repo" != "jonruttan/data-contracts-bundles" ]; then
+            echo "ERROR: source.repo must be jonruttan/data-contracts-bundles"
+            exit 1
+          fi
+          if [ "$policy" != "hard_fail" ]; then
+            echo "ERROR: policy.on_unpublished_version must be hard_fail"
+            exit 1
+          fi
+
+          records="$(awk '
+          /^[[:space:]]*-[[:space:]]bundle_id:[[:space:]]*/ {
+            line=$0
+            sub(/^[[:space:]]*-[[:space:]]bundle_id:[[:space:]]*/, "", line)
+            gsub(/"/, "", line)
+            id=line
+          }
+          /^[[:space:]]*bundle_version:[[:space:]]*/ {
+            line=$0
+            sub(/^[[:space:]]*bundle_version:[[:space:]]*/, "", line)
+            gsub(/"/, "", line)
+            ver=line
+          }
+          /^[[:space:]]*required_payload_files:[[:space:]]*\[/ {
+            payload=$0
+            sub(/.*\[/, "", payload)
+            sub(/\].*/, "", payload)
+            gsub(/[[:space:]\"]/, "", payload)
+            if (id != "" && ver != "") {
+              print id "|" ver "|" payload
+              id=""; ver=""; payload=""
+            }
+          }
+          ' "$contract")"
+          if [ -z "$records" ]; then
+            echo "ERROR: no required bundle records parsed from $contract"
+            exit 1
+          fi
+
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+          while IFS='|' read -r bundle_id bundle_version payload_csv; do
+            [ -z "$bundle_id" ] && continue
+            if ! [[ "$bundle_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.+][A-Za-z0-9.-]+)?$ ]]; then
+              echo "ERROR: bundle_version must be semver for $bundle_id (got: $bundle_version)"
+              exit 1
+            fi
+
+            tag="v${bundle_version}"
+            asset="data-contract-bundle-${bundle_id}-v${bundle_version}.tar.gz"
+            sidecar="${asset}.sha256"
+            base_url="https://github.com/${repo}/releases/download/${tag}"
+            tar_path="${tmpdir}/${asset}"
+            sha_path="${tmpdir}/${sidecar}"
+
+            echo "verify bundle ${bundle_id}@${bundle_version}"
+            curl --fail --location --silent --show-error "${base_url}/${asset}" --output "$tar_path" || {
+              echo "ERROR: missing release asset ${asset}; publish required bundle version"
+              exit 1
+            }
+            curl --fail --location --silent --show-error "${base_url}/${sidecar}" --output "$sha_path" || {
+              echo "ERROR: missing release sidecar ${sidecar}; publish required bundle version"
+              exit 1
+            }
+            expected="$(awk '{print $1; exit}' "$sha_path")"
+            actual="$(shasum -a 256 "$tar_path" | awk '{print $1}')"
+            if [ "$expected" != "$actual" ]; then
+              echo "ERROR: checksum mismatch for ${asset}"
+              exit 1
+            fi
+
+            list_path="${tmpdir}/${bundle_id}.list"
+            tar -tzf "$tar_path" > "$list_path"
+            IFS=',' read -r -a payloads <<< "$payload_csv"
+            for payload in "${payloads[@]}"; do
+              [ -z "$payload" ] && continue
+              if ! grep -Eq "(^|\\./)${payload}$" "$list_path"; then
+                echo "ERROR: payload file ${payload} missing in ${asset}"
+                exit 1
+              fi
+            done
+          done <<< "$records"
 
   runner-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:
       - runner-preflight
+      - bundle-preflight
 
     steps:
       - name: Checkout
