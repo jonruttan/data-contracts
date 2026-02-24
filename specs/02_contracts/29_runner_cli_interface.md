@@ -118,9 +118,9 @@ Precedence:
 
 Mode semantics:
 
-- `bundled`: resolve from embedded pinned snapshot only
+- `bundled`: resolve from the highest verified local `core` bundle cache entry when available; fall back to embedded pinned snapshot if no valid `core` cache exists
 - `workspace`: resolve from local workspace only
-- `auto`: workspace first, bundled fallback
+- `auto`: workspace first, then bundled (`core` cache preferred when bundle mode is explicitly selected), then embedded fallback
 
 ## Spec State Command Surface
 
@@ -147,9 +147,9 @@ Runners MAY provide a stateful spec lifecycle for operator workflows:
 - `dc-runner specs prune --expired`
   - applies retention-policy-driven cleanup
 
-Default runtime behavior remains unchanged when operators do not explicitly invoke
-state commands; this model preserves current `bundled` and `workspace` source
-handling.
+Default runtime behavior remains unchanged for explicit `workspace` mode and non-stateful operations.
+`bundled` mode now treats a verified local `core` bundle cache as authoritative, with the
+embedded snapshot used as a bootstrap/untrusted-fallback path when cache execution is not possible.
 
 ## Scaffold Source Contract
 
