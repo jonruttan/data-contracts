@@ -4471,4 +4471,4 @@ links:
   - specs/04_governance/cases/core/runner_contract/entrypoint_registry_schema_valid.spec.md
   - specs/04_governance/cases/core/runner_contract/entrypoint_profile_refs_resolve.spec.md
   - specs/04_governance/cases/core/runner_contract/entrypoint_artifact_contract_complete.spec.md
-  notes: Canonical command semantics are resolved from spec-owned entrypoint mappings.
+  notes: Canonical command semantics are resolved from spec-owned entrypoint mappings, including docs generate/check/build/lint/graph commands.

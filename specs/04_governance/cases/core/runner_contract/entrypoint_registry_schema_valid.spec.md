@@ -29,6 +29,11 @@ contracts:
           std.string.contains:
           - var: text
           - pattern: '^dc-runner(\s|$)'
+      - id: assert_3
+        assert:
+          std.string.contains:
+          - var: text
+          - cli: dc-runner docs generate-check
 adapters:
 - type: beta.check_profile_text_file_config
   actions:

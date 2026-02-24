@@ -4793,10 +4793,12 @@ rules:
   norm: MUST
   requirement: canonical_runner_commands_must_resolve_from_spec_entrypoint_registry
   description: Canonical runner command semantics are declared in spec entrypoint
-    manifests and resolved to check-set profiles.
+    manifests and resolved to check-set profiles, including docs commands
+    `docs-generate|docs-generate-check|docs-build|docs-build-check|docs-lint|docs-graph`.
   rationale: Keeps command authority declarative and portable across runner implementations.
   risk_if_violated: Command behavior drifts from canonical contracts and governance lanes.
   references:
   - specs/01_schema/runner_command_entrypoints_v1.yaml
   - specs/04_governance/runner_entrypoints_v1.yaml
   - specs/02_contracts/36_runner_command_entrypoints.md
+  - specs/03_conformance/cases/core/script_job_contracts.spec.md

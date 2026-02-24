@@ -9,7 +9,12 @@ Canonical user-facing commands are:
 
 - `dc-runner governance`
 - `dc-runner critical-gate`
-- `dc-runner docs-generate-check`
+- `dc-runner docs generate`
+- `dc-runner docs generate-check`
+- `dc-runner docs build`
+- `dc-runner docs build-check`
+- `dc-runner docs lint`
+- `dc-runner docs graph`
 - `dc-runner governance-broad-native`
 
 The mapping source of truth is:

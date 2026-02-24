@@ -20,7 +20,12 @@ Runner CLIs MUST provide deterministic behavior for:
 - `dc-runner conformance`
 - `dc-runner governance`
 - `dc-runner critical-gate`
-- `dc-runner docs-generate-check`
+- `dc-runner docs generate`
+- `dc-runner docs generate-check`
+- `dc-runner docs build`
+- `dc-runner docs build-check`
+- `dc-runner docs lint`
+- `dc-runner docs graph`
 - `dc-runner contract-spec-format --check <paths...>`
 - `dc-runner contract-spec-format --write <paths...>`
 - `dc-runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>]`
