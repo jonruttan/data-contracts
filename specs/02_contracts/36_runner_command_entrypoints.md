@@ -15,6 +15,9 @@ Canonical user-facing commands are:
 - `dc-runner docs build-check`
 - `dc-runner docs lint`
 - `dc-runner docs graph`
+- `dc-runner bundle list`
+- `dc-runner bundle inspect`
+- `dc-runner bundle install`
 - `dc-runner governance-broad-native`
 
 The mapping source of truth is:

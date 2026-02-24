@@ -29,6 +29,9 @@ Runner CLIs MUST provide deterministic behavior for:
 - `dc-runner docs build-check`
 - `dc-runner docs lint`
 - `dc-runner docs graph`
+- `dc-runner bundle list`
+- `dc-runner bundle inspect --bundle-id <id>`
+- `dc-runner bundle install --bundle-id <id> --bundle-version <semver> [--install-dir <path>]`
 - `dc-runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>]`
 - `dc-runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver> [--runner <rust|python|php>] [--var <key=value>]... [--overwrite]`
 - unknown command handling with non-zero exit code

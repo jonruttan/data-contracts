@@ -11,3 +11,4 @@ Portable runner CLI interface conformance surface.
 - `/specs/03_conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md`
 - `/specs/03_conformance/cases/runner_cli/runner_cli_unknown_command.spec.md`
 - `/specs/03_conformance/cases/runner_cli/runner_cli_optional_capability_negotiation.spec.md`
+- `/specs/03_conformance/cases/runner_cli/runner_cli_required_bundle_commands.spec.md`

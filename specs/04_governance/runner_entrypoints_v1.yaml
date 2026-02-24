@@ -127,6 +127,39 @@ commands:
     exit_codes:
       allowed: [0, 1]
 
+  - id: bundle-list
+    cli: dc-runner bundle list
+    profile: full
+    visibility: top_level
+    group: bundles
+    source: core
+    artifacts:
+      - /.artifacts/bundle-list.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: bundle-install
+    cli: dc-runner bundle install
+    profile: full
+    visibility: top_level
+    group: bundles
+    source: core
+    artifacts:
+      - /.artifacts/bundle-install.json
+    exit_codes:
+      allowed: [0, 1]
+
+  - id: bundle-inspect
+    cli: dc-runner bundle inspect
+    profile: full
+    visibility: top_level
+    group: bundles
+    source: core
+    artifacts:
+      - /.artifacts/bundle-inspect.json
+    exit_codes:
+      allowed: [0, 1]
+
   - id: governance-broad-native
     cli: dc-runner governance-broad-native
     profile: full
