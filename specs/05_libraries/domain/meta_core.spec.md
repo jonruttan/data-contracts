@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: domain.meta.has_artifact_target.doc.1
-        summary: Contract export for `domain.meta.has_artifact_target`.
+        summary: Detect whether contract metadata declares an artifact target.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.meta.has_artifact_target.doc.1.operator
-        summary: Contract export for `domain.meta.has_artifact_target`. (operator)
+        summary: Detect whether contract metadata declares an artifact target for operations.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.meta.has_artifact_target.doc.1.integrator
-        summary: Contract export for `domain.meta.has_artifact_target`. (integrator)
+        summary: Detect whether contract metadata declares an artifact target for integrations.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.meta.has_artifact_target.doc.1.maintainer
-        summary: Contract export for `domain.meta.has_artifact_target`. (maintainer)
+        summary: Detect whether contract metadata declares an artifact target for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.meta.has_artifact_target.doc.1.governance
-        summary: Contract export for `domain.meta.has_artifact_target`. (governance)
+        summary: Detect whether contract metadata declares an artifact target for governance.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.meta.has_artifact_target.doc.1.reviewer
-        summary: Contract export for `domain.meta.has_artifact_target`. (reviewer)
+        summary: Detect whether contract metadata declares an artifact target for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.meta.has_artifact_target.doc.1.auditor
-        summary: Contract export for `domain.meta.has_artifact_target`. (auditor)
+        summary: Detect whether contract metadata declares an artifact target for audit evidence.
         audience: auditor
         status: active
         description: |-
@@ -913,4 +913,3 @@ services:
   consumes:
   - act.lib.meta.core.spec.2
 ```
-

@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: domain.conformance.validate_report_errors.doc.1
-        summary: Contract export for `domain.conformance.validate_report_errors`.
+        summary: Validate conformance report errors and fail when reported issues violate expectations.
         audience: implementer
         status: active
         description: |-
@@ -56,8 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.conformance.validate_report_errors.doc.1.operator
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (operator)
+        summary: Validate conformance report errors and fail when reported issues violate expectations for operators.
         audience: operator
         status: active
         description: |-
@@ -98,8 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.conformance.validate_report_errors.doc.1.integrator
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (integrator)
+        summary: Validate conformance report errors and fail when reported issues violate expectations for integrations.
         audience: integrator
         status: active
         description: |-
@@ -140,8 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.conformance.validate_report_errors.doc.1.maintainer
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (maintainer)
+        summary: Validate conformance report errors and fail when reported issues violate expectations for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -182,8 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.conformance.validate_report_errors.doc.1.governance
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (governance)
+        summary: Validate conformance report errors and fail when reported issues violate governance expectations.
         audience: governance
         status: active
         description: |-
@@ -224,8 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.conformance.validate_report_errors.doc.1.reviewer
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (reviewer)
+        summary: Validate conformance report errors and fail when reported issues violate review expectations.
         audience: reviewer
         status: active
         description: |-
@@ -266,8 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.conformance.validate_report_errors.doc.1.auditor
-        summary: Contract export for `domain.conformance.validate_report_errors`.
-          (auditor)
+        summary: Validate conformance report errors and fail when reported issues violate audit expectations.
         audience: auditor
         status: active
         description: |-
@@ -1524,6 +1518,5 @@ services:
   consumes:
   - act.lib.conformance.core.spec.4
 ```
-
 
 

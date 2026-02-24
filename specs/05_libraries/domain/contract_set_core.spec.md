@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: domain.contract_set.applies_to_runners.doc.1
-        summary: Contract export for `domain.contract_set.applies_to_runners`.
+        summary: Evaluate whether a contract set should execute under the current runner.
         audience: implementer
         status: active
         description: |-
@@ -56,7 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.contract_set.applies_to_runners.doc.1.operator
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (operator)
+        summary: Evaluate whether a contract set should execute under the current runner for operator workflows.
         audience: operator
         status: active
         description: |-
@@ -97,7 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.contract_set.applies_to_runners.doc.1.integrator
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (integrator)
+        summary: Evaluate whether a contract set should execute under the current runner for integration plans.
         audience: integrator
         status: active
         description: |-
@@ -138,7 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.contract_set.applies_to_runners.doc.1.maintainer
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (maintainer)
+        summary: Evaluate whether a contract set should execute under the current runner for maintenance decisions.
         audience: maintainer
         status: active
         description: |-
@@ -179,7 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.contract_set.applies_to_runners.doc.1.governance
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (governance)
+        summary: Evaluate whether a contract set should execute under the current runner for governance policy.
         audience: governance
         status: active
         description: |-
@@ -220,7 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.contract_set.applies_to_runners.doc.1.reviewer
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (reviewer)
+        summary: Evaluate whether a contract set should execute under the current runner for review.
         audience: reviewer
         status: active
         description: |-
@@ -261,7 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.contract_set.applies_to_runners.doc.1.auditor
-        summary: Contract export for `domain.contract_set.applies_to_runners`. (auditor)
+        summary: Evaluate whether a contract set should execute under the current runner for audit tracking.
         audience: auditor
         status: active
         description: |-

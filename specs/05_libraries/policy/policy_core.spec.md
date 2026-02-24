@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: policy.violation_count_is.doc.1
-        summary: Contract export for `policy.violation_count_is`.
+        summary: Assert the exact number of policy violations for a run.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: policy.violation_count_is.doc.1.operator
-        summary: Contract export for `policy.violation_count_is`. (operator)
+        summary: Assert the exact number of policy violations for operators.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: policy.violation_count_is.doc.1.integrator
-        summary: Contract export for `policy.violation_count_is`. (integrator)
+        summary: Assert the exact number of policy violations for integrators.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: policy.violation_count_is.doc.1.maintainer
-        summary: Contract export for `policy.violation_count_is`. (maintainer)
+        summary: Assert the exact number of policy violations for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: policy.violation_count_is.doc.1.governance
-        summary: Contract export for `policy.violation_count_is`. (governance)
+        summary: Assert the exact number of policy violations for governance.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: policy.violation_count_is.doc.1.reviewer
-        summary: Contract export for `policy.violation_count_is`. (reviewer)
+        summary: Assert the exact number of policy violations for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: policy.violation_count_is.doc.1.auditor
-        summary: Contract export for `policy.violation_count_is`. (auditor)
+        summary: Assert the exact number of policy violations for audits.
         audience: auditor
         status: active
         description: |-

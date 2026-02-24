@@ -18,7 +18,7 @@ harness:
       required: true
       docs:
       - id: domain.process.exec_capture_ex_code.doc.1
-        summary: Contract export for `domain.process.exec_capture_ex_code`.
+        summary: Capture and assert process exit/exception code behavior for runners.
         audience: implementer
         status: active
         description: |-
@@ -60,7 +60,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.process.exec_capture_ex_code.doc.1.operator
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (operator)
+        summary: Capture and assert process exit/exception code behavior for operators.
         audience: operator
         status: active
         description: |-
@@ -101,7 +101,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.process.exec_capture_ex_code.doc.1.integrator
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (integrator)
+        summary: Capture and assert process exit/exception code behavior for integrations.
         audience: integrator
         status: active
         description: |-
@@ -142,7 +142,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.process.exec_capture_ex_code.doc.1.maintainer
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (maintainer)
+        summary: Capture and assert process exit/exception code behavior for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -183,7 +183,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.process.exec_capture_ex_code.doc.1.governance
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (governance)
+        summary: Capture and assert process exit/exception code behavior for governance review.
         audience: governance
         status: active
         description: |-
@@ -224,7 +224,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.process.exec_capture_ex_code.doc.1.reviewer
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (reviewer)
+        summary: Capture and assert process exit/exception code behavior for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -265,7 +265,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.process.exec_capture_ex_code.doc.1.auditor
-        summary: Contract export for `domain.process.exec_capture_ex_code`. (auditor)
+        summary: Capture and assert process exit/exception code behavior for audits.
         audience: auditor
         status: active
         description: |-

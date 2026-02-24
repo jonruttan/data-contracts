@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: php.is_assoc_projection.doc.1
-        summary: Contract export for `php.is_assoc_projection`.
+        summary: Assert a PHP projection result is associative for type-checked consumers.
         audience: implementer
         status: active
         description: |-
@@ -56,7 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: php.is_assoc_projection.doc.1.operator
-        summary: Contract export for `php.is_assoc_projection`. (operator)
+        summary: Assert a PHP projection result is associative for operations.
         audience: operator
         status: active
         description: |-
@@ -97,7 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: php.is_assoc_projection.doc.1.integrator
-        summary: Contract export for `php.is_assoc_projection`. (integrator)
+        summary: Assert a PHP projection result is associative for integration consumers.
         audience: integrator
         status: active
         description: |-
@@ -138,7 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: php.is_assoc_projection.doc.1.maintainer
-        summary: Contract export for `php.is_assoc_projection`. (maintainer)
+        summary: Assert a PHP projection result is associative for maintenance verification.
         audience: maintainer
         status: active
         description: |-
@@ -179,7 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: php.is_assoc_projection.doc.1.governance
-        summary: Contract export for `php.is_assoc_projection`. (governance)
+        summary: Assert a PHP projection result is associative for governance.
         audience: governance
         status: active
         description: |-
@@ -220,7 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: php.is_assoc_projection.doc.1.reviewer
-        summary: Contract export for `php.is_assoc_projection`. (reviewer)
+        summary: Assert a PHP projection result is associative for reviewer checks.
         audience: reviewer
         status: active
         description: |-
@@ -261,7 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: php.is_assoc_projection.doc.1.auditor
-        summary: Contract export for `php.is_assoc_projection`. (auditor)
+        summary: Assert a PHP projection result is associative for audit validation.
         audience: auditor
         status: active
         description: |-

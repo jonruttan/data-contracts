@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: py.is_tuple_projection.doc.1
-        summary: Contract export for `py.is_tuple_projection`.
+        summary: Assert that a Python projection result is tuple-shaped as expected.
         audience: implementer
         status: active
         description: |-
@@ -56,7 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: py.is_tuple_projection.doc.1.operator
-        summary: Contract export for `py.is_tuple_projection`. (operator)
+        summary: Assert that a Python projection result is tuple-shaped as expected for operators.
         audience: operator
         status: active
         description: |-
@@ -97,7 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: py.is_tuple_projection.doc.1.integrator
-        summary: Contract export for `py.is_tuple_projection`. (integrator)
+        summary: Assert that a Python projection result is tuple-shaped as expected for integrations.
         audience: integrator
         status: active
         description: |-
@@ -138,7 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: py.is_tuple_projection.doc.1.maintainer
-        summary: Contract export for `py.is_tuple_projection`. (maintainer)
+        summary: Assert that a Python projection result is tuple-shaped as expected for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -179,7 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: py.is_tuple_projection.doc.1.governance
-        summary: Contract export for `py.is_tuple_projection`. (governance)
+        summary: Assert that a Python projection result is tuple-shaped as expected for governance.
         audience: governance
         status: active
         description: |-
@@ -220,7 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: py.is_tuple_projection.doc.1.reviewer
-        summary: Contract export for `py.is_tuple_projection`. (reviewer)
+        summary: Assert that a Python projection result is tuple-shaped as expected for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -261,7 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: py.is_tuple_projection.doc.1.auditor
-        summary: Contract export for `py.is_tuple_projection`. (auditor)
+        summary: Assert that a Python projection result is tuple-shaped as expected for audit review.
         audience: auditor
         status: active
         description: |-

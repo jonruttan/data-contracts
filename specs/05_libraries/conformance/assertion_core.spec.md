@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: conf.json_type_is.doc.1
-        summary: Contract export for `conf.json_type_is`.
+        summary: Assert that a value is of the requested JSON schema type.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: conf.json_type_is.doc.1.operator
-        summary: Contract export for `conf.json_type_is`. (operator)
+        summary: Assert that a value is of the requested JSON schema type for operator workflows.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: conf.json_type_is.doc.1.integrator
-        summary: Contract export for `conf.json_type_is`. (integrator)
+        summary: Assert that a value is of the requested JSON schema type for integration contracts.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: conf.json_type_is.doc.1.maintainer
-        summary: Contract export for `conf.json_type_is`. (maintainer)
+        summary: Assert that a value is of the requested JSON schema type for system maintenance checks.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: conf.json_type_is.doc.1.governance
-        summary: Contract export for `conf.json_type_is`. (governance)
+        summary: Assert that a value is of the requested JSON schema type for governance auditability.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: conf.json_type_is.doc.1.reviewer
-        summary: Contract export for `conf.json_type_is`. (reviewer)
+        summary: Assert that a value is of the requested JSON schema type for report review.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: conf.json_type_is.doc.1.auditor
-        summary: Contract export for `conf.json_type_is`. (auditor)
+        summary: Assert that a value is of the requested JSON schema type for audit evidence.
         audience: auditor
         status: active
         description: |-

@@ -29,7 +29,7 @@ harness:
       required: true
       docs:
       - id: policy.metric_non_increase.doc.1
-        summary: Contract export for `policy.metric_non_increase`.
+        summary: Assert a policy metric does not increase compared to a baseline.
         audience: implementer
         status: active
         description: |-
@@ -71,7 +71,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: policy.metric_non_increase.doc.1.operator
-        summary: Contract export for `policy.metric_non_increase`. (operator)
+        summary: Assert a policy metric does not increase compared to a baseline for operators.
         audience: operator
         status: active
         description: |-
@@ -112,7 +112,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: policy.metric_non_increase.doc.1.integrator
-        summary: Contract export for `policy.metric_non_increase`. (integrator)
+        summary: Assert a policy metric does not increase compared to a baseline for integrations.
         audience: integrator
         status: active
         description: |-
@@ -153,7 +153,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: policy.metric_non_increase.doc.1.maintainer
-        summary: Contract export for `policy.metric_non_increase`. (maintainer)
+        summary: Assert a policy metric does not increase compared to a baseline for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -194,7 +194,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: policy.metric_non_increase.doc.1.governance
-        summary: Contract export for `policy.metric_non_increase`. (governance)
+        summary: Assert a policy metric does not increase compared to a baseline for governance.
         audience: governance
         status: active
         description: |-
@@ -235,7 +235,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: policy.metric_non_increase.doc.1.reviewer
-        summary: Contract export for `policy.metric_non_increase`. (reviewer)
+        summary: Assert a policy metric does not increase compared to a baseline for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -276,7 +276,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: policy.metric_non_increase.doc.1.auditor
-        summary: Contract export for `policy.metric_non_increase`. (auditor)
+        summary: Assert a policy metric does not increase compared to a baseline for audits.
         audience: auditor
         status: active
         description: |-
@@ -968,5 +968,4 @@ services:
   consumes:
   - act.lib.policy.metrics.spec.3
 ```
-
 

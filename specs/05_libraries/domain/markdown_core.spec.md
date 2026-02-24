@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: domain.markdown.tokens_all_present.doc.1
-        summary: Contract export for `domain.markdown.tokens_all_present`.
+        summary: Assert required Markdown tokens appear in source markdown content.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.markdown.tokens_all_present.doc.1.operator
-        summary: Contract export for `domain.markdown.tokens_all_present`. (operator)
+        summary: Assert required Markdown tokens appear in source markdown content for operators.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.markdown.tokens_all_present.doc.1.integrator
-        summary: Contract export for `domain.markdown.tokens_all_present`. (integrator)
+        summary: Assert required Markdown tokens appear in source markdown content for integration pipelines.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.markdown.tokens_all_present.doc.1.maintainer
-        summary: Contract export for `domain.markdown.tokens_all_present`. (maintainer)
+        summary: Assert required Markdown tokens appear in source markdown content for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.markdown.tokens_all_present.doc.1.governance
-        summary: Contract export for `domain.markdown.tokens_all_present`. (governance)
+        summary: Assert required Markdown tokens appear in source markdown content for governance checks.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.markdown.tokens_all_present.doc.1.reviewer
-        summary: Contract export for `domain.markdown.tokens_all_present`. (reviewer)
+        summary: Assert required Markdown tokens appear in source markdown content for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.markdown.tokens_all_present.doc.1.auditor
-        summary: Contract export for `domain.markdown.tokens_all_present`. (auditor)
+        summary: Assert required Markdown tokens appear in source markdown content for auditors.
         audience: auditor
         status: active
         description: |-
@@ -4210,7 +4210,6 @@ services:
   consumes:
   - act.lib.markdown.core.spec.12
 ```
-
 
 
 

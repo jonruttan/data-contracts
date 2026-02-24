@@ -17,7 +17,7 @@ harness:
       - pattern
       docs:
       - id: domain.job.scan_bundle_has_result.doc.1
-        summary: Contract export for `domain.job.scan_bundle_has_result`.
+        summary: Verify job scan bundle output includes the expected result marker.
         audience: implementer
         status: active
         description: |-
@@ -59,7 +59,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.job.scan_bundle_has_result.doc.1.operator
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (operator)
+        summary: Verify job scan bundle output includes the expected result marker in operations.
         audience: operator
         status: active
         description: |-
@@ -100,7 +100,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.job.scan_bundle_has_result.doc.1.integrator
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (integrator)
+        summary: Verify job scan bundle output includes the expected result marker in integrations.
         audience: integrator
         status: active
         description: |-
@@ -141,7 +141,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.job.scan_bundle_has_result.doc.1.maintainer
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (maintainer)
+        summary: Verify job scan bundle output includes the expected result marker for maintenance workflows.
         audience: maintainer
         status: active
         description: |-
@@ -182,7 +182,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.job.scan_bundle_has_result.doc.1.governance
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (governance)
+        summary: Verify job scan bundle output includes the expected result marker for governance checks.
         audience: governance
         status: active
         description: |-
@@ -223,7 +223,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.job.scan_bundle_has_result.doc.1.reviewer
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (reviewer)
+        summary: Verify job scan bundle output includes the expected result marker for review.
         audience: reviewer
         status: active
         description: |-
@@ -264,7 +264,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.job.scan_bundle_has_result.doc.1.auditor
-        summary: Contract export for `domain.job.scan_bundle_has_result`. (auditor)
+        summary: Verify job scan bundle output includes the expected result marker for audit.
         audience: auditor
         status: active
         description: |-
@@ -627,4 +627,3 @@ services:
   consumes:
   - act.lib.job.core.spec.1
 ```
-

@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: domain.os.exec_ok.doc.1
-        summary: Contract export for `domain.os.exec_ok`.
+        summary: Assert that an OS command execution completed successfully.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.os.exec_ok.doc.1.operator
-        summary: Contract export for `domain.os.exec_ok`. (operator)
+        summary: Assert that an OS command execution completed successfully for operator workflows.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.os.exec_ok.doc.1.integrator
-        summary: Contract export for `domain.os.exec_ok`. (integrator)
+        summary: Assert that an OS command execution completed successfully for integrations.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.os.exec_ok.doc.1.maintainer
-        summary: Contract export for `domain.os.exec_ok`. (maintainer)
+        summary: Assert that an OS command execution completed successfully for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.os.exec_ok.doc.1.governance
-        summary: Contract export for `domain.os.exec_ok`. (governance)
+        summary: Assert that an OS command execution completed successfully for governance review.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.os.exec_ok.doc.1.reviewer
-        summary: Contract export for `domain.os.exec_ok`. (reviewer)
+        summary: Assert that an OS command execution completed successfully for review.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.os.exec_ok.doc.1.auditor
-        summary: Contract export for `domain.os.exec_ok`. (auditor)
+        summary: Assert that an OS command execution completed successfully for audit checks.
         audience: auditor
         status: active
         description: |-
@@ -1204,5 +1204,4 @@ services:
   consumes:
   - act.lib.os.core.spec.3
 ```
-
 

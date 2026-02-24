@@ -18,7 +18,7 @@ harness:
       required: true
       docs:
       - id: bad.path.symbol.doc.1
-        summary: Contract export for `bad.path.symbol`.
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol.
         audience: implementer
         status: active
         description: |-
@@ -60,7 +60,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: bad.path.symbol.doc.1.operator
-        summary: Contract export for `bad.path.symbol`. (operator)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol in operator workflows.
         audience: operator
         status: active
         description: |-
@@ -101,7 +101,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: bad.path.symbol.doc.1.integrator
-        summary: Contract export for `bad.path.symbol`. (integrator)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol in pipeline integration.
         audience: integrator
         status: active
         description: |-
@@ -142,7 +142,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: bad.path.symbol.doc.1.maintainer
-        summary: Contract export for `bad.path.symbol`. (maintainer)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol during maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -183,7 +183,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: bad.path.symbol.doc.1.governance
-        summary: Contract export for `bad.path.symbol`. (governance)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol for governance checks.
         audience: governance
         status: active
         description: |-
@@ -224,7 +224,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: bad.path.symbol.doc.1.reviewer
-        summary: Contract export for `bad.path.symbol`. (reviewer)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol in review artifacts.
         audience: reviewer
         status: active
         description: |-
@@ -265,7 +265,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: bad.path.symbol.doc.1.auditor
-        summary: Contract export for `bad.path.symbol`. (auditor)
+        summary: Validate chain-export failure signaling for an invalid or missing path symbol during audits.
         audience: auditor
         status: active
         description: |-
@@ -896,5 +896,4 @@ services:
   consumes:
   - act.lib.chain.export.validation.2
 ```
-
 

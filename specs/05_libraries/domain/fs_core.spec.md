@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: domain.fs.sort_spec_files.doc.1
-        summary: Contract export for `domain.fs.sort_spec_files`.
+        summary: Sort discovered spec files into stable, deterministic ordering.
         audience: implementer
         status: active
         description: |-
@@ -56,7 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.fs.sort_spec_files.doc.1.operator
-        summary: Contract export for `domain.fs.sort_spec_files`. (operator)
+        summary: Sort discovered spec files into stable, deterministic ordering for operators.
         audience: operator
         status: active
         description: |-
@@ -97,7 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.fs.sort_spec_files.doc.1.integrator
-        summary: Contract export for `domain.fs.sort_spec_files`. (integrator)
+        summary: Sort discovered spec files into stable, deterministic ordering for integrations.
         audience: integrator
         status: active
         description: |-
@@ -138,7 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.fs.sort_spec_files.doc.1.maintainer
-        summary: Contract export for `domain.fs.sort_spec_files`. (maintainer)
+        summary: Sort discovered spec files into stable, deterministic ordering for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -179,7 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.fs.sort_spec_files.doc.1.governance
-        summary: Contract export for `domain.fs.sort_spec_files`. (governance)
+        summary: Sort discovered spec files into stable, deterministic ordering for governance reproducibility.
         audience: governance
         status: active
         description: |-
@@ -220,7 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.fs.sort_spec_files.doc.1.reviewer
-        summary: Contract export for `domain.fs.sort_spec_files`. (reviewer)
+        summary: Sort discovered spec files into stable, deterministic ordering for review.
         audience: reviewer
         status: active
         description: |-
@@ -261,7 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.fs.sort_spec_files.doc.1.auditor
-        summary: Contract export for `domain.fs.sort_spec_files`. (auditor)
+        summary: Sort discovered spec files into stable, deterministic ordering for audit evidence.
         audience: auditor
         status: active
         description: |-
@@ -3278,7 +3278,6 @@ services:
   consumes:
   - act.lib.fs.core.spec.10
 ```
-
 
 
 

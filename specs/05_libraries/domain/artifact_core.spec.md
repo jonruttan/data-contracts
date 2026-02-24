@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: domain.artifact.write_yaml.doc.1
-        summary: Contract export for `domain.artifact.write_yaml`.
+        summary: Persist a structured artifact payload as YAML for downstream consumers.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.artifact.write_yaml.doc.1.operator
-        summary: Contract export for `domain.artifact.write_yaml`. (operator)
+        summary: Persist a structured artifact payload as YAML for downstream consumers during operators.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.artifact.write_yaml.doc.1.integrator
-        summary: Contract export for `domain.artifact.write_yaml`. (integrator)
+        summary: Persist a structured artifact payload as YAML for downstream consumers in integrations.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.artifact.write_yaml.doc.1.maintainer
-        summary: Contract export for `domain.artifact.write_yaml`. (maintainer)
+        summary: Persist a structured artifact payload as YAML for downstream consumers in maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.artifact.write_yaml.doc.1.governance
-        summary: Contract export for `domain.artifact.write_yaml`. (governance)
+        summary: Persist a structured artifact payload as YAML for downstream consumers under governance.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.artifact.write_yaml.doc.1.reviewer
-        summary: Contract export for `domain.artifact.write_yaml`. (reviewer)
+        summary: Persist a structured artifact payload as YAML for downstream consumers during review.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.artifact.write_yaml.doc.1.auditor
-        summary: Contract export for `domain.artifact.write_yaml`. (auditor)
+        summary: Persist a structured artifact payload as YAML for downstream consumers in audit evidence.
         audience: auditor
         status: active
         description: |-
@@ -906,4 +906,3 @@ services:
   consumes:
   - act.lib.artifact.core.spec.2
 ```
-

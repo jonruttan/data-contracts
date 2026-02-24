@@ -15,7 +15,7 @@ harness:
       - expected
       docs:
       - id: domain.http.step_status_is.doc.1
-        summary: Contract export for `domain.http.step_status_is`.
+        summary: Assert that a HTTP workflow step reports the expected status.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.http.step_status_is.doc.1.operator
-        summary: Contract export for `domain.http.step_status_is`. (operator)
+        summary: Assert that a HTTP workflow step reports the expected status for operators.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.http.step_status_is.doc.1.integrator
-        summary: Contract export for `domain.http.step_status_is`. (integrator)
+        summary: Assert that a HTTP workflow step reports the expected status for integrations.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.http.step_status_is.doc.1.maintainer
-        summary: Contract export for `domain.http.step_status_is`. (maintainer)
+        summary: Assert that a HTTP workflow step reports the expected status for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.http.step_status_is.doc.1.governance
-        summary: Contract export for `domain.http.step_status_is`. (governance)
+        summary: Assert that a HTTP workflow step reports the expected status for governance review.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.http.step_status_is.doc.1.reviewer
-        summary: Contract export for `domain.http.step_status_is`. (reviewer)
+        summary: Assert that a HTTP workflow step reports the expected status for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.http.step_status_is.doc.1.auditor
-        summary: Contract export for `domain.http.step_status_is`. (auditor)
+        summary: Assert that a HTTP workflow step reports the expected status for audit trails.
         audience: auditor
         status: active
         description: |-
@@ -7807,7 +7807,6 @@ services:
   consumes:
   - act.lib.http.core.spec.25
 ```
-
 
 
 

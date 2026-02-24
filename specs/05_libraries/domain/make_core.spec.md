@@ -15,7 +15,7 @@ harness:
       required: true
       docs:
       - id: make.has_target.doc.1
-        summary: Contract export for `make.has_target`.
+        summary: Check whether a Make target exists and is resolvable.
         audience: implementer
         status: active
         description: |-
@@ -57,7 +57,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: make.has_target.doc.1.operator
-        summary: Contract export for `make.has_target`. (operator)
+        summary: Check whether a Make target exists and is resolvable in operator workflows.
         audience: operator
         status: active
         description: |-
@@ -98,7 +98,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: make.has_target.doc.1.integrator
-        summary: Contract export for `make.has_target`. (integrator)
+        summary: Check whether a Make target exists and is resolvable in integration planning.
         audience: integrator
         status: active
         description: |-
@@ -139,7 +139,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: make.has_target.doc.1.maintainer
-        summary: Contract export for `make.has_target`. (maintainer)
+        summary: Check whether a Make target exists and is resolvable for maintenance.
         audience: maintainer
         status: active
         description: |-
@@ -180,7 +180,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: make.has_target.doc.1.governance
-        summary: Contract export for `make.has_target`. (governance)
+        summary: Check whether a Make target exists and is resolvable for governance control.
         audience: governance
         status: active
         description: |-
@@ -221,7 +221,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: make.has_target.doc.1.reviewer
-        summary: Contract export for `make.has_target`. (reviewer)
+        summary: Check whether a Make target exists and is resolvable for review decisions.
         audience: reviewer
         status: active
         description: |-
@@ -262,7 +262,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: make.has_target.doc.1.auditor
-        summary: Contract export for `make.has_target`. (auditor)
+        summary: Check whether a Make target exists and is resolvable for auditability.
         audience: auditor
         status: active
         description: |-

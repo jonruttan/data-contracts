@@ -14,7 +14,7 @@ harness:
       required: true
       docs:
       - id: domain.path.sorted.doc.1
-        summary: Contract export for `domain.path.sorted`.
+        summary: Return path inputs sorted in deterministic lexicographic order.
         audience: implementer
         status: active
         description: |-
@@ -56,7 +56,7 @@ harness:
         - Use this for implementation work, local debugging, and runner-side behavior
           analysis.
       - id: domain.path.sorted.doc.1.operator
-        summary: Contract export for `domain.path.sorted`. (operator)
+        summary: Return path inputs sorted in deterministic lexicographic order for operators.
         audience: operator
         status: active
         description: |-
@@ -97,7 +97,7 @@ harness:
         usage_context:
         - Use this for observability, runbook readiness, and incident response.
       - id: domain.path.sorted.doc.1.integrator
-        summary: Contract export for `domain.path.sorted`. (integrator)
+        summary: Return path inputs sorted in deterministic lexicographic order for integrations.
         audience: integrator
         status: active
         description: |-
@@ -138,7 +138,7 @@ harness:
         usage_context:
         - Use this for composing this contract in pipelines, services, and toolchains.
       - id: domain.path.sorted.doc.1.maintainer
-        summary: Contract export for `domain.path.sorted`. (maintainer)
+        summary: Return path inputs sorted in deterministic lexicographic order for maintainers.
         audience: maintainer
         status: active
         description: |-
@@ -179,7 +179,7 @@ harness:
         usage_context:
         - Use this for versioning, changelogs, and stability planning.
       - id: domain.path.sorted.doc.1.governance
-        summary: Contract export for `domain.path.sorted`. (governance)
+        summary: Return path inputs sorted in deterministic lexicographic order for governance.
         audience: governance
         status: active
         description: |-
@@ -220,7 +220,7 @@ harness:
         usage_context:
         - Use this for policy gating, approval review, and compliance checks.
       - id: domain.path.sorted.doc.1.reviewer
-        summary: Contract export for `domain.path.sorted`. (reviewer)
+        summary: Return path inputs sorted in deterministic lexicographic order for reviewers.
         audience: reviewer
         status: active
         description: |-
@@ -261,7 +261,7 @@ harness:
         usage_context:
         - Use this to verify correctness, completeness, and release readiness.
       - id: domain.path.sorted.doc.1.auditor
-        summary: Contract export for `domain.path.sorted`. (auditor)
+        summary: Return path inputs sorted in deterministic lexicographic order for audits.
         audience: auditor
         status: active
         description: |-
@@ -2974,7 +2974,6 @@ services:
   consumes:
   - act.lib.path.core.spec.9
 ```
-
 
 
 
