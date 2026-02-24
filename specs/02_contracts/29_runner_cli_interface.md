@@ -88,7 +88,7 @@ Schema:
 - `/specs/01_schema/runner_command_entrypoints_v1.yaml`
 
 For canonical command entrypoints, `dc-runner` MUST resolve command id to
-`/specs/governance/check_sets_v1.yaml` profile and enforce declared artifact
+`/specs/04_governance/check_sets_v1.yaml` profile and enforce declared artifact
 and exit-code contracts.
 
 Entrypoints marked `visibility: top_level` are promoted to canonical help and

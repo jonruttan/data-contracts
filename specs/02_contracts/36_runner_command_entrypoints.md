@@ -56,7 +56,7 @@ Each command entry defines:
 
 The runner resolves command id to profile and executes the profile from:
 
-- `/specs/governance/check_sets_v1.yaml`
+- `/specs/04_governance/check_sets_v1.yaml`
 
 Entrypoint resolution MUST respect runner source mode:
 
