@@ -43,6 +43,20 @@ If optional structured fields are omitted, generators may fallback to `descripti
 and preserve existing section markers, but active quality checks should fail for
 entries that provide neither non-empty structured fields nor useful fallback text.
 
+## Template-driven rendering
+
+Audience docs generation is asset-first and template-driven:
+
+- generator inputs MAY provide a template asset id via `docs_generate.template_asset_id`
+  (indirection through `assets[]`/`artifacts[]` is required by core schema),
+  and the runner MUST render using template evaluation semantics from
+  `specs/02_contracts/23_docs_template_contract.md`.
+- Templates are optional for implementation style, but when present they must render:
+  `summary`, `description/purpose`, `inputs`, `returns`, `errors`, `usage_context`,
+  and a deterministic `source location` for traceability.
+- generated files that are rendered from templates are compared byte-for-byte in
+  `--check` mode just like non-template-based rendering.
+
 ## Outputs
 
 For each audience, generator MUST emit:
