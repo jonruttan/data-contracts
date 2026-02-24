@@ -71,7 +71,8 @@ This repository does not execute runtime lanes.
 - Bundler command surface: `/Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle ...`
 - Supported commands: `resolve`, `package`, `package-check`, `list`, `info`, `install`,
   `install-check`, `bootstrap`, `bootstrap-check`, `outdated`, `upgrade`.
-- Runner scaffold install: `dc-runner project scaffold --project-root <path> --bundle-id <id> --bundle-version <semver>`
+- Portable runner bundle surface: `dc-runner bundle list|info|install|install-check|bootstrap|bootstrap-check|outdated|upgrade|run|scaffold`
+- Runner scaffold install: `dc-runner bundle scaffold --project-root <path> --bundle-id <id> --bundle-version <semver>`
 - Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/bundle_manifest_v1.yaml`
 - Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/resolved_bundle_lock_v1.yaml`
 - Project lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/01_schema/project_bundle_lock_v1.yaml`

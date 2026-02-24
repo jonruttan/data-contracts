@@ -16,6 +16,7 @@ runtime execution ownership lives in runner repositories.
 - coherent contract/schema/docs surfaces
 - governance and docs integrity verdicts
 - compatibility/status matrix artifacts
+- review workflow outputs (prompt rendering + snapshots) are produced from `data-contracts-library` bundles and are not committed into this repository.
 
 ## Failure Modes
 
@@ -50,6 +51,21 @@ Canonical bundle package operations:
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle bootstrap --lock .artifacts/bundles/bundles.lock.yaml --out .bundles
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle outdated --project-lock bundles.lock.yaml --format json
 /Users/jon/Workspace/Development/data-contracts-bundles/scripts/bundle upgrade --project-lock bundles.lock.yaml --dry-run
+```
+
+Portable runner bundle command surface:
+
+```sh
+dc-runner bundle list
+dc-runner bundle info --bundle-id runner_contract_bundle
+dc-runner bundle install --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
+dc-runner bundle install-check --project-lock bundles.lock.yaml --out .artifacts/installed-bundles
+dc-runner bundle bootstrap --lock .artifacts/bundles/bundles.lock.yaml --out .bundles
+dc-runner bundle bootstrap-check --lock .artifacts/bundles/bundles.lock.yaml --out .bundles
+dc-runner bundle outdated --project-lock bundles.lock.yaml --format json
+dc-runner bundle upgrade --project-lock bundles.lock.yaml --dry-run
+dc-runner bundle run --bundle-id data-contracts-lang-project-scaffold --bundle-version 1.0.0 --entrypoint scaffold
+dc-runner bundle scaffold --project-root /tmp/example --bundle-id data-contracts-lang-project-scaffold --bundle-version 1.0.0
 ```
 
 Project lock guidance:
