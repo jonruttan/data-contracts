@@ -1,7 +1,7 @@
-# Hardening Pipeline (Pointer)
+# Hardening Pipeline (Compatibility Pointer)
 
-Canonical self-healing pipeline prompt:
+Canonical self-healing review prompt:
+
 - `docs/history/reviews/prompts/self_healing.md`
 
-This file exists as a compatibility pointer for older references to
-`docs/history/reviews/frameworks/hardening_pipeline.md`.
+This file remains as a compatibility pointer for historical references.

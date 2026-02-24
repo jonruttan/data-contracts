@@ -1,25 +1,34 @@
-# Self-Healing Pre-Merge Hardening Pipeline (Customized for `spec_runner`)
-A staged sequence for the `spec_runner` Python library (`tools/spec_runner/`) that discovers issues, applies safe fixes, and escalates risk before merge.
+# Self-Healing Pre-Merge Hardening Pipeline (for `data-contracts`)
+
+A staged sequence for the `data-contracts` control-plane repository that discovers
+issues, applies safe fixes, and escalates risk before merge.
 
 ## Repository Context (Hard Requirements)
-- Project: small reusable Python library that runs executable spec tests from Markdown fenced blocks tagged `yaml contract-spec`.
-- Core behavior: parse contract-spec blocks and dispatch by `type` to harnesses.
+
+- Project: control-plane repo for executable contract specifications and governance.
+- Core behavior: author, validate, and gate Markdown-embedded executable specs and
+the review artifacts that summarize results.
 - Schema reference: `specs/01_schema/schema_v1.md`.
 - Runner-only setup inputs must be under `harness:` (never arbitrary top-level keys).
-- Keep dependencies minimal: stdlib preferred, small stable deps only if justified (for example `PyYAML`).
+- Keep dependencies minimal: stdlib preferred, small stable deps only if justified
+(for example `PyYAML`).
 - Prefer adapters/harnesses over expanding core DSL.
 - Error messages must be direct and actionable.
 
 ## Global Guardrails (Non-Negotiable)
-- No behavior changes unless needed to match clearly stated intent or fix a demonstrated bug/regression.
+
+- No behavior changes unless needed to match clearly stated intent or fix a
+  demonstrated bug/regression.
 - Minimal diffs only; surgical changes over broad rewrites.
 - No new dependencies without explicit justification and rollback plan.
-- No blanket silencing: no disabling lint/tests, no broad catches, no timeout inflation without evidence.
+- No blanket silencing: no disabling checks, no broad catches, no timeout inflation
+  without evidence.
 - No secrets in logs/docs/fixtures/examples.
 - Follow existing project patterns and tooling.
 - If a fix is not clearly safe, escalate as a finding.
 
 ## Proof Standard (Every Stage)
+
 For each stage output:
 1. Auto-fixes applied (files changed + why safe)
 2. Remaining findings (`Severity | File:Line | What | Why | When | Proposed fix`)
@@ -33,21 +42,29 @@ Severity:
 - P3 low
 
 ## Stop Conditions (Hard Gates)
+
 Stop immediately if:
 - P0 remains unresolved.
 - Baseline commands cannot be run reliably after reasonable investigation.
-- Changes introduce unclear/high-risk core contract drift (parser semantics, dispatch behavior, schema compatibility) without tests and explicit intent.
-- Potential security issue in Markdown/spec parsing or harness execution path is suspected but unproven safe.
-- Backward compatibility for schema behavior is broken without normalization/versioning plan.
+- Changes introduce unclear/high-risk core contract drift (schema compatibility,
+  harness dispatch semantics) without tests and explicit intent.
+- Potential security issue in markdown/spec parsing or harness execution path is
+  suspected but unproven safe.
+- Backward compatibility for schema behavior is broken without normalization/
+  versioning plan.
 
 ## Commit Discipline (Adjusted for this Repo)
-- Do not run `git commit` unless the user explicitly approves (`approved` or `commit it`).
-- If a stage makes changes, prepare a proposed commit message:
+
+- Do not run `git commit` unless the user explicitly approves (`approved` or
+  `commit it`).
+- If a stage changes files, propose a commit message:
   - `hardening(stage-N): <short description>`
 - Keep stage changes isolated and reversible.
-- If behavior changed, include/adjust tests and note behavior change in proposed commit body.
+- If behavior changed, include/adjust tests and note behavior change in proposed
+  commit body.
 
 ## Change Budget
+
 - Prefer <=200 changed lines per stage.
 - If larger change is needed, escalate:
   - `P1 | <area> | exceeds safe change budget` with split-plan proposal.
@@ -55,19 +72,20 @@ Stop immediately if:
 ---
 
 ## Stage 0 - Baseline & Tooling Discovery
-You are a repo-aware engineer.
 
 - Detect and record exact commands:
-  - install editable: `python -m pip install -e .`
-  - install dev: `python -m pip install -e '.[dev]'`
-  - tests: `python -m pytest`
-  - build: `python -m build`
-- Discover lint/type/static tools from config (`pyproject.toml`, etc). If absent, report explicitly.
+  - `dc-runner critical-gate`
+  - `dc-runner governance`
+  - `dc-runner docs-generate-check`
+  - `.dc-runner review-validate --snapshot <snapshot-path>` (when validating review artifacts)
+- Discover lint/type/static tools from config (`pyproject.toml`, etc). If absent,
+  report explicitly.
 - Run fastest checks first.
 - Fix only trivial setup issues when intent is obvious.
 - Missing/inconsistent tooling is P1 with remediation.
 
 ## Stage 1 - Intent Extraction (No Fixes)
+
 You are a code analyst.
 
 Output only:
@@ -82,6 +100,7 @@ Output only:
 If intent is unclear for parser/schema/dispatch behavior, raise P1 and stop.
 
 ## Stage 2 - Make It Green (Mechanical Healing)
+
 You are a build sheriff.
 
 - Run Stage 0 commands (fast to slow).
@@ -93,13 +112,14 @@ You are a build sheriff.
 - No speculative behavior changes.
 
 ## Stage 3 - Contract Boundary Healing
+
 You are an architectural refactorer.
 
-Focus on this library's contracts:
+Focus on this repo's contracts:
 - parser vs execution separation
 - dispatch boundaries by `type`
 - schema-version and validation boundaries
-- core library vs project-specific harness leakage
+- core docs/contracts separation from runner implementation details
 
 Allowed:
 - small extractions aligned with existing patterns
@@ -108,13 +128,14 @@ Allowed:
 
 Not allowed:
 - new architectural paradigm
-- DSL expansion without schema/versioning intent
+- DSL expansion without explicit schema/versioning intent
 
 Output:
 - `Severity | File:Line | Violation | Why | When | Fix`
 - `Isolation rating: strong | moderate | weak`
 
 ## Stage 4 - Side Effects & Global State
+
 You are an adversarial stabilizer.
 
 Find and heal:
@@ -129,9 +150,11 @@ Allowed:
 - namespacing and deterministic behavior
 
 ## Stage 5 - Failure Modes & Resilience
+
 You are a resilience engineer.
 
-Assume malformed markdown, invalid YAML, unknown `type`, bad harness config, and partial test runs.
+Assume malformed markdown, invalid YAML, unknown `type`, bad harness config, and
+partial test runs.
 
 Find and heal:
 - unhelpful validation errors
@@ -148,6 +171,7 @@ Output:
 - `Severity | File:Line | Failure Scenario | Risk | Fix`
 
 ## Stage 6 - Schema Compatibility Safety
+
 You are a schema reliability engineer.
 
 Goal:
@@ -166,6 +190,7 @@ Output:
 - rollback risk (`low | moderate | high`)
 
 ## Stage 7 - Security Healing
+
 You are a security engineer with attacker mindset.
 
 Focus on:
@@ -183,6 +208,7 @@ Output:
 - `Severity | File:Line | Exploit Scenario | Risk | Fix`
 
 ## Stage 8 - Performance Healing
+
 You are a performance engineer.
 
 Focus on obvious library bottlenecks:
@@ -200,6 +226,7 @@ Output:
 - `Scale confidence: high | moderate | low`
 
 ## Stage 9 - Test Integrity Healing
+
 You are a test reliability engineer.
 
 Find and heal:
@@ -218,6 +245,7 @@ Output:
 - `Test isolation: strong | moderate | weak`
 
 ## Final Boss - Production Gatekeeper (No Healing)
+
 You are a production gatekeeper.
 
 Review all branch changes (staged, unstaged, untracked).
@@ -236,6 +264,7 @@ If no meaningful risks:
 - `No production or correctness risks detected.`
 
 ## Optional Waiver Template
+
 - Risk: `<describe>`
 - Owner: `<name>`
 - Justification: `<why acceptable now>`

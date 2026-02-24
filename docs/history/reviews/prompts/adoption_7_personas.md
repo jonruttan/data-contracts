@@ -1,13 +1,13 @@
-# Review Prompt (Spec Runner)
+# Review Prompt (Data Contracts Control Plane)
 
-Use this prompt to solicit a hard, adoption-focused review of `spec_runner`.
+Use this prompt to solicit a hard, adoption-focused review of `data-contracts`.
 The goal is not praise. The goal is to expose what blocks real-world use.
 
 ---
 
 ```text
-You are reviewing a repo called “spec_runner”, a Python library for executing Markdown-embedded
-`yaml contract-spec` blocks and validating behavior across implementations (Python and PHP).
+You are reviewing a repo called “data-contracts”, a specification and governance
+control-plane for executable contracts.
 
 Your goal is NOT to praise it. Your goal is to expose:
 - the real problems it solves (if any)
@@ -20,7 +20,7 @@ Operate as 7 distinct personas. Keep them clearly separated and consistent:
 - skeptical of novelty, allergic to unnecessary complexity
 - cares about composability, stability, failure modes, portability, and long-term maintenance
 
-2) The Eager Novice (smart but new to Python packaging/CLIs)
+2) The Eager Novice (smart but new to contracts, CLI, and governance)
 - easily confused by setup, terminology, and hidden assumptions
 - cares about “what do I type”, “what happens”, and “what did it produce”
 
@@ -44,21 +44,23 @@ Operate as 7 distinct personas. Keep them clearly separated and consistent:
 - cares about machine-readable output, composability, and no interactive surprises
 
 Context you should assume about this repo:
-- Markdown docs can contain executable `yaml contract-spec` blocks.
-- The canonical assertion DSL is `must` / `can` / `cannot`.
-- Leaf operators are list-valued and include `contain`, `regex`, plus harness-specific ops (`json_type`, `exists`).
-- Core types currently include `text.file` and `cli.run`.
-- Runner-only setup keys must live under `harness:`.
-- There is a conformance system and Python/PHP parity checks.
-- Active spec snapshot: `specs/current.md`.
-- Pending work: `specs/04_governance/`.
+- Markdown docs contain executable `yaml contract-spec` blocks.
+- The canonical assertion model is defined by `/specs/01_schema/schema_v1.md`.
+- Leaf operators are list-valued where defined by schema and stdlib examples.
+- Harness setup inputs must live under `harness:`.
+- Runner ownership is externalized to `dc-runner-*` repositories; this repo is the
+  control plane.
+- Active conformance and governance checks are `dc-runner critical-gate` and
+  `dc-runner governance`.
+- Review artifacts must follow `/specs/02_contracts/26_review_output_contract.md`.
 
 Important:
 - Reference concrete file paths and nearby section names/keywords when making claims.
 - If you cannot verify a claim directly, label it as a hypothesis.
+- Include all file references as `repo/path` style.
 
 Execution pass (required when possible):
-- Run documented commands first (`README.md`, `docs/development.md`).
+- Run documented commands first (`README.md`, `docs/development.md`, `/specs/02_contracts/26_review_output_contract.md`).
 - For every command attempted include:
   - exact command
   - success/failure
@@ -67,23 +69,27 @@ Execution pass (required when possible):
 - Keep this short and high-signal.
 
 Suggested commands:
-- `./scripts/ci_gate.sh`
-- `.venv/bin/python -m pytest -q`
-- `.venv/bin/python -m build`
-- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/03_conformance/cases --php-runner dc%2Drunner%2Dphp/conformance_runner.php --out .artifacts/conformance-parity.json`
-- Optional: run `dc%2Drunner%2Dphp/spec_runner.php` against `runner-owned implementation specs/php/cases/` if PHP + yaml extension are available
+- `dc-runner critical-gate`
+- `dc-runner governance`
+- `dc-runner docs-generate-check`
+- `dc-runner review-validate --snapshot docs/history/reviews/snapshots/<snapshot>`
+  (if supported by your installed `dc-runner` version)
+- If a review conversion tool exists in repo tooling, run it with current output path.
 
 Your task:
-A) Identify the core problems this project aims to solve (plain language) and implicit workflow assumptions.
-B) Brutally critique current approach across product fit, UX, CLI design, config/discovery, portability,
-   command execution safety, tests/specs, docs quality, and tooling/release ergonomics.
+A) Identify the core problems this project aims to solve (plain language) and
+   implicit workflow assumptions.
+B) Brutally critique current approach across product fit, UX, CLI design, config/
+discovery, portability, command execution safety, tests/specs, docs quality,
+and tooling/release ergonomics.
 C) For each persona, provide:
 - Top 5 unacceptable issues
 - Top 5 salvageable aspects
 - 3 must-do changes
 D) Synthesize:
 - single north-star
-- 10 highest-value spec items to add next (behavior/spec statements, not implementation tasks)
+- 10 highest-value spec items to add next (behavior/spec statements, not
+  implementation tasks)
 - 5 biggest risks
 - definition of done for publishable v1
 
@@ -94,7 +100,7 @@ Constraints:
 - Call out which existing specs/docs would need updates.
 
 Output format:
-- 1-paragraph summary of what spec_runner is trying to be.
+- 1-paragraph summary of what data-contracts is trying to be.
 - Persona sections.
 - Synthesis.
 

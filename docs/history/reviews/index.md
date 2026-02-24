@@ -1,23 +1,30 @@
-# Reviews Archive
+# Reviews Namespace
 
-Historical review artifacts live in this archive namespace.
+`docs/history/reviews` is the canonical review workflow namespace for the
+`data-contracts` control-plane repository, plus historical review artifacts.
 
-## Archive Scope
+## Canonical Active Scope
 
-- This directory is archival-only.
-- Active review workflow files are canonical under `/docs/history/reviews`.
-- Historical files are retained for provenance and retrospectives.
+- `/docs/history/reviews/index.md`: this file.
+- `/docs/history/reviews/prompts/`: active review prompts (adoption + self-healing)
+  used for discovery and periodic hardening checks.
+- `/docs/history/reviews/templates/review_snapshot.md`: canonical machine-consumable
+  review snapshot template.
+- `/docs/history/reviews/frameworks/`: compatibility pointers for historical
+  workflow names.
+- `/docs/history/reviews/snapshots/`: dated review outputs and current canonical
+  snapshots.
 
-## Canonical Active Namespace
+## Discovery and Pending-Conversion Workflow
 
-- `/docs/history/reviews/README.md`
-- `/docs/history/reviews/prompts/`
-- `/docs/history/reviews/templates/review_snapshot.md`
-- `/docs/history/reviews/snapshots/`
+- Use prompts under `prompts/` as active review entrypoints.
+- Render outputs into `snapshots/` using `templates/review_snapshot.md`.
+- Keep dated outputs for provenance while keeping the active template and prompt
+  surfaces in sync.
 
 ## Archive Contents
 
-- `prompts/`: historical prompt revisions
-- `frameworks/`: historical framework pointers
-- `snapshots/`: historical dated outputs
-- `templates/`: historical template revisions
+- `prompts/`: active prompt files and historical prompt iterations.
+- `frameworks/`: compatibility pointers and legacy names.
+- `templates/`: canonical active template plus historical scaffolding references.
+- `snapshots/`: active and historical review outputs.

@@ -1,7 +1,7 @@
-# Template (Archive Pointer)
+# Review Snapshot Template Pointer
 
-Active canonical location:
+Canonical active location:
 
 - `docs/history/reviews/templates/review_snapshot.md`
 
-This file is retained for historical reference only.
+This file is a compatibility pointer.
