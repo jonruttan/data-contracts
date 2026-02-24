@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install dc-runner-cli --locked
+          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
           dc-runner --version
 
       - name: Emit governance catalog facts
@@ -81,7 +81,7 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install dc-runner-cli --locked
+          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
           dc-runner --version
 
       - name: Run governance
@@ -118,7 +118,7 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install dc-runner-cli --locked
+          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
           dc-runner --version
 
       - name: Run docs checks
@@ -155,7 +155,7 @@ jobs:
 
       - name: Install dc-runner
         run: |
-          cargo install dc-runner-cli --locked
+          cargo install --git https://github.com/jonruttan/dc-runner-rust --rev 3ca5c87 dc-runner-cli --locked --force
           dc-runner --version
 
       - name: Run optional governance report
