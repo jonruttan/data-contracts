@@ -2,6 +2,6 @@
 
 Canonical active location:
 
-- `docs/history/reviews/templates/review_snapshot.md`
+- `docs/reviews/templates/review_snapshot.md`
 
 This file is a compatibility pointer.

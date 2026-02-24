@@ -72,7 +72,7 @@ Suggested commands:
 - `dc-runner critical-gate`
 - `dc-runner governance`
 - `dc-runner docs-generate-check`
-- `dc-runner review-validate --snapshot docs/history/reviews/snapshots/<snapshot>`
+- `dc-runner review-validate --snapshot docs/reviews/snapshots/<snapshot>`
   (if supported by your installed `dc-runner` version)
 - If a review conversion tool exists in repo tooling, run it with current output path.
 

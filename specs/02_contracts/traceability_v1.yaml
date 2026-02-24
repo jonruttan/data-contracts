@@ -2796,7 +2796,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - specs/04_governance/cases/core/project_docs/docs_reviews_namespace_active.spec.md
-  notes: Requires `docs/history/reviews` for active review assets and treats the historical review archive root as archive-only.
+  notes: Requires `docs/reviews` for active review assets and treats the historical review archive root as archive-only.
 - rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   policy_ref: specs/02_contracts/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   contract_refs:

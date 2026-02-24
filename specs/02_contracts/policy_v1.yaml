@@ -3074,7 +3074,7 @@ rules:
   norm: MUST
   requirement: docs_tree_roots_must_match_canonical_layout_profile
   description: 'Docs roots must match canonical layout contract (`book`, `spec`, `impl`,
-    `history/reviews`) and exclude canonical review root.
+    `reviews`) and exclude canonical review root.
 
     '
   rationale: Keeps docs discoverable and prevents namespace drift.
@@ -3119,7 +3119,7 @@ rules:
   applies_to: docs.reviews
   norm: MUST
   requirement: reviews_active_assets_must_live_under_docs_reviews
-  description: 'Active review prompts/templates/workflow assets must use `docs/history/reviews`;
+  description: 'Active review prompts/templates/workflow assets must use `docs/reviews`;
     the historical review archive root is archival-only and must not be used by active tooling guidance.
 
     '

@@ -2,7 +2,7 @@
 
 Date: YYYY-MM-DD
 Model: <fill in>
-Prompt: `docs/history/reviews/prompts/adoption_7_personas.md`
+Prompt: `docs/reviews/prompts/adoption_7_personas.md`
 Prompt revision: <git sha>
 Repo revision: <git sha>
 Contract baseline refs:
@@ -41,12 +41,12 @@ Runner lane: <docs|governance|discovery>
   title: Example reviewer candidate
   type: review
   class: docs
-  target_area: docs/history/reviews
+  target_area: docs/reviews
   acceptance_criteria:
     - "Candidate rows include required fields."
     - "Contract baseline refs are updated."
   affected_paths:
-    - docs/history/reviews/index.md
+    - docs/reviews/index.md
   risk: medium
 ```
 
