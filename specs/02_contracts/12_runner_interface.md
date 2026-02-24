@@ -36,6 +36,11 @@ Command semantics are source-controlled in:
 
 - `/specs/04_governance/runner_entrypoints_v1.yaml`
 
+Runtime source selection is bundled-first:
+
+- default: `bundled` embedded snapshot
+- override: `--spec-source` / `DC_RUNNER_SPEC_SOURCE`
+
 Shared governance semantics MUST be sourced from spec surfaces (`specs/04_governance/**`
 `specs/05_libraries/policy/**`) and executed by runners. Shell scripts are not
 canonical command entrypoints.

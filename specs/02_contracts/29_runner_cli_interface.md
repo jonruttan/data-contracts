@@ -77,6 +77,25 @@ For canonical command entrypoints, `dc-runner` MUST resolve command id to
 `/specs/governance/check_sets_v1.yaml` profile and enforce declared artifact
 and exit-code contracts.
 
+## Spec Source Resolution
+
+`dc-runner` MUST support runtime source selection for contract refs:
+
+- `--spec-source bundled|workspace|auto`
+- `DC_RUNNER_SPEC_SOURCE=bundled|workspace|auto`
+
+Precedence:
+
+1. CLI flag
+2. Environment variable
+3. Default (`bundled`)
+
+Mode semantics:
+
+- `bundled`: resolve from embedded pinned snapshot only
+- `workspace`: resolve from local workspace only
+- `auto`: workspace first, bundled fallback
+
 ## Scaffold Source Contract
 
 - Canonical scaffold source is `jonruttan/data-contracts-bundles` release assets.

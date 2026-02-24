@@ -39,6 +39,12 @@ The runner resolves command id to profile and executes the profile from:
 
 - `/specs/governance/check_sets_v1.yaml`
 
+Entrypoint resolution MUST respect runner source mode:
+
+- `bundled` default
+- `workspace` explicit local override
+- `auto` workspace-first fallback
+
 ## Hard Requirements
 
 1. `cli` MUST begin with `dc-runner`.
