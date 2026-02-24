@@ -4002,7 +4002,7 @@ links:
   implementation_refs:
   - specs/03_conformance/cases/runner_cli/runner_cli_required_contract_spec_format_check.spec.md
   - specs/03_conformance/cases/runner_cli/runner_cli_required_contract_spec_format_write.spec.md
-  notes: Portable formatter command contract covers both check and write modes.
+  notes: Portable schema suite command contract covers check, lint, and format modes.
 - rule_id: CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
   policy_ref: specs/02_contracts/policy_v1.yaml#CONTRACT_SPEC_V2_KEY_ORDER_CANONICAL
   contract_refs:

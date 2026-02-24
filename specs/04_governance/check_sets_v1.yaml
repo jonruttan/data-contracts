@@ -60,6 +60,12 @@ profiles:
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
         must_contain:
+          - id: schema-check
+          - cli: dc-runner schema check
+          - id: schema-lint
+          - cli: dc-runner schema lint
+          - id: schema-format
+          - cli: dc-runner schema format
           - id: docs-generate-check
           - cli: dc-runner docs generate-check
           - id: docs-generate
@@ -79,6 +85,8 @@ profiles:
         must_contain:
           - - commands
           - - profile
+          - - visibility
+          - - source
       - id: schema.pin_pipeline_chain_valid
         kind: file_tokens
         path: /specs/04_governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md
@@ -138,6 +146,9 @@ profiles:
         kind: file_tokens
         path: /specs/04_governance/runner_entrypoints_v1.yaml
         must_contain:
+          - visibility: top_level
+          - source: core
+          - group: schema
           - id: docs-generate-check
           - cli: dc-runner docs generate-check
           - cli: dc-runner docs generate
@@ -256,14 +267,25 @@ profiles:
         must_contain:
           - /.artifacts/governance-summary.json
           - /.artifacts/critical-gate-summary.json
+          - /.artifacts/job-hooks/DCCONF-JOB-012.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-013.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-014.complete.json
       - id: runtime.infra_script_boundary_enforced
         kind: file_tokens
         path: /specs/02_contracts/29_runner_cli_interface.md
         must_contain:
           - dc-runner governance
           - dc-runner critical-gate
+          - dc-runner schema check
+          - dc-runner schema lint
+          - dc-runner schema format
         must_not_contain:
           - scripts/runner_bin.sh
+          - schema-registry-build
+          - schema-registry-check
+          - schema-docs-build
+          - schema-docs-check
+          - contract-spec-format
       - id: docs.audience_surfaces_generated
         kind: file_tokens
         path: /docs/audience/implementer/reference_manifest.yaml

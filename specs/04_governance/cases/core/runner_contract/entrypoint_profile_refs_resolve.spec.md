@@ -33,32 +33,32 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - id: docs-generate
+          - id: schema-check
       - id: assert_4
         assert:
           std.string.contains:
           - var: text
-          - id: docs-generate-check
+          - id: schema-lint
       - id: assert_5
         assert:
           std.string.contains:
           - var: text
-          - id: docs-build
+          - id: schema-format
       - id: assert_6
         assert:
           std.string.contains:
           - var: text
-          - id: docs-build-check
+          - visibility: top_level
       - id: assert_7
         assert:
           std.string.contains:
           - var: text
-          - id: docs-lint
+          - source: core
       - id: assert_8
         assert:
           std.string.contains:
           - var: text
-          - id: docs-graph
+          - group: schema
 adapters:
 - type: beta.check_profile_text_file_config
   actions:

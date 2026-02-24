@@ -34,8 +34,9 @@ Use tooling to enforce/normalize:
 
 - lint: `dc-runner spec-lang-lint --cases specs`
 - format: `dc-runner spec-lang-format --write --cases specs`
-- contract-spec format check: `dc-runner contract-spec-format --check specs`
-- contract-spec format write: `dc-runner contract-spec-format --write specs`
+- schema suite check: `dc-runner schema check`
+- schema suite lint: `dc-runner schema lint`
+- schema suite format: `dc-runner schema format`
 - docs sync: `dc-runner docs-generate-check`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override

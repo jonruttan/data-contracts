@@ -4306,11 +4306,12 @@ rules:
   scope: runtime
   applies_to: runner.cli.contract_spec_format
   norm: MUST
-  requirement: portable_contract_spec_formatter_modes_must_be_contract_defined
-  description: Portable runner CLI contract must define `contract-spec-format`
-    with both `--check` and `--write` modes for v1 contract-spec blocks.
-  rationale: Keeps key-order normalization deterministic and implementation-agnostic.
-  risk_if_violated: Contract-spec ordering drifts and review diffs become noisy.
+  requirement: portable_schema_suite_modes_must_be_contract_defined
+  description: Portable runner CLI contract must define `schema` with `check`,
+    `lint`, and `format` modes for v1 schema/spec surfaces.
+  rationale: Keeps schema validation, linting, and normalization deterministic
+    and implementation-agnostic.
+  risk_if_violated: Schema behavior drifts and authoring consistency regresses.
   references:
   - specs/02_contracts/29_runner_cli_interface.md
   - specs/01_schema/runner_cli_contract_v1.yaml

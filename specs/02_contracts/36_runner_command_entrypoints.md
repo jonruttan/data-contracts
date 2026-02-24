@@ -32,6 +32,9 @@ Each command entry defines:
 - `id`
 - `cli`
 - `profile`
+- `visibility` (`top_level|hidden`)
+- `group` (optional group label for command discovery/help)
+- `source` (`core|bundler`)
 - `artifacts[]`
 - `exit_codes.allowed[]`
 
@@ -52,3 +55,5 @@ Entrypoint resolution MUST respect runner source mode:
 3. Required `artifacts[]` MUST exist on successful/failed command completion.
 4. Unknown command ids MUST fail with actionable output listing available ids.
 5. Shell scripts are not command-authority sources.
+6. Required schema suite entrypoints (`schema-check`, `schema-lint`,
+   `schema-format`) MUST be present with `visibility: top_level`.

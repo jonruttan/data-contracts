@@ -33,28 +33,43 @@ contracts:
         assert:
           std.string.contains:
           - var: text
-          - /.artifacts/job-hooks/DCCONF-JOB-006.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-012.complete.json
       - id: assert_4
         assert:
           std.string.contains:
           - var: text
-          - /.artifacts/job-hooks/DCCONF-JOB-007.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-013.complete.json
       - id: assert_5
         assert:
           std.string.contains:
           - var: text
-          - /.artifacts/job-hooks/DCCONF-JOB-008.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-014.complete.json
       - id: assert_6
         assert:
           std.string.contains:
           - var: text
-          - /.artifacts/job-hooks/DCCONF-JOB-009.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-006.complete.json
       - id: assert_7
         assert:
           std.string.contains:
           - var: text
-          - /.artifacts/job-hooks/DCCONF-JOB-010.complete.json
+          - /.artifacts/job-hooks/DCCONF-JOB-007.complete.json
       - id: assert_8
+        assert:
+          std.string.contains:
+          - var: text
+          - /.artifacts/job-hooks/DCCONF-JOB-008.complete.json
+      - id: assert_9
+        assert:
+          std.string.contains:
+          - var: text
+          - /.artifacts/job-hooks/DCCONF-JOB-009.complete.json
+      - id: assert_10
+        assert:
+          std.string.contains:
+          - var: text
+          - /.artifacts/job-hooks/DCCONF-JOB-010.complete.json
+      - id: assert_11
         assert:
           std.string.contains:
           - var: text
